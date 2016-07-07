@@ -1,38 +1,63 @@
 package it.unipi.di.acubelab.graphrel.wikisim
 
+import java.io.File
 import java.net.URL
 
+import com.github.tototoshi.csv.CSVReader
+
 import scala.collection.mutable
-import scala.io.Source
 
 
-class WikiSimPair (val line: String) {
-  val tuple =  line.split(",")
+class WikiEntity(_wikiID: Int, _wikiTitle: String) {
+  val wikiID = _wikiID
+  val wikiTitle = _wikiTitle
+}
 
-  val src = new {val wiki_id = tuple(1).toInt; val wiki_title = tuple(2)}
-  val dst = new {val wiki_id = tuple(4).toInt; val wiki_title = tuple(5).replace(" ", "_")}
 
-  val rel = tuple(6)
+class WikiSimPair(_src: WikiEntity, _dst: WikiEntity, _rel: Float) {
+  val src = _src
+  val dst = _dst
+  val rel = _rel
 }
 
 
 class WikiSimDataset {
   val url = getClass.getResource("/wikiSim411.csv")
-  val simPairs = loadWikiSimPairs(url)
+  val wikiSimPairs = loadWikiSimPairs(url)
 
   /**
     *
     * @param url
-    * @return List of WikiSimPair  with the corresponding human relatedness
+    * @return List of WikiSimPair with the corresponding human relatedness.
     */
   def loadWikiSimPairs(url: URL) : List[WikiSimPair]= {
     val pairs = new mutable.MutableList[WikiSimPair]
+    val csvReader = CSVReader.open(new File(url.getPath))
 
-    for(line <- Source.fromFile(url.toString).getLines) {
-      pairs += new WikiSimPair(line)
+    csvReader.foreach {
+      fields =>
+        val src = new WikiEntity(fields(1).toInt, fields(2).replaceAll(" ", "_"))
+        val dst = new WikiEntity(fields(4).toInt, fields(5).replaceAll(" ", "_"))
 
+        val rel = fields(6).toFloat
+
+        pairs += new WikiSimPair(src, dst, rel)
     }
 
+    csvReader.close()
     pairs.toList
+  }
+
+  /**
+    *
+    * @param range
+    * @return List of normalized Wikipedia Similarity Pairs between the specified range.
+    */
+  def normalizedWikiSimPairs(range: (Float, Float) = (0.0f, 1.0f)) : List[WikiSimPair] = {
+    wikiSimPairs.map {
+      wikiSimPair =>
+        val normalizedRel = (wikiSimPair.rel - range._1) / (range._2 - range._1)
+        new WikiSimPair(wikiSimPair.src, wikiSimPair.dst, normalizedRel)
+    }
   }
 }

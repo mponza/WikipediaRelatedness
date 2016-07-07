@@ -5,7 +5,8 @@ import it.unipi.di.acubelab.graphrel.wikisim.WikiSimDataset
 
 object Run {
   def main(args: Array[String]) {
-    val wikiSimReader = new WikiSimDataset
-    println(args)
+    val wikiSimReader = new WikiSimDataset()
+    println("Loaded!")
+    println(wikiSimReader.wikiSimPairs.length)
   }
 }
