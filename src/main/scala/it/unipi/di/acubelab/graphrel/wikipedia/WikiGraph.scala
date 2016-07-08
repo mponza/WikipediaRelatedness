@@ -1,28 +1,57 @@
 package it.unipi.di.acubelab.graphrel.wikipedia
 
-import java.io.File
+import java.io.{File, FileInputStream}
 import java.net.URL
+import java.util.zip.GZIPInputStream
 
-import com.github.tototoshi.csv.CSVReader
 import it.unimi.dsi.fastutil.ints.{Int2ObjectOpenHashMap, IntArrayList}
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph}
+import it.unipi.di.acubelab.graphrel.utils.Configuration
+
+import scala.io.Source
+
+
+class WikiLinksReader(url: URL) extends Traversable[(Int, Int)] {
+
+  val fileStream = Source.fromInputStream(
+    new GZIPInputStream(
+      new FileInputStream(
+        new File(url.getPath)
+      )
+    )
+  )
+
+  def foreach[U](f: ((Int, Int)) => U) {
+    for (line <- fileStream.getLines()) {
+      val splitLine = line.split("\t")
+
+      val src = splitLine(0).toInt
+      val  dst = splitLine(1).toInt
+
+      f((src, dst))
+    }
+  }
+}
 
 
 class ImmutableWikiGraph extends ImmutableGraph {
-  val url = getClass.getResource("/wikiGraph.csv")
+  val url = Configuration.wikipedia.graph
   val outEdges = loadWikipediaGraph(url)
 
   def loadWikipediaGraph(url: URL) : Int2ObjectOpenHashMap[IntArrayList] = {
     val directedEdges = new Int2ObjectOpenHashMap[IntArrayList]
-    val csvReader = CSVReader.open(new File(url.getPath))
+    val graphReader = new WikiLinksReader(url)
 
-    csvReader.foreach {
-      fields =>
-        val src = fields(0).toInt
-        val dst = fields(1).toInt
+    graphReader.foreach {
+      case (src, dst)  =>
+        if (directedEdges.containsKey(src)) {
+          directedEdges.get(src).add(dst)
+        } else {
+          val srcList = new IntArrayList()
+          srcList.add(dst)
 
-        val srcList = if (directedEdges.containsKey(src)) directedEdges.get(src) else new IntArrayList()
-        srcList.add(dst)
+          directedEdges.put(src, srcList)
+        }
     }
 
     directedEdges

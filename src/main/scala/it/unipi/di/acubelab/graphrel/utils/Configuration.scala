@@ -7,6 +7,6 @@ object Configuration {
   }
 
   val wikipedia = new {
-    val graph = getClass.getResource("/wikipedia/graph.csv")
+    val graph = getClass.getResource("/wikipedia/wiki-links-sorted.gz")
   }
 }
