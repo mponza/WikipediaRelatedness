@@ -1,9 +1,10 @@
-package it.unipi.di.acubelab.graphrel.wikisim
+package it.unipi.di.acubelab.graphrel.dataset
 
 import java.io.File
 import java.net.URL
 
 import com.github.tototoshi.csv.CSVReader
+import it.unipi.di.acubelab.graphrel.utils.Configuration
 
 import scala.collection.mutable
 
@@ -22,7 +23,7 @@ class WikiSimPair(_src: WikiEntity, _dst: WikiEntity, _rel: Float) {
 
 
 class WikiSimDataset {
-  val url = getClass.getResource("/wikiSim411.csv")
+  val url = Configuration.dataset.wikiSim
   val wikiSimPairs = loadWikiSimPairs(url)
 
   /**

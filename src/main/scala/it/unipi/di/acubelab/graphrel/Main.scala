@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.graphrel
 
-import it.unipi.di.acubelab.graphrel.wikisim.WikiSimDataset
+import it.unipi.di.acubelab.graphrel.dataset.WikiSimDataset
 
 
 object Run {
