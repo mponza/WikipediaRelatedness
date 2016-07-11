@@ -2,7 +2,17 @@ Wikipedia Relatedness Library
 =============================
 
 
-    sbt
+Setting Up
+----------
+Go to utils.Configuration and set up your data path.
 
-    > compile
-    > run
+
+
+
+Running
+-------
+
+    sbt compile
+    sbt run
+
+

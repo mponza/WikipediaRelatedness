@@ -86,4 +86,5 @@ fabric.properties
 
 
 ### Custom ###
-wiki-links-sorted.gz
+data/
+*.gz

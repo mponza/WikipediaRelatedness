@@ -1,21 +1,25 @@
 package it.unipi.di.acubelab.graphrel.utils
 
+import java.nio.file.Paths
 
+/**
+  * TODO: create reference.conf file in /resources directory
+  */
 object Configuration {
 
-  val CONSTS = new {
-    val bvWikiGraphName = "wiki-bv-graph.graph"
-  }
+  val projDir = System.getProperty("user.dir")
 
   val dataset = new {
     val wikiSim = getClass.getResource("/dataset/wikiSim411.csv")
   }
 
   val wikipedia = new {
-    val directory = getClass.getResource("/wikipedia")
-    val wikiLinks = getClass.getResource("/wikipedia/wikiprova.gz") //("/wikipedia/wiki-links-sorted.gz");
+    // Read-only resources.
+    val wikiLinks = getClass.getResource("/wikipedia/wikiprova.txt.gz")//wiki-links-sorted.gz")
 
-    // Generates by BVGraphProcessing.process.
-    val bvWikiGraph = getClass.getResource("/wikipedia/" + CONSTS.bvWikiGraphName)
+    // Generated resources.
+    val outBVGraph = Paths.get(projDir, "/data/processing/wikipedia/out-bv-graph/out-wiki-links").toString
+    val inBVGraph = Paths.get(projDir, "/data/processing/wikipedia/in-bv-graph/in-wiki-links").toString
+    val symBVGraph = Paths.get(projDir, "/data/processing/wikipedia/sym-bv-graph/sym-wiki-links").toString
   }
 }

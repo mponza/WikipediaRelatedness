@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.graphrel.wikipedia.processing.graph
+package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
 import java.io.{File, FileInputStream}
 import java.util.zip.GZIPInputStream
