@@ -51,13 +51,20 @@ class ImmutableWikiGraph extends ImmutableGraph {
   }
 
   class LazyNodesIterator(nodes: IntArrayList) extends LazyIntIterator {
-    val nodesIterator = nodes.listIterator(0)
+    val nodesIterator = if (nodes != null) nodes.listIterator(0) else null
 
-    override def nextInt() : Int = if (nodesIterator.hasNext) nodesIterator.nextInt else -1
-    override def skip(x: Int) : Int = nodesIterator.skip(x)
+    override def nextInt() : Int = {
+      nodesIterator.nextInt
+      //val x = if (nodesIterator != null && nodesIterator.hasNext) nodesIterator.nextInt else -1
+      //println(x)
+      //x
+    }
+    override def skip(x: Int) : Int = {
+      nodesIterator.skip(x)
+    }
   }
 
   override def successors(x: Int) : LazyIntIterator = {
-    new LazyNodesIterator(outGraph.getOrDefault(x, new IntArrayList()))
+    new LazyNodesIterator(outGraph.get(x))
   }
 }

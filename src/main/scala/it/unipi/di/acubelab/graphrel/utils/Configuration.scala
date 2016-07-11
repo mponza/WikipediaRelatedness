@@ -15,7 +15,7 @@ object Configuration {
 
   val wikipedia = new {
     // Read-only resources.
-    val wikiLinks = getClass.getResource("/wikipedia/wikiprova.txt.gz")//wiki-links-sorted.gz")
+    val wikiLinks = getClass.getResource("/wikipedia/wiki-links-sorted.gz")
 
     // Generated resources.
     val outBVGraph = Paths.get(projDir, "/data/processing/wikipedia/out-bv-graph/out-wiki-links").toString

@@ -12,9 +12,9 @@ object WebGraph {
     // Creates and stores BVGraph from the raw Wikipedia graph.
     bvGraphProcessing.generateBVGraph
 
-    val out = BVGraph.load(Configuration.wikipedia.outBVGraph)
+    //val out = BVGraph.load(Configuration.wikipedia.outBVGraph)
 
-    println(out.toString)
+    //println(out.toString)
     //println(in.toString)
   }
 }
