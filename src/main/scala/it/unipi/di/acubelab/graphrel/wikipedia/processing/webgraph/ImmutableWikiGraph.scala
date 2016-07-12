@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
 import it.unimi.dsi.fastutil.ints.{Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.webgraph.{ImmutableGraph, LazyIntIterator}
+import it.unipi.di.acubelab.graphrel.utils.WikiLinksReader
 
 /**
   * Wikipedia Immutable Graph used to create a BVGraph.
@@ -11,6 +12,7 @@ class ImmutableWikiGraph extends ImmutableGraph {
 
   /**
     * TODO: Create mapping between wikiID and node index in the graph.
+    *       Use EliasFano indices.
     * @return Wikipedia Immutable graph and the total numebr of nodes.
     */
   def loadWikipediaGraph : (Int2ObjectOpenHashMap[IntArrayList], Int) = {
@@ -54,10 +56,7 @@ class ImmutableWikiGraph extends ImmutableGraph {
     val nodesIterator = if (nodes != null) nodes.listIterator(0) else null
 
     override def nextInt() : Int = {
-      nodesIterator.nextInt
-      //val x = if (nodesIterator != null && nodesIterator.hasNext) nodesIterator.nextInt else -1
-      //println(x)
-      //x
+      if(nodesIterator != null && nodesIterator.hasNext) nodesIterator.nextInt else -1
     }
     override def skip(x: Int) : Int = {
       nodesIterator.skip(x)

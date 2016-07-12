@@ -3,6 +3,7 @@ package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
 import java.io.File
 
+import it.unimi.dsi.law.graph.LayeredLabelPropagation
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import org.slf4j.LoggerFactory
@@ -41,7 +42,9 @@ class WebGraphProcessor {
     logger.info("BVGraph stored in %s!".format(path))
   }
 
-  //def processLLP = {
-    //val bvGraph = WebGraphProcessor.loadBVGraph()
-  //}
+  def processLLP = {
+    val bvGraph = BVGraph.load(Configuration.wikipedia.outBVGraph)
+
+    //val llp = new LayeredLabelPropagation()
+  }
 }

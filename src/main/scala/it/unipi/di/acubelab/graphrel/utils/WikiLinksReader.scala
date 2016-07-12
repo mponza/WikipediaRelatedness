@@ -1,9 +1,7 @@
-package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
+package it.unipi.di.acubelab.graphrel.utils
 
-import java.io.{BufferedReader, File, FileInputStream, InputStreamReader}
+import java.io.{File, FileInputStream}
 import java.util.zip.GZIPInputStream
-
-import it.unipi.di.acubelab.graphrel.utils.Configuration
 
 import scala.io.Source
 

@@ -87,4 +87,5 @@ fabric.properties
 
 ### Custom ###
 data/
+lib/
 *.gz

@@ -18,3 +18,11 @@ libraryDependencies ++= Seq(
   "it.unimi.dsi" % "fastutil" % "7.0.12",
   "it.unimi.dsi" % "sux4j" % "4.0.0"
 )
+
+// http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html
+unmanagedJars in Compile ++= {
+  val base = baseDirectory.value / "lib"
+  val baseDirectories = (base / "law-2.3") +++ (base / "law-deps")
+  val customJars = (baseDirectories ** "*.jar")
+  customJars.classpath
+}
