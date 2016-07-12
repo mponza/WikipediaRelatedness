@@ -28,6 +28,11 @@ class WebGraphProcessor {
     logger.info("Storing Sym Wikipedia BVGraph...")
     storeBVGraph(Transform.symmetrize(outGraph), Configuration.wikipedia.symBVGraph)
 
+    //See http://law.di.unimi.it/software/law-docs/it/unimi/dsi/law/graph/LayeredLabelPropagation.html
+    logger.info("Storing Sym and Loopless Wikipedia BVGraph...")
+    val noLoopGraph = Transform.filterArcs(outGraph, Transform.NO_LOOPS)
+    storeBVGraph(Transform.symmetrizeOffline(noLoopGraph, 20000000), Configuration.wikipedia.noLoopSymBVGraph)
+
     logger.info("Wikipedia has been processed as BVGraph!")
   }
 
@@ -43,8 +48,10 @@ class WebGraphProcessor {
   }
 
   def processLLP = {
-    val bvGraph = BVGraph.load(Configuration.wikipedia.outBVGraph)
+    val graph = BVGraph.load(Configuration.wikipedia.outBVGraph)
+    val llp = new LLPProcessor(graph)
+    llp.process()
 
-    //val llp = new LayeredLabelPropagation()
+    //val llp = new LayeredLabelPropagation(graph)
   }
 }

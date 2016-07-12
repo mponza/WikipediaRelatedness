@@ -10,13 +10,16 @@ scalacOptions ++= Seq("-feature")
 
 fork in run := true
 
-javaOptions in run += "-Xmx4G"
+javaOptions in run += "-Xmx40G"
 
 libraryDependencies ++= Seq(
   "com.github.tototoshi" %% "scala-csv" % "1.3.3",
+
   "it.unimi.dsi" % "webgraph" % "3.5.2",
   "it.unimi.dsi" % "fastutil" % "7.0.12",
   "it.unimi.dsi" % "sux4j" % "4.0.0"
+
+
 )
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html

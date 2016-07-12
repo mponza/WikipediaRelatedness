@@ -19,6 +19,6 @@ object LLP {
     val bvGraphProcessing = new WebGraphProcessor
 
     // Creates and stores BVGraph from the raw Wikipedia graph.
-    bvGraphProcessing.generateBVGraph
+    bvGraphProcessing.processLLP
   }
 }
