@@ -24,5 +24,12 @@ object Configuration {
     val noLoopSymBVGraph = Paths.get(projDir, "/data/processing/wikipedia/no-loop-sym-bv-graph/no-loop-sym-wiki-links").toString
 
     val llp = Paths.get(projDir, "/data/processing/wikipedia/llp").toString
+
+
+    val statistics = new {
+      val nNodes = Paths.get(projDir, "/data/processing/wikipedia/statistics/nodes.txt").toString
+    }
   }
+
+  val benchmark =  Paths.get(projDir, "/data/benchmark").toString
 }

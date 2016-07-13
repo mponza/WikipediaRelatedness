@@ -47,11 +47,10 @@ class WebGraphProcessor {
     logger.info("BVGraph stored in %s!".format(path))
   }
 
-  def processLLP = {
-    val graph = BVGraph.load(Configuration.wikipedia.outBVGraph)
+  def processLLP() : Unit = {
+    logger.info("Loading Sym  & loopless Wikipedia graph...")
+    val graph = BVGraph.load(Configuration.wikipedia.noLoopSymBVGraph)
     val llp = new LLPProcessor(graph)
     llp.process()
-
-    //val llp = new LayeredLabelPropagation(graph)
   }
 }

@@ -11,8 +11,6 @@ class ImmutableWikiGraph extends ImmutableGraph {
   val (outGraph, nNodes) = loadWikipediaGraph
 
   /**
-    * TODO: Create mapping between wikiID and node index in the graph.
-    *       Use EliasFano indices.
     * @return Wikipedia Immutable graph and the total numebr of nodes.
     */
   def loadWikipediaGraph : (Int2ObjectOpenHashMap[IntArrayList], Int) = {
@@ -30,7 +28,7 @@ class ImmutableWikiGraph extends ImmutableGraph {
           directedEdges.put(src, srcList)
         }
 
-        maxID = Array(src, dst, maxID).reduceLeft(_ max _)
+        maxID = (src max dst) max maxID
     }
 
     (directedEdges, maxID + 1)

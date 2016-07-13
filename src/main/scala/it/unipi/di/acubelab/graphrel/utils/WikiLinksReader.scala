@@ -42,5 +42,4 @@ class WikiLinksReader extends Traversable[(Int, Int)] {
       lastEdge = (src, dst)
     }
   }
-
 }

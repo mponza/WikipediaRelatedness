@@ -46,7 +46,7 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
     val format = new SimpleDateFormat("d-M-y_HH:mm:ss")
     val timeStr = format.format(Calendar.getInstance.getTime)
 
-    "llp-N_%s-T_%s-%s".format(nLabels, gammaThreshold, timeStr)
+    "llp-N_%s-T_%s-%s".format(nLabels, gammaThreshold, timeStr).toString
   }
 
   /**
@@ -55,11 +55,11 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
     */
   def process(path: String = null) = {
     val llpPath = if (path == null) dirPath() else path
-    new File(path).getParentFile().mkdirs
+    new File(llpPath).mkdirs
 
     saveGammas(llpPath)
 
-    llp.labelBasename(path)
+    llp.labelBasename(llpPath)
     llp.computePermutation(gammas.toDoubleArray, null)
 
   }

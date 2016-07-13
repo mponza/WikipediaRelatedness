@@ -5,6 +5,7 @@ import java.net.URL
 
 import com.github.tototoshi.csv.CSVReader
 import it.unipi.di.acubelab.graphrel.utils.Configuration
+import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
 
@@ -19,10 +20,20 @@ class WikiSimPair(_src: WikiEntity, _dst: WikiEntity, _rel: Float) {
   val src = _src
   val dst = _dst
   val rel = _rel
+
+  def toList : List[Any] = {
+    List(src.wikiID, dst.wikiID, src.wikiTitle, dst.wikiTitle, rel)
+  }
+
+  override def toString : String = {
+    "%d,%d,%s,%s,%.2f".format(src.wikiID, dst.wikiID, src.wikiTitle, dst.wikiTitle, rel)
+  }
 }
 
 
-class WikiSimDataset {
+class WikiSimDataset extends RelatednessDataset {
+  val logger = LoggerFactory.getLogger(classOf[WikiSimDataset])
+
   val url = Configuration.dataset.wikiSim
   val wikiSimPairs = loadWikiSimPairs(url)
 
@@ -32,6 +43,8 @@ class WikiSimDataset {
     * @return List of WikiSimPair with the corresponding human relatedness.
     */
   def loadWikiSimPairs(url: URL) : List[WikiSimPair]= {
+    logger.info("Loading WikiSimDataset...")
+
     val pairs = new mutable.MutableList[WikiSimPair]
     val csvReader = CSVReader.open(new File(url.getPath))
 
@@ -60,5 +73,9 @@ class WikiSimDataset {
         val normalizedRel = (wikiSimPair.rel - range._1) / (range._2 - range._1)
         new WikiSimPair(wikiSimPair.src, wikiSimPair.dst, normalizedRel)
     }
+  }
+
+  def foreach[U](f: (WikiSimPair) => U) {
+    wikiSimPairs.foreach(wikiSimPair => f(wikiSimPair))
   }
 }
