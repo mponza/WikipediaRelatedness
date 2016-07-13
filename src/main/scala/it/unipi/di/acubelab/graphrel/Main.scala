@@ -1,5 +1,7 @@
 package it.unipi.di.acubelab.graphrel
 
+import it.unipi.di.acubelab.graphrel.benchmark.Benchmark
+import it.unipi.di.acubelab.graphrel.dataset.WikiSimDataset
 import it.unipi.di.acubelab.graphrel.wikipedia.relatedness.RelatednessFactory
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.statistics.WikiStats
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WebGraphProcessor
@@ -34,8 +36,12 @@ object Stats {
 
 object Relate {
   def main(args: Array[String]) {
-    val relateOptions = JSON.parseFull(args(0))
-    println(relateOptions)
-    val relatdness = RelatednessFactory.make(relateOptions)
+    val relatednessOptions = JSON.parseFull(args(0))
+    val relatdness = RelatednessFactory.make(relatednessOptions)
+
+    val dataset = new WikiSimDataset
+
+    val benchmark = new Benchmark(dataset, relatdness)
+    benchmark.generateRelatedness()
   }
 }

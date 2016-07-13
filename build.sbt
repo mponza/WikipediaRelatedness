@@ -10,7 +10,7 @@ scalacOptions ++= Seq("-feature")
 
 fork in run := true
 
-javaOptions in run += "-Xmx40G"
+javaOptions in run += "-Xmx2G"
 
 libraryDependencies ++= Seq(
   "com.github.tototoshi" %% "scala-csv" % "1.3.3",

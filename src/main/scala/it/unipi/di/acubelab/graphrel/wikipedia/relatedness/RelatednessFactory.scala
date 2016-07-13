@@ -11,7 +11,7 @@ object RelatednessFactory {
       val relatednessName = opts("name")
       relatednessName match {
 
-        case "Milne-Witten" => new MilneWittenRelatedness(WikiGraph.inGraph, WikiStats.nNodes)
+        case "MilneWitten" => new MilneWittenRelatedness(WikiGraph.inGraph, WikiStats.nNodes)
 
         case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s."
           .format(relatednessName))
