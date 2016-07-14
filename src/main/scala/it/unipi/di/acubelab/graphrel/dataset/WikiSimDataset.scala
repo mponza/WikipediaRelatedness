@@ -16,7 +16,7 @@ class WikiEntity(_wikiID: Int, _wikiTitle: String) {
 }
 
 
-class WikiSimPair(_src: WikiEntity, _dst: WikiEntity, _rel: Float) {
+class WikiSimPair(_src: WikiEntity, _dst: WikiEntity, _rel: Double) {
   val src = _src
   val dst = _dst
   val rel = _rel
@@ -53,7 +53,7 @@ class WikiSimDataset extends RelatednessDataset {
         val src = new WikiEntity(fields(1).toInt, fields(2).replaceAll(" ", "_"))
         val dst = new WikiEntity(fields(4).toInt, fields(5).replaceAll(" ", "_"))
 
-        val rel = fields(6).toFloat
+        val rel = fields(6).toDouble
 
         pairs += new WikiSimPair(src, dst, rel)
     }

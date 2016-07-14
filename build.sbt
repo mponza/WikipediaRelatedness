@@ -18,7 +18,9 @@ libraryDependencies ++= Seq(
 
   "it.unimi.dsi" % "webgraph" % "3.5.2",
   "it.unimi.dsi" % "fastutil" % "7.0.12",
-  "it.unimi.dsi" % "sux4j" % "4.0.0"
+  "it.unimi.dsi" % "sux4j" % "4.0.0",
+
+  "org.apache.commons" % "commons-math3" % "3.6.1"
 
 
 )
