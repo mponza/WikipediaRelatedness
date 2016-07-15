@@ -16,10 +16,10 @@ class WikiEntity(_wikiID: Int, _wikiTitle: String) {
 }
 
 
-class WikiSimPair(_src: WikiEntity, _dst: WikiEntity, _rel: Double) {
+class WikiRelTask(_src: WikiEntity, _dst: WikiEntity, _rel: Double) {
   val src = _src
   val dst = _dst
-  val rel = _rel
+  val rel = _rel  // Human Relatedness
 
   def toList : List[Any] = {
     List(src.wikiID, dst.wikiID, src.wikiTitle, dst.wikiTitle, rel)
@@ -35,17 +35,19 @@ class WikiSimDataset extends RelatednessDataset {
   val logger = LoggerFactory.getLogger(classOf[WikiSimDataset])
 
   val url = Configuration.dataset.wikiSim
-  val wikiSimPairs = loadWikiSimPairs(url)
+  val rawWikiSimPairs = loadWikiSimPairs(url)
+
+  val wikiSimPairs = normalizedWikiSimPairs((0, 10))
 
   /**
     *
     * @param url
     * @return List of WikiSimPair with the corresponding human relatedness.
     */
-  def loadWikiSimPairs(url: URL) : List[WikiSimPair]= {
+  def loadWikiSimPairs(url: URL) : List[WikiRelTask]= {
     logger.info("Loading WikiSimDataset...")
 
-    val pairs = new mutable.MutableList[WikiSimPair]
+    val pairs = new mutable.MutableList[WikiRelTask]
     val csvReader = CSVReader.open(new File(url.getPath))
 
     csvReader.foreach {
@@ -55,7 +57,7 @@ class WikiSimDataset extends RelatednessDataset {
 
         val rel = fields(6).toDouble
 
-        pairs += new WikiSimPair(src, dst, rel)
+        pairs += new WikiRelTask(src, dst, rel)
     }
 
     csvReader.close()
@@ -67,15 +69,17 @@ class WikiSimDataset extends RelatednessDataset {
     * @param range
     * @return List of normalized Wikipedia Similarity Pairs between the specified range.
     */
-  def normalizedWikiSimPairs(range: (Float, Float) = (0.0f, 1.0f)) : List[WikiSimPair] = {
-    wikiSimPairs.map {
-      wikiSimPair =>
-        val normalizedRel = (wikiSimPair.rel - range._1) / (range._2 - range._1)
-        new WikiSimPair(wikiSimPair.src, wikiSimPair.dst, normalizedRel)
+  def normalizedWikiSimPairs(range: (Float, Float) ) : List[WikiRelTask] = {
+    rawWikiSimPairs.map {
+      wikiRelTask =>
+        val normalizedRel = (wikiRelTask.rel - range._1) / (range._2 - range._1)
+        new WikiRelTask(wikiRelTask.src, wikiRelTask.dst, normalizedRel)
     }
   }
 
-  def foreach[U](f: (WikiSimPair) => U) {
-    wikiSimPairs.foreach(wikiSimPair => f(wikiSimPair))
+  def foreach[U](f: (WikiRelTask) => U) {
+    wikiSimPairs.foreach(wikiRelTask => f(wikiRelTask))
   }
+
+  override def toString() : String = "WikiSim412"
 }

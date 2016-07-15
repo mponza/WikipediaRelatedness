@@ -1,47 +1,24 @@
 package it.unipi.di.acubelab.graphrel.wikipedia
 
-import it.unimi.dsi.fastutil.ints.{IntArrayList, IntOpenHashSet}
-import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator}
+import it.unimi.dsi.webgraph.BVGraph
 import it.unipi.di.acubelab.graphrel.utils.Configuration
+import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WikiBVGraph
 
-import scala.collection.mutable
 
+/**
+  * Static class which contains different instance of the Wikipedia graph.
+  */
 object WikiGraph {
-  lazy val outGraph = BVGraph.load(Configuration.wikipedia.outBVGraph)
-  lazy val inGraph = BVGraph.load(Configuration.wikipedia.outBVGraph)
-  lazy val symGraph = BVGraph.load(Configuration.wikipedia.symBVGraph)
-  lazy val noLoopSymGraph = BVGraph.load(Configuration.wikipedia.noLoopSymBVGraph)
+  lazy val outGraph = new WikiBVGraph(Configuration.wikipedia.outBVGraph)
+  lazy val inGraph = new WikiBVGraph(Configuration.wikipedia.outBVGraph)
+  lazy val symGraph = new WikiBVGraph(Configuration.wikipedia.symBVGraph)
+  lazy val noLoopSymGraph = new WikiBVGraph(Configuration.wikipedia.noLoopSymBVGraph)
 
 
-  /**
-    *
-    * @param graph
-    * @param srcWikiID
-    * @param dstWikiID
-    * @return Number of nodes which are both in the adjacent list of srcWikiID and dstWikiID.
-    */
-  def linkIntersection(graph: BVGraph, srcWikiID: Int, dstWikiID: Int) : Int = {
-    val iterA = graph.successors(srcWikiID)
-    val iterB = graph.successors(dstWikiID)
-
-    var intersection = 0
-    var a = iterA.nextInt
-    var b = iterB.nextInt
-
-    do {
-      if (a == b) {
-        intersection += 1
-        a = iterA.nextInt
-        b = iterB.nextInt
-      }
-
-      // Aligns iterators to their minimum common element (if any).
-      while (a < b && a != -1) a = iterA.nextInt
-      while (b < a && b != -1) b = iterB.nextInt
-
-    } while(a != -1 && b != -1)
-
-    println(intersection)
-    intersection
+  def wikiBVGraph(graphName: String) : WikiBVGraph = graphName match {
+    case "outGraph" => outGraph
+    case "inGraph" => inGraph
+    case "symGraph" => symGraph
+    case "noLoopSymGraph" => noLoopSymGraph
   }
 }

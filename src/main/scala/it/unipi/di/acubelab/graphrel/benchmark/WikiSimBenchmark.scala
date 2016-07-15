@@ -4,32 +4,32 @@ import java.io.File
 import java.nio.file.Paths
 
 import com.github.tototoshi.csv.CSVWriter
-import it.unipi.di.acubelab.graphrel.dataset.{RelatednessDataset, WikiSimPair}
+import it.unipi.di.acubelab.graphrel.dataset.{RelatednessDataset, WikiRelTask}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import it.unipi.di.acubelab.graphrel.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
-import scala.collection.mutable
 
 class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
   val logger = LoggerFactory.getLogger(classOf[Benchmark])
-  val relDir = Paths.get(Configuration.benchmark, relatedness.name()).toString
+  val relDir = Paths.get(Configuration.benchmark, relatedness.toString).toString
 
   /**
     * Computes relatedness measure on dataset.
     * Write pairs and relatedness to a CSV file under benchmark/.
     */
-  def generateRelatedness() : Unit = {
-    logger.info("Starting benchmarking %s".format(relatedness.name))
+  def runBenchmark() : Unit = {
+    logger.info("running benchmark of %s on dataset %s...".format(relatedness.toString, dataset))
 
-    val relScores = dataset.foldLeft (List.empty[(WikiSimPair, Double)]) {
-        case (scores: List[(WikiSimPair, Double)], wikiPair: WikiSimPair) =>
-          val relScore = relatedness.computeRelatedness(wikiPair.src.wikiID, wikiPair.dst.wikiID)
-          scores :+ (wikiPair, relScore)
+    // List of (wikiRelTask, relatedness computed by using the given relatedenss).
+    val relScores = dataset.foldLeft (List.empty[(WikiRelTask, Double)]) {
+        case (scores: List[(WikiRelTask, Double)], wikiRelTask: WikiRelTask) =>
+          val relScore = relatedness.computeRelatedness(wikiRelTask)
+          scores :+ (wikiRelTask, relScore)
       }
 
     writeRelatednessScores(relScores)
-    writeCorrelationScores(relScores)
+    //writeCorrelationScores(relScores)
   }
 
   /**
@@ -37,21 +37,18 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     *
     * @param scores
     */
-  def writeRelatednessScores(scores: List[(WikiSimPair, Double)]) : Unit = {
-    logger.info("Writing %s Relatedness scores...".format(relatedness.name))
+  def writeRelatednessScores(scores: List[(WikiRelTask, Double)]) : Unit = {
+    logger.info("Writing %s Relatedness scores...".format(relatedness.toString))
 
     new File(relDir).mkdirs
-    val path = Paths.get(relDir, relatedness.name + ".data.csv").toString
+    val path = Paths.get(relDir, relatedness.toString() + ".data.csv").toString
 
     val csvWriter = CSVWriter.open(new File(path))
 
     scores.foreach {
-      case pairScore =>
-        val wikiPair = pairScore._1
-        val score = pairScore._2
+      case (wikiRelTask, score) =>
 
-        val csvList = wikiPair.toList ++ List(score)
-        println(csvList)
+        val csvList = wikiRelTask.toList ++ List(score)
         csvWriter.writeRow(csvList)
     }
 
@@ -59,18 +56,19 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
   }
 
   /**
-    * Writes both Pearson's and Spearman's correlation to file
+    * Writes both Pearson's and Spearman's correlation to file.
+    *
     * @param scores
     */
-  def writeCorrelationScores(scores: List[(WikiSimPair, Double)]) : Unit = {
+  def writeCorrelationScores(scores: List[(WikiRelTask, Double)]) : Unit = {
     val pearson = Evaluation.pearsonCorrelation(scores)
-    logger.info("%s Pearson: %.2f".format(relatedness.name, pearson))
+    logger.info("%s Pearson: %.2f".format(relatedness.toString, pearson))
 
     val spearman = Evaluation.pearsonCorrelation(scores)
-    logger.info("%s Spearman: %.2f".format(relatedness.name, spearman))
+    logger.info("%s Spearman: %.2f".format(relatedness.toString, spearman))
 
     new File(relDir).mkdirs
-    val path = Paths.get(relDir, relatedness.name + ".correlation.csv").toString
+    val path = Paths.get(relDir, relatedness.toString + ".correlation.csv").toString
 
     val csvWriter = CSVWriter.open(new File(path))
 

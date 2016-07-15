@@ -34,7 +34,7 @@ object Stats {
   }
 }
 
-object Relate {
+object Bench {
   def main(args: Array[String]) {
     val relatednessOptions = JSON.parseFull(args(0))
     val relatdness = RelatednessFactory.make(relatednessOptions)
@@ -42,6 +42,6 @@ object Relate {
     val dataset = new WikiSimDataset
 
     val benchmark = new Benchmark(dataset, relatdness)
-    benchmark.generateRelatedness()
+    benchmark.runBenchmark()
   }
 }

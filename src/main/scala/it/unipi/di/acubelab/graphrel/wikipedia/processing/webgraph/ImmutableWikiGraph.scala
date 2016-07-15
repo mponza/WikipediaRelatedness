@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
-import it.unimi.dsi.fastutil.ints.{Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
+import it.unimi.dsi.fastutil.ints.{Int2IntArrayMap, Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.webgraph.{ImmutableGraph, LazyIntIterator}
 import it.unipi.di.acubelab.graphrel.utils.WikiLinksReader
 
@@ -8,30 +8,45 @@ import it.unipi.di.acubelab.graphrel.utils.WikiLinksReader
   * Wikipedia Immutable Graph used to create a BVGraph.
   */
 class ImmutableWikiGraph extends ImmutableGraph {
-  val (outGraph, nNodes) = loadWikipediaGraph
+  val (outGraph, wiki2node) = loadWikipediaGraph
 
   /**
-    * @return Wikipedia Immutable graph and the total numebr of nodes.
+    * @return Wikipedia Immutable graph and the mapping between wikiID and nodeID.
     */
-  def loadWikipediaGraph : (Int2ObjectOpenHashMap[IntArrayList], Int) = {
+  def loadWikipediaGraph : (Int2ObjectOpenHashMap[IntArrayList], Int2IntArrayMap) = {
     val directedEdges = new Int2ObjectOpenHashMap[IntArrayList]
-    var maxID = -1
-    val graphReader = new WikiLinksReader
 
+    val wiki2node = new Int2IntArrayMap
+
+    val graphReader = new WikiLinksReader
     graphReader.foreach {
       case (src, dst)  =>
-        if (directedEdges.containsKey(src)) {
-          directedEdges.get(src).add(dst)
+        val srcNodeID = wiki2NodeMapping(src, wiki2node)
+        val dstNodeID = wiki2NodeMapping(dst, wiki2node)
+
+        if (directedEdges.containsKey(srcNodeID)) {
+          directedEdges.get(srcNodeID).add(dst)
         } else {
           val srcList = new IntArrayList()
           srcList.add(dst)
-          directedEdges.put(src, srcList)
+          directedEdges.put(srcNodeID, srcList)
         }
-
-        maxID = (src max dst) max maxID
     }
 
-    (directedEdges, maxID + 1)
+    (directedEdges, wiki2node)
+  }
+
+  /**
+    * If  wikiID is not in wiki2node then it is inserted.
+    * @param wikiID
+    * @param wiki2node
+    * @return The nodeID of wikiId in the BVGraph.
+    */
+  def wiki2NodeMapping(wikiID: Int, wiki2node: Int2IntArrayMap) : Int = {
+    val nextNodeID = wiki2node.size
+    val nodeID = wiki2node.getOrDefault(wikiID, nextNodeID)
+    wiki2node.put(wikiID, nodeID)
+    nodeID
   }
 
   override def outdegree(i: Int): Int = {
@@ -43,7 +58,7 @@ class ImmutableWikiGraph extends ImmutableGraph {
   }
 
   override def numNodes: Int = {
-    nNodes
+    wiki2node.size
   }
 
   override def randomAccess: Boolean = {

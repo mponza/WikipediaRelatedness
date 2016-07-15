@@ -3,6 +3,8 @@ package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
 import java.io.File
 
+import it.unimi.dsi.fastutil.ints.Int2IntArrayMap
+import it.unimi.dsi.fastutil.io.{BinIO, TextIO}
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
@@ -19,6 +21,9 @@ class WebGraphProcessor {
     logger.info("Building Wikipedia ImmutableGraph...")
     val outGraph = new ImmutableWikiGraph
 
+    logger.info("Storing Wikipedia2BVGraph mapping...")
+    storeMapping(outGraph.wiki2node, Configuration.wikipedia.wiki2node)
+
     logger.info("Storing Out Wikipedia BVGraph...")
     storeBVGraph(outGraph, Configuration.wikipedia.outBVGraph)
 
@@ -28,7 +33,7 @@ class WebGraphProcessor {
     logger.info("Storing Sym Wikipedia BVGraph...")
     storeBVGraph(Transform.symmetrize(outGraph), Configuration.wikipedia.symBVGraph)
 
-    //See http://law.di.unimi.it/software/law-docs/it/unimi/dsi/law/graph/LayeredLabelPropagation.html
+    // See http://law.di.unimi.it/software/law-docs/it/unimi/dsi/law/graph/LayeredLabelPropagation.html
     logger.info("Storing Sym and Loopless Wikipedia BVGraph...")
     val noLoopGraph = Transform.filterArcs(outGraph, Transform.NO_LOOPS)
     storeBVGraph(Transform.symmetrizeOffline(noLoopGraph, 20000000), Configuration.wikipedia.noLoopSymBVGraph)
@@ -42,13 +47,18 @@ class WebGraphProcessor {
     * @param path
     */
   def storeBVGraph(graph: ImmutableGraph, path: String) = {
-    new File(path).getParentFile().mkdirs
+    new File(path).getParentFile.mkdirs
     BVGraph.store(graph, path)
     logger.info("BVGraph stored in %s!".format(path))
   }
 
+  def storeMapping(wiki2node: Int2IntArrayMap, path: String) = {
+    new File(path).getParentFile.mkdirs
+    BinIO.storeObject(wiki2node, path)
+  }
+
   def processLLP() : Unit = {
-    logger.info("Loading Sym  & loopless Wikipedia graph...")
+    logger.info("Loading Sym & loopless Wikipedia graph...")
     val graph = BVGraph.load(Configuration.wikipedia.noLoopSymBVGraph)
     val llp = new LLPProcessor(graph)
     llp.process()

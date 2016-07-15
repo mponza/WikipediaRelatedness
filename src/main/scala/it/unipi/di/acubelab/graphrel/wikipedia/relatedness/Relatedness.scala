@@ -1,6 +1,14 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.relatedness
 
+import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
+
 trait Relatedness {
-  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Double
-  def name() : String
+
+  /**
+    *
+    * @param wikiRelTask
+    * @return The relatedness between src and dst of wikiRelTask.
+    */
+  def computeRelatedness(wikiRelTask: WikiRelTask) : Double
+  override def toString() : String
 }

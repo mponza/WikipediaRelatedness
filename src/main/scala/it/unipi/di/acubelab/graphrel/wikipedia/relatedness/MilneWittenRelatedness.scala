@@ -1,38 +1,38 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.relatedness
 
-import it.unimi.dsi.webgraph.BVGraph
-import it.unipi.di.acubelab.graphrel.utils.MathRel
+import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
 import org.slf4j.LoggerFactory
 
-class MilneWittenRelatedness(graph: BVGraph, W: Int) extends Relatedness {
-  val logger = LoggerFactory.getLogger(classOf[MilneWittenRelatedness])
+class MilneWittenRelatedness(options: Map[String, Any]) extends Relatedness {
+  val graphName = if (options.contains("graph")) options("name").toString else "inGraph"
+  val graph = WikiGraph.wikiBVGraph(graphName)
 
-  logger.info("M&W Relatedness loaded with |W| = %d.".format(W))
+  val W = graph.bvGraph.numNodes
+
+  val logger = LoggerFactory.getLogger(classOf[MilneWittenRelatedness])
 
   /**
     * Paper: https://www.aaai.org/Papers/Workshops/2008/WS-08-15/WS08-15-005.pdf
     *
-    * @param srcWikiID
-    * @param dstWikiID
     * @return
     */
-  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Double = {
-    val sizeA = graph.outdegree(srcWikiID)
-    val sizeB = graph.outdegree(dstWikiID)
+  def computeRelatedness(wikiRelTask: WikiRelTask) : Double = {
+    val srcWikiID = wikiRelTask.src.wikiID
+    val dstWikiID = wikiRelTask.dst.wikiID
 
-    val intersection = WikiGraph.linkIntersection(graph, srcWikiID, dstWikiID)
+    val sizeA = wikiBVgraph.outdegree(srcWikiID)
+    val sizeB = wikiBVgraph.outdegree(dstWikiID)
 
-    logger.info("|%d|: %d, |%d|: %d, Int: %d".format(srcWikiID, sizeA, dstWikiID, sizeB, intersection))
+    val intersection = WikiGraph.linkIntersection(wikiBVgraph, srcWikiID, dstWikiID)
 
-    logger.info("%.2f %.2f %.2f %.2f : %.2f".format(math.log(sizeA max sizeB), math.log(intersection), math.log(W), math.log(sizeA min sizeB),
-      (math.log(sizeA max sizeB) - math.log(intersection)) / math.log(W) - math.log(sizeA min sizeB))
-    )
-    (MathRel.zeroLog(sizeA max sizeB) - MathRel.zeroLog(intersection) ) /
-      (MathRel.zeroLog(W) - MathRel.zeroLog(sizeA min sizeB))
+    val rel = (math.log(sizeA max sizeB) - math.log(intersection) ) /
+                (math.log(W) - math.log(sizeA min sizeB))
 
-    // Warning 1. compute relatedness and then boundarycheck (also between 0 and 1! (see WAT Relatedness))
+    val normRel = 1 - ((rel max 0.0) min 1.0)
+    logger.info("%s > %d %.2f".format(wikiRelTask.toString, intersection, normRel))
+    normRel
   }
 
-  def name() : String = { "MilneWitten" }
+  override def toString () : String = { "MilneWitten" }
 }
