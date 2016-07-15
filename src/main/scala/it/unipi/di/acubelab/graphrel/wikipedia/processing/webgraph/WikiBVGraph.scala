@@ -22,11 +22,11 @@ class WikiBVGraph(path: String) {
   }
 
   def successors(wikiID: Int) : LazyIntIterator = {
-    val nodeID = WikiBVGraph.wiki2node.getOrDefault(wikiID, -1)
-    if (nodeID < 0) {
-      throw new IllegalArgumentException("WikiID %d not present in the Wikipedia graph.".format(wikiID))
-    }
-    bvGraph.successors(nodeID)
+    bvGraph.successors(WikiBVGraph.getNodeID(wikiID))
+  }
+
+  def outdegree(wikiID: Int) : Int = {
+    bvGraph.outdegree(WikiBVGraph.getNodeID(wikiID))
   }
 
   def linkIntersection(srcWikiID: Int, dstWikiID: Int) : Int = {
@@ -56,4 +56,12 @@ class WikiBVGraph(path: String) {
 
 object WikiBVGraph {
   lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia.wiki2node).asInstanceOf[Int2IntArrayMap]
+
+  def getNodeID(wikiID: Int) = {
+    val nodeID = WikiBVGraph.wiki2node.getOrDefault(wikiID, -1)
+    if (nodeID < 0) {
+      throw new IllegalArgumentException("WikiID %d not present in the Wikipedia graph.".format(wikiID))
+    }
+    nodeID
+  }
 }

@@ -21,10 +21,10 @@ class MilneWittenRelatedness(options: Map[String, Any]) extends Relatedness {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 
-    val sizeA = wikiBVgraph.outdegree(srcWikiID)
-    val sizeB = wikiBVgraph.outdegree(dstWikiID)
+    val sizeA = graph.outdegree(srcWikiID)
+    val sizeB = graph.outdegree(dstWikiID)
 
-    val intersection = WikiGraph.linkIntersection(wikiBVgraph, srcWikiID, dstWikiID)
+    val intersection = graph.linkIntersection(srcWikiID, dstWikiID)
 
     val rel = (math.log(sizeA max sizeB) - math.log(intersection) ) /
                 (math.log(W) - math.log(sizeA min sizeB))

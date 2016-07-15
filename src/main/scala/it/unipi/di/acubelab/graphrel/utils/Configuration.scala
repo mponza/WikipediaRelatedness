@@ -7,10 +7,13 @@ import java.nio.file.Paths
   */
 object Configuration {
 
+  val wat = "http://wat.mkapp.it/wikidocs?lang=en"
+
   val projDir = System.getProperty("user.dir")
 
   val dataset = new {
-    val wikiSim = getClass.getResource("/dataset/wikiSim411.csv")
+    val wikiSim = getClass.getResource("/dataset/wikiSim411.csv").getPath
+    val procWikiSim = Paths.get(projDir, "/data/dataset/wikiSim411.csv").toString
   }
 
   val wikipedia = new {
