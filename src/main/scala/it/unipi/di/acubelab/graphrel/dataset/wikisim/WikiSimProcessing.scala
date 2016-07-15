@@ -16,7 +16,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
     val normWikiSimPairs = normalize(wikiSim.wikiSimPairs.slice(0, 2))
     val redirWikiSimPairs = redirect(normWikiSimPairs)
 
-    store(redirWikiSimPairs, Configuration.dataset.procWikiSim)
+    store(redirWikiSimPairs, Configuration.dataset("procWikiSim"))
 
     logger.info("Dataset has been processed!")
   }

@@ -22,21 +22,21 @@ class WebGraphProcessor {
     val outGraph = new ImmutableWikiGraph
 
     logger.info("Storing Wikipedia2BVGraph mapping...")
-    storeMapping(outGraph.wiki2node, Configuration.wikipedia.wiki2node)
+    storeMapping(outGraph.wiki2node, Configuration.wikipedia("wiki2node"))
 
     logger.info("Storing Out Wikipedia BVGraph...")
-    storeBVGraph(outGraph, Configuration.wikipedia.outBVGraph)
+    storeBVGraph(outGraph, Configuration.wikipedia("outBVGraph"))
 
     logger.info("Storing In Wikipedia BVGraph...")
-    storeBVGraph(Transform.transpose(outGraph), Configuration.wikipedia.inBVGraph)
+    storeBVGraph(Transform.transpose(outGraph), Configuration.wikipedia("inBVGraph"))
 
     logger.info("Storing Sym Wikipedia BVGraph...")
-    storeBVGraph(Transform.symmetrize(outGraph), Configuration.wikipedia.symBVGraph)
+    storeBVGraph(Transform.symmetrize(outGraph), Configuration.wikipedia("symBVGraph"))
 
     // See http://law.di.unimi.it/software/law-docs/it/unimi/dsi/law/graph/LayeredLabelPropagation.html
     logger.info("Storing Sym and Loopless Wikipedia BVGraph...")
     val noLoopGraph = Transform.filterArcs(outGraph, Transform.NO_LOOPS)
-    storeBVGraph(Transform.symmetrizeOffline(noLoopGraph, 20000000), Configuration.wikipedia.noLoopSymBVGraph)
+    storeBVGraph(Transform.symmetrizeOffline(noLoopGraph, 20000000), Configuration.wikipedia("noLoopSymBVGraph"))
 
     logger.info("Wikipedia has been processed as BVGraph!")
   }
@@ -55,11 +55,13 @@ class WebGraphProcessor {
   def storeMapping(wiki2node: Int2IntArrayMap, path: String) = {
     new File(path).getParentFile.mkdirs
     BinIO.storeObject(wiki2node, path)
+
+    val m = BinIO.loadObject(path).asInstanceOf[Int2IntArrayMap]
   }
 
   def processLLP() : Unit = {
     logger.info("Loading Sym & loopless Wikipedia graph...")
-    val graph = BVGraph.load(Configuration.wikipedia.noLoopSymBVGraph)
+    val graph = BVGraph.load(Configuration.wikipedia("noLoopSymBVGraph"))
     val llp = new LLPProcessor(graph)
     llp.process()
   }

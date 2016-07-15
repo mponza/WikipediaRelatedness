@@ -55,7 +55,7 @@ class WikiBVGraph(path: String) {
 }
 
 object WikiBVGraph {
-  lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia.wiki2node).asInstanceOf[Int2IntArrayMap]
+  lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia("wiki2node")).asInstanceOf[Int2IntArrayMap]
 
   def getNodeID(wikiID: Int) = {
     val nodeID = WikiBVGraph.wiki2node.getOrDefault(wikiID, -1)

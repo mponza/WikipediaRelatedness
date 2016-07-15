@@ -7,7 +7,6 @@ import scalaj.http.Http
 
 
 object WAT {
-
   val logger = LoggerFactory.getLogger("WAT")
 
   def redirect(title: String) : (String, Int) = {
@@ -16,14 +15,14 @@ object WAT {
     val jsonResponse = JSON.parseFull(strResponse)
 
     jsonResponse match {
-      case Some(jsonMap: Map[String, Any]) =>
+      case Some(jsonMap: Map[String, Any] @unchecked) =>
 
         jsonMap("title") match {
-          case jsonTitle: Map[String, Any] =>
+          case jsonTitle: Map[String, Any] @unchecked =>
 
             if (jsonTitle.contains("redirect_title")) {
               jsonTitle("redirect_title") match {
-                case jsonWiki: Map[String, Any] =>
+                case jsonWiki: Map[String, Any] @unchecked  =>
 
                   val redirectedTitle = jsonWiki("wiki_title").asInstanceOf[String]
                   val redirectedWikiID = jsonWiki("wiki_id").asInstanceOf[Int]
@@ -36,7 +35,7 @@ object WAT {
             }
 
             jsonTitle("title") match {
-              case jsonWiki: Map[String, Any] =>
+              case jsonWiki: Map[String, Any] @unchecked =>
 
                 val wikiID = jsonWiki("wiki_id").asInstanceOf[Double].toInt
                 return (title, wikiID)

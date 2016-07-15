@@ -4,7 +4,6 @@ import it.unipi.di.acubelab.graphrel.benchmark.Benchmark
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.{WikiSimDataset, WikiSimProcessing}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import it.unipi.di.acubelab.graphrel.wikipedia.relatedness.RelatednessFactory
-import it.unipi.di.acubelab.graphrel.wikipedia.processing.statistics.WikiStats
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WebGraphProcessor
 
 import scala.util.parsing.json.JSON
@@ -27,17 +26,9 @@ object LLP {
   }
 }
 
-object Stats {
-  def main(args: Array[String]) {
-    val wikiStats = new WikiStats
-
-    wikiStats.processStatistics
-  }
-}
-
 object WikiSimProcess {
   def main(args: Array[String]) {
-    val wikiSimDataset = new WikiSimDataset(Configuration.dataset.wikiSim)
+    val wikiSimDataset = new WikiSimDataset(Configuration.dataset("wikiSim"))
     val processor = new WikiSimProcessing(wikiSimDataset)
     processor.process()
   }
@@ -48,7 +39,7 @@ object Bench {
     val relatednessOptions = JSON.parseFull(args(0))
     val relatdness = RelatednessFactory.make(relatednessOptions)
 
-    val dataset = new WikiSimDataset(Configuration.dataset.procWikiSim.toString)
+    val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim").toString)
 
     val benchmark = new Benchmark(dataset, relatdness)
     benchmark.runBenchmark()

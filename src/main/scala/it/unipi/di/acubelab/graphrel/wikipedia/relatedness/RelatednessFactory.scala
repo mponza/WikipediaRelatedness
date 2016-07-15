@@ -1,7 +1,6 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.relatedness
 
 import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
-import it.unipi.di.acubelab.graphrel.wikipedia.processing.statistics.WikiStats
 
 
 object RelatednessFactory {
@@ -19,7 +18,7 @@ object RelatednessFactory {
     */
   def make(relateOptions: Option[Any]) : Relatedness = relateOptions match {
 
-    case Some(opts: Map[String, Any]) =>
+    case Some(opts: Map[String, Any] @unchecked) =>
 
       val relatednessName = opts("relatedness")
       relatednessName match {
