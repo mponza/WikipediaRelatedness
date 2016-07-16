@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
-import it.unimi.dsi.fastutil.ints.{Int2IntArrayMap, Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections
+import it.unimi.dsi.fastutil.ints.{Int2IntArrayMap, Int2ObjectOpenHashMap, IntArrayList, IntSortedSet}
 import it.unimi.dsi.webgraph.{ImmutableGraph, LazyIntIterator}
 import it.unipi.di.acubelab.graphrel.utils.WikiLinksReader
 
@@ -24,13 +25,14 @@ class ImmutableWikiGraph extends ImmutableGraph {
         val srcNodeID = wiki2NodeMapping(src, wiki2node)
         val dstNodeID = wiki2NodeMapping(dst, wiki2node)
 
-        if (directedEdges.containsKey(srcNodeID)) {
-          directedEdges.get(srcNodeID).add(dst)
-        } else {
-          val srcList = new IntArrayList()
-          srcList.add(dst)
-          directedEdges.put(srcNodeID, srcList)
-        }
+        directedEdges.putIfAbsent(srcNodeID, new IntArrayList)
+        directedEdges.get(srcNodeID).add(dstNodeID)
+
+        directedEdges.putIfAbsent(dstNodeID, new IntArrayList)
+    }
+
+    for(i <- 0 to directedEdges.size - 1) {
+      java.util.Collections.sort(directedEdges.get(i))
     }
 
     (directedEdges, wiki2node)
@@ -45,12 +47,14 @@ class ImmutableWikiGraph extends ImmutableGraph {
   def wiki2NodeMapping(wikiID: Int, wiki2node: Int2IntArrayMap) : Int = {
     val nextNodeID = wiki2node.size
     val nodeID = wiki2node.getOrDefault(wikiID, nextNodeID)
-    wiki2node.put(wikiID, nodeID)
+    wiki2node.putIfAbsent(wikiID, nodeID)
     nodeID
   }
 
   override def outdegree(i: Int): Int = {
-    outGraph.getOrDefault(i, new IntArrayList()).size
+    val s = outGraph.get(i).size()
+    println(outGraph.get(i).size())
+    s
   }
 
   override def copy: ImmutableGraph = {
@@ -69,6 +73,7 @@ class ImmutableWikiGraph extends ImmutableGraph {
     val nodesIterator = if (nodes != null) nodes.listIterator(0) else null
 
     override def nextInt() : Int = {
+      java.util.Collections.sort(nodes)
       if(nodesIterator != null && nodesIterator.hasNext) nodesIterator.nextInt else -1
     }
     override def skip(x: Int) : Int = {

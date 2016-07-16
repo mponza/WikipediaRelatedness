@@ -17,7 +17,7 @@ object Configuration {
   )
 
   val wikipedia = Map(
-    "wikiLinks" -> getClass.getResource("/wikipedia/wiki-links-sorted.gz").toString,
+    "wikiLinks" -> getClass.getResource("/wikipedia/wiki-links-sorted.gz").getPath,
 
     "wiki2node" -> Paths.get(projDir, "/data/processing/wikipedia/mapping/wiki2node").toString,
 

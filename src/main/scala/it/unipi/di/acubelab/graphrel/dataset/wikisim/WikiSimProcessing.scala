@@ -13,7 +13,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
   def process() : Unit = {
     logger.info("Processing Dataset...")
 
-    val normWikiSimPairs = normalize(wikiSim.wikiSimPairs.slice(0, 2))
+    val normWikiSimPairs = normalize(wikiSim.wikiSimPairs)
     val redirWikiSimPairs = redirect(normWikiSimPairs)
 
     store(redirWikiSimPairs, Configuration.dataset("procWikiSim"))
