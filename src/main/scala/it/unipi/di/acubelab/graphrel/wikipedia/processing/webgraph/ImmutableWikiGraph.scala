@@ -52,9 +52,7 @@ class ImmutableWikiGraph extends ImmutableGraph {
   }
 
   override def outdegree(i: Int): Int = {
-    val s = outGraph.get(i).size()
-    println(outGraph.get(i).size())
-    s
+    outGraph.get(i).size()
   }
 
   override def copy: ImmutableGraph = {
@@ -73,7 +71,6 @@ class ImmutableWikiGraph extends ImmutableGraph {
     val nodesIterator = if (nodes != null) nodes.listIterator(0) else null
 
     override def nextInt() : Int = {
-      java.util.Collections.sort(nodes)
       if(nodesIterator != null && nodesIterator.hasNext) nodesIterator.nextInt else -1
     }
     override def skip(x: Int) : Int = {
