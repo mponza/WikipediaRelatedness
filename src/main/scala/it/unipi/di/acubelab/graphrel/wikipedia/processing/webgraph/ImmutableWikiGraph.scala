@@ -1,7 +1,6 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections
-import it.unimi.dsi.fastutil.ints.{Int2IntArrayMap, Int2ObjectOpenHashMap, IntArrayList, IntSortedSet}
+import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, Int2ObjectOpenHashMap, IntArrayList}
 import it.unimi.dsi.webgraph.{ImmutableGraph, LazyIntIterator}
 import it.unipi.di.acubelab.graphrel.utils.WikiLinksReader
 
@@ -14,10 +13,10 @@ class ImmutableWikiGraph extends ImmutableGraph {
   /**
     * @return Wikipedia Immutable graph and the mapping between wikiID and nodeID.
     */
-  def loadWikipediaGraph : (Int2ObjectOpenHashMap[IntArrayList], Int2IntArrayMap) = {
+  def loadWikipediaGraph : (Int2ObjectOpenHashMap[IntArrayList], Int2IntOpenHashMap) = {
     val directedEdges = new Int2ObjectOpenHashMap[IntArrayList]
 
-    val wiki2node = new Int2IntArrayMap
+    val wiki2node = new Int2IntOpenHashMap
 
     val graphReader = new WikiLinksReader
     graphReader.foreach {
@@ -25,10 +24,14 @@ class ImmutableWikiGraph extends ImmutableGraph {
         val srcNodeID = wiki2NodeMapping(src, wiki2node)
         val dstNodeID = wiki2NodeMapping(dst, wiki2node)
 
-        directedEdges.putIfAbsent(srcNodeID, new IntArrayList)
+        if(!directedEdges.containsKey(srcNodeID))
+          directedEdges.putIfAbsent(srcNodeID, new IntArrayList)
+
+        if(!directedEdges.containsKey(dstNodeID))
+          directedEdges.putIfAbsent(dstNodeID, new IntArrayList)
+
         directedEdges.get(srcNodeID).add(dstNodeID)
 
-        directedEdges.putIfAbsent(dstNodeID, new IntArrayList)
     }
 
     for(i <- 0 to directedEdges.size - 1) {
@@ -44,7 +47,7 @@ class ImmutableWikiGraph extends ImmutableGraph {
     * @param wiki2node
     * @return The nodeID of wikiId in the BVGraph.
     */
-  def wiki2NodeMapping(wikiID: Int, wiki2node: Int2IntArrayMap) : Int = {
+  def wiki2NodeMapping(wikiID: Int, wiki2node: Int2IntOpenHashMap) : Int = {
     val nextNodeID = wiki2node.size
     val nodeID = wiki2node.getOrDefault(wikiID, nextNodeID)
     wiki2node.putIfAbsent(wikiID, nodeID)

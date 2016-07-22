@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
 import java.io.File
 
-import it.unimi.dsi.fastutil.ints.Int2IntArrayMap
+import it.unimi.dsi.fastutil.ints.{Int2IntArrayMap, Int2IntOpenHashMap}
 import it.unimi.dsi.fastutil.io.{BinIO, TextIO}
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
@@ -52,7 +52,7 @@ class WebGraphProcessor {
     logger.info("BVGraph stored in %s!".format(path))
   }
 
-  def storeMapping(wiki2node: Int2IntArrayMap, path: String) = {
+  def storeMapping(wiki2node: Int2IntOpenHashMap, path: String) = {
     new File(path).getParentFile.mkdirs
     BinIO.storeObject(wiki2node, path)
 
