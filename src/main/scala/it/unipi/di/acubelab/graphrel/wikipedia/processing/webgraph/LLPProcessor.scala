@@ -7,9 +7,11 @@ import java.util.Calendar
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
-import it.unimi.dsi.util.XorShift1024StarRandom
 import it.unimi.dsi.webgraph.BVGraph
+import it.unipi.di.acubelab.graphrel.utils.Configuration
 import org.slf4j.LoggerFactory
+
+import scala.util.Random
 
 /**
   * TODO: Multiple runnings. More labels?
@@ -30,7 +32,7 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
     */
   def generateGammas(n: Int, threshold: Int): DoubleArrayList = {
     val gammas = new DoubleArrayList()
-    val random = new XorShift1024StarRandom()
+    val random = new Random
 
     0 until n foreach {
       i =>
@@ -48,7 +50,9 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
     val format = new SimpleDateFormat("d-M-y_HH:mm:ss")
     val timeStr = format.format(Calendar.getInstance.getTime)
 
-    "llp-N_%s-T_%s-%s".format(nLabels, gammaThreshold, timeStr).toString
+    val name = "llp-Labels:_%s-Threshold:_%s-Time:_%s".format(nLabels, gammaThreshold, timeStr)
+
+    Paths.get(Configuration.wikipedia("llp"), name).toString
   }
 
   /**
@@ -63,7 +67,7 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
 
     saveGammas(llpPath)
 
-    llp.labelBasename(llpPath)
+    llp.labelBasename(Paths.get(llpPath, "llp_labels").toString)
     llp.computePermutation(gammas.toDoubleArray, null)
   }
 

@@ -57,6 +57,10 @@ class WikiBVGraph(path: String) {
 object WikiBVGraph {
   lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia("wiki2node")).asInstanceOf[Int2IntOpenHashMap]
 
+  def contains(wikiID: Int) = {
+    if(wiki2node.containsKey(wikiID)) true else false
+  }
+
   def getNodeID(wikiID: Int) = {
     val nodeID = WikiBVGraph.wiki2node.getOrDefault(wikiID, -1)
     if (nodeID < 0) {

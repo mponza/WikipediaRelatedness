@@ -3,20 +3,23 @@ package it.unipi.di.acubelab.graphrel.dataset.wikisim
 import java.io.File
 
 import com.github.tototoshi.csv.CSVWriter
-import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
+import it.unipi.di.acubelab.graphrel.dataset.{WikiEntity, WikiRelTask}
 import it.unipi.di.acubelab.graphrel.utils.{Configuration, WAT}
+import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WikiBVGraph
 import org.slf4j.LoggerFactory
 
 class WikiSimProcessing(wikiSim: WikiSimDataset) {
   val logger = LoggerFactory.getLogger(classOf[WikiSimProcessing])
+  logger.info("Loading WikiBVGraph...")
 
   def process() : Unit = {
     logger.info("Processing Dataset...")
 
     val normWikiSimPairs = normalize(wikiSim.wikiSimPairs)
     val redirWikiSimPairs = redirect(normWikiSimPairs)
+    val filterWikiSimPairs = wikiFilter(redirWikiSimPairs)
 
-    store(redirWikiSimPairs, Configuration.dataset("procWikiSim"))
+    store(filterWikiSimPairs, Configuration.dataset("procWikiSim"))
 
     logger.info("Dataset has been processed!")
   }
@@ -48,11 +51,32 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
     wikiSimPairs.map {
       case wikiRelTask: WikiRelTask =>
         val (srcWikiTitle, srcWikiID) = WAT.redirect(wikiRelTask.src.wikiTitle)
-        val (dstWikiTitle, dstWikiID) = WAT.redirect(wikiRelTask.dst.wikiTitle)
+        val srcRedWikiEntity = new WikiEntity(srcWikiID, srcWikiTitle)
 
-        new WikiRelTask(wikiRelTask.src, wikiRelTask.srcWord,
-                        wikiRelTask.dst, wikiRelTask.dstWord,
+        val (dstWikiTitle, dstWikiID) = WAT.redirect(wikiRelTask.dst.wikiTitle)
+        val dstRedWikiEntity = new WikiEntity(dstWikiID, dstWikiTitle)
+
+        new WikiRelTask(srcRedWikiEntity, wikiRelTask.srcWord,
+                        dstRedWikiEntity, wikiRelTask.dstWord,
                         wikiRelTask.rel)
+    }
+  }
+
+  /**
+    * Removes pages which are not "real" Wikipedia Pages (e.g. disambiguation pages).
+    * @param wikiSimPairs
+    * @return
+    */
+  def wikiFilter(wikiSimPairs: List[WikiRelTask]) : List[WikiRelTask] = {
+    logger.info("Filtering...")
+
+    wikiSimPairs.filter {
+      case wikiRelTask: WikiRelTask =>
+        val keep = WikiBVGraph.contains(wikiRelTask.src.wikiID) && WikiBVGraph.contains(wikiRelTask.dst.wikiID)
+        if (!keep) {
+          logger.warn("The following tuple: %s has been removed (Not present in the Wikipedia Graph).".format(wikiRelTask))
+        }
+        keep
     }
   }
 

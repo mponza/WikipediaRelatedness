@@ -19,13 +19,18 @@ object BVGraph {
 
 object LLP {
   def main(args: Array[String]) {
+    val llpOptions = JSON.parseFull(args(0))
+
     val bvGraphProcessing = new WebGraphProcessor
 
-    // Creates and stores BVGraph from the raw Wikipedia graph.
-    bvGraphProcessing.processLLP
+    // Creates and stores LLP clusters from the raw Wikipedia graph.
+    bvGraphProcessing.processLLP(llpOptions)
   }
 }
 
+/**
+  * Redirects Wikipedia titles.
+  */
 object WikiSimProcess {
   def main(args: Array[String]) {
     val wikiSimDataset = new WikiSimDataset(Configuration.dataset("wikiSim"))

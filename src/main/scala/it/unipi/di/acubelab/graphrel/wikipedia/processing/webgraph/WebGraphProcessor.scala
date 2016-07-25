@@ -43,6 +43,7 @@ class WebGraphProcessor {
 
   /**
     * Save graph to path as BVGraph.
+    *
     * @param graph
     * @param path
     */
@@ -59,10 +60,21 @@ class WebGraphProcessor {
     val m = BinIO.loadObject(path).asInstanceOf[Int2IntOpenHashMap]
   }
 
-  def processLLP() : Unit = {
+  def processLLP(llpOptions: Option[Any]) : Unit = {
     logger.info("Loading Sym & loopless Wikipedia graph...")
     val graph = BVGraph.load(Configuration.wikipedia("noLoopSymBVGraph"))
-    val llp = new LLPProcessor(graph)
-    llp.process()
+
+    llpOptions match {
+      case Some(options: Map[String, Int]) =>
+        val nLabels = options.getOrElse("nLabels", 10)
+        val gammaThreshold = options.getOrElse("gammaThreshold", 32)
+
+        new LLPProcessor(graph, nLabels, gammaThreshold).process()
+
+      case _ => new LLPProcessor(graph).process()
+    }
+
+    //val llp = new LLPProcessor(graph)
+    //llp.process()
   }
 }
