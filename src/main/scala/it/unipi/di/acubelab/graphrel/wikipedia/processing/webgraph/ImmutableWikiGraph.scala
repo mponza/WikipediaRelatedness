@@ -24,14 +24,10 @@ class ImmutableWikiGraph extends ImmutableGraph {
         val srcNodeID = wiki2NodeMapping(src, wiki2node)
         val dstNodeID = wiki2NodeMapping(dst, wiki2node)
 
-        if(!directedEdges.containsKey(srcNodeID))
-          directedEdges.putIfAbsent(srcNodeID, new IntArrayList)
-
-        if(!directedEdges.containsKey(dstNodeID))
-          directedEdges.putIfAbsent(dstNodeID, new IntArrayList)
+        directedEdges.putIfAbsent(srcNodeID, new IntArrayList)
+        directedEdges.putIfAbsent(dstNodeID, new IntArrayList)
 
         directedEdges.get(srcNodeID).add(dstNodeID)
-
     }
 
     for(i <- 0 to directedEdges.size - 1) {

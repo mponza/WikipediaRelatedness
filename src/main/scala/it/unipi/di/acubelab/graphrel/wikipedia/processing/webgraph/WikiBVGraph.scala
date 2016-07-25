@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
-import it.unimi.dsi.fastutil.ints.Int2IntArrayMap
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
@@ -55,7 +55,7 @@ class WikiBVGraph(path: String) {
 }
 
 object WikiBVGraph {
-  lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia("wiki2node")).asInstanceOf[Int2IntArrayMap]
+  lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia("wiki2node")).asInstanceOf[Int2IntOpenHashMap]
 
   def getNodeID(wikiID: Int) = {
     val nodeID = WikiBVGraph.wiki2node.getOrDefault(wikiID, -1)

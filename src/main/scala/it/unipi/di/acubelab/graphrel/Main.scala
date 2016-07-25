@@ -39,7 +39,7 @@ object Bench {
     val relatednessOptions = JSON.parseFull(args(0))
     val relatdness = RelatednessFactory.make(relatednessOptions)
 
-    val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim").toString)
+    val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
 
     val benchmark = new Benchmark(dataset, relatdness)
     benchmark.runBenchmark()

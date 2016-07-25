@@ -22,9 +22,10 @@ libraryDependencies ++= Seq(
   "it.unimi.dsi" % "fastutil" % "7.0.12",
   "it.unimi.dsi" % "sux4j" % "4.0.0",
 
-  "org.apache.commons" % "commons-math3" % "3.6.1"
+  "org.apache.commons" % "commons-math3" % "3.6.1",
 
-
+  "org.deeplearning4j" % "deeplearning4j-core" % "0.4.0",
+  "org.deeplearning4j" % "deeplearning4j-nlp" % "0.4.0"
 )
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html

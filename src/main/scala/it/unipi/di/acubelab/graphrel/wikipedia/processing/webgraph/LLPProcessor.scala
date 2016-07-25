@@ -9,6 +9,7 @@ import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
 import it.unimi.dsi.util.XorShift1024StarRandom
 import it.unimi.dsi.webgraph.BVGraph
+import org.slf4j.LoggerFactory
 
 /**
   * TODO: Multiple runnings. More labels?
@@ -17,13 +18,14 @@ import it.unimi.dsi.webgraph.BVGraph
   * @param gammaThreshold Ha davvero senso?
   */
 class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) {
+  val logger = LoggerFactory.getLogger(classOf[LLPProcessor])
   val llp = new LayeredLabelPropagation(graph, System.currentTimeMillis)
   val gammas = generateGammas(nLabels, gammaThreshold)
 
   /**
-    * Generates gamma values in a similar way as described in the LLP paper.
+    * Generates gamma values in a similar way as described in the LLP paper but giving a threshold.
     * @param n  Number of gammas (label)
-    * @param threshold
+    * @param threshold  maximum value of gamma
     * @return
     */
   def generateGammas(n: Int, threshold: Int): DoubleArrayList = {
@@ -54,6 +56,8 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
     * @param path   Where save node labels.
     */
   def process(path: String = null) = {
+    logger.info("LLP processing with gammas: %s".format(gammas.toString))
+
     val llpPath = if (path == null) dirPath() else path
     new File(llpPath).mkdirs
 
@@ -61,7 +65,6 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
 
     llp.labelBasename(llpPath)
     llp.computePermutation(gammas.toDoubleArray, null)
-
   }
 
   def saveGammas(path: String) = {

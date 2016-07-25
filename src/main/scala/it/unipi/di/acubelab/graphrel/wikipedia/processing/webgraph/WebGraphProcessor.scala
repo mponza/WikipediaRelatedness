@@ -3,8 +3,8 @@ package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
 import java.io.File
 
-import it.unimi.dsi.fastutil.ints.{Int2IntArrayMap, Int2IntOpenHashMap}
-import it.unimi.dsi.fastutil.io.{BinIO, TextIO}
+import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap}
+import it.unimi.dsi.fastutil.io.{BinIO}
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
@@ -34,7 +34,7 @@ class WebGraphProcessor {
     storeBVGraph(Transform.symmetrize(outGraph), Configuration.wikipedia("symBVGraph"))
 
     // See http://law.di.unimi.it/software/law-docs/it/unimi/dsi/law/graph/LayeredLabelPropagation.html
-    logger.info("Storing Sym and Loopless Wikipedia BVGraph...")
+    logger.info("Storing Sym and Self-loopless Wikipedia BVGraph...")
     val noLoopGraph = Transform.filterArcs(outGraph, Transform.NO_LOOPS)
     storeBVGraph(Transform.symmetrizeOffline(noLoopGraph, 20000000), Configuration.wikipedia("noLoopSymBVGraph"))
 
@@ -56,7 +56,7 @@ class WebGraphProcessor {
     new File(path).getParentFile.mkdirs
     BinIO.storeObject(wiki2node, path)
 
-    val m = BinIO.loadObject(path).asInstanceOf[Int2IntArrayMap]
+    val m = BinIO.loadObject(path).asInstanceOf[Int2IntOpenHashMap]
   }
 
   def processLLP() : Unit = {

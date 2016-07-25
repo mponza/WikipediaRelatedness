@@ -89,3 +89,4 @@ fabric.properties
 data/
 lib/
 *.gz
+*.bin

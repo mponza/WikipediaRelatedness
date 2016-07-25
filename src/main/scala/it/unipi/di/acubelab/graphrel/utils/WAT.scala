@@ -25,7 +25,7 @@ object WAT {
                 case jsonWiki: Map[String, Any] @unchecked  =>
 
                   val redirectedTitle = jsonWiki("wiki_title").asInstanceOf[String]
-                  val redirectedWikiID = jsonWiki("wiki_id").asInstanceOf[Int]
+                  val redirectedWikiID = jsonWiki("wiki_id").asInstanceOf[Double].toInt
 
                   logger.warn("Redirected %s with %s.".format(title, redirectedTitle))
                   return (redirectedTitle, redirectedWikiID)
