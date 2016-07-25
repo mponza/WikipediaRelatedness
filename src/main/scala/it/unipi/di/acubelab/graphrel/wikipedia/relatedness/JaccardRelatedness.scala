@@ -4,7 +4,7 @@ import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
 
 class JaccardRelatedness(options: Map[String, Any]) extends Relatedness {
-  val graphName = if (options.contains("graph")) options("name").toString else "inGraph"
+  val graphName = if (options.contains("graph")) options("graph").toString else "inGraph"
   val graph = WikiGraph.wikiBVGraph(graphName)
 
   def computeRelatedness(wikiRelTask: WikiRelTask) : Double = {
@@ -15,6 +15,8 @@ class JaccardRelatedness(options: Map[String, Any]) extends Relatedness {
     val sizeA = graph.outdegree(srcWikiID)
     val sizeB = graph.outdegree(dstWikiID)
 
-    intersection / (sizeA + sizeB - intersection)
+    intersection / (sizeA + sizeB - intersection).toDouble
   }
+
+  override def toString () : String = { "Jaccard_%s".format(graphName) }
 }

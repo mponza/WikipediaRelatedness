@@ -1,9 +1,7 @@
-package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
+package it.unipi.di.acubelab.graphrel.wikipedia.processing.llp
 
 import java.io.{File, PrintWriter}
 import java.nio.file.Paths
-import java.text.SimpleDateFormat
-import java.util.Calendar
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
@@ -47,10 +45,7 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
   }
 
   def dirPath() : String = {
-    val format = new SimpleDateFormat("d-M-y_HH:mm:ss")
-    val timeStr = format.format(Calendar.getInstance.getTime)
-
-    val name = "llp-Labels:_%s-Threshold:_%s-Time:_%s".format(nLabels, gammaThreshold, timeStr)
+    val name = "llp-Labels:_%s-Threshold:%s".format(nLabels, gammaThreshold)
 
     Paths.get(Configuration.wikipedia("llp"), name).toString
   }
@@ -75,5 +70,6 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
     val file = new PrintWriter(Paths.get(path, "gammas.json").toString)
     file.write(gammas.toString)
     file.close
+
   }
 }

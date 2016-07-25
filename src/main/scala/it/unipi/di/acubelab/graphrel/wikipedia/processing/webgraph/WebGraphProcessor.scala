@@ -3,11 +3,12 @@ package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
 import java.io.File
 
-import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap}
-import it.unimi.dsi.fastutil.io.{BinIO}
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
+import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
+import it.unipi.di.acubelab.graphrel.wikipedia.processing.llp.LLPProcessor
 import org.slf4j.LoggerFactory
 
 
@@ -73,8 +74,5 @@ class WebGraphProcessor {
 
       case _ => new LLPProcessor(graph).process()
     }
-
-    //val llp = new LLPProcessor(graph)
-    //llp.process()
   }
 }

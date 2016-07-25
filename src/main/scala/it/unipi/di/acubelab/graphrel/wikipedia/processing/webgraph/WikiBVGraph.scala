@@ -56,16 +56,33 @@ class WikiBVGraph(path: String) {
 
 object WikiBVGraph {
   lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia("wiki2node")).asInstanceOf[Int2IntOpenHashMap]
+  lazy val node2wiki = reverseWiki2Node()
 
-  def contains(wikiID: Int) = {
-    if(wiki2node.containsKey(wikiID)) true else false
+  def contains(wikiID: Int): Unit = {
+    wiki2node.containsKey(wikiID)
+  }
+
+  def reverseWiki2Node() : Int2IntOpenHashMap = {
+    val node2wiki = new Int2IntOpenHashMap
+    wiki2node.keySet().toIntArray.foreach {
+      wikiID : Int => node2wiki.put(wiki2node.get(wikiID), wikiID)
+    }
+    node2wiki
   }
 
   def getNodeID(wikiID: Int) = {
-    val nodeID = WikiBVGraph.wiki2node.getOrDefault(wikiID, -1)
+    val nodeID = wiki2node.getOrDefault(wikiID, -1)
     if (nodeID < 0) {
       throw new IllegalArgumentException("WikiID %d not present in the Wikipedia graph.".format(wikiID))
     }
     nodeID
+  }
+
+  def getWikiID(index: Int) : Int = {
+    val wikiID = node2wiki.getOrDefault(index, -1)
+    if (wikiID < 0) {
+      throw new IllegalArgumentException("NodeIndex %d not present in the Wikipedia mapping.".format(index))
+    }
+    wikiID
   }
 }

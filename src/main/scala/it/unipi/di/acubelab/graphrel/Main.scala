@@ -19,7 +19,7 @@ object BVGraph {
 
 object LLP {
   def main(args: Array[String]) {
-    val llpOptions = JSON.parseFull(args(0))
+    val llpOptions =  if (args.length > 0) JSON.parseFull(args(0)) else Some(Map())
 
     val bvGraphProcessing = new WebGraphProcessor
 

@@ -29,7 +29,7 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
       }
 
     writeRelatednessScores(relScores)
-    //writeCorrelationScores(relScores)
+    writeCorrelationScores(relScores)
   }
 
   /**
@@ -64,7 +64,7 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     val pearson = Evaluation.pearsonCorrelation(scores)
     logger.info("%s Pearson: %.2f".format(relatedness.toString, pearson))
 
-    val spearman = Evaluation.pearsonCorrelation(scores)
+    val spearman = Evaluation.spearmanCorrelation(scores)
     logger.info("%s Spearman: %.2f".format(relatedness.toString, spearman))
 
     new File(relDir).mkdirs
