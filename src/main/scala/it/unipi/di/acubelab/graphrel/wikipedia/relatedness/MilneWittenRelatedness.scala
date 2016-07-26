@@ -26,9 +26,10 @@ class MilneWittenRelatedness(options: Map[String, Any]) extends Relatedness {
 
     val intersection = graph.linkIntersection(srcWikiID, dstWikiID)
 
+    if (intersection == 0) return 0.0
+
     val rel = (math.log(sizeA max sizeB) - math.log(intersection) ) /
                 (math.log(W) - math.log(sizeA min sizeB))
-
     val normRel = 1 - ((rel max 0.0) min 1.0)
 
     normRel

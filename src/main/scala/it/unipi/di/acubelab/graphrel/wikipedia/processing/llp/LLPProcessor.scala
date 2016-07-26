@@ -14,13 +14,15 @@ import scala.util.Random
 /**
   * TODO: Multiple runnings. More labels?
   * @param graph
-  * @param nLabels  aka number of gammas/clusters
-  * @param gammaThreshold Ha davvero senso?
   */
-class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) {
+class LLPProcessor(graph: BVGraph, llpTask : LLPTask = new LLPTask) extends {
+
   val logger = LoggerFactory.getLogger(classOf[LLPProcessor])
   val llp = new LayeredLabelPropagation(graph, System.currentTimeMillis)
-  val gammas = generateGammas(nLabels, gammaThreshold)
+  val gammas = generateGammas(llpTask.nLabels, llpTask.gammaThreshold)
+
+  logger.info("LLPProcessor with %s labels and %s gamma threshold instantiated."
+    .format(llpTask.nLabels, llpTask.gammaThreshold))
 
   /**
     * Generates gamma values in a similar way as described in the LLP paper but giving a threshold.
@@ -45,9 +47,7 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
   }
 
   def dirPath() : String = {
-    val name = "llp-Labels:_%s-Threshold:%s".format(nLabels, gammaThreshold)
-
-    Paths.get(Configuration.wikipedia("llp"), name).toString
+    Paths.get(Configuration.wikipedia("llp"), llp.toString).toString
   }
 
   /**
@@ -63,13 +63,12 @@ class LLPProcessor(graph: BVGraph, nLabels: Int = 10, gammaThreshold: Int = 32) 
     saveGammas(llpPath)
 
     llp.labelBasename(Paths.get(llpPath, "llp_labels").toString)
-    llp.computePermutation(gammas.toDoubleArray, null)
+    llp.computePermutation(gammas.toDoubleArray, null, llpTask.maxUpdates)
   }
 
   def saveGammas(path: String) = {
     val file = new PrintWriter(Paths.get(path, "gammas.json").toString)
     file.write(gammas.toString)
     file.close
-
   }
 }

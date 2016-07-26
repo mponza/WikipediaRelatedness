@@ -1,5 +1,8 @@
 package it.unipi.di.acubelab.graphrel.benchmark
 
+import java.io.{File, PrintWriter}
+import java.util.Locale
+
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import org.apache.commons.math.stat.correlation.{PearsonsCorrelation, SpearmansCorrelation}
 
@@ -24,5 +27,11 @@ object Evaluation {
     val relatedScores = scores.map(_._2).toArray
 
     (humanScores, relatedScores)
+  }
+
+  def writeTmpScores(scores: Array[Double], path: String = "tmp/rel.txt") : Unit = {
+    val pw = new PrintWriter(path)
+    pw.write(scores.mkString(","))
+    pw.close
   }
 }

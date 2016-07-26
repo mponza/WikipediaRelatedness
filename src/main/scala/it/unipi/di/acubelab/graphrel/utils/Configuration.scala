@@ -31,7 +31,9 @@ object Configuration {
     "corpus" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-linkCorpus.w2v").toString,
     "deepWalk" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-deepWalk.w2v").toString,
     "deepCorpus" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-deepWalkMixed.w2v").toString, // Link Corpus and DeepWalk mixed
-    "coOccurrence" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-coOccurrence.w2v").toString
+    "coOccurrence" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-coOccurrence.w2v").toString,
+
+    "old" -> "/home/marco/Scaricati/tmp/"
 
   )
 

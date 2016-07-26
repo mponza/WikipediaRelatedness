@@ -90,3 +90,4 @@ data/
 lib/
 *.gz
 *.bin
+*.swp

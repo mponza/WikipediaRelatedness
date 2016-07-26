@@ -8,7 +8,7 @@ import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
-import it.unipi.di.acubelab.graphrel.wikipedia.processing.llp.LLPProcessor
+import it.unipi.di.acubelab.graphrel.wikipedia.processing.llp.{LLPProcessor, LLPTask}
 import org.slf4j.LoggerFactory
 
 
@@ -66,11 +66,10 @@ class WebGraphProcessor {
     val graph = BVGraph.load(Configuration.wikipedia("noLoopSymBVGraph"))
 
     llpOptions match {
-      case Some(options: Map[String, Int]) =>
-        val nLabels = options.getOrElse("nLabels", 10)
-        val gammaThreshold = options.getOrElse("gammaThreshold", 32)
+      case Some(options: Map[String, Int] @unchecked) =>
+        val llpTask = LLPTask.makeFromOption(options)
 
-        new LLPProcessor(graph, nLabels, gammaThreshold).process()
+        new LLPProcessor(graph, llpTask).process()
 
       case _ => new LLPProcessor(graph).process()
     }
