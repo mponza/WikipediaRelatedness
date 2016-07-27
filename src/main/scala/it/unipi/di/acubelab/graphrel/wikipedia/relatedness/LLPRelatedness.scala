@@ -9,14 +9,14 @@ class LLPRelatedness(options: Map[String, Any]) extends Relatedness {
 
   val llpTask = LLPTask.makeFromOption(options)
 
-  val llpLabels = new LLPClustering(llpTask)
+  val llpClustering = new LLPClustering(llpTask)
 
   override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 
-    val srcVec = llpLabels.labels.get(srcWikiID)
-    val dstVec = llpLabels.labels.get(dstWikiID)
+    val srcVec = llpClustering.labels.get(srcWikiID)
+    val dstVec = llpClustering.labels.get(dstWikiID)
 
     val sim = hammingSimilarity(srcVec, dstVec)
 

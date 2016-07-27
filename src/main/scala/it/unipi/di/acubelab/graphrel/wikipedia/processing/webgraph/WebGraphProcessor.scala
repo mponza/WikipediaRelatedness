@@ -5,10 +5,10 @@ import java.io.File
 
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.law.graph.LayeredLabelPropagation
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.llp.{LLPProcessor, LLPTask}
+import it.unipi.di.acubelab.graphrel.wikipedia.processing.multillp.MultiLLPProcessor
 import org.slf4j.LoggerFactory
 
 
@@ -70,6 +70,21 @@ class WebGraphProcessor {
         val llpTask = LLPTask.makeFromOption(options)
 
         new LLPProcessor(graph, llpTask).process()
+
+      case _ => new LLPProcessor(graph).process()
+    }
+  }
+
+  def processMultiLLP(llpOptions: Option[Any]) : Unit = {
+    logger.info("Loading Sym & loopless Wikipedia graph...")
+    val graph = BVGraph.load(Configuration.wikipedia("noLoopSymBVGraph"))
+
+    llpOptions match {
+      case Some(options: Map[String, Int] @unchecked) =>
+        val nLLP = options.getOrElse("nLLP", 10.0).asInstanceOf[Double].toInt
+        val llpTask = LLPTask.makeFromOption(options)
+
+        new MultiLLPProcessor(graph, nLLP, llpTask).process()
 
       case _ => new LLPProcessor(graph).process()
     }

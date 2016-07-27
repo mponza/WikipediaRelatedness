@@ -21,8 +21,8 @@ class LLPProcessor(graph: BVGraph, llpTask : LLPTask = new LLPTask) extends {
   val llp = new LayeredLabelPropagation(graph, System.currentTimeMillis)
   val gammas = generateGammas(llpTask.nLabels, llpTask.gammaThreshold)
 
-  logger.info("LLPProcessor with %s labels and %s gamma threshold instantiated."
-    .format(llpTask.nLabels, llpTask.gammaThreshold))
+  logger.info("LLPProcessor with %s labels, %s gamma threshold and %s instantiated."
+    .format(llpTask.nLabels, llpTask.gammaThreshold, llpTask.maxUpdates))
 
   /**
     * Generates gamma values in a similar way as described in the LLP paper but giving a threshold.
@@ -47,7 +47,7 @@ class LLPProcessor(graph: BVGraph, llpTask : LLPTask = new LLPTask) extends {
   }
 
   def dirPath() : String = {
-    Paths.get(Configuration.wikipedia("llp"), llp.toString).toString
+    Paths.get(Configuration.wikipedia("llp"), llpTask.toString).toString
   }
 
   /**

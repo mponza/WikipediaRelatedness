@@ -21,6 +21,8 @@ Benchmarking
     run """{"relatedness": "Jaccard", "graph": outGraph}"""
     run """{"relatedness": "Jaccard", "graph": symGraph}"""
     run """{"relatedness": "Jaccard", "graph": noLoopSymGraph}"""
+    
+    sbt "run-main it.unipi.di.acubelab.graphrel.MainClass"
 
 
 and then choose `Bench` class.

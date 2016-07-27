@@ -28,6 +28,17 @@ object LLP {
   }
 }
 
+object MultiLLP {
+  def main(args: Array[String]) {
+    val llpOptions =  if (args.length > 0) JSON.parseFull(args(0)) else Some(Map())
+
+    val bvGraphProcessing = new WebGraphProcessor
+
+    // Creates and stores LLP clusters from the raw Wikipedia graph.
+    bvGraphProcessing.processMultiLLP(llpOptions)
+  }
+}
+
 /**
   * Redirects Wikipedia titles.
   */
@@ -54,8 +65,8 @@ object Bench {
 object GridLLP {
   def main(args: Array[String]) = {
     for {
-      nLabels <- 10 to 100 by 10
-      maxUpdates <- 100 to 1000 by 100
+      nLabels <- 10 to 50 by 10
+      maxUpdates <- 100 to 500 by 100
     } {
       val llpJson = """{"nLabels": %d, "maxUpdates": %d}""".format(nLabels, maxUpdates)
       LLP.main(Array(llpJson))

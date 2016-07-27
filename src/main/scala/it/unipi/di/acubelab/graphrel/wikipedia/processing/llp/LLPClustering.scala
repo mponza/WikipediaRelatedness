@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory
 import scala.io.Source
 import scala.util.parsing.json.JSON
 
-class LLPClustering(llpTask: LLPTask = new LLPTask) {
+class LLPClustering(llpTask: LLPTask = new LLPTask, dirPath: String = null) {
   val logger = LoggerFactory.getLogger(classOf[LLPClustering])
   val gammas = loadGammas()
   val labels = loadLabels()
@@ -23,7 +23,7 @@ class LLPClustering(llpTask: LLPTask = new LLPTask) {
   logger.info(labels.get(33183).toString)
 
   def loadGammas() : List[Double] = {
-    val gammasPath = Paths.get(clusterDirectory(), "gammas.json").toString
+    val gammasPath = Paths.get(clusterDir(), "gammas.json").toString
     val gammasStr = Source.fromFile(gammasPath).getLines.mkString
     val gammas = JSON.parseFull(gammasStr)
 
@@ -48,7 +48,7 @@ class LLPClustering(llpTask: LLPTask = new LLPTask) {
 
     // Foreach files read the whole mapping at the corresponding LLP iteration.
     for (llpFile <- llpLabelsFiles()) {
-      logger.info("Reading labels from %s".format(llpFile.getName.toString))
+      logger.info("Reading labels from %s".format(llpFile.getName))
       val it = BinIO.asIntIterator(llpFile)
       var nodeIndex = 0 // index of the Wikipedia node in the mapped BVgraph (see WikiBVGraph.wiki2node/node2wiki)
 
@@ -70,12 +70,13 @@ class LLPClustering(llpTask: LLPTask = new LLPTask) {
     labels
   }
 
-  def clusterDirectory() : String = {
-    Paths.get(Configuration.wikipedia("llp"), llpTask.toString).toString
+  def clusterDir() : String = {
+    val llpDir = if(dirPath == null) Configuration.wikipedia("llp") else dirPath
+    Paths.get(llpDir, llpTask.toString).toString
   }
 
   def llpLabelsFiles() : Array[File] = {
-    new File(clusterDirectory).listFiles.filter(_.getName.startsWith("llp_labels-")).sortBy {
+    new File(clusterDir).listFiles.filter(_.getName.startsWith("llp_labels-")).sortBy {
       _.getName.split("-")(1).toInt
     }
   }

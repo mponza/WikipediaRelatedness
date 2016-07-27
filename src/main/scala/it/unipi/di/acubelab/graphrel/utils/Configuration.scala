@@ -28,13 +28,12 @@ object Configuration {
 
     "llp" -> Paths.get(projDir, "/data/processing/wikipedia/llp").toString,
 
+    "multiLLP" -> Paths.get(projDir, "/data/processing/wikipedia/robustLLP").toString,
+
     "corpus" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-linkCorpus.w2v").toString,
     "deepWalk" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-deepWalk.w2v").toString,
     "deepCorpus" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-deepWalkMixed.w2v").toString, // Link Corpus and DeepWalk mixed
-    "coOccurrence" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-coOccurrence.w2v").toString,
-
-    "old" -> "/home/marco/Scaricati/tmp/"
-
+    "coOccurrence" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-coOccurrence.w2v").toString
   )
 
   val benchmark =  Paths.get(projDir, "/data/benchmark").toString
