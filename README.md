@@ -1,6 +1,14 @@
 Wikipedia Relatedness Library
 =============================
 
+Requirements
+------------
+
+Resources files:
+
+    * wiki-links-sorted.gz
+    * w2v files
+
 
 Setting Up
 ----------

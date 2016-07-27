@@ -112,12 +112,14 @@ class WikiBVGraph(path: String) {
     val iterJ = successors(wikiID)
     var vJ = iterJ.nextInt()
     while(vJ != -1) {
+      val wikiIDJ = WikiBVGraph.getWikiID(vJ)
 
       val iterK = successors(wikiID)
       var vK = iterK.nextInt
       while(vK != -1) {
 
-        if(containSuccessor(vJ, vK)) {
+        val wikiIDK = WikiBVGraph.getWikiID(vK)
+        if(containSuccessor(wikiIDJ, wikiIDK)) {
           triangles += 1
         }
 

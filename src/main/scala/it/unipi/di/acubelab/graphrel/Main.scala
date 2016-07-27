@@ -34,7 +34,6 @@ object MultiLLP {
 
     val bvGraphProcessing = new WebGraphProcessor
 
-    // Creates and stores LLP clusters from the raw Wikipedia graph.
     bvGraphProcessing.processMultiLLP(llpOptions)
   }
 }

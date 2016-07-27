@@ -5,7 +5,7 @@ import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
 
 class LocalClusteringRelatedness(options: Map[String, Any]) extends Relatedness {
-  val graphName = if (options.contains("graph")) options("graph").toString else "symBVGraph"
+  val graphName = if (options.contains("graph")) options("graph").toString else "symGraph"
   val graph = WikiGraph.wikiBVGraph(graphName)
 
 
