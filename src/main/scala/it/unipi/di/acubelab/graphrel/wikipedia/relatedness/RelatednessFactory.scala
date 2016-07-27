@@ -8,7 +8,7 @@ object RelatednessFactory {
     * @param relateOptions JSON file:
     *                      {
     *                          // Relatedness measure
-    *                         "relatedness": MilneWitten
+    *                         "relatedness": MilneWitten/Jaccard/LLP/MultiLLP/w2v
     *
     *                         // Wikipedia graph to be used
     *                         "graph": "in", "out", "sym", "noloopsym"
@@ -26,6 +26,8 @@ object RelatednessFactory {
         case "MilneWitten" => new MilneWittenRelatedness(opts)
         case "Jaccard" => new JaccardRelatedness(opts)
         case "LLP" => new LLPRelatedness(opts)
+        //case "MultiLLP" => new MultiLLPRelatedness(opts)
+        case "w2v" => new EmbeddingRelatedness(opts)
 
         case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s."
           .format(relatednessName))

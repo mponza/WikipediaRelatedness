@@ -30,10 +30,10 @@ object Configuration {
 
     "multiLLP" -> Paths.get(projDir, "/data/processing/wikipedia/robustLLP").toString,
 
-    "corpus" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-linkCorpus.w2v").toString,
-    "deepWalk" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-deepWalk.w2v").toString,
-    "deepCorpus" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-deepWalkMixed.w2v").toString, // Link Corpus and DeepWalk mixed
-    "coOccurrence" -> Paths.get(projDir, "/data/w2v/wikipedia-w2v-coOccurrence.w2v").toString
+    "corpus" -> getClass.getResource("/w2v/wikipedia-w2v-linkCorpus.e0.100.tr.bin").getPath,
+    "deepWalk" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalk.e0.100.tr.bin").getPath,
+    "deepCorpus" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin").getPath, // Link Corpus and DeepWalk mixed
+    "coOccurrence" -> getClass.getResource("/w2v/wikipedia-w2v-coOccurrence.e0.100.tr.bin").getPath
   )
 
   val benchmark =  Paths.get(projDir, "/data/benchmark").toString

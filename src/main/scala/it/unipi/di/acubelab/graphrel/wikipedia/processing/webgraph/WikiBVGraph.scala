@@ -29,6 +29,25 @@ class WikiBVGraph(path: String) {
     bvGraph.outdegree(WikiBVGraph.getNodeID(wikiID))
   }
 
+  /**
+    * @param srcWikiID
+    * @param dstWikiID
+    * @return True if the successor list of srcWikiID contains dstWikiID.
+    */
+  def containSuccessor(srcWikiID: Int, dstWikiID: Int) : Boolean = {
+    val dstNodeID = WikiBVGraph.getNodeID(dstWikiID)
+
+    var srcIter = successors(srcWikiID)
+    var succ = srcIter.nextInt()
+
+    while(succ != -1) {
+      if(succ == dstNodeID) return true
+      succ = srcIter.nextInt()
+    }
+
+    false
+  }
+
   def linkIntersection(srcWikiID: Int, dstWikiID: Int) : Int = {
     val iterA =  successors(srcWikiID)
     val iterB = successors(dstWikiID)
@@ -51,6 +70,33 @@ class WikiBVGraph(path: String) {
     } while(a != -1 && b != -1)
 
     intersection
+  }
+
+  def localClusteringCoefficient(wikiID: Int): Double = {
+    val k = outdegree(wikiID)
+    if(k == 0) return 0
+
+    var triangles = 0
+
+    val iterJ = successors(wikiID)
+    var vJ = iterJ.nextInt()
+    while(vJ != -1) {
+
+      val iterK = successors(wikiID)
+      var vK = iterK.nextInt
+      while(vK != -1) {
+
+        if(containSuccessor(vJ, vK)) {
+          triangles += 1
+        }
+
+        vK = iterK.nextInt
+      }
+
+      vJ = iterJ.nextInt
+    }
+
+    triangles / (k * (k - 1)).toDouble
   }
 }
 

@@ -19,13 +19,14 @@ class LLPProcessor(graph: BVGraph, llpTask : LLPTask = new LLPTask) extends {
 
   val logger = LoggerFactory.getLogger(classOf[LLPProcessor])
   val llp = new LayeredLabelPropagation(graph, System.currentTimeMillis)
-  val gammas = generateGammas(llpTask.nLabels, llpTask.gammaThreshold)
+  val gammas = generateGammas(llpTask.nGammas, llpTask.gammaThreshold)
 
   logger.info("LLPProcessor with %s labels, %s gamma threshold and %s instantiated."
-    .format(llpTask.nLabels, llpTask.gammaThreshold, llpTask.maxUpdates))
+    .format(llpTask.nGammas, llpTask.gammaThreshold, llpTask.maxUpdates))
 
   /**
     * Generates gamma values in a similar way as described in the LLP paper but giving a threshold.
+ *
     * @param n  Number of gammas (label)
     * @param threshold  maximum value of gamma
     * @return
