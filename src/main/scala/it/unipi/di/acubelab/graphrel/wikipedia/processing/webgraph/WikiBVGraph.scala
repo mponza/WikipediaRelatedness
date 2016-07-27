@@ -104,6 +104,8 @@ class WikiBVGraph(path: String) {
   }
 
   def localClusteringCoefficient(wikiID: Int): Double = {
+    // TODO: Do it faster!
+
     val k = outdegree(wikiID)
     if(k == 0) return 0
 
