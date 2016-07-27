@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
+import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList}
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
@@ -72,6 +72,37 @@ class WikiBVGraph(path: String) {
     intersection
   }
 
+  /**
+    *
+    * @param srcWikiID
+    * @param dstWikiID
+    * @return wikiIDs which belong to the intersection between srcWikiID and dstWikiID.
+    */
+  def nodeIntersection(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
+
+    val iterA =  successors(srcWikiID)
+    val iterB = successors(dstWikiID)
+
+    var intersection = new IntArrayList
+    var a = iterA.nextInt
+    var b = iterB.nextInt
+
+    do {
+      if (a == b) {
+        intersection.add(WikiBVGraph.getWikiID(a))
+        a = iterA.nextInt
+        b = iterB.nextInt
+      }
+
+      // Aligns iterators to their minimum common element (if any).
+      while (a < b && a != -1) a = iterA.nextInt
+      while (b < a && b != -1) b = iterB.nextInt
+
+    } while(a != -1 && b != -1)
+
+    intersection
+  }
+
   def localClusteringCoefficient(wikiID: Int): Double = {
     val k = outdegree(wikiID)
     if(k == 0) return 0
@@ -124,10 +155,10 @@ object WikiBVGraph {
     nodeID
   }
 
-  def getWikiID(index: Int) : Int = {
-    val wikiID = node2wiki.getOrDefault(index, -1)
+  def getWikiID(nodeID: Int) : Int = {
+    val wikiID = node2wiki.getOrDefault(nodeID, -1)
     if (wikiID < 0) {
-      throw new IllegalArgumentException("NodeIndex %d not present in the Wikipedia mapping.".format(index))
+      throw new IllegalArgumentException("NodeIndex %d not present in the Wikipedia mapping.".format(nodeID))
     }
     wikiID
   }

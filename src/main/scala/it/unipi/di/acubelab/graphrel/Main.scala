@@ -65,8 +65,8 @@ object Bench {
 object GridLLP {
   def main(args: Array[String]) = {
     for {
-      nLabels <- 10 to 50 by 10
-      maxUpdates <- 100 to 500 by 100
+      nLabels <- 60 to 100 by 10
+      maxUpdates <- 100 to 1000 by 100
     } {
       val llpJson = """{"nLabels": %d, "maxUpdates": %d}""".format(nLabels, maxUpdates)
       LLP.main(Array(llpJson))
