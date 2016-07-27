@@ -31,6 +31,6 @@ object RelatednessFactory {
           .format(relatednessName))
       }
 
-    case _ => throw new IllegalArgumentException("Relatedness Options are not valid.")
+    case _ => throw new IllegalArgumentException("Relatedness Options are not valid: %s".format(relateOptions))
   }
 }

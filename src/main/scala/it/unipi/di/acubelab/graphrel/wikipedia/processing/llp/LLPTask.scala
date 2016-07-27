@@ -4,8 +4,8 @@ import it.unimi.dsi.law.graph.LayeredLabelPropagation
 
 /**
   * LLP parameters.
-* @param nLabels  aka number of gammas/clusters
-* @param gammaThreshold Ha davvero senso?
+* @param nLabels
+* @param gammaThreshold
 * @param maxUpdates
 */
 
@@ -15,13 +15,17 @@ class LLPTask(val nLabels: Int  = LLPTask.DEFAULT_NLABELS,
 {
 
   override def toString(): String = {
-    "llp-Labels_%s-Threshold_%s-MaxUpdates_%s".format(nLabels, gammaThreshold, maxUpdates)
+    val strLabels = if(nLabels != LLPTask.DEFAULT_NLABELS) "-Labels_%d".format(nLabels) else ""
+    val strThreshold = if(nLabels != LLPTask.DEFAULT_GAMMA_THRESHOLD) "-Threshold_%d".format(gammaThreshold) else ""
+    val strMaxUpdates = if(nLabels != LLPTask.DEFAULT_MAX_UPDATES) "-MaxUpdates_%d".format(maxUpdates) else ""
+
+    "llp%s%s%s".format(strLabels, strThreshold, strMaxUpdates)
   }
 
 }
 
 object LLPTask {
-  val DEFAULT_NLABELS = 10
+  val DEFAULT_NLABELS = 32
   val DEFAULT_GAMMA_THRESHOLD = Integer.MAX_VALUE
   val DEFAULT_MAX_UPDATES = LayeredLabelPropagation.MAX_UPDATES
 
