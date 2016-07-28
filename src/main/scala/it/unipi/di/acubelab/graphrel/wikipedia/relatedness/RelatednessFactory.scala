@@ -26,6 +26,7 @@ object RelatednessFactory {
         case "MilneWitten" => new MilneWittenRelatedness(opts)
         case "Jaccard" => new JaccardRelatedness(opts)
         case "LocalClustering" => new LocalClusteringRelatedness(opts)
+        case "MPLocalClustering" => new MPLCRelatedness(opts)
         case "LLP" => new LLPRelatedness(opts)
         //case "MultiLLP" => new MultiLLPRelatedness(opts)
         case "w2v" => new EmbeddingRelatedness(opts)

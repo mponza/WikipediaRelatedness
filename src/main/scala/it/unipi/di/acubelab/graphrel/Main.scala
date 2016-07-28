@@ -75,3 +75,22 @@ object GridLLP {
     }
   }
 }
+
+object AllBench {
+  val jsons = Array(
+    """{"relatedness": "MilneWitten"}""",
+
+    """{"relatedness": "Jaccard", graph: "inGraph"}""",
+    """{"relatedness": "Jaccard", graph: "outGraph"}""",
+    """{"relatedness": "Jaccard", graph: "symGraph"}""",
+
+    """{"relatedness": "w2v", graph: "corpus"}""",
+    """{"relatedness": "w2v", graph: "deepWalk"}""",
+    """{"relatedness": "w2v", graph: "deepCorpus"}""",
+
+    """{"relatedness": "LocalClustering"}"""
+
+  )
+
+  jsons.foreach(json => Bench.main(Array(json)))
+}

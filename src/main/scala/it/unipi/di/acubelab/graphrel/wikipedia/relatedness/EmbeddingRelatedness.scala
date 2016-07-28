@@ -27,15 +27,15 @@ class EmbeddingRelatedness(options: Map[String, Any]) extends Relatedness  {
     }
 
     def computeRelatedness(wikiRelTask: WikiRelTask) : Double = {
-      val cosine = cosineSimilarity(wikiRelTask.src.wikiTitle, wikiRelTask.dst.wikiTitle)
+      val cosine = cosineSimilarity(wikiRelTask.src.wikiID, wikiRelTask.dst.wikiID)
 
       // Cosine scaling: from [-1, 1] to [0, 1]
       (cosine + 1) / 2
     }
 
-    def cosineSimilarity(srcWikiTitle: String, dstWikiTitle: String) : Double = {
-      val srcVec = w2v.get(srcWikiTitle)
-      val dstVec = w2v.get(dstWikiTitle)
+    def cosineSimilarity(srcWikiID: Int, dstWikiID: Int) : Double = {
+      val srcVec = w2v.get("ent_" + srcWikiID)
+      val dstVec = w2v.get("ent_" + dstWikiID)
 
       val distance = LinearAlgebra.inner(srcVec.length, srcVec, 0, dstVec, 0)
       val srcNorm = math.sqrt(LinearAlgebra.inner(srcVec.length, srcVec, 0, srcVec, 0))

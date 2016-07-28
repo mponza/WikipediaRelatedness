@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
-import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList}
+import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
@@ -25,6 +25,10 @@ class WikiBVGraph(path: String) {
     bvGraph.successors(WikiBVGraph.getNodeID(wikiID))
   }
 
+  def successorArray(wikiID: Int) : Array[Int] = {
+    bvGraph.successorArray(WikiBVGraph.getNodeID(wikiID))
+  }
+
   def outdegree(wikiID: Int) : Int = {
     bvGraph.outdegree(WikiBVGraph.getNodeID(wikiID))
   }
@@ -37,7 +41,7 @@ class WikiBVGraph(path: String) {
   def containSuccessor(srcWikiID: Int, dstWikiID: Int) : Boolean = {
     val dstNodeID = WikiBVGraph.getNodeID(dstWikiID)
 
-    var srcIter = successors(srcWikiID)
+    val srcIter = successors(srcWikiID)
     var succ = srcIter.nextInt()
 
     while(succ != -1) {
@@ -76,6 +80,19 @@ class WikiBVGraph(path: String) {
     *
     * @param srcWikiID
     * @param dstWikiID
+    * @return wikiIDs which belong to the union between srcWikiID and dstWikiID.
+    */
+  def nodeUnion(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
+    val srcArray = successorArray(srcWikiID)
+    val dstArray = successorArray(dstWikiID)
+
+    new IntArrayList((srcArray ++ dstArray).distinct.map(nodeID => WikiBVGraph.getWikiID(nodeID)))
+  }
+
+  /**
+    *
+    * @param srcWikiID
+    * @param dstWikiID
     * @return wikiIDs which belong to the intersection between srcWikiID and dstWikiID.
     */
   def nodeIntersection(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
@@ -103,36 +120,6 @@ class WikiBVGraph(path: String) {
     intersection
   }
 
-  def localClusteringCoefficient(wikiID: Int): Double = {
-    // TODO: Do it faster!
-
-    val k = outdegree(wikiID)
-    if(k == 0) return 0
-
-    var triangles = 0
-
-    val iterJ = successors(wikiID)
-    var vJ = iterJ.nextInt()
-    while(vJ != -1) {
-      val wikiIDJ = WikiBVGraph.getWikiID(vJ)
-
-      val iterK = successors(wikiID)
-      var vK = iterK.nextInt
-      while(vK != -1) {
-
-        val wikiIDK = WikiBVGraph.getWikiID(vK)
-        if(containSuccessor(wikiIDJ, wikiIDK)) {
-          triangles += 1
-        }
-
-        vK = iterK.nextInt
-      }
-
-      vJ = iterJ.nextInt
-    }
-
-    triangles / (k * (k - 1)).toDouble
-  }
 }
 
 object WikiBVGraph {

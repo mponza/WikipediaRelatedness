@@ -4,6 +4,15 @@ import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.llp.{LLPClustering, LLPTask}
 import org.slf4j.LoggerFactory
 
+/**
+  *
+  * @param options Warning: before using this, you have to process the graph via LLP with the relative parameters.
+  *                {
+  *                   "nLabels"
+                      "gammaThreshold"
+                      "maxUpdates"
+  *                }
+  */
 class LLPRelatedness(options: Map[String, Any]) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[LLPRelatedness])
 
@@ -26,7 +35,7 @@ class LLPRelatedness(options: Map[String, Any]) extends Relatedness {
   def hammingSimilarity(src: IntArrayList, dst: IntArrayList) : Int = {
     var sim = 0
     for(i <- 0 until src.size) {
-      sim += (if(src.get(i) == dst.get(i)) 1 else 0)
+      sim += (if(src.getInt(i) == dst.getInt(i)) 1 else 0)
     }
     sim
   }
