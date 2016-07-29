@@ -13,12 +13,10 @@ import org.slf4j.LoggerFactory
                       "maxUpdates"
   *                }
   */
-class LLPRelatedness(options: Map[String, Any]) extends Relatedness {
+class LLPRelatedness(options: Map[String, Any], dirPath: String = null) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[LLPRelatedness])
-
   val llpTask = LLPTask.makeFromOption(options)
-
-  val llpClustering = new LLPClustering(llpTask)
+  val llpClustering = new LLPClustering(llpTask, dirPath)
 
   override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
     val srcWikiID = wikiRelTask.src.wikiID

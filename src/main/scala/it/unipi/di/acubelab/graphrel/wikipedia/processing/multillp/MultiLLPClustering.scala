@@ -36,7 +36,7 @@ class MultiLLPClustering(nLLP: Int, llpTask: LLPTask = new LLPTask) {
   }
 
   def multiClusterDir() : String = {
-    Paths.get(Configuration.wikipedia("multiLLP"), "-nLLP_%d".format(nLLP)).toString
+    Paths.get(Configuration.wikipedia("multiLLP"), "multiLLP-nLLP_%d-%s".format(nLLP, llpTask.toString)).toString
   }
 
 }

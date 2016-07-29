@@ -16,11 +16,19 @@ class LLPTask(val nGammas: Int  = LLPTask.DEFAULT_NGAMMAS,
 {
 
   override def toString(): String = {
-    val strLabels = if (nGammas != LLPTask.DEFAULT_NGAMMAS) "-Labels_%d".format(nGammas) else ""
+    val strLabels = "-Labels_%d".format(nGammas)
     val strThreshold = if(gammaThreshold != LLPTask.DEFAULT_GAMMA_THRESHOLD) "-Threshold_%d".format(gammaThreshold) else ""
     val strMaxUpdates = if(maxUpdates != LLPTask.DEFAULT_MAX_UPDATES) "-MaxUpdates_%d".format(maxUpdates) else ""
 
     "llp%s%s%s".format(strLabels, strThreshold, strMaxUpdates)
+  }
+
+  def toOptions() : Map[String, Any] = {
+    Map(
+      "nLabels" -> nGammas.toDouble,
+      "gammaThreshold" -> gammaThreshold.toDouble,
+      "maxUpdates" -> maxUpdates.toDouble
+    )
   }
 
 }

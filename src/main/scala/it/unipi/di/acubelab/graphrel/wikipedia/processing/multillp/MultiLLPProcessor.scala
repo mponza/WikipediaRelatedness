@@ -30,6 +30,6 @@ class MultiLLPProcessor(graph: BVGraph, nLLP: Int = 10, llpTask: LLPTask = new L
   }
 
   def dirPath() : String = {
-    Paths.get(Configuration.wikipedia("multiLLP"), "-nLLP_%d".format(nLLP)).toString
+    Paths.get(Configuration.wikipedia("multiLLP"), "multi-nLLP_%d-%s".format(nLLP, llpTask.toString)).toString
   }
 }

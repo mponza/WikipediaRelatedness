@@ -17,10 +17,12 @@ class LLPClustering(llpTask: LLPTask = new LLPTask, dirPath: String = null) {
   val gammas = loadGammas()
   val labels = loadLabels()
 
+  /*
   logger.info(labels.get(3966054).toString)
   logger.info(labels.get(3383).toString)
   logger.info(labels.get(15822899).toString)
-  logger.info(labels.get(33183).toString)
+  logger.info(labels.get(33183).toString
+  */
 
   def loadGammas() : List[Double] = {
     val gammasPath = Paths.get(clusterDir(), "gammas.json").toString
@@ -71,8 +73,12 @@ class LLPClustering(llpTask: LLPTask = new LLPTask, dirPath: String = null) {
   }
 
   def clusterDir() : String = {
-    val llpDir = if(dirPath == null) Configuration.wikipedia("llp") else dirPath
-    Paths.get(llpDir, llpTask.toString).toString
+    if(dirPath != null) {
+      dirPath
+    } else {
+      val llpDir = Configuration.wikipedia("llp")
+      Paths.get(llpDir, llpTask.toString).toString
+    }
   }
 
   def llpLabelsFiles() : Array[File] = {

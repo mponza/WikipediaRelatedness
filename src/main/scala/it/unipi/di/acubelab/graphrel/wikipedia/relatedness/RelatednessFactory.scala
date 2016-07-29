@@ -27,7 +27,7 @@ object RelatednessFactory {
         case "Jaccard" => new JaccardRelatedness(opts)
         case "LocalClustering" => new LocalClusteringRelatedness(opts)
         case "LLP" => new LLPRelatedness(opts)
-        //case "MultiLLP" => new MultiLLPRelatedness(opts)
+        case "MultiLLP" => new MultiLLPRelatedness(opts)
         case "w2v" => new EmbeddingRelatedness(opts)
 
         case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s."
