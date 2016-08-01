@@ -1,24 +1,30 @@
-/*package it.unipi.di.acubelab.wat
+package it.unipi.di.acubelab.wat
 
-object LanguageModelDisambiguator {
+import java.io.File
+
+import edu.berkeley.nlp.lm.NgramLanguageModel
+import edu.berkeley.nlp.lm.io.LmReaders
+import it.unipi.di.acubelab.graphrel.utils.Configuration
+import org.slf4j.LoggerFactory
+
+object LanguageModel {
   protected val models = collection.mutable.Map.empty[File, NgramLanguageModel[String]]
   protected val logger = LoggerFactory.getLogger(getClass)
+  lazy val model = LmReaders.readLmBinary[String](Configuration.wikipedia("langModel"))
 
-  def loadModel(lang: String, modelName: String): NgramLanguageModel[String] = {
-    val modelDirectory = new File(new File(WAT.configuration().getString(Config.PATH), lang), "models")
-    val modelFile = new File(modelDirectory, modelName)
+  def loadModel(): NgramLanguageModel[String] = {
+    val modelFile = new File(Configuration.wikipedia("langModel"))
 
     synchronized {
       models.getOrElseUpdate(modelFile, {
-        logger.info("Loading LM model from %s".format(modelFile.getAbsolutePath))
-        LmReaders.readLmBinary[String](modelFile.getAbsolutePath)
+        LmReaders.readLmBinary(modelFile.getAbsolutePath)
       })
     }
   }
 }
-
+/*
 class LanguageModel {
-  protected var model = "wiki.binary"
+  protected var model = Configuration.wikipedia("langModel")
   protected var bidirectional = true
   protected var useScores = false
   protected var ngramModel: NgramLanguageModel[String] = null
@@ -28,37 +34,11 @@ class LanguageModel {
   protected var N = 2
   protected var K = 5
 
-  override def configure(): Unit = {
-    model = getOption("model", model)
-    bidirectional = getBooleanOption("bidirectional", bidirectional)
-    useScores = getBooleanOption("useScores", useScores)
-    useSentences = getBooleanOption("useSentences", useSentences)
+  protected def computeRelatedness(srcWiki: String, dst: String): Double = {
+    ngramModel.scoreSentence(new Array("ent_%d".format(srcWiki.), "ent_%d".format())
 
-    minAnnotations = getIntOption("minAnnotations", minAnnotations)
-    N = getIntOption("N", N)
-    K = getIntOption("K", K)
-
-    ngramModel = LanguageModelDisambiguator.loadModel(job.conf.lang, model)
-
-    super.configure()
+    0.0
   }
-
-  override def getName: String = {
-    val sb = new StringBuilder
-    sb.append("lm")
-    sb.append(":model=%s".format(model))
-    sb.append(":bidirectional=%s".format(bidirectional))
-    sb.append(":useScores=%s".format(useScores))
-    sb.append(":useSentences=%s".format(useSentences))
-    sb.append(":minAnnotations=%d".format(minAnnotations))
-    sb.append(":K=%d".format(K))
-    sb.append(":N=%d".format(N))
-    sb.append(super.getName)
-    sb.toString()
-  }
-
-  case class Tag(annotation: Annotation, interpretationIndex: Int)
-  case class Node(tags: Seq[Tag], cumLogProb: Double)
 
   protected def scoreNode(tags: Seq[Tag]): Double = {
     // We drop the first node since the ngram model already contains the start symbol.
@@ -77,8 +57,8 @@ class LanguageModel {
     }
 
     val interpretations = tags.flatMap { tag =>
-      if (tag.interpretationIndex >= 0)
-        Some(tag.annotation.interpretations(tag.interpretationIndex))
+      if (1 >= 0)
+        Some(3)
       else
         None
     }

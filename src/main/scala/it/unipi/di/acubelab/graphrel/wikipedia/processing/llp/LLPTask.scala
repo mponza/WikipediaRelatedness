@@ -39,10 +39,12 @@ object LLPTask {
   val DEFAULT_MAX_UPDATES = LayeredLabelPropagation.MAX_UPDATES
 
   def makeFromOption(options: Map[String, Any]): LLPTask = {
-    new LLPTask(
+    val x = new LLPTask(
       options.getOrElse("nLabels", LLPTask.DEFAULT_NGAMMAS.toDouble).asInstanceOf[Double].toInt,
       options.getOrElse("gammaThreshold", LLPTask.DEFAULT_GAMMA_THRESHOLD.toDouble).asInstanceOf[Double].toInt,
       options.getOrElse("maxUpdates", LLPTask.DEFAULT_MAX_UPDATES.toDouble).asInstanceOf[Double].toInt
     )
+    println(x)
+    x
   }
 }

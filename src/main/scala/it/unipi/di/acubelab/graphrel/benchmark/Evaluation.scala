@@ -1,7 +1,6 @@
 package it.unipi.di.acubelab.graphrel.benchmark
 
-import java.io.{File, PrintWriter}
-import java.util.Locale
+import java.io.PrintWriter
 
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import org.apache.commons.math.stat.correlation.{PearsonsCorrelation, SpearmansCorrelation}

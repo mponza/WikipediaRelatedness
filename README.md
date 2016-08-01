@@ -6,8 +6,24 @@ Requirements
 
 Resources files:
 
-    wiki-links-sorted.gz
-    w2v files
+ * WikiSim dataset:
+
+    dataset/wikiSim411.csv
+
+ * Wikipedia graph:
+
+    wikipedia/wiki-links-sorted.gz
+
+ * Embeddings:
+
+    w2v/wikipedia-w2v-linkCorpus.e0.100.tr.bin
+    w2v/wikipedia-w2v-deepWalk.e0.100.tr.bin
+    w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.b
+
+
+ * Language Model:
+
+    languageModel/wiki.binary
 
 
 Setting Up

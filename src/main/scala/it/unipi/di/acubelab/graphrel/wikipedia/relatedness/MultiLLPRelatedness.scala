@@ -22,7 +22,7 @@ class MultiLLPRelatedness(options: Map[String, Any]) extends Relatedness {
 
     for(i <- 0 until nLLP) {
       val llpPath = Paths.get(dirPath(), "llp-%d".format(i)).toString
-      multiLLPRels += new LLPRelatedness(llpTask.toOptions(), llpPath)
+      multiLLPRels += new LLPRelatedness(options, llpPath)
     }
 
     multiLLPRels.toList

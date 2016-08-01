@@ -1,5 +1,4 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.relatedness
-import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.llp.{LLPClustering, LLPTask}
 import org.slf4j.LoggerFactory
@@ -15,7 +14,10 @@ import org.slf4j.LoggerFactory
   */
 class LLPRelatedness(options: Map[String, Any], dirPath: String = null) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[LLPRelatedness])
+
   val llpTask = LLPTask.makeFromOption(options)
+  val simName = options.getOrElse("similarity", "hamming").toString
+
   val llpClustering = new LLPClustering(llpTask, dirPath)
 
   override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
@@ -25,17 +27,9 @@ class LLPRelatedness(options: Map[String, Any], dirPath: String = null) extends 
     val srcVec = llpClustering.labels.get(srcWikiID)
     val dstVec = llpClustering.labels.get(dstWikiID)
 
-    val sim = hammingSimilarity(srcVec, dstVec)
+    val sim = Similarity.computeSimilarity(simName, srcVec, dstVec)
 
     sim / srcVec.size.toDouble
-  }
-
-  def hammingSimilarity(src: IntArrayList, dst: IntArrayList) : Int = {
-    var sim = 0
-    for(i <- 0 until src.size) {
-      sim += (if(src.getInt(i) == dst.getInt(i)) 1 else 0)
-    }
-    sim
   }
 
   override def toString(): String = {
