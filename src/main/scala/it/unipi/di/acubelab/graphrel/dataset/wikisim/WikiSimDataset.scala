@@ -1,7 +1,6 @@
 package it.unipi.di.acubelab.graphrel.dataset.wikisim
 
 import java.io.File
-import java.net.URL
 
 import com.github.tototoshi.csv.CSVReader
 import it.unipi.di.acubelab.graphrel.dataset.{RelatednessDataset, WikiEntity, WikiRelTask}
@@ -10,7 +9,7 @@ import org.slf4j.LoggerFactory
 import scala.collection.mutable
 
 
-class WikiSimDataset(path : String) extends RelatednessDataset {
+class WikiSimDataset(path: String) extends RelatednessDataset {
   val logger = LoggerFactory.getLogger(classOf[WikiSimDataset])
 
   val wikiSimPairs = loadWikiSimPairs(path)

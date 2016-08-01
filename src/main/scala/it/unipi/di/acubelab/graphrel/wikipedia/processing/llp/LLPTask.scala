@@ -4,12 +4,10 @@ import it.unimi.dsi.law.graph.LayeredLabelPropagation
 
 /**
   * LLP parameters.
- *
-* @param nGammas
-* @param gammaThreshold
-* @param maxUpdates
-*/
-
+  * @param nGammas
+  * @param gammaThreshold
+  * @param maxUpdates
+  */
 class LLPTask(val nGammas: Int  = LLPTask.DEFAULT_NGAMMAS,
               val gammaThreshold: Int = LLPTask.DEFAULT_GAMMA_THRESHOLD,
               val maxUpdates: Int = LLPTask.DEFAULT_MAX_UPDATES)

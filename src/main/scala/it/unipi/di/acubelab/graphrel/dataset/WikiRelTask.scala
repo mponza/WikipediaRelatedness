@@ -9,7 +9,7 @@ class WikiRelTask(_src: WikiEntity, _srcWord: String,
   val dst = _dst
   val dstWord = _dstWord
 
-  val rel = _rel  // Human Relatedness
+  val rel = _rel        // Human Relatedness
 
   def toList : List[Any] = {
     List(srcWord, src.wikiID, src.wikiTitle,
