@@ -4,6 +4,7 @@ import java.io.File
 import java.nio.file.Paths
 
 import com.github.tototoshi.csv.CSVWriter
+import it.unipi.di.acubelab.graphrel.analysis.bucket.BucketRelAnalyzer
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import org.slf4j.LoggerFactory
