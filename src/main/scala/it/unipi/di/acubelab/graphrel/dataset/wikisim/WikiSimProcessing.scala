@@ -33,7 +33,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
 
     wikiSimPairs.map {
       case wikiRelTask: WikiRelTask =>
-        val normalizedRel = (wikiRelTask.rel) / 10f
+        val normalizedRel = (wikiRelTask.rel) / 10.0
 
         new WikiRelTask(wikiRelTask.src, wikiRelTask.srcWord,
                         wikiRelTask.dst, wikiRelTask.dstWord,
@@ -74,7 +74,8 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
       case wikiRelTask: WikiRelTask =>
         val keep = WikiBVGraph.contains(wikiRelTask.src.wikiID) && WikiBVGraph.contains(wikiRelTask.dst.wikiID)
         if (!keep) {
-          logger.warn("The following tuple: %s has been removed (Not present in the Wikipedia Graph).".format(wikiRelTask))
+          logger.warn("The following tuple: %s has been removed (Not present in the Wikipedia Graph)."
+            .format(wikiRelTask))
         }
         keep
     }

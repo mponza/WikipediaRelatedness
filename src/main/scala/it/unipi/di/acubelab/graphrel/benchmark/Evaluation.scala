@@ -7,23 +7,23 @@ import org.apache.commons.math.stat.correlation.{PearsonsCorrelation, SpearmansC
 
 object Evaluation {
 
-  def pearsonCorrelation(scores: List[(WikiRelTask, Double)]) : Double = {
+  def pearsonCorrelation(scores: List[WikiRelTask]) : Double = {
     val (humanScores, relatedScores) = scoresToArrays(scores)
     val pearson = new PearsonsCorrelation()
 
     pearson.correlation(humanScores, relatedScores)
   }
 
-  def spearmanCorrelation(scores: List[(WikiRelTask, Double)]) : Double = {
+  def spearmanCorrelation(scores: List[WikiRelTask]) : Double = {
     val (humanScores, relatedScores) = scoresToArrays(scores)
     val spearman = new SpearmansCorrelation()
 
     spearman.correlation(humanScores, relatedScores)
   }
 
-  def scoresToArrays(scores: List[(WikiRelTask, Double)]) : (Array[Double], Array[Double]) = {
-    val humanScores = scores.map(_._1.rel).toArray
-    val relatedScores = scores.map(_._2).toArray
+  def scoresToArrays(scores: List[WikiRelTask]) : (Array[Double], Array[Double]) = {
+    val humanScores = scores.map(_.rel).toArray
+    val relatedScores = scores.map(_.computedRel).toArray
 
     (humanScores, relatedScores)
   }

@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.graphrel.analysis
+/*package it.unipi.di.acubelab.graphrel.analysis
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
@@ -42,3 +42,4 @@ class BucketRelAnalyzer(relatednessName: String) {
     "BucketRelAnalyzer-%s".format(relatednessName)
   }
 }
+*/

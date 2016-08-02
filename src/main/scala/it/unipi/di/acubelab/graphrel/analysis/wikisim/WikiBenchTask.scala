@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.graphrel.analysis.wikisim
+/*package it.unipi.di.acubelab.graphrel.analysis.wikisim
 
 import it.unipi.di.acubelab.graphrel.dataset.{WikiEntity, WikiRelTask}
 
@@ -17,3 +17,4 @@ class WikiBenchTask(_src: WikiEntity, _srcWord: String,
     super.toString ++ ",%.2f".format(computedRel)
   }
 }
+*/

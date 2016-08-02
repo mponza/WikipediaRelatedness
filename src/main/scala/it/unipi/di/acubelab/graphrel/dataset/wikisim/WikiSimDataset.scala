@@ -32,7 +32,8 @@ class WikiSimDataset(path: String) extends RelatednessDataset {
         val dstWord = fields(3)
         val dst = new WikiEntity(fields(4).toInt, fields(5).replaceAll(" ", "_"))
 
-        val rel = fields(6).toFloat
+        val rel = fields(6).toDouble
+        val computedRel = if (fields.length != 8) Double.NaN else fields(7).toDouble
 
         pairs += new WikiRelTask(src, srcWord, dst, dstWord, rel)
     }

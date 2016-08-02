@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.graphrel.analysis.wikisim
+/*package it.unipi.di.acubelab.graphrel.analysis.wikisim
 
 import java.io.File
 
@@ -46,3 +46,4 @@ class WikiBenchDataset(path: String) extends WikiSimDataset(path) {
 
     override def toString() : String = "WikiBench412"
 }
+*/

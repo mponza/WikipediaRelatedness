@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.graphrel.analysis
+/*package it.unipi.di.acubelab.graphrel.analysis
 
 import java.io.File
 import java.nio.file.Paths
@@ -45,3 +45,4 @@ class WikiSimAnalysis {
     Paths.get(path).getFileName.toString.slice(path.lastIndexOf("/") + 1, path.lastIndexOf("."))
   }
 }
+*/

@@ -19,13 +19,13 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     * Write pairs and relatedness to a CSV file under benchmark/.
     */
   def runBenchmark() : Unit = {
-    logger.info("running benchmark of %s on dataset %s...".format(relatedness.toString, dataset))
+    logger.info("Running benchmark of %s on dataset %s...".format(relatedness.toString, dataset))
 
     // List of (wikiRelTask, relatedness computed by using the given relatedenss).
-    val relScores = dataset.foldLeft (List.empty[(WikiRelTask, Double)]) {
-        case (scores: List[(WikiRelTask, Double)], wikiRelTask: WikiRelTask) =>
+    val relScores = dataset.foldLeft (List.empty[WikiRelTask]) {
+        case (relTasks: List[WikiRelTask], wikiRelTask: WikiRelTask) =>
           val relScore = relatedness.computeRelatedness(wikiRelTask)
-          scores :+ (wikiRelTask, relScore)
+          relTasks :+ wikiRelTask.make(relScore)
       }
 
     writeRelatednessScores(relScores)
@@ -37,7 +37,7 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     *
     * @param scores
     */
-  def writeRelatednessScores(scores: List[(WikiRelTask, Double)]) : Unit = {
+  def writeRelatednessScores(scores: List[WikiRelTask]) : Unit = {
     logger.info("Writing %s Relatedness scores...".format(relatedness.toString))
 
     new File(relDir).mkdirs
@@ -46,10 +46,8 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     val csvWriter = CSVWriter.open(new File(path))
 
     scores.foreach {
-      case (wikiRelTask, score) =>
-
-        val csvList = wikiRelTask.toList ++ List(score)
-        csvWriter.writeRow(csvList)
+      case wikiRelTask =>
+        csvWriter.writeRow(wikiRelTask.toList)
     }
 
     csvWriter.close
@@ -60,7 +58,7 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     *
     * @param scores
     */
-  def writeCorrelationScores(scores: List[(WikiRelTask, Double)]) : Unit = {
+  def writeCorrelationScores(scores: List[WikiRelTask]) : Unit = {
     val pearson = Evaluation.pearsonCorrelation(scores)
     logger.info("%s Pearson: %.2f".format(relatedness.toString, pearson))
 
