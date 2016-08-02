@@ -1,5 +1,6 @@
 package it.unipi.di.acubelab.graphrel
 
+import it.unipi.di.acubelab.graphrel.analysis.WikiSimAnalysis
 import it.unipi.di.acubelab.graphrel.benchmark.Benchmark
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.{WikiSimDataset, WikiSimProcessing}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
@@ -93,4 +94,11 @@ object AllBench {
   )
 
   jsons.foreach(json => Bench.main(Array(json)))
+}
+
+object Analysis {
+  def main(args: Array[String]): Unit = {
+    val wikiAnalysis = new WikiSimAnalysis()
+    wikiAnalysis.computeAnalysis()
+  }
 }

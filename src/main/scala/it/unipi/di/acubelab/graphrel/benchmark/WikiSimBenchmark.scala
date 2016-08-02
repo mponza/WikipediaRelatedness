@@ -35,9 +35,9 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
   /**
     * Writes scores to scoresPath CSV file.
     *
-    * @param scores
+    * @param tasks
     */
-  def writeRelatednessScores(scores: List[WikiRelTask]) : Unit = {
+  def writeRelatednessScores(tasks: List[WikiRelTask]) : Unit = {
     logger.info("Writing %s Relatedness scores...".format(relatedness.toString))
 
     new File(relDir).mkdirs
@@ -45,9 +45,9 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
 
     val csvWriter = CSVWriter.open(new File(path))
 
-    scores.foreach {
+    tasks.foreach {
       case wikiRelTask =>
-        csvWriter.writeRow(wikiRelTask.toList)
+        csvWriter.writeRow(wikiRelTask.toList )
     }
 
     csvWriter.close
@@ -56,13 +56,13 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
   /**
     * Writes both Pearson's and Spearman's correlation to file.
     *
-    * @param scores
+    * @param tasks
     */
-  def writeCorrelationScores(scores: List[WikiRelTask]) : Unit = {
-    val pearson = Evaluation.pearsonCorrelation(scores)
+  def writeCorrelationScores(tasks: List[WikiRelTask]) : Unit = {
+    val pearson = Evaluation.pearsonCorrelation(tasks)
     logger.info("%s Pearson: %.2f".format(relatedness.toString, pearson))
 
-    val spearman = Evaluation.spearmanCorrelation(scores)
+    val spearman = Evaluation.spearmanCorrelation(tasks)
     logger.info("%s Spearman: %.2f".format(relatedness.toString, spearman))
 
     new File(relDir).mkdirs

@@ -19,7 +19,7 @@ class WikiSimDataset(path: String) extends RelatednessDataset {
     * @return List of WikiSimPair with the corresponding human relatedness.
     */
   def loadWikiSimPairs(path: String) : List[WikiRelTask]= {
-    logger.info("Loading WikiSimDataset...")
+    logger.info("Loading WikiSimDataset... %s".format(path))
 
     val pairs = new mutable.MutableList[WikiRelTask]
     val csvReader = CSVReader.open(new File(path))
@@ -35,7 +35,7 @@ class WikiSimDataset(path: String) extends RelatednessDataset {
         val rel = fields(6).toDouble
         val computedRel = if (fields.length != 8) Double.NaN else fields(7).toDouble
 
-        pairs += new WikiRelTask(src, srcWord, dst, dstWord, rel)
+        pairs += new WikiRelTask(src, srcWord, dst, dstWord, rel, computedRel)
     }
 
     csvReader.close()

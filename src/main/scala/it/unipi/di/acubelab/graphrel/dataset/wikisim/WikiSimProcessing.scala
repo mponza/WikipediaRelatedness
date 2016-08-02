@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.graphrel.dataset.wikisim
 
-import java.io.File
+import java.io.{BufferedWriter, File, FileOutputStream, OutputStreamWriter}
 
 import com.github.tototoshi.csv.CSVWriter
 import it.unipi.di.acubelab.graphrel.dataset.{WikiEntity, WikiRelTask}
@@ -18,6 +18,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
     val normWikiSimPairs = normalize(wikiSim.wikiSimPairs)
     val redirWikiSimPairs = redirect(normWikiSimPairs)
     val filterWikiSimPairs = wikiFilter(redirWikiSimPairs)
+    checkDuplicated(filterWikiSimPairs)
 
     store(filterWikiSimPairs, Configuration.dataset("procWikiSim"))
 
@@ -64,13 +65,13 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
 
   /**
     * Removes pages which are not "real" Wikipedia Pages (e.g. disambiguation pages).
-    * @param wikiSimPairs
+    * @param wikiRelTasks
     * @return
     */
-  def wikiFilter(wikiSimPairs: List[WikiRelTask]) : List[WikiRelTask] = {
+  def wikiFilter(wikiRelTasks: List[WikiRelTask]) : List[WikiRelTask] = {
     logger.info("Filtering...")
 
-    wikiSimPairs.filter {
+    val realWikiPairs = wikiRelTasks.filter {
       case wikiRelTask: WikiRelTask =>
         val keep = WikiBVGraph.contains(wikiRelTask.src.wikiID) && WikiBVGraph.contains(wikiRelTask.dst.wikiID)
         if (!keep) {
@@ -78,6 +79,18 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
             .format(wikiRelTask))
         }
         keep
+    }
+
+    realWikiPairs
+  }
+
+  def checkDuplicated(wikiRelTasks: List[WikiRelTask]) = {
+    val groupedPairs = wikiRelTasks.groupBy(wikiRelTask => "%s,%s"
+      .format(wikiRelTask.src.wikiTitle, wikiRelTask.dst.wikiTitle))
+
+    groupedPairs.foreach{
+      case (strPair, pairTasks) =>
+      if (pairTasks.length > 1) logger.warn("Duplicated pair %s".format(strPair))
     }
   }
 

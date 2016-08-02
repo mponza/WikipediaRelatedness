@@ -15,23 +15,32 @@ class WikiRelTask(_src: WikiEntity, _srcWord: String,
   var computedRel = _computedRel
 
   def toList : List[Any] = {
-    List(srcWord, src.wikiID, src.wikiTitle,
-         dstWord, dst.wikiID, dst.wikiTitle,
-         rel, computedRel).filter(_!= null)
-  }
-
-  override def toString() : String = {
-    val notNaN = List(srcWord, src.wikiID, src.wikiTitle,
-          dstWord, dst.wikiID, dst.wikiTitle,
-          rel, computedRel).filter{
+    val notNaNs = List(srcWord, src.wikiID, src.wikiTitle,
+      dstWord, dst.wikiID, dst.wikiTitle,
+      rel, computedRel).filter {
       case d: Double => !d.isNaN
       case _ => true
     }
 
-    notNaN.map {
+    notNaNs.map {
+      case d: Double => d.toFloat
+      case x => x
+    }
+  }
+
+  override def toString() : String = {
+    toList.map {
       case s: String => s
       case n: Int => n.toString
-      case d: Double => "%1.2f".format(d)
+      case d: Double => "%1.3f".format(d)
+    }.mkString(",")
+  }
+
+  def toCSVString() : String = {
+    toList.map {
+      case s: String => if(s.contains(',')) "\"%s\"".format(s) else s
+      case n: Int => n.toString
+      case d: Double => "%1.3f".format(d)
     }.mkString(",")
   }
 
