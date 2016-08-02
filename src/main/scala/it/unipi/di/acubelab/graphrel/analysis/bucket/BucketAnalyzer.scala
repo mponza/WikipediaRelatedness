@@ -16,14 +16,16 @@ trait BucketAnalyzer {
   val relatednessName: String
   val wikiSimDataset: WikiSimDataset
 
-  val step = 0.20
-
-  val buckets = (for(i <- 0.0 to 1.0 - step by step) yield (i, i + step)).toList
+  val buckets = computeBuckets()//(for(i <- 0.0 to 1.0 - step by step) yield (i, i + step)).toList
   val bucketTasks = computeBucketTasks()
 
   // Correlation score lists.
   val pearsons = computePearsons()
   val spearmans = computeSpearmans()
+
+  def computeBuckets(step: Double = 0.2) : List[(Double, Double)] = {
+    (for(i <- 0.0 to 1.0 - step by step) yield (i, i + step)).toList
+  }
 
   def computeBucketTasks() : Int2ObjectOpenHashMap[ObjectArrayList[WikiRelTask]] = {
     val bucketTasks = new Int2ObjectOpenHashMap[ObjectArrayList[WikiRelTask]]

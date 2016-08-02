@@ -1,6 +1,5 @@
 package it.unipi.di.acubelab.graphrel.wikipedia
 
-import it.unimi.dsi.webgraph.BVGraph
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WikiBVGraph
 

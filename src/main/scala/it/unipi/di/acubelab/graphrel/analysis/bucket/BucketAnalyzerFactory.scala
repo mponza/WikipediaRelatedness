@@ -4,13 +4,13 @@ import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 
 object BucketAnalyzerFactory {
 
-  def make(options: Option[Any], relatednessName: String, wikiSimDataset: WikiSimDataset) : BucketAnalyzer = {
-    val analyzerName = options.getOrElse("analyzer", "rel").toString
-
-    analyzerName match {
-      case "relatedness" | "rel" => new BucketRelAnalyzer(relatednessName, wikiSimDataset)
-      case "inRatio" | "in" => new BucketInDegreeAnalyzer(relatednessName, wikiSimDataset)
-      case _ => throw new IllegalArgumentException("Analyzer %d does not exist.".format(analyzerName))
+  def make(analysisName: String, relatednessName: String, wikiSimDataset: WikiSimDataset) : BucketAnalyzer = {
+    analysisName match {
+      case "Relatedness" => new BucketRelAnalyzer(relatednessName, wikiSimDataset)
+      case "InRatio" => new BucketInDegreeAnalyzer(relatednessName, wikiSimDataset)
+      case "OutRatio" => new BucketOutDegreeAnalyzer(relatednessName, wikiSimDataset)
+      case "SymRatio" => new BucketSymDegreeAnalyzer(relatednessName, wikiSimDataset)
+      case _ => throw new IllegalArgumentException("Analyzer %s does not exist.".format(analysisName))
     }
   }
 }

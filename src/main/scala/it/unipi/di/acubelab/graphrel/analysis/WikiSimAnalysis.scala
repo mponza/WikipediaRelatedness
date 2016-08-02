@@ -4,15 +4,16 @@ import java.io.File
 import java.nio.file.Paths
 
 import com.github.tototoshi.csv.CSVWriter
-import it.unipi.di.acubelab.graphrel.analysis.bucket.BucketRelAnalyzer
+import it.unipi.di.acubelab.graphrel.analysis.bucket.{BucketAnalyzer, BucketAnalyzerFactory}
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
-class WikiSimAnalysis(analysisName: String = "BucketRelatedness") {
+class WikiSimAnalysis(options: Map[String, Any]) {
   val logger = LoggerFactory.getLogger(classOf[WikiSimAnalysis])
+  val analysisName = options.getOrElse("analysis", "relatedness").toString
 
   def computeAnalysis() = {
     logger.info("Reading data.csv files...")
@@ -26,13 +27,18 @@ class WikiSimAnalysis(analysisName: String = "BucketRelatedness") {
     storeAnalyzers(analyzers, analysisPath())
   }
 
-  def storeAnalyzers(analyzers: List[BucketRelAnalyzer], path: String) = {
+  def storeAnalyzers(analyzers: List[BucketAnalyzer], path: String) = {
     new File(path).mkdirs()
 
     val buckets = analyzers(0).buckets
     for((bucket, index) <- buckets.zipWithIndex) {
 
-      val bucketPath = Paths.get(path, "bucket_%1.2f-%1.2f.csv".format(bucket._1, bucket._2)).toString
+      // Number of elements in the index-th bucket of bucketTasks.
+      val size = analyzers(0).bucketTasks.get(index).size
+
+      val bucketPath = Paths.get(path, "bucket_%1.2f-%1.2f_size-%d.csv"
+        .format(bucket._1, bucket._2, size)).toString
+
       val csvWriter = CSVWriter.open(bucketPath)
 
       analyzers.foreach {
@@ -48,15 +54,15 @@ class WikiSimAnalysis(analysisName: String = "BucketRelatedness") {
     * @param benchmarkPaths
     * @return One analyzer per relatedness function.
     */
-  def computeAnalyzers(benchmarkPaths: List[String]): List[BucketRelAnalyzer] = {
-    val analyzers = ListBuffer.empty[BucketRelAnalyzer]
+  def computeAnalyzers(benchmarkPaths: List[String]): List[BucketAnalyzer] = {
+    val analyzers = ListBuffer.empty[BucketAnalyzer]
 
     benchmarkPaths.foreach {
       path =>
         val wikiSimDataset = new WikiSimDataset(path)
         val relName = relatednessName(path)
 
-        val analyzer = new BucketRelAnalyzer(relName, wikiSimDataset)
+        val analyzer = BucketAnalyzerFactory.make(analysisName, relName, wikiSimDataset)
         analyzers.append(analyzer)
     }
 

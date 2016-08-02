@@ -98,7 +98,12 @@ object AllBench {
 
 object Analysis {
   def main(args: Array[String]): Unit = {
-    val wikiAnalysis = new WikiSimAnalysis()
-    wikiAnalysis.computeAnalysis()
+    val options =  if (args.length > 0) JSON.parseFull(args(0)) else Some(Map())
+    options match {
+      case Some(opts: Map[String, Any] @unchecked) =>
+        val wikiAnalysis = new WikiSimAnalysis(opts)
+        wikiAnalysis.computeAnalysis()
+      case _ => throw new IllegalArgumentException("Options Analysis do not match with nothing!")
+    }
   }
 }
