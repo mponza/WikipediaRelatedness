@@ -51,3 +51,23 @@ Benchmarking
 
 
 and then choose `Bench` class.
+
+
+Analysis
+--------
+
+Run sbt analysis with parameters:
+
+    run """{"analysis": "InRatio"}"""
+    run """{"analysis": "OutRatio"}"""
+    run """{"analysis": "Relatedness"}"""
+    
+[Enable](http://docs.python-guide.org/en/latest/dev/virtualenvs/) `virtualenv` and install the required dependencies:
+
+    virtualenv venv
+    source venv/bin/activate
+    pip install -r src/main/python/charts/requirements.txt
+
+Generate charts:
+    
+    python src/main/python/charts/

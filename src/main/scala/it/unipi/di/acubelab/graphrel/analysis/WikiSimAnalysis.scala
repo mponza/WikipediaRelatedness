@@ -41,6 +41,7 @@ class WikiSimAnalysis(options: Map[String, Any]) {
 
       val csvWriter = CSVWriter.open(bucketPath)
 
+      csvWriter.writeRow(List("Method", "Pearson", "Spearman"))
       analyzers.foreach {
         case bucketAnalyzer => csvWriter.writeRow(bucketAnalyzer.toCSVList(index))
       }
