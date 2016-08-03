@@ -34,15 +34,18 @@ Remove `webgraph`, `fastutil` and `sux4j` from  the `law-deps` directory.
     
 Benchmarking
 ------------
-    
+  
     run """{"relatedness": "Milne-Witten"}"""
     
     run """{"relatedness": "Jaccard", "graph": inGraph}"""
     run """{"relatedness": "Jaccard", "graph": outGraph}"""
     run """{"relatedness": "Jaccard", "graph": symGraph}"""
-    run """{"relatedness": "Jaccard", "graph": noLoopSymGraph}"""
+    ...
     
     sbt "run-main it.unipi.di.acubelab.graphrel.MainClass"
+
+See `it.unipi.di.acubelab.graphrel.wikipedia.relatedness` for the extended list of realtedness method avaiable.
+LLP need the label generation (see `processing` package).
 
 
 and then choose `Bench` class.
