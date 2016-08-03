@@ -48,7 +48,7 @@ See `it.unipi.di.acubelab.graphrel.wikipedia.relatedness` for the extended list 
 LLP need the label generation (see `processing` package).
 
 
-and then choose `Bench` class.
+Finally, select the `Bench` option.
 
 
 Analysis
