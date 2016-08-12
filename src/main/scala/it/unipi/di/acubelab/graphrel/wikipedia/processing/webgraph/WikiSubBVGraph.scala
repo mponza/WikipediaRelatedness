@@ -3,6 +3,7 @@ package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 import it.unimi.dsi.fastutil.ints.{Int2IntArrayMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.webgraph.ImmutableSubgraph
 
+
 class WikiSubBVGraph(val superBVGraph: WikiBVGraph, val srcWikiID: Int, val dstWikiID: Int) {
   val immSubGraph = subGraph(superBVGraph, srcWikiID, dstWikiID)
 
