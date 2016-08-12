@@ -32,7 +32,7 @@ class WikiRelTask(_src: WikiEntity, _srcWord: String,
     toList.map {
       case s: String => s
       case n: Int => n.toString
-      case d: Double => "%1.3f".format(d)
+      case d: Float => "%1.3f".format(d)
     }.mkString(",")
   }
 

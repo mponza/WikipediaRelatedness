@@ -77,6 +77,42 @@ object GridLLP {
   }
 }
 
+
+object GridCoSimRank {
+  def main(args: Array[String]) = {
+    val weightings = Array(
+      """{}""",
+      """{"relatedness": "MilneWitten"}""",
+
+      """{"relatedness": "Jaccard", graph: "inGraph"}""",
+      """{"relatedness": "Jaccard", graph: "outGraph"}""",
+
+      """{"relatedness": "w2v", graph: "corpus"}""",
+      """{"relatedness": "w2v", graph: "deepWalk"}""",
+
+      """{"relatedness": "MultiLLP"}"""
+    )
+    for {
+      algo <- Array("CoSimRank", "PPRCos")
+      iters <- 10 to 100 by 10
+      decay <- 0.2 to 1.0 by 0.2
+      weighting <- weightings
+    } {
+      var csrJson = ""
+
+      if(weighting != "{}")
+        csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f, weighting: %s}"""
+          .format(algo, iters, decay, weighting)
+      else
+        csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f}""".format(algo, iters, decay)
+
+      println(csrJson)
+      Bench.main(Array(csrJson))
+    }
+  }
+}
+
+
 object AllBench {
   val jsons = Array(
     """{"relatedness": "MilneWitten"}""",
@@ -89,7 +125,11 @@ object AllBench {
     """{"relatedness": "w2v", graph: "deepWalk"}""",
     """{"relatedness": "w2v", graph: "deepCorpus"}""",
 
-    """{"relatedness": "LocalClustering"}"""
+    """{"relatedness": "LocalClustering"}""",
+
+    """{"relatedness": "MultiLLP"}""",
+
+    """{"relatedness": "CoSimRank", "iters": 5, "decay": 0.8}"""
 
   )
 

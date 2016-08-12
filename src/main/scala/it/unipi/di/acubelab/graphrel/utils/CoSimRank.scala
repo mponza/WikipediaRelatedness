@@ -19,7 +19,7 @@ class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
 
     // Parameter configuration.
     val simParams = Seq("graph" -> edgesToString(weightedEdges),
-                        "algorithm" -> algorithm,
+                        "algorithm" -> algorithm.toString,
                         "iters" -> iters.toString,
                         "decay" -> "%1.3f".formatLocal(Locale.US, decay),
                         "pairs" -> simPairString(simPairs)
@@ -46,7 +46,7 @@ class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
 
             for(sim <- jsonSims) {
               sim match {
-                case jsonSim: Map[String, Any]@unchecked =>
+                case jsonSim: Map[String, Any] @unchecked =>
 
                   val src = jsonSim("src").asInstanceOf[Double].toInt
                   val dst = jsonSim("dst").asInstanceOf[Double].toInt
@@ -58,7 +58,7 @@ class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
               }
             }
 
-            simMap
+            return simMap
 
           case _ => ;
         }
@@ -66,7 +66,7 @@ class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
       case _ => ;
     }
 
-    throw new IllegalArgumentException("General error while parsing JSON response.")
+    throw new IllegalArgumentException("General error while parsing JSON response: %s".format(jsonResponse))
   }
 
   def edgesToString(weightedEdges: List[(Int, Int, Double)]) : String = {

@@ -57,19 +57,20 @@ class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
   def computeWeightedEdges(graph: WikiSubBVGraph, srcWikiID: Int, dstWikiID: Int)
     : List[(Int, Int, Double)] = {
 
-    val weighter = if(!options.contains("weighting")) RelatednessFactory.make(Some(options("weighting")))
+    val weighter = if(options.contains("weighting")) RelatednessFactory.make(Some(options("weighting")))
                     else new EdgeWeighter
 
     val weightedEdges = new ListBuffer[(Int, Int, Double)]    // [(src, dst, weight)]
     val normFactors = new Int2DoubleOpenHashMap
 
-    // Generates edges with the correspdnding pairs.
+    // Generates edges with the corresonding pairs.
     val edges = graph.wikiEdges()
-    edges.keySet().toIntArray.foreach {
-      src => edges.get(src).toIntArray.foreach {
+    edges.keySet().toIntArray().foreach {
+      src => val dsts = edges.get(src).toIntArray()
+        dsts.foreach {
 
           dst =>
-            val weight = computeRelatredness(srcWikiID, dstWikiID)
+            val weight = weighter.computeRelatredness(srcWikiID, dstWikiID)
             weightedEdges += ((src, dst, weight))
             normFactors.put(src, normFactors.getOrDefault(src, 0.0) + weight)
         }

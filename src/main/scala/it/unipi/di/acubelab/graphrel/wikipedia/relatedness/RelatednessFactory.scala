@@ -30,6 +30,7 @@ object RelatednessFactory {
         case "LLP" => new LLPRelatedness(opts)
         case "MultiLLP" => new MultiLLPRelatedness(opts)
         case "LMModel" => new LMRelatedness(opts)
+        case "CoSimRank" | "PPRCos" => new CoSimRankRelatedness(opts)
 
         case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s."
           .format(relatednessName))
