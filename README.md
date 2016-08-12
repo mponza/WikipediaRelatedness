@@ -30,7 +30,17 @@ Setting Up
 ----------
 
 Download from `http://law.di.unimi.it/software/download/` law-2.3 and its dependencies. Put them (unzipped) in the `lib` directory in `law-2.3` and `law-deps` directories, respectively.
-Remove `webgraph`, `fastutil` and `sux4j` from  the `law-deps` directory.    
+Remove `webgraph`, `fastutil` and `sux4j` from  the `law-deps` directory.
+
+If you are planning to use `CoSimRank`, please download [CoSimRankServer](https://github.com/mponza/CoSimRankServer) in the `lib` directory.
+   
+   
+   
+Processing
+----------
+
+    run """{"relatedness": ""}"""
+    
     
 Benchmarking
 ------------

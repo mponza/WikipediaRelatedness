@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
 import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator}
+import it.unimi.dsi.webgraph.{BVGraph, ImmutableSubgraph, LazyIntIterator}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import org.slf4j.LoggerFactory
 
@@ -119,7 +119,6 @@ class WikiBVGraph(path: String) {
 
     intersection
   }
-
 }
 
 object WikiBVGraph {
