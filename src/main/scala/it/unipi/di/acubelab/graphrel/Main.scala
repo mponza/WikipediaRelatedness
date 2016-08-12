@@ -101,7 +101,7 @@ object GridCoSimRank {
       var csrJson = ""
 
       if(weighting != "{}")
-        csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f, weighting: %s}"""
+        csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f, "weighting": %s}"""
           .format(algo, iters, decay, weighting)
       else
         csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f}""".format(algo, iters, decay)
