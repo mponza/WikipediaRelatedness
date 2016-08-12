@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
-import it.unimi.dsi.fastutil.ints.{Int2IntArrayMap, IntArrayList, IntOpenHashSet}
+import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.webgraph.ImmutableSubgraph
 
 
@@ -44,17 +44,24 @@ class WikiSubBVGraph(val superBVGraph: WikiBVGraph, val srcWikiID: Int, val dstW
     WikiBVGraph.getWikiID(superNodeID)
   }
 
+  def outdegree(wikiID: Int) : Int = {
+    immSubGraph.outdegree(getNodeID(wikiID))
+  }
+
   /**
-    * @return Edges as ArrayMap (src -> dst). All elements are are wikiIDs.
+    * @return Edges as ArrayMap (src -> [dst]). All elements are are wikiIDs.
     * */
-  def wikiEdges() : Int2IntArrayMap = {
-    val edges = new Int2IntArrayMap()
+  def wikiEdges() : Int2ObjectOpenHashMap[IntArrayList] = {
+    val edges = new Int2ObjectOpenHashMap[IntArrayList]
 
     for(i <- 0 until immSubGraph.numNodes()) {
       val wikiID = getWikiID(i)
       val succs = immSubGraph.successorArray(i).map(x => getWikiID(x))
 
-      succs.foreach(dst => edges.put(wikiID, dst))
+      succs.foreach {
+        dst => edges.putIfAbsent(wikiID, new IntArrayList)
+               edges.get(wikiID).add(dst)
+      }
     }
 
     edges

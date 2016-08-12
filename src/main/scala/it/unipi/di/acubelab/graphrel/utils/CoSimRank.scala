@@ -1,20 +1,20 @@
-package it.unipi.di.acubelab.graphrel.wikipedia.relatedness
+package it.unipi.di.acubelab.graphrel.utils
 
 import java.util.Locale
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap
-import it.unipi.di.acubelab.graphrel.utils.Configuration
 
 import scala.util.parsing.json.JSON
 import scalaj.http.Http
 
-trait PageRankRelatedness extends Relatedness {
-  // CoSimRank Library Parameters.
-  val algorithm: String
-  val iters: Int
-  val decay: Double
+class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
 
-  def getSimRequest(weightedEdges: List[(Int, Int, Double)], simPairs: List[(Int, Int)])
+  def computeSimilarity(weightedEdges: List[(Int, Int, Double)], srcWikiID: Int, dstWikiID: Int)
+    : Double = {
+    computeSimilarity(weightedEdges, List((srcWikiID, dstWikiID))).getDouble((srcWikiID, dstWikiID))
+  }
+
+  def computeSimilarity(weightedEdges: List[(Int, Int, Double)], simPairs: List[(Int, Int)])
     : Object2DoubleArrayMap[(Int, Int)] = {
 
     // Parameter configuration.
@@ -22,7 +22,7 @@ trait PageRankRelatedness extends Relatedness {
                         "algorithm" -> algorithm,
                         "iters" -> iters.toString,
                         "decay" -> "%1.3f".formatLocal(Locale.US, decay),
-                        "pairs" -> simPairString(simParams)
+                        "pairs" -> simPairString(simPairs)
                        )
 
     // Server request.
@@ -48,8 +48,8 @@ trait PageRankRelatedness extends Relatedness {
               sim match {
                 case jsonSim: Map[String, Any]@unchecked =>
 
-                  val src = jsonSim("src").asInstanceOf[Int]
-                  val dst = jsonSim("dst").asInstanceOf[Int]
+                  val src = jsonSim("src").asInstanceOf[Double].toInt
+                  val dst = jsonSim("dst").asInstanceOf[Double].toInt
                   val sim = jsonSim("sim").asInstanceOf[Double]
 
                   simMap.put((src, dst), sim)
@@ -84,5 +84,19 @@ trait PageRankRelatedness extends Relatedness {
     }.mkString(", ")
 
     "[%s]".format(jsonObjs)
+  }
+
+  override def toString: String = {
+    "%s-iters_%d-decay_%1.3f".formatLocal(Locale.US, algorithm, iters, decay)
+  }
+}
+
+object CoSimRank {
+  def make(options: Map[String, Any]) : CoSimRank = {
+    val algorithm: String = options("relatedness").toString
+    val iters = if (options.contains("iters")) options("iters").asInstanceOf[Double].toInt else 5
+    val decay = if (options.contains("decay")) options("decay").asInstanceOf[Double] else 0.8
+
+    new CoSimRank(algorithm, iters, decay)
   }
 }
