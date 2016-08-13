@@ -81,8 +81,8 @@ object GridLLP {
 object GridCoSimRank {
   def main(args: Array[String]) = {
     val weightings = Array(
-      """{}""",
       """{"relatedness": "MilneWitten"}""",
+      """{}""",
 
       """{"relatedness": "Jaccard", "graph": "inGraph"}""",
       """{"relatedness": "Jaccard", "graph": "outGraph"}""",
@@ -95,15 +95,15 @@ object GridCoSimRank {
     for {
       weighting <- weightings
       algo <- Array("CoSimRank", "PPRCos")
-      graph <- Array("outGraph", "inGraph", "outGraph,inGraph")
-      iters <- Array(10, 30, 50, 80, 100)
+      graph <- Array("inGraph,outGraph", "inGraph", "outGraph")
+      iters <- Array(100, 80, 50, 30, 10, 5, 3)
       decay <- Array(0.8)  //0.4 until 1.0 by 0.2
     } {
       var csrJson = ""
 
       if(weighting != "{}")
-        csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f, "weighting": %s}"""
-          .format(algo, iters, decay, weighting)
+        csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f, "graph": "%s", "weighting": %s}"""
+          .format(algo, iters, decay, graph, weighting)
       else
         csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f}""".format(algo, iters, decay)
 
