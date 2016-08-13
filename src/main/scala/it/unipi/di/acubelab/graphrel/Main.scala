@@ -84,20 +84,20 @@ object GridCoSimRank {
       """{}""",
       """{"relatedness": "MilneWitten"}""",
 
-      """{"relatedness": "Jaccard", graph: "inGraph"}""",
-      """{"relatedness": "Jaccard", graph: "outGraph"}""",
+      """{"relatedness": "Jaccard", "graph": "inGraph"}""",
+      """{"relatedness": "Jaccard", "graph": "outGraph"}""",
 
-      """{"relatedness": "w2v", graph: "corpus"}""",
-      """{"relatedness": "w2v", graph: "deepWalk"}""",
+      """{"relatedness": "w2v", "graph": "corpus"}""",
+      """{"relatedness": "w2v", "graph": "deepWalk"}""",
 
       """{"relatedness": "MultiLLP"}"""
     )
     for {
+      weighting <- weightings
       algo <- Array("CoSimRank", "PPRCos")
       graph <- Array("outGraph", "inGraph", "outGraph,inGraph")
       iters <- Array(10, 30, 50, 80, 100)
       decay <- Array(0.8)  //0.4 until 1.0 by 0.2
-      weighting <- weightings
     } {
       var csrJson = ""
 

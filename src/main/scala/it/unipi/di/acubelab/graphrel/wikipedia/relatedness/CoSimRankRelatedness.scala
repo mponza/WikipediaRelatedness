@@ -85,8 +85,8 @@ class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
 
 
   def computeWeightedEdges(graph: WikiSubBVGraph, srcWikiID: Int, dstWikiID: Int)
-    : List[(Int, Int, Double)] = {
-    logger.info("Weighting edges...")
+  : List[(Int, Int, Double)] = {
+
     val weightedEdges = new ListBuffer[(Int, Int, Double)]    // [(src, dst, weight)]
     val normFactors = new Int2DoubleOpenHashMap
 
@@ -97,7 +97,7 @@ class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
         dsts.foreach {
 
           dst =>
-            val weight = weighter.computeRelatredness(srcWikiID, dstWikiID)
+            val weight = weighter.computeRelatredness(src, dst)
             weightedEdges += ((src, dst, weight))
             normFactors.put(src, normFactors.getOrDefault(src, 0.0) + weight)
         }
@@ -113,6 +113,7 @@ class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
 
     normaWeightedEdges
   }
+
 
   override def toString: String = {
     "%s-Weight_%s-Graph_%s".format(cosimrank.toString, weighter,

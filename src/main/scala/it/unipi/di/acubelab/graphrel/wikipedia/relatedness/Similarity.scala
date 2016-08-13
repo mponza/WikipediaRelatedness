@@ -17,19 +17,10 @@ object Similarity {
   }
 
   def cosineSimilarity(src: IntArrayList, dst: IntArrayList) : Double = {
-    val length = math.max(Collections.max(src), Collections.max(dst)) + 1
+    val num = hammingSimilarity(src, dst)
+    val den = src.size
 
-    // src and dst to one-hot encoded arrays
-    val src1Hot = Array.ofDim[Int](length)
-    for(i <- 0 until src.size) src1Hot(src.getInt(i)) = 1
-    val dst1Hot = Array.ofDim[Int] (length)
-    for(i <- 0 until src.size) dst1Hot(dst.getInt(i)) = 1
-
-    val dotProduct = (for((s, d) <- src1Hot zip dst1Hot) yield s * d).sum
-    val magSrc = math.sqrt(src1Hot.map(i => i*i).sum)
-    val magDst = math.sqrt(dst1Hot.map(i => i*i).sum)
-
-    (dotProduct / (magSrc * magDst) + 1) / 2.toDouble
+    num / den.toDouble
   }
 
   // Code from https://rosettacode.org/wiki/Levenshtein_distance#Scala

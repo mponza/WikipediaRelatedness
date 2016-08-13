@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.graphrel.utils
 
 import java.util.Locale
 
-import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap
+import it.unimi.dsi.fastutil.objects.{Object2DoubleArrayMap, ObjectArrayList}
 
 import scala.util.parsing.json.JSON
 import scalaj.http.Http
