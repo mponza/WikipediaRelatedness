@@ -9,6 +9,7 @@ object Configuration {
 
   val wat = "http://wat.mkapp.it/wikidocs?lang=en"
   val cosimrank = "http://localhost:5555"
+  val subgraphThreshold = 6000
 
   val projDir = System.getProperty("user.dir")
 

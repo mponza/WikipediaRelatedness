@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.relatedness
 import it.unimi.dsi.fastutil.ints.Int2DoubleOpenHashMap
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
-import it.unipi.di.acubelab.graphrel.utils.CoSimRank
+import it.unipi.di.acubelab.graphrel.utils.{CoSimRank, Configuration}
 import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WikiBVGraph
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WikiSubBVGraph
@@ -12,7 +12,7 @@ import scala.collection.mutable.ListBuffer
 /**
   * {
   *   "relatedness": CoSimRank/PPRCos   // (algorithm in CoSimRank parameters)
-  *   "graph": outGraph
+  *   "graph": outGraph, inGraph
   *             /outGraph,inGraph       // used for subgraph computation
   *
   *   "algorithm"                       // Default: same of "relatedness"
@@ -74,6 +74,10 @@ class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
 
   def computeCoSimRank(graphs: Map[String, WikiBVGraph], srcWikiID: Int, dstWikiID: Int) : Double = {
     val subGraph = new WikiSubBVGraph(graphs, srcWikiID, dstWikiID)
+    if (subGraph.immSubGraph.numNodes() >= Configuration.subgraphThreshold) {
+      throw new IllegalArgumentException("The generated subgraph is too big.")
+    }
+
     val weightedEdges = computeWeightedEdges(subGraph, srcWikiID, dstWikiID)
 
     cosimrank.computeSimilarity(weightedEdges, srcWikiID, dstWikiID)
@@ -82,7 +86,7 @@ class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
 
   def computeWeightedEdges(graph: WikiSubBVGraph, srcWikiID: Int, dstWikiID: Int)
     : List[(Int, Int, Double)] = {
-
+    logger.info("Weighting edges...")
     val weightedEdges = new ListBuffer[(Int, Int, Double)]    // [(src, dst, weight)]
     val normFactors = new Int2DoubleOpenHashMap
 

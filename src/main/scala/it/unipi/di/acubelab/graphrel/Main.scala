@@ -95,8 +95,8 @@ object GridCoSimRank {
     for {
       algo <- Array("CoSimRank", "PPRCos")
       graph <- Array("outGraph", "inGraph", "outGraph,inGraph")
-      iters <- 10 to 100 by 10
-      decay <- 0.4 until 1.0 by 0.2
+      iters <- Array(10, 30, 50, 80, 100)
+      decay <- Array(0.8)  //0.4 until 1.0 by 0.2
       weighting <- weightings
     } {
       var csrJson = ""
