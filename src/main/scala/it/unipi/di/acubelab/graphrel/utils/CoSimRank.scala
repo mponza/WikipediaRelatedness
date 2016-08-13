@@ -35,8 +35,13 @@ class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
       case Some(jsonMap: Map[String, Any]@unchecked) =>
 
         if (jsonMap("Status") == "Error") {
-          throw new IllegalArgumentException("Exception while parsing JSON: %s"
-                                              .format(jsonMap("Message").toString))
+          val message = jsonMap("Message").toString
+
+          if (message.startsWith("Graph too big.")) {
+            throw new IllegalArgumentException(message)
+          } else {
+            throw new RuntimeException(message)
+          }
         }
 
         jsonMap("Sims") match {
@@ -66,7 +71,7 @@ class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
       case _ => ;
     }
 
-    throw new IllegalArgumentException("General error while parsing JSON response: %s".format(jsonResponse))
+    throw new RuntimeException("General error while parsing JSON response: %s".format(jsonResponse))
   }
 
   def edgesToString(weightedEdges: List[(Int, Int, Double)]) : String = {

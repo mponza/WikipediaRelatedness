@@ -94,8 +94,9 @@ object GridCoSimRank {
     )
     for {
       algo <- Array("CoSimRank", "PPRCos")
+      graph <- Array("outGraph", "inGraph", "outGraph,inGraph")
       iters <- 10 to 100 by 10
-      decay <- 0.2 to 1.0 by 0.2
+      decay <- 0.4 until 1.0 by 0.2
       weighting <- weightings
     } {
       var csrJson = ""
@@ -106,7 +107,6 @@ object GridCoSimRank {
       else
         csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f}""".format(algo, iters, decay)
 
-      println(csrJson)
       Bench.main(Array(csrJson))
     }
   }

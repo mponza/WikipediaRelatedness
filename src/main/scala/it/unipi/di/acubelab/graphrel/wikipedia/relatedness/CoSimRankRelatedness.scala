@@ -1,8 +1,9 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.relatedness
-import it.unimi.dsi.fastutil.ints.{Int2DoubleOpenHashMap, Int2IntOpenHashMap}
+import it.unimi.dsi.fastutil.ints.Int2DoubleOpenHashMap
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.utils.CoSimRank
 import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
+import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WikiBVGraph
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WikiSubBVGraph
 import org.slf4j.LoggerFactory
 
@@ -11,13 +12,14 @@ import scala.collection.mutable.ListBuffer
 /**
   * {
   *   "relatedness": CoSimRank/PPRCos   // (algorithm in CoSimRank parameters)
-  *   "graph": outGraph                 // used for subgraph computation
+  *   "graph": outGraph
+  *             /outGraph,inGraph       // used for subgraph computation
   *
   *   "algorithm"                       // Default: same of "relatedness"
   *   "iters": 5
   *   "decay": 0.8
   *
-  *   "weighting":                  // if not specified, EdgeWeighter will be used.
+  *   "weighting":                       // if not specified, EdgeWeighter will be used.
   *     {
   *       "relatedness"
   *
@@ -30,24 +32,48 @@ import scala.collection.mutable.ListBuffer
   * */
 class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
-
-  val graphName = if (options.contains("graph")) options("graph").toString else "outGraph"
-  val graph = WikiGraph.wikiBVGraph(graphName)
-
+  val graphs = wikiGraphs()
   val cosimrank = CoSimRank.make(options)
+  val weighter = CoSimRankRelatedness.makeWeighter(options)
 
-  // Default weighter. It gives the same weight to all edges.
-  class EdgeWeighter extends Relatedness {
-    override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
-      1.0
-    }
+
+  def wikiGraphs() : Map[String, WikiBVGraph] = {
+    val graphNames = if (options.contains("graph"))
+                         options("graph").toString.split(",")
+                     else Array("outGraph")
+
+    graphNames.map {
+      graphName => graphName -> WikiGraph.wikiBVGraph(graphName)
+    }.toMap
   }
+
 
   override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 
-    val subGraph = new WikiSubBVGraph(graph, srcWikiID, dstWikiID)
+    try {
+      // Tries CoSimRank by generating the subgraph with all the
+      // specified graphs.
+      computeCoSimRank(graphs, srcWikiID, dstWikiID)
+
+    } catch {
+      case iae: IllegalArgumentException =>
+
+        // Graph too big, resizing graph by using only outGraph.
+        logger.warn("Graph too big. Trying Subgraph generation with outGraph.")
+        val graphs = Map("outGraph" -> WikiGraph.outGraph)
+        computeCoSimRank(graphs, srcWikiID, dstWikiID)
+
+      case _ : Exception =>
+        logger.error("Unexpected error in CoSimRank computation between  %s and %s. Returning 0.0."
+                      .format(wikiRelTask.src.wikiTitle, wikiRelTask.dst.wikiTitle))
+        0.0
+    }
+  }
+
+  def computeCoSimRank(graphs: Map[String, WikiBVGraph], srcWikiID: Int, dstWikiID: Int) : Double = {
+    val subGraph = new WikiSubBVGraph(graphs, srcWikiID, dstWikiID)
     val weightedEdges = computeWeightedEdges(subGraph, srcWikiID, dstWikiID)
 
     cosimrank.computeSimilarity(weightedEdges, srcWikiID, dstWikiID)
@@ -56,9 +82,6 @@ class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
 
   def computeWeightedEdges(graph: WikiSubBVGraph, srcWikiID: Int, dstWikiID: Int)
     : List[(Int, Int, Double)] = {
-
-    val weighter = if(options.contains("weighting")) RelatednessFactory.make(Some(options("weighting")))
-                    else new EdgeWeighter
 
     val weightedEdges = new ListBuffer[(Int, Int, Double)]    // [(src, dst, weight)]
     val normFactors = new Int2DoubleOpenHashMap
@@ -88,19 +111,26 @@ class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
   }
 
   override def toString: String = {
-    if(!options.contains("weighting")) {
-      return "%s-Weight_Prob".format(cosimrank.toString)
-    }
+    "%s-Weight_%s-Graph_%s".format(cosimrank.toString, weighter,
+                                   graphs.keys.mkString("_"))
+  }
+}
 
 
-    options("weighting") match {
-      case weighting: Map[String, Any] @unchecked =>
-        
-    }
+// Default Weighter. It assigns the same weight to all edges.
+class EdgeWeighter extends Relatedness {
+  override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
+    1.0
+  }
+  override def toString: String = "Prob"
+}
 
-    "%s-Weight_".format(
-      options("relatedness").toString,
-      options("")
-    )
+object CoSimRankRelatedness {
+
+  def makeWeighter(options: Map[String, Any]): Relatedness = {
+    if (options.contains("weighting"))
+      RelatednessFactory.make(Some(options("weighting")))
+    else
+      new EdgeWeighter
   }
 }
