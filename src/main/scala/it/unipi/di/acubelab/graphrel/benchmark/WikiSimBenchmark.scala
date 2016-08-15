@@ -30,6 +30,7 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
 
     writeRelatednessScores(relScores)
     writeCorrelationScores(relScores)
+    writeClassificationScores(relScores)
   }
 
   /**
@@ -74,5 +75,9 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     csvWriter.writeRow(List("Spearman", spearman))
 
     csvWriter.close
+  }
+
+  def writeClassificationScores(tasks: List[WikiRelTask]) : Unit = {
+
   }
 }

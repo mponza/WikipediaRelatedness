@@ -6,6 +6,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import org.apache.commons.math.stat.correlation.{PearsonsCorrelation, SpearmansCorrelation}
 
+
+
 object Evaluation {
 
   def pearsonCorrelation(tasks: List[WikiRelTask]) : Double = {
@@ -49,4 +51,6 @@ object Evaluation {
     val arrayTasks = Array.ofDim[WikiRelTask](objectArrayList.size)
     objectArrayList.toArray[WikiRelTask](arrayTasks).toList
   }
+
+
 }

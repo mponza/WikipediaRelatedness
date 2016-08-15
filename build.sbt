@@ -17,6 +17,7 @@ libraryDependencies ++= Seq(
   "org.scalaj" % "scalaj-http_2.11" % "2.3.0",
 
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
+  "com.google.guava" % "guava" % "19.0",
 
   "it.unimi.dsi" % "webgraph" % "3.5.2",
   "it.unimi.dsi" % "fastutil" % "7.0.12",
@@ -25,7 +26,6 @@ libraryDependencies ++= Seq(
   "edu.berkeley.nlp" % "berkeleylm" % "1.1.2",
 
   "org.apache.commons" % "commons-math3" % "3.6.1"
-)
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html
 unmanagedJars in Compile ++= {
