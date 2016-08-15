@@ -13,7 +13,7 @@ import scala.collection.mutable.ListBuffer
 
 class WikiSimAnalysis(options: Map[String, Any]) {
   val logger = LoggerFactory.getLogger(classOf[WikiSimAnalysis])
-  val analysisName = options.getOrElse("analysis", "relatedness").toString
+  val analysisName = options.getOrElse("analysis", "Relatedness").toString
 
   def computeAnalysis() = {
     logger.info("Reading data.csv files...")
@@ -83,6 +83,6 @@ class WikiSimAnalysis(options: Map[String, Any]) {
   }
 
   def analysisPath(): String = {
-    Paths.get(Configuration.analysis, analysisName).toString
+    Paths.get(Configuration.analysis("correlation"), analysisName).toString
   }
 }

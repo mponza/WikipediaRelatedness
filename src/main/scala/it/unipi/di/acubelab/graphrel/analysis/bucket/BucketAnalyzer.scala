@@ -2,9 +2,9 @@ package it.unipi.di.acubelab.graphrel.analysis.bucket
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import it.unipi.di.acubelab.graphrel.benchmark.Evaluation
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
+import it.unipi.di.acubelab.graphrel.evaluation.correlation.WikiSimCorrelator
 
 import scala.collection.mutable.ListBuffer
 
@@ -66,11 +66,11 @@ trait BucketAnalyzer {
   }
 
   def computePearsons() : List[Double] = {
-    computeCorrelation(Evaluation.pearsonCorrelation)
+    computeCorrelation(WikiSimCorrelation.pearsonCorrelation)
   }
 
   def computeSpearmans() : List[Double] = {
-    computeCorrelation(Evaluation.spearmanCorrelation)
+    computeCorrelation(WikiSimCorrelation.spearmanCorrelation)
   }
 
   def toCSVList(bucketIndex: Int): List[Any] = {

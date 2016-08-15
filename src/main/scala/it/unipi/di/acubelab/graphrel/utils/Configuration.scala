@@ -41,6 +41,5 @@ object Configuration {
   )
 
   val benchmark =  Paths.get(projDir, "/data/benchmark").toString
-
   val analysis = Paths.get(projDir, "/data/analysis").toString
 }

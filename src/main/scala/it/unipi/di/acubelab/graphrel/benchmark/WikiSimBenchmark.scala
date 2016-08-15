@@ -5,6 +5,9 @@ import java.nio.file.Paths
 
 import com.github.tototoshi.csv.CSVWriter
 import it.unipi.di.acubelab.graphrel.dataset.{RelatednessDataset, WikiRelTask}
+import it.unipi.di.acubelab.graphrel.evaluation.WikiSimEvaluatorFactory
+import it.unipi.di.acubelab.graphrel.evaluation.classification.{WikiSimClassPerformance}
+import it.unipi.di.acubelab.graphrel.evaluation.correlation.WikiSimCorrPerformance
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import it.unipi.di.acubelab.graphrel.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
@@ -29,6 +32,7 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
       }
 
     writeRelatednessScores(relScores)
+
     writeCorrelationScores(relScores)
     writeClassificationScores(relScores)
   }
@@ -54,44 +58,26 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     csvWriter.close
   }
 
-  /**
-    * Writes both Pearson's and Spearman's correlation to file.
-    *
-    * @param tasks
-    */
+
   def writeCorrelationScores(tasks: List[WikiRelTask]) : Unit = {
-    val pearson = Evaluation.pearsonCorrelation(tasks)
-    logger.info("%s Pearson: %.2f".format(relatedness.toString, pearson))
+    val correlator = WikiSimEvaluatorFactory.make("correlation", tasks)
+    val correlation = correlator.wikiSimPerformance().asInstanceOf[WikiSimCorrPerformance]
 
-    val spearman = Evaluation.spearmanCorrelation(tasks)
-    logger.info("%s Spearman: %.2f".format(relatedness.toString, spearman))
+    logger.info("%s Pearson: %.2f".format(relatedness.toString, correlation.pearson))
+    logger.info("%s Spearman: %.2f".format(relatedness.toString, correlation.spearman))
 
-    new File(relDir).mkdirs
     val path = Paths.get(relDir, relatedness.toString + ".correlation.csv").toString
-
-    val csvWriter = CSVWriter.open(new File(path))
-
-    csvWriter.writeRow(List("Pearson", pearson))
-    csvWriter.writeRow(List("Spearman", spearman))
-
-    csvWriter.close
+    correlation.savePerformance(path)
   }
 
-  /**
-    * Writes bucketized Precision, Recall and F1 score to file.
-    */
+
   def writeClassificationScores(tasks: List[WikiRelTask]) : Unit = {
-    val classification = new Classification(tasks)
+    val classificator = WikiSimEvaluatorFactory.make("classification", tasks)
+    val classification = classificator.wikiSimPerformance().asInstanceOf[WikiSimClassPerformance]
+
     logger.info("%s Classification Scores: %s".format(relatedness.toString, classification.toString))
 
-    new File(relDir).mkdirs
     val path = Paths.get(relDir, relatedness.toString + ".classification.csv").toString
-
-    val cSVWriter = CSVWriter.open(new File(path))
-
-    cSVWriter.writeRow(classification.toString)
-
-    cSVWriter.close
-
+    classification.savePerformance(path)
   }
 }

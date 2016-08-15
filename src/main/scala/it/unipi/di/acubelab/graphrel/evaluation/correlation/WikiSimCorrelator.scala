@@ -1,14 +1,18 @@
-package it.unipi.di.acubelab.graphrel.benchmark
+package it.unipi.di.acubelab.graphrel.evaluation.correlation
 
 import java.io.PrintWriter
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
+import it.unipi.di.acubelab.graphrel.evaluation.{WikiSimEvaluator, WikiSimPerformance}
 import org.apache.commons.math.stat.correlation.{PearsonsCorrelation, SpearmansCorrelation}
 
 
 
-object Evaluation {
+class WikiSimCorrelator(val tasks: List[WikiRelTask]) extends WikiSimEvaluator {
+
+  val pearson = pearsonCorrelation(tasks)
+  val spearman = spearmanCorrelation(tasks)
 
   def pearsonCorrelation(tasks: List[WikiRelTask]) : Double = {
     val (humanScores, relatedScores) = scoresToArrays(tasks)
@@ -52,5 +56,9 @@ object Evaluation {
     objectArrayList.toArray[WikiRelTask](arrayTasks).toList
   }
 
+  override def wikiSimPerformance(): WikiSimPerformance = {
+    new WikiSimCorrPerformance(pearson, spearman)
+  }
 
+  override def toString() = "correlation"
 }

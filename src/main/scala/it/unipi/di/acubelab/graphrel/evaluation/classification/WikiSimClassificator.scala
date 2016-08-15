@@ -1,11 +1,13 @@
-package it.unipi.di.acubelab.graphrel.benchmark
+package it.unipi.di.acubelab.graphrel.evaluation.classification
 
 import java.lang.Double
 
 import com.google.common.collect.Range
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
+import it.unipi.di.acubelab.graphrel.evaluation.WikiSimEvaluator
+import it.unipi.di.acubelab.graphrel.evaluation.WikiSimPerformance
 
-class Classification(val tasks: List[WikiRelTask]) {
+class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluator {
 
   def scores = classificationScores()
 
@@ -67,19 +69,9 @@ class Classification(val tasks: List[WikiRelTask]) {
     2 * precision(labels) * recall(labels) / ((precision(labels) + recall(labels)) max 1.0)
   }
 
-  override def toString: String = {
-    "Low - %s\nMedium - %s\nHigh - %s".format(
-      bucetkScoreToString(scores("low")),
-      bucetkScoreToString(scores("medium")),
-      bucetkScoreToString(scores("high"))
-    )
+  override def wikiSimPerformance() : WikiSimPerformance = {
+    new WikiSimClassPerformance(scores)
   }
 
-  def bucetkScoreToString(bucketScore: Map[String, Double]) : String = {
-    "Precision: %1.2f, Recall: %1.2f, F1: %1.2f".format(
-      bucketScore("precision").toDouble,
-      bucketScore("recall").toDouble,
-      bucketScore("f1").toDouble
-    )
-  }
+  override def toString() = "classification"
 }
