@@ -1,5 +1,6 @@
-package it.unipi.di.acubelab.graphrel.analysis.bucket
+package it.unipi.di.acubelab.graphrel.analysis.bucket.degree
 
+import it.unipi.di.acubelab.graphrel.analysis.bucket.BucketAnalyzer
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WikiBVGraph
 

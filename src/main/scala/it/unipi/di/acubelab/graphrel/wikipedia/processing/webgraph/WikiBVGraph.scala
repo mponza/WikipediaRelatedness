@@ -1,8 +1,9 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
-import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
+import it.unimi.dsi.webgraph.algo.ParallelBreadthFirstVisit
+import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.webgraph.{BVGraph, ImmutableSubgraph, LazyIntIterator}
+import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import org.slf4j.LoggerFactory
 
@@ -119,6 +120,30 @@ class WikiBVGraph(path: String) {
 
     intersection
   }
+
+  /**
+    * @return Distance in bvGraph from srcWikiID to dstWikiID. -1 if infinity distance.
+    * */
+  def distance(srcWikiID: Int, dstWikiID: Int) : Int = {
+    if (srcWikiID == dstWikiID) return 0
+
+    val bfs = new ParallelBreadthFirstVisit(bvGraph, 0, false, null)
+
+    var prevRound = 0
+    do {
+        prevRound = bfs.round
+
+        // BFS visit and check if dstWikiID has been reached.
+        bfs.visit(srcWikiID)
+        if(bfs.queue.contains(WikiBVGraph.getNodeID(dstWikiID))) {
+          return bfs.round
+        }
+
+    } while(prevRound > 0 && prevRound != bfs.round)
+
+    -1
+  }
+
 }
 
 object WikiBVGraph {

@@ -39,7 +39,7 @@ If you are planning to use `CoSimRank`, please download [CoSimRankServer](https:
 Processing
 ----------
 
-    run """{"relatedness": ""}"""
+To be documented.
     
     
 Benchmarking

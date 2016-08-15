@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.graphrel.analysis.bucket
+package it.unipi.di.acubelab.graphrel.analysis.bucket.degree
 
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
