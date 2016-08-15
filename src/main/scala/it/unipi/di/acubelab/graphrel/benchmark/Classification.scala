@@ -5,12 +5,14 @@ import java.lang.Double
 import com.google.common.collect.Range
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 
-object Classification {
+class Classification(val tasks: List[WikiRelTask]) {
+
+  def scores = classificationScores()
 
   /**
     * @return {"low/medium/high" -> {"F1/Precision/Recall" -> Double}}
     * */
-  def classificationScores(tasks: List[WikiRelTask]) : Map[String, Map[String, Double]] = {
+  def classificationScores() : Map[String, Map[String, Double]] = {
     val buckets = Map("low" -> Range.closed(0.0, 0.3),
                       "medium" -> Range.openClosed(0.3, 0.7),
                       "high" -> Range.openClosed(0.7, 1.0))
@@ -63,5 +65,21 @@ object Classification {
 
   def f1(labels: List[(Int, Int)]) : Double = {
     2 * precision(labels) * recall(labels) / ((precision(labels) + recall(labels)) max 1.0)
+  }
+
+  override def toString: String = {
+    "Low - %s\nMedium - %s\nHigh - %s".format(
+      bucetkScoreToString(scores("low")),
+      bucetkScoreToString(scores("medium")),
+      bucetkScoreToString(scores("high"))
+    )
+  }
+
+  def bucetkScoreToString(bucketScore: Map[String, Double]) : String = {
+    "Precision: %1.2f, Recall: %1.2f, F1: %1.2f".format(
+      bucketScore("precision").toDouble,
+      bucketScore("recall").toDouble,
+      bucketScore("f1").toDouble
+    )
   }
 }

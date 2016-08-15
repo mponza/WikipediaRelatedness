@@ -77,7 +77,21 @@ class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     csvWriter.close
   }
 
+  /**
+    * Writes bucketized Precision, Recall and F1 score to file.
+    */
   def writeClassificationScores(tasks: List[WikiRelTask]) : Unit = {
+    val classification = new Classification(tasks)
+    logger.info("%s Classification Scores: %s".format(relatedness.toString, classification.toString))
+
+    new File(relDir).mkdirs
+    val path = Paths.get(relDir, relatedness.toString + ".classification.csv").toString
+
+    val cSVWriter = CSVWriter.open(new File(path))
+
+    cSVWriter.writeRow(classification.toString)
+
+    cSVWriter.close
 
   }
 }
