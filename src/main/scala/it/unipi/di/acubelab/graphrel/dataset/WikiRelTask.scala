@@ -1,5 +1,7 @@
 package it.unipi.di.acubelab.graphrel.dataset
 
+import java.util.Locale
+
 class WikiRelTask(_src: WikiEntity, _srcWord: String,
                   _dst: WikiEntity, _dstWord: String,
                   _rel: Double, _computedRel: Double = Double.NaN) {
@@ -40,7 +42,7 @@ class WikiRelTask(_src: WikiEntity, _srcWord: String,
     toList.map {
       case s: String => if(s.contains(',')) "\"%s\"".format(s) else s
       case n: Int => n.toString
-      case d: Double => "%1.3f".format(d)
+      case d: Double => "%1.3f".formatLocal(Locale.US, d)
     }.mkString(",")
   }
 

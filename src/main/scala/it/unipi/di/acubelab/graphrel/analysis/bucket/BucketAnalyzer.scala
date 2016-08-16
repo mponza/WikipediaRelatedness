@@ -1,12 +1,11 @@
 package it.unipi.di.acubelab.graphrel.analysis.bucket
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.graphrel.evaluation.{WikiSimEvaluatorFactory, WikiSimPerformance}
 
 import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.HashMap
 
 /**
   * Bucket analyzer. To perform statistics bucketized over different heuristic, just implement
@@ -26,17 +25,19 @@ trait BucketAnalyzer {
     (for(i <- 0.0 to 1.0 - step by step) yield (i, i + step)).toList
   }
 
-  def computeBucketTasks() : Int2ObjectOpenHashMap[ObjectArrayList[WikiRelTask]] = {
-    val bucketTasks = new Int2ObjectOpenHashMap[ObjectArrayList[WikiRelTask]]
+  def computeBucketTasks() : Map[Int, List[WikiRelTask]] = {
+    val bucketTasks = HashMap.empty[Int, ListBuffer[WikiRelTask]]
 
     wikiSimDataset.foreach {
       wikiRelTask =>
         val index = bucketIndex(wikiRelTask)
-        bucketTasks.putIfAbsent(index, new ObjectArrayList[WikiRelTask]())
-        bucketTasks.get(index).add(wikiRelTask)
+        val tasks = bucketTasks.getOrElse(index, ListBuffer.empty[WikiRelTask])
+        tasks += wikiRelTask
+        bucketTasks.put(index, tasks)
     }
 
-    bucketTasks
+    bucketTasks.mapValues(_.toList).toMap
+    bucketTasks.mapValues(_.toList).toMap
   }
 
   /**
@@ -51,9 +52,9 @@ trait BucketAnalyzer {
 
     for(i <- 0 until buckets.size) {
 
-      if (bucketTasks.containsKey(i)) {
+      if (bucketTasks.contains(i)) {
 
-        val tasks = bucketTasks.get(i).asInstanceOf[List[WikiRelTask]]
+        val tasks = bucketTasks(i)
         val evaluator = WikiSimEvaluatorFactory.make(evalName, tasks)
         performance += evaluator.wikiSimPerformance()
 

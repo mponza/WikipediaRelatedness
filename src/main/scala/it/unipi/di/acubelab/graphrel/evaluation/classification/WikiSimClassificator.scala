@@ -23,7 +23,6 @@ class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluato
     buckets.map {
       case (bucketName, range) =>
         val labels = bucketizeLabelRange(tasks, range)
-
         bucketName -> Map(
             "precision" -> precision(labels),
             "recall" -> recall(labels),
@@ -51,11 +50,11 @@ class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluato
   }
 
   def falsePositive(labelPairs: List[(Int, Int)]) : Int = {
-    labelPairs.foldLeft(0)((tp, pair) => if (pair._1 == pair._2 && pair._1 == 1) tp else tp + 1)
+    labelPairs.foldLeft(0)((fp, pair) => if (pair._1 == pair._2 && pair._1 == 1) fp else fp + 1)
   }
 
   def falseNegative(labelPairs: List[(Int, Int)]) : Int = {
-    labelPairs.foldLeft(0)((tn, pair) => if (pair._1 == pair._2 && pair._1 == 0) tn else tn + 1)
+    labelPairs.foldLeft(0)((fn, pair) => if (pair._1 == pair._2 && pair._1 == 0) fn else fn + 1)
   }
 
   def precision(labels: List[(Int, Int)]) : Double = {

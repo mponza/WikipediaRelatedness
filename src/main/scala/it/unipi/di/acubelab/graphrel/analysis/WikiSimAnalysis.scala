@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.graphrel.analysis
 
 import java.io.File
 import java.nio.file.Paths
+import java.util.Locale
 
 import com.github.tototoshi.csv.CSVWriter
 import it.unipi.di.acubelab.graphrel.analysis.bucket.{BucketAnalyzer, BucketAnalyzerFactory}
@@ -20,6 +21,8 @@ import scala.collection.mutable.ListBuffer
   * }
   */
 class WikiSimAnalysis(options: Map[String, Any]) {
+  Locale.setDefault(Locale.US)
+
   val logger = LoggerFactory.getLogger(classOf[WikiSimAnalysis])
 
   val analysisNames = options.getOrElse("analysis", "Relatedness").toString.split(",")
@@ -51,7 +54,7 @@ class WikiSimAnalysis(options: Map[String, Any]) {
 
     for((bucket, index) <- buckets.zipWithIndex) {
       // Number of elements in the index-th bucket of bucketTasks.
-      val size = analyzers(0).bucketTasks.get(index).size
+      val size = analyzers(0).bucketTasks(index).size
 
       val bucketPath = Paths.get(path, "bucket_%1.2f-%1.2f_size-%d.csv"
         .format(bucket._1, bucket._2, size)).toString
@@ -103,6 +106,6 @@ class WikiSimAnalysis(options: Map[String, Any]) {
   }
 
   def analysisPath(analysis: String, eval: String): String = {
-    Paths.get(Configuration.analysis, "%s_%s".format(analysis, eval)).toString
+    Paths.get(Configuration.analysis(eval), analysis).toString
   }
 }

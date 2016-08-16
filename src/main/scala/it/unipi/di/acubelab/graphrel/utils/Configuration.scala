@@ -7,18 +7,18 @@ import java.nio.file.Paths
   */
 object Configuration {
 
-  val wat = "http://wat.mkapp.it/wikidocs?lang=en"
-  val cosimrank = "http://localhost:5555"
-  val subgraphThreshold = 4000
+  lazy val wat = "http://wat.mkapp.it/wikidocs?lang=en"
+  lazy val cosimrank = "http://localhost:5555"
+  lazy val subgraphThreshold = 4000
 
-  val projDir = System.getProperty("user.dir")
+  lazy val projDir = System.getProperty("user.dir")
 
-  val dataset = Map (
+  lazy val dataset = Map (
     "wikiSim" -> getClass.getResource("/dataset/wikiSim411.csv").getPath,
     "procWikiSim" -> Paths.get(projDir, "/data/dataset/wikiSim411.csv").toString
   )
 
-  val wikipedia = Map(
+  lazy val wikipedia = Map(
     "wikiLinks" -> getClass.getResource("/wikipedia/wiki-links-sorted.gz").getPath,
 
     "wiki2node" -> Paths.get(projDir, "/data/processing/wikipedia/mapping/wiki2node").toString,
@@ -40,6 +40,10 @@ object Configuration {
     "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath
   )
 
-  val benchmark =  Paths.get(projDir, "/data/benchmark").toString
-  val analysis = Paths.get(projDir, "/data/analysis").toString
+  lazy val benchmark =  Paths.get(projDir, "/data/benchmark").toString
+
+  lazy val analysis = Map(
+    "correlation" -> Paths.get(projDir, "/data/analysis/correlation").toString,
+    "classification" -> Paths.get(projDir, "/data/analysis/classification").toString
+  )
 }
