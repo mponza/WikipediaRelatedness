@@ -6,11 +6,21 @@ import it.unipi.di.acubelab.graphrel.evaluation.WikiSimPerformance
 class WikiSimClassPerformance(scores: Map[String, Map[String, Double]]) extends WikiSimPerformance {
 
   override def toString: String = {
-    "Low - %s\nMedium - %s\nHigh - %s".format(
+    "Low - %s\nMedium - %s\nHigh - %s\nAVG_F1: %1.2f".format(
       bucetkScoreToString(scores("low")),
       bucetkScoreToString(scores("medium")),
-      bucetkScoreToString(scores("high"))
+      bucetkScoreToString(scores("high")),
+      avgF1()
     )
+  }
+
+  def avgF1() : scala.Double = {
+    // Scores computed upon at least one element.
+    val noEmptyScores = scores.filter {
+      case (key, values) => scores(key)("size") > 0.0
+    }
+
+    noEmptyScores.keys.map(scores(_)("f1").toDouble).sum / scores.size.toDouble
   }
 
   def bucetkScoreToString(bucketScore: Map[String, Double]) : String = {
@@ -24,14 +34,16 @@ class WikiSimClassPerformance(scores: Map[String, Map[String, Double]]) extends 
   def csvFields() : List[String] = {
     List("Low_Precision", "Low_Recall", "Low_F1",
          "Medium_Precision", "Medium_Recall", "Medium_F1",
-         "High_Precision", "High_Recall", "High_F1"
+         "High_Precision", "High_Recall", "High_F1",
+         "AVG_F1"
     )
   }
 
   def csvValues() : List[scala.Double] = {
     List(scores("low")("precision"), scores("low")("recall"), scores("low")("f1"),
          scores("medium")("precision"), scores("medium")("recall"), scores("medium")("f1"),
-         scores("high")("precision"), scores("high")("recall"), scores("high")("f1")
+         scores("high")("precision"), scores("high")("recall"), scores("high")("f1"),
+         avgF1()
     )
   }
 }

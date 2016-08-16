@@ -23,10 +23,12 @@ class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluato
     buckets.map {
       case (bucketName, range) =>
         val labels = bucketizeLabelRange(tasks, range)
+        println(labels.size)
         bucketName -> Map(
             "precision" -> precision(labels),
             "recall" -> recall(labels),
-            "f1" -> f1(labels)
+            "f1" -> f1(labels),
+            "size" -> new Double(labels.size)
         )
     }
   }
@@ -58,15 +60,15 @@ class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluato
   }
 
   def precision(labels: List[(Int, Int)]) : Double = {
-    truePositive(labels) / (math.max(truePositive(labels) + trueNegative(labels), 1.0))
+    truePositive(labels) / math.max(truePositive(labels) + trueNegative(labels), 1.0)
   }
 
   def recall(labels: List[(Int, Int)]) : Double = {
-    truePositive(labels) / (math.max(truePositive(labels) + falseNegative(labels), 1.0))
+    truePositive(labels) / math.max(truePositive(labels) + falseNegative(labels), 1.0)
   }
 
   def f1(labels: List[(Int, Int)]) : Double = {
-    2 * precision(labels) * recall(labels) / (math.max(precision(labels) + recall(labels), 1.0))
+    2 * precision(labels) * recall(labels) / math.max(precision(labels) + recall(labels), 1.0)
   }
 
   override def wikiSimPerformance() : WikiSimPerformance = {

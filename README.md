@@ -20,7 +20,6 @@ Resources files:
         w2v/wikipedia-w2v-deepWalk.e0.100.tr.bin
         w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin
 
-
  * Language Model:
 
         languageModel/wiki.binary
@@ -39,17 +38,36 @@ If you are planning to use `CoSimRank`, please download [CoSimRankServer](https:
 Processing
 ----------
 
-To be documented.
+Run webgraph processing classes in order to generate the graph and the LLP labels.
     
     
 Benchmarking
 ------------
   
-    run """{"relatedness": "Milne-Witten"}"""
+Run the `Bench` class with one following parameter:
+  
+    """{"relatedness": "Milne-Witten"}"""
     
-    run """{"relatedness": "Jaccard", "graph": inGraph}"""
-    run """{"relatedness": "Jaccard", "graph": outGraph}"""
-    run """{"relatedness": "Jaccard", "graph": symGraph}"""
+    """{"relatedness": "Jaccard", "graph": "inGraph"}"""
+    """{"relatedness": "Jaccard", "graph": "outGraph"}"""
+    """{"relatedness": "Jaccard", "graph": "symGraph"}"""
+    
+    """{"relatedness": "w2v", "model": "corpus"}"""
+    """{"relatedness": "w2v", "model": "deepWalk"}"""
+    """{"relatedness": "w2v", "model": "deepCorpus"}"""
+
+    """{"relatedness": "LocalClustering"}"""
+    
+    """{"relatedness": "MultiLLP"}"""
+    
+    """{"relatedness": "LMModel"}"""
+    
+    """{"relatedness": "CoSimRank", "graph": "deepCorpus"}"""
+    """{"relatedness": "PPRCos", "graph": "deepCorpus"}"""
+
+
+    
+    
     ...
     
     sbt "run-main it.unipi.di.acubelab.graphrel.MainClass"
@@ -64,9 +82,14 @@ Finally, select the `Bench` option.
 Analysis
 --------
 
+The analysis works in two step. First we generate the bucketized statistics and then we generate the plots.
+
 Run sbt analysis with parameters:
 
-    run """{"analysis": "InRatio,OutRatio,Distance,Relatedness", "eval":"correlation,classification"}"""
+    run """{
+            "analysis": "Relatedness,InRatio,OutRatio,InDistance,OutDistance,JaccardIn,JaccardOut",
+            "eval":"correlation,classification"
+        }"""
     
 [Enable](http://docs.python-guide.org/en/latest/dev/virtualenvs/) `virtualenv` and install the required dependencies:
 

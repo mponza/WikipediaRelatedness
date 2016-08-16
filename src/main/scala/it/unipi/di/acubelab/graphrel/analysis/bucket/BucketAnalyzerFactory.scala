@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.graphrel.analysis.bucket
 
 import it.unipi.di.acubelab.graphrel.analysis.bucket.degree.{BucketInDegreeAnalyzer, BucketOutDegreeAnalyzer, BucketSymDegreeAnalyzer}
+import it.unipi.di.acubelab.graphrel.analysis.bucket.jaccard.{BucketInJaccardAnalyzer, BucketOutJaccardAnalyzer}
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 
 object BucketAnalyzerFactory {
@@ -18,6 +19,10 @@ object BucketAnalyzerFactory {
       case "InDistance" => new BucketInDegreeAnalyzer(relatednessName, evalName, wikiSimDataset)
       case "OutDistance" => new BucketOutDegreeAnalyzer(relatednessName, evalName, wikiSimDataset)
       case "SymDistance" => new BucketSymDegreeAnalyzer(relatednessName, evalName, wikiSimDataset)
+
+      case "JaccardIn" => new BucketInJaccardAnalyzer(relatednessName, evalName, wikiSimDataset)
+      case "JaccardOut" => new BucketOutJaccardAnalyzer(relatednessName, evalName, wikiSimDataset)
+      case "JaccardSym" => new BucketSymDegreeAnalyzer(relatednessName, evalName, wikiSimDataset)
 
       case _ => throw new IllegalArgumentException("Analyzer %s does not exist.".format(analysisName))
     }
