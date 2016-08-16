@@ -23,7 +23,6 @@ class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluato
     buckets.map {
       case (bucketName, range) =>
         val labels = bucketizeLabelRange(tasks, range)
-        println(labels.size)
         bucketName -> Map(
             "precision" -> precision(labels),
             "recall" -> recall(labels),

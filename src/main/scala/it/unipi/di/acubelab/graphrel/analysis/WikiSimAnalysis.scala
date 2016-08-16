@@ -50,7 +50,7 @@ class WikiSimAnalysis(options: Map[String, Any]) {
     new File(path).mkdirs()
 
     val buckets = analyzers(0).buckets
-    val columnNames = analyzers(0).wikiSimPerformance(0).csvFields()
+    val columnNames = "Method" +: analyzers(0).wikiSimPerformance(0).csvFields()
 
     for((bucket, index) <- buckets.zipWithIndex) {
       // Number of elements in the index-th bucket of bucketTasks.

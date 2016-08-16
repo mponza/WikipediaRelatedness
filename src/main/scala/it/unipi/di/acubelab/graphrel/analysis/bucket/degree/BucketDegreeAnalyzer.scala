@@ -18,7 +18,7 @@ trait BucketDegreeAnalyzer extends BucketAnalyzer {
         return index
       }
     }
-    throw new IllegalArgumentException("InDegreeRatio error %.3f".format(ratio))
+    throw new IllegalArgumentException("DegreeRatio error %.3f".format(ratio))
   }
 
   def degreeRatio(wikiRelTask: WikiRelTask) : Float = {

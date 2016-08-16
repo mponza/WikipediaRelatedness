@@ -1,12 +1,17 @@
 import os
 
-from utils import list_analysis_dirs
-from plot import generate_barplots
+from utils import ANALYSIS_DIR
+from utils import list_files
+
+from plot import make_plotter
+
 
 def main():
-    for d in list_analysis_dirs():
-    	print 'Generating plots for {0}...'.format(os.path.basename(d))
-        generate_barplots(d)
+    for directory in list_files(ANALYSIS_DIR, list_only_dirs=True):
+		print 'Generating plots for {0}...'.format(os.path.basename(directory))
+
+		plotter = make_plotter(directory)
+		plotter.generate_plots()
 
 if __name__ == '__main__':
     main()

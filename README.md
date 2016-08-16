@@ -100,3 +100,6 @@ Run sbt analysis with parameters:
 Generate charts:
     
     python src/main/python/charts/
+    
+
+(Running Jupyter on Mac OS X type `export PATH=/Users/marco/anaconda/bin:$PATH`)
