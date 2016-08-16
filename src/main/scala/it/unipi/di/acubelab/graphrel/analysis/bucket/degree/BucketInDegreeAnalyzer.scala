@@ -4,7 +4,7 @@ import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
 
 
-class BucketInDegreeAnalyzer(val relatednessName: String, val wikiSimDataset: WikiSimDataset)
+class BucketInDegreeAnalyzer(val relatednessName: String, val evalName: String, val wikiSimDataset: WikiSimDataset)
   extends BucketDegreeAnalyzer {
 
   override def wikiBVGraph = WikiGraph.inGraph

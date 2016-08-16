@@ -37,6 +37,8 @@ class EmbeddingRelatedness(options: Map[String, Any]) extends Relatedness  {
       val srcVec = w2v.get("ent_" + srcWikiID)
       val dstVec = w2v.get("ent_" + dstWikiID)
 
+      if(srcVec == null || dstVec == null) return 0.0
+
       val distance = LinearAlgebra.inner(srcVec.length, srcVec, 0, dstVec, 0)
       val srcNorm = math.sqrt(LinearAlgebra.inner(srcVec.length, srcVec, 0, srcVec, 0))
       val dstNorm = math.sqrt(LinearAlgebra.inner(srcVec.length, dstVec, 0, dstVec, 0))

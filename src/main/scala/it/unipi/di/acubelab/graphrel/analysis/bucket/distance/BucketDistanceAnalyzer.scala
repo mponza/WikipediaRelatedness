@@ -6,8 +6,9 @@ import it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph.WikiBVGraph
 
 trait BucketDistanceAnalyzer extends BucketAnalyzer {
   def wikiBVGraph : WikiBVGraph
+  val maxDistance = 4
 
-  def computeBuckets(step: Double, maxDistance: Int = 4) : List[(Double, Double)] = {
+  override def computeBuckets(step: Double) : List[(Double, Double)] = {
     (for(i <- 0.0 to maxDistance.toDouble - step by step) yield (i, i)).toList  // Distances are ints.
   }
 

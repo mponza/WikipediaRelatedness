@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.graphrel.evaluation.classification
 
 import java.lang.Double
+import scala.language.existentials
 
 import com.google.common.collect.Range
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
@@ -15,9 +16,9 @@ class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluato
     * @return {"low/medium/high" -> {"F1/Precision/Recall" -> Double}}
     * */
   def classificationScores() : Map[String, Map[String, Double]] = {
-    val buckets = Map("low" -> Range.closed(0.0, 0.3),
-                      "medium" -> Range.openClosed(0.3, 0.7),
-                      "high" -> Range.openClosed(0.7, 1.0))
+    val buckets = Map("low" -> Range.closed(new Double(0.0), new Double(0.3)),
+                      "medium" -> Range.openClosed(new Double(0.3), new Double(0.7)),
+                      "high" -> Range.openClosed(new Double(0.7), new Double(1.0)))
 
     buckets.map {
       case (bucketName, range) =>
@@ -58,15 +59,15 @@ class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluato
   }
 
   def precision(labels: List[(Int, Int)]) : Double = {
-    truePositive(labels) / ((truePositive(labels) + trueNegative(labels)) max 1.0 )
+    truePositive(labels) / (math.max(truePositive(labels) + trueNegative(labels), 1.0))
   }
 
   def recall(labels: List[(Int, Int)]) : Double = {
-    truePositive(labels) / ((truePositive(labels) + falseNegative(labels)) max 1.0)
+    truePositive(labels) / (math.max(truePositive(labels) + falseNegative(labels), 1.0))
   }
 
   def f1(labels: List[(Int, Int)]) : Double = {
-    2 * precision(labels) * recall(labels) / ((precision(labels) + recall(labels)) max 1.0)
+    2 * precision(labels) * recall(labels) / (math.max(precision(labels) + recall(labels), 1.0))
   }
 
   override def wikiSimPerformance() : WikiSimPerformance = {

@@ -105,7 +105,8 @@ object GridCoSimRank {
         csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f, "graph": "%s", "weighting": %s}"""
           .format(algo, iters, decay, graph, weighting)
       else
-        csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f}""".format(algo, iters, decay)
+        csrJson = """{"relatedness": "%s", "iters": %d, "decay": %1.3f, "graph": "%s"}"""
+          .format(algo, iters, decay, graph)
 
       Bench.main(Array(csrJson))
     }
@@ -139,10 +140,12 @@ object AllBench {
 object Analysis {
   def main(args: Array[String]): Unit = {
     val options =  if (args.length > 0) JSON.parseFull(args(0)) else Some(Map())
+
     options match {
       case Some(opts: Map[String, Any] @unchecked) =>
         val wikiAnalysis = new WikiSimAnalysis(opts)
         wikiAnalysis.computeAnalysis()
+
       case _ => throw new IllegalArgumentException("Options Analysis do not match with nothing!")
     }
   }

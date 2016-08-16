@@ -26,6 +26,7 @@ libraryDependencies ++= Seq(
   "edu.berkeley.nlp" % "berkeleylm" % "1.1.2",
 
   "org.apache.commons" % "commons-math3" % "3.6.1"
+)
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html
 unmanagedJars in Compile ++= {

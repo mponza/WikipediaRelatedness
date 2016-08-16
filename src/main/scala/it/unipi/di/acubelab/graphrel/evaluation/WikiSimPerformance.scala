@@ -6,7 +6,7 @@ import java.nio.file.Paths
 import com.github.tototoshi.csv.CSVWriter
 
 trait WikiSimPerformance {
-  // String which represent the performance.
+  // String which represents the performance.
   def toString() : String
 
   def savePerformance(path: String) = {
@@ -16,4 +16,10 @@ trait WikiSimPerformance {
     csvWriter.writeRow(toString())
     csvWriter.close
   }
+
+  // Name of each column.
+  def csvFields() : List[String]
+
+  // Value of each column.
+  def csvValues() : List[Double]
 }

@@ -20,4 +20,18 @@ class WikiSimClassPerformance(scores: Map[String, Map[String, Double]]) extends 
       bucketScore("f1").toDouble
     )
   }
+
+  def csvFields() : List[String] = {
+    List("Low_Precision", "Low_Recall", "Low_F1",
+         "Medium_Precision", "Medium_Recall", "Medium_F1",
+         "High_Precision", "High_Recall", "High_F1"
+    )
+  }
+
+  def csvValues() : List[scala.Double] = {
+    List(scores("low")("precision"), scores("low")("recall"), scores("low")("f1"),
+         scores("medium")("precision"), scores("medium")("recall"), scores("medium")("f1"),
+         scores("high")("precision"), scores("high")("recall"), scores("high")("f1")
+    )
+  }
 }

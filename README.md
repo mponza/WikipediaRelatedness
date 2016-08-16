@@ -66,7 +66,7 @@ Analysis
 
 Run sbt analysis with parameters:
 
-    run """{"analysis": "InRatio,OutRatio,Distance,Relatedness", eval="correlation,classification"}"""
+    run """{"analysis": "InRatio,OutRatio,Distance,Relatedness", "eval":"correlation,classification"}"""
     
 [Enable](http://docs.python-guide.org/en/latest/dev/virtualenvs/) `virtualenv` and install the required dependencies:
 

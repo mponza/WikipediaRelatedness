@@ -11,9 +11,19 @@ import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
+/**
+  * TODO: Find time to refactor analsyis. Too many changes during time.
+  *
+  * {
+  *   "analysis": "Relatedness,inDegree,outDegree,inDistance,outDistance",
+  *   "eval":"correlation,classification"
+  * }
+  */
 class WikiSimAnalysis(options: Map[String, Any]) {
   val logger = LoggerFactory.getLogger(classOf[WikiSimAnalysis])
-  val analysisName = options.getOrElse("analysis", "Relatedness").toString
+
+  val analysisNames = options.getOrElse("analysis", "Relatedness").toString.split(",")
+  val evalNames = options.getOrElse("eval", "correlation").toString.split(",")
 
   def computeAnalysis() = {
     logger.info("Reading data.csv files...")
@@ -21,18 +31,25 @@ class WikiSimAnalysis(options: Map[String, Any]) {
     logger.info("%d CSV datasets loaded!".format(benchmarkPaths.length))
 
     logger.info("Analyzing data...")
-    val analyzers = computeAnalyzers(benchmarkPaths)
 
-    logger.info("Storing analyzed data...")
-    storeAnalyzers(analyzers, analysisPath())
+    for {
+      analysis <- analysisNames
+      eval <- evalNames
+    } {
+        val analyzers = computeAnalyzers(analysis, eval, benchmarkPaths)
+
+        logger.info("Storing analyzed data...")
+        storeAnalyzers(analyzers, analysisPath(analysis, eval))
+    }
   }
 
   def storeAnalyzers(analyzers: List[BucketAnalyzer], path: String) = {
     new File(path).mkdirs()
 
     val buckets = analyzers(0).buckets
-    for((bucket, index) <- buckets.zipWithIndex) {
+    val columnNames = analyzers(0).wikiSimPerformance(0).csvFields()
 
+    for((bucket, index) <- buckets.zipWithIndex) {
       // Number of elements in the index-th bucket of bucketTasks.
       val size = analyzers(0).bucketTasks.get(index).size
 
@@ -41,9 +58,11 @@ class WikiSimAnalysis(options: Map[String, Any]) {
 
       val csvWriter = CSVWriter.open(bucketPath)
 
-      csvWriter.writeRow(List("Method", "Pearson", "Spearman"))
+      csvWriter.writeRow(columnNames)
+
       analyzers.foreach {
-        case bucketAnalyzer => csvWriter.writeRow(bucketAnalyzer.toCSVList(index))
+        case bucketAnalyzer =>
+          csvWriter.writeRow(bucketAnalyzer.bucketToCSVRow(index))
       }
 
       csvWriter.close
@@ -53,9 +72,9 @@ class WikiSimAnalysis(options: Map[String, Any]) {
   /**
     *
     * @param benchmarkPaths
-    * @return One analyzer per relatedness function.
+    * @return One analyzer for each relatedness function.
     */
-  def computeAnalyzers(benchmarkPaths: List[String]): List[BucketAnalyzer] = {
+  def computeAnalyzers(analysisName: String, evalName: String, benchmarkPaths: List[String]): List[BucketAnalyzer] = {
     val analyzers = ListBuffer.empty[BucketAnalyzer]
 
     benchmarkPaths.foreach {
@@ -63,8 +82,9 @@ class WikiSimAnalysis(options: Map[String, Any]) {
         val wikiSimDataset = new WikiSimDataset(path)
         val relName = relatednessName(path)
 
-        val analyzer = BucketAnalyzerFactory.make(analysisName, relName, wikiSimDataset)
+        val analyzer = BucketAnalyzerFactory.make(analysisName, evalName, relName, wikiSimDataset)
         analyzers.append(analyzer)
+
     }
 
     analyzers.toList
@@ -82,7 +102,7 @@ class WikiSimAnalysis(options: Map[String, Any]) {
     path.slice(path.lastIndexOf("/") + 1, path.lastIndexOf(".data.csv")).toString
   }
 
-  def analysisPath(): String = {
-    Paths.get(Configuration.analysis("correlation"), analysisName).toString
+  def analysisPath(analysis: String, eval: String): String = {
+    Paths.get(Configuration.analysis, "%s_%s".format(analysis, eval)).toString
   }
 }
