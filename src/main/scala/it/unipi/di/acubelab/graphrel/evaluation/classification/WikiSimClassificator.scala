@@ -20,54 +20,69 @@ class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluato
                       "medium" -> Range.openClosed(new Double(0.3), new Double(0.7)),
                       "high" -> Range.openClosed(new Double(0.7), new Double(1.0)))
 
+    val bucketLabels = tasks.map{
+      task =>
+          val relLabel = value2Label(task.rel, buckets)
+          val computedLabel = value2Label(task.computedRel, buckets)
+
+          (relLabel, computedLabel)
+    }
+
     buckets.map {
-      case (bucketName, range) =>
-        val labels = bucketizeLabelRange(tasks, range)
-        bucketName -> Map(
-            "precision" -> precision(labels),
-            "recall" -> recall(labels),
-            "f1" -> f1(labels),
+      case (labelClass, range) =>
+        // Intersection between different classes is not null.
+        // E.g. labelClass == low, pair == (real: medium, predicted: low)
+        // This pair is a false positive for low, but a false negative for medium.
+        val labels = bucketLabels.filter(pair => pair._1 == labelClass || pair._2 == labelClass)
+
+        labelClass -> Map(
+            "precision" -> precision(labels, labelClass),
+            "recall" -> recall(labels, labelClass),
+            "f1" -> f1(labels, labelClass),
             "size" -> new Double(labels.size)
         )
     }
   }
 
-  def bucketizeLabelRange(tasks: List[WikiRelTask], range: Range[Double]) : List[(Int, Int)]= {
-    tasks.map {
-      task =>
-        val humanLabel = if (range.contains(task.rel)) 1 else 0
-        val computedLabel = if (range.contains(task.computedRel)) 1 else 0
-
-        (humanLabel, computedLabel)
-    }
+  /**
+    *  @return Label ("low", "medium", "high") of a relatedness value.
+    */
+  def value2Label(value: Double, buckets: Map[String, Range[Double]]) : String = {
+    buckets.filter {
+      case (name, range) =>
+        range.contains(value)
+    }.head._1
   }
 
-  def truePositive(labelPairs: List[(Int, Int)]) : Int = {
-    labelPairs.foldLeft(0)((tp, pair) => if (pair._1 == pair._2 && pair._1 == 1) tp + 1 else tp)
+  def truePositive(labelPairs: List[(String, String)], labelClass: String) : Int = {
+    labelPairs.foldLeft(0)((tp, pair) => if (pair._1 == pair._2 && pair._1 == labelClass) tp + 1 else tp)
   }
 
-  def trueNegative(labelPairs: List[(Int, Int)]) : Int = {
-    labelPairs.foldLeft(0)((tn, pair) => if (pair._1 == pair._2 && pair._1 == 0) tn + 1 else tn)
+  def trueNegative(labelPairs: List[(String, String)], labelClass: String) : Int = {
+    labelPairs.foldLeft(0)((tn, pair) => if (pair._1 == pair._2 && pair._1 != labelClass) tn + 1 else tn)
   }
 
-  def falsePositive(labelPairs: List[(Int, Int)]) : Int = {
-    labelPairs.foldLeft(0)((fp, pair) => if (pair._1 == pair._2 && pair._1 == 1) fp else fp + 1)
+  def falsePositive(labelPairs: List[(String, String)], labelClass: String) : Int = {
+    labelPairs.foldLeft(0)((fp, pair) => if (pair._1 != pair._2 && pair._2 == labelClass) fp + 1 else fp)
   }
 
-  def falseNegative(labelPairs: List[(Int, Int)]) : Int = {
-    labelPairs.foldLeft(0)((fn, pair) => if (pair._1 == pair._2 && pair._1 == 0) fn else fn + 1)
+  def falseNegative(labelPairs: List[(String, String)], labelClass: String) : Int = {
+    labelPairs.foldLeft(0)((fn, pair) => if (pair._1 != pair._2 && pair._1 == labelClass) fn + 1 else fn)
   }
 
-  def precision(labels: List[(Int, Int)]) : Double = {
-    truePositive(labels) / math.max(truePositive(labels) + trueNegative(labels), 1.0)
+  def precision(labels: List[(String, String)], labelClass: String) : Double = {
+    truePositive(labels, labelClass) /
+      math.max(truePositive(labels, labelClass) + falsePositive(labels, labelClass), 1.0)
   }
 
-  def recall(labels: List[(Int, Int)]) : Double = {
-    truePositive(labels) / math.max(truePositive(labels) + falseNegative(labels), 1.0)
+  def recall(labels: List[(String, String)], labelClass: String) : Double = {
+    truePositive(labels, labelClass) /
+      math.max(truePositive(labels, labelClass) + falseNegative(labels, labelClass), 1.0)
   }
 
-  def f1(labels: List[(Int, Int)]) : Double = {
-    2 * precision(labels) * recall(labels) / math.max(precision(labels) + recall(labels), 1.0)
+  def f1(labels: List[(String, String)], labelClass: String) : Double = {
+    2 * precision(labels, labelClass) * recall(labels, labelClass) /
+      math.max(precision(labels, labelClass) + recall(labels, labelClass), 1.0)
   }
 
   override def wikiSimPerformance() : WikiSimPerformance = {

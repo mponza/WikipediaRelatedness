@@ -6,10 +6,10 @@ import it.unipi.di.acubelab.graphrel.evaluation.WikiSimPerformance
 class WikiSimClassPerformance(scores: Map[String, Map[String, Double]]) extends WikiSimPerformance {
 
   override def toString: String = {
-    "Low - %s\nMedium - %s\nHigh - %s\nAVG_F1: %1.2f".format(
-      bucetkScoreToString(scores("low")),
-      bucetkScoreToString(scores("medium")),
-      bucetkScoreToString(scores("high")),
+    "Low (%d) - %s\nMedium (%d) - %s\nHigh (%d) - %s\nAVG_F1: %1.2f\n".format(
+      scores("low")("size").toInt, bucetkScoreToString(scores("low")),
+      scores("medium")("size").toInt, bucetkScoreToString(scores("medium")),
+      scores("high")("size").toInt, bucetkScoreToString(scores("high")),
       avgF1()
     )
   }

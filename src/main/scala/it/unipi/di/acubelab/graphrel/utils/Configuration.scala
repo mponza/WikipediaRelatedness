@@ -3,7 +3,11 @@ package it.unipi.di.acubelab.graphrel.utils
 import java.nio.file.Paths
 
 /**
-  * TODO: create reference.conf file in /resources directory
+  * TODO: create reference.conf file in /resources directory.
+  *       0. Create a conf file with not absolute paths.
+  *       1. Use ConfFactory and load conf file.
+  *       2. Parse it and extend specific file with projDir paths.
+  *
   */
 object Configuration {
 
@@ -26,7 +30,8 @@ object Configuration {
     "outBVGraph" -> Paths.get(projDir, "/data/processing/wikipedia/out-bv-graph/out-wiki-links").toString,
     "inBVGraph" -> Paths.get(projDir, "/data/processing/wikipedia/in-bv-graph/in-wiki-links").toString,
     "symBVGraph" -> Paths.get(projDir, "/data/processing/wikipedia/sym-bv-graph/sym-wiki-links").toString,
-    "noLoopSymBVGraph" -> Paths.get(projDir, "/data/processing/wikipedia/no-loop-sym-bv-graph/no-loop-sym-wiki-links").toString,   // no self loop
+    "noLoopSymBVGraph" -> Paths.get(projDir,
+      "/data/processing/wikipedia/no-loop-sym-bv-graph/no-loop-sym-wiki-links").toString,   // no self loops
 
     "llp" -> Paths.get(projDir, "/data/processing/wikipedia/llp").toString,
 
@@ -34,7 +39,8 @@ object Configuration {
 
     "corpus" -> getClass.getResource("/w2v/wikipedia-w2v-linkCorpus.e0.100.tr.bin").getPath,
     "deepWalk" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalk.e0.100.tr.bin").getPath,
-    "deepCorpus" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin").getPath, // Link Corpus and DeepWalk mixed
+    // Link Corpus and DeepWalk mixed.
+    "deepCorpus" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin").getPath,
     "coOccurrence" -> getClass.getResource("/w2v/wikipedia-w2v-coOccurrence.e0.100.tr.bin").getPath,
 
     "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath

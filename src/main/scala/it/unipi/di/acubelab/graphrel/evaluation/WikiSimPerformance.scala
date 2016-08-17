@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.graphrel.evaluation
 
-import java.io.File
+import java.io.{File, PrintWriter}
 import java.nio.file.Paths
 
 import com.github.tototoshi.csv.CSVWriter
@@ -12,9 +12,9 @@ trait WikiSimPerformance {
   def savePerformance(path: String) = {
     new File(new File(path).getParent()).mkdirs
 
-    val csvWriter = CSVWriter.open(new File(path))
-    csvWriter.writeRow(toString())
-    csvWriter.close
+    val printer = new PrintWriter(path)
+    printer.write(toString())
+    printer.close()
   }
 
   // Name of each column.

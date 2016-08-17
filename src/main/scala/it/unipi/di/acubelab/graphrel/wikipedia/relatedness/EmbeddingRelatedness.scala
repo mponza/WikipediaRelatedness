@@ -29,8 +29,10 @@ class EmbeddingRelatedness(options: Map[String, Any]) extends Relatedness  {
     def computeRelatedness(wikiRelTask: WikiRelTask) : Double = {
       val cosine = cosineSimilarity(wikiRelTask.src.wikiID, wikiRelTask.dst.wikiID)
 
+      if (cosine < 0) logger.warn("Negative cosine between %s and %s".format(wikiRelTask.src, wikiRelTask.dst))
       // Cosine scaling: from [-1, 1] to [0, 1]
-      (cosine + 1) / 2
+      (cosine max 0.0) min 1.0
+      //(cosine + 1) / 2
     }
 
     def cosineSimilarity(srcWikiID: Int, dstWikiID: Int) : Double = {
