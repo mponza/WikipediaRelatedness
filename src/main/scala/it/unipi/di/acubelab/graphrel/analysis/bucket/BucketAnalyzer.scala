@@ -16,7 +16,7 @@ trait BucketAnalyzer {
   val evalName: String
   val wikiSimDataset: WikiSimDataset
 
-  val buckets = computeBuckets()//(for(i <- 0.0 to 1.0 - step by step) yield (i, i + step)).toList
+  val buckets = computeBuckets()
   val bucketTasks = computeBucketTasks()
 
   val wikiSimPerformance = computePerformance()
@@ -31,12 +31,14 @@ trait BucketAnalyzer {
     wikiSimDataset.foreach {
       wikiRelTask =>
         val index = bucketIndex(wikiRelTask)
-        val tasks = bucketTasks.getOrElse(index, ListBuffer.empty[WikiRelTask])
-        tasks += wikiRelTask
-        bucketTasks.put(index, tasks)
+
+        if(index >= 0) { // Skips negative indices.
+          val tasks = bucketTasks.getOrElse(index, ListBuffer.empty[WikiRelTask])
+          tasks += wikiRelTask
+          bucketTasks.put(index, tasks)
+        }
     }
 
-    bucketTasks.mapValues(_.toList).toMap
     bucketTasks.mapValues(_.toList).toMap
   }
 
@@ -58,12 +60,14 @@ trait BucketAnalyzer {
         val evaluator = WikiSimEvaluatorFactory.make(evalName, tasks)
         performance += evaluator.wikiSimPerformance()
 
-      } else {
+      } /*
+      TODO: wtf is this slice of code? WHY?!
+      else {
 
         // If a key has no tasks.
         val evaluator = WikiSimEvaluatorFactory.make(evalName, List.empty[WikiRelTask])
         performance += evaluator.wikiSimPerformance()
-      }
+      } */
     }
 
     performance.toList

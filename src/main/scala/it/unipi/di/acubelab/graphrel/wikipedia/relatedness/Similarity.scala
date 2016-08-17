@@ -20,7 +20,7 @@ object Similarity {
     val num = hammingSimilarity(src, dst)
     val den = src.size
 
-    num / den.toDouble
+    num / den.toDouble max 0.0
   }
 
   // Code from https://rosettacode.org/wiki/Levenshtein_distance#Scala
@@ -39,6 +39,7 @@ object Similarity {
     for(i <- 0 until src.size) {
       sim += (if(src.getInt(i) == dst.getInt(i)) 1 else 0)
     }
+
     sim
   }
 }

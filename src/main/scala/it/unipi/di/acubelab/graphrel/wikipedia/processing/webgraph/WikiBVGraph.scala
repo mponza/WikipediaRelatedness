@@ -15,6 +15,9 @@ class WikiBVGraph(path: String) {
   val logger = LoggerFactory.getLogger(classOf[WikiBVGraph])
   val bvGraph = loadBVGraph(path)
 
+  // (srcWikiID, dstWikiID) => distance in the bvGraph
+  val distanceCache = scala.collection.mutable.HashMap.empty[Tuple2[Int, Int], Int]
+
   def loadBVGraph(path: String) = {
     logger.info("Loading BVGraph from %s".format(path))
     val graph = BVGraph.load(path)
@@ -123,25 +126,37 @@ class WikiBVGraph(path: String) {
 
   /**
     * @return Distance in bvGraph from srcWikiID to dstWikiID. -1 if infinity distance.
-    * */
+    */
   def distance(srcWikiID: Int, dstWikiID: Int) : Int = {
+
+    if (!distanceCache.contains((srcWikiID, dstWikiID))) {
+
+      val distance = bfsDistance(srcWikiID, dstWikiID)
+      distanceCache.put((srcWikiID, dstWikiID), distance)
+    }
+
+    distanceCache((srcWikiID, dstWikiID))
+  }
+
+
+  def bfsDistance(srcWikiID: Int, dstWikiID: Int) : Int = {
     if (srcWikiID == dstWikiID) return 0
 
     val bfs = new ParallelBreadthFirstVisit(bvGraph, 0, false, null)
 
-    var prevRound = 0
-    do {
-        prevRound = bfs.round
+    bfs.visit(WikiBVGraph.getNodeID(srcWikiID))
 
-        // BFS visit and check if dstWikiID has been reached.
-        bfs.visit(srcWikiID)
-        if(bfs.queue.contains(WikiBVGraph.getNodeID(dstWikiID))) {
-          return bfs.round
-        }
+    for(d <- 1 until bfs.cutPoints.size - 1) {
 
-    } while(prevRound > 0 && prevRound != bfs.round)
+      // Get nodes visited at d-th iteration of BFS.
+      val dIndex = bfs.cutPoints.getInt(d)
+      val dPlusOneIndex = bfs.cutPoints.getInt(d + 1)
+      val dNodes = bfs.queue.subList(dIndex, dPlusOneIndex)
 
-    -1
+      if(dNodes.contains(WikiBVGraph.getNodeID(dstWikiID))) return d
+    }
+
+    Int.MaxValue
   }
 
 }

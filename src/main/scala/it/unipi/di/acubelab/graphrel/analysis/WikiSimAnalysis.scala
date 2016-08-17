@@ -15,10 +15,10 @@ import scala.collection.mutable.ListBuffer
 /**
   * TODO: Find time to refactor analsyis. Too many changes during time.
   *
-  * {
-  *   "analysis": "Relatedness,inDegree,outDegree,inDistance,outDistance",
-  *   "eval":"correlation,classification"
-  * }
+  *   {
+  *     "analysis": "Relatedness,inDegree,outDegree,inDistance,outDistance",
+  *     "eval":"correlation,classification"
+  *   }
   */
 class WikiSimAnalysis(options: Map[String, Any]) {
   Locale.setDefault(Locale.US)
@@ -53,22 +53,26 @@ class WikiSimAnalysis(options: Map[String, Any]) {
     val columnNames = "Method" +: analyzers(0).wikiSimPerformance(0).csvFields()
 
     for((bucket, index) <- buckets.zipWithIndex) {
-      // Number of elements in the index-th bucket of bucketTasks.
-      val size = analyzers(0).bucketTasks(index).size
 
-      val bucketPath = Paths.get(path, "bucket_%1.2f-%1.2f_size-%d.csv"
-        .format(bucket._1, bucket._2, size)).toString
+      if(analyzers(0).bucketTasks.contains(index)) {
 
-      val csvWriter = CSVWriter.open(bucketPath)
+        // Number of elements in the index-th bucket of bucketTasks.
+        val size = analyzers(0).bucketTasks(index).size
 
-      csvWriter.writeRow(columnNames)
+        val bucketPath = Paths.get(path, "bucket_%1.2f-%1.2f_size-%d.csv"
+          .format(bucket._1, bucket._2, size)).toString
 
-      analyzers.foreach {
-        case bucketAnalyzer =>
-          csvWriter.writeRow(bucketAnalyzer.bucketToCSVRow(index))
+        val csvWriter = CSVWriter.open(bucketPath)
+
+        csvWriter.writeRow(columnNames)
+
+        analyzers.foreach {
+          case bucketAnalyzer =>
+            csvWriter.writeRow(bucketAnalyzer.bucketToCSVRow(index))
+        }
+
+        csvWriter.close
       }
-
-      csvWriter.close
     }
   }
 
