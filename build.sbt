@@ -25,7 +25,11 @@ libraryDependencies ++= Seq(
 
   "edu.berkeley.nlp" % "berkeleylm" % "1.1.2",
 
-  "org.apache.commons" % "commons-math3" % "3.6.1"
+  "org.apache.commons" % "commons-math3" % "3.6.1",
+
+  "org.deeplearning4j" % "deeplearning4j-core" % "0.4-rc3.10",
+  "org.deeplearning4j" % "deeplearning4j-nlp" % "0.4-rc3.10",
+  "org.deeplearning4j" % "deeplearning4j-graph" % "0.4-rc3.10"
 )
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html

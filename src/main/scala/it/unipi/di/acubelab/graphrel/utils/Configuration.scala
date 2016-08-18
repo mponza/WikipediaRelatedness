@@ -43,7 +43,12 @@ object Configuration {
     "deepCorpus" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin").getPath,
     "coOccurrence" -> getClass.getResource("/w2v/wikipedia-w2v-coOccurrence.e0.100.tr.bin").getPath,
 
-    "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath
+    // Francesco said "Try these!"
+    "el-1st-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st-deepWalk.w2v.bin").getPath,
+    "el-1st" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st.w2v.bin").getPath,
+    "el-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk.w2v.bin").getPath,
+
+  "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath
   )
 
   val benchmark =  Paths.get(projDir, "/data/benchmark").toString
