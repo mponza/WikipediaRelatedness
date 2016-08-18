@@ -1,9 +1,10 @@
 package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 
-import it.unimi.dsi.webgraph.algo.ParallelBreadthFirstVisit
+import it.unimi.dsi.webgraph.algo.{GeometricCentralities, ParallelBreadthFirstVisit}
 import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator}
+import it.unimi.dsi.law.rank.PageRankParallelGaussSeidel
+import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator, Transform}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import org.slf4j.LoggerFactory
 
@@ -14,6 +15,9 @@ import org.slf4j.LoggerFactory
 class WikiBVGraph(path: String) {
   val logger = LoggerFactory.getLogger(classOf[WikiBVGraph])
   val bvGraph = loadBVGraph(path)
+
+  protected lazy val pageRanks = computeCentrality("PageRank")
+  protected lazy val harmonicRanks = computeCentrality("Harmonic")
 
   // (srcWikiID, dstWikiID) => distance in the bvGraph
   val distanceCache = scala.collection.mutable.HashMap.empty[Tuple2[Int, Int], Int]
@@ -157,6 +161,34 @@ class WikiBVGraph(path: String) {
     }
 
     Int.MaxValue
+  }
+
+  def computeCentrality(centrality: String = "PageRank", iterations: Int = 100) : Array[Double] = centrality match {
+    case "PageRank" =>
+      val pageRanker = new PageRankParallelGaussSeidel(Transform.transpose(bvGraph))
+
+      logger.info("Computing PageRank with %d iterations...".format(iterations))
+      for(i <- 0 to iterations) {
+        pageRanker.step()
+      }
+
+      pageRanker.rank
+
+    case "Harmonic" =>
+      val harmonicRanker = new GeometricCentralities(bvGraph)
+
+      logger.info("Computing Harmonic Centrality...")
+      harmonicRanker.harmonic
+
+    case _ => throw new IllegalArgumentException("%s Centrality not supported.".format(centrality))
+  }
+
+  def pageRankScore(wikiID: Int): Double = {
+    pageRanks(WikiBVGraph.getNodeID(wikiID))
+  }
+
+  def harmonicScore(wikiID: Int): Double = {
+    harmonicRanks(WikiBVGraph.getNodeID(wikiID))
   }
 
 }

@@ -13,6 +13,7 @@ trait BucketDegreeAnalyzer extends BucketAnalyzer {
 
   override def bucketIndex(wikiRelTask: WikiRelTask) : Int = {
     val ratio = degreeRatio(wikiRelTask)
+
     for((bucket, index) <- buckets.zipWithIndex) {
       if (ratio >= bucket._1.toFloat && ratio <= bucket._2.toFloat) {
         return index

@@ -43,7 +43,6 @@ object Configuration {
     "deepCorpus" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin").getPath,
     "coOccurrence" -> getClass.getResource("/w2v/wikipedia-w2v-coOccurrence.e0.100.tr.bin").getPath,
 
-    // Francesco said "Try these!"
     "el-1st-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st-deepWalk.w2v.bin").getPath,
     "el-1st" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st.w2v.bin").getPath,
     "el-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk.w2v.bin").getPath,

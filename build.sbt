@@ -29,7 +29,10 @@ libraryDependencies ++= Seq(
 
   "org.deeplearning4j" % "deeplearning4j-core" % "0.4-rc3.10",
   "org.deeplearning4j" % "deeplearning4j-nlp" % "0.4-rc3.10",
-  "org.deeplearning4j" % "deeplearning4j-graph" % "0.4-rc3.10"
+  "org.deeplearning4j" % "deeplearning4j-graph" % "0.4-rc3.10",
+  "org.nd4j" % "nd4j-native" % "0.4-rc3.10" classifier "" classifier "macosx-x86_64",
+  "org.nd4j" % "nd4j-native" % "0.4-rc3.10" classifier "" classifier "linux-x86_64",
+  "org.bytedeco" % "javacpp" % "1.2.3"
 )
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html
