@@ -1,9 +1,13 @@
 package it.unipi.di.acubelab.graphrel.analysis.bucket.centrality
 
+import java.io.FileWriter
+
 import it.unipi.di.acubelab.graphrel.analysis.bucket.BucketAnalyzer
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
+
+import scala.collection.mutable.ListBuffer
 
 
 class BucketPageRankAnalyzer(val relatednessName: String, val evalName: String,
@@ -13,7 +17,23 @@ class BucketPageRankAnalyzer(val relatednessName: String, val evalName: String,
   def wikiBVGraph = WikiGraph.outGraph
 
   override def computeBuckets(step: Double) : List[(Double, Double)] = {
-    super.computeBuckets()
+    rankingBuckets(wikiBVGraph.pageRanks, 4)
+  }
+
+  def rankingBuckets(ranks: Array[Double], numBuckets: Int) : List[(Double, Double)] = {
+    val step = 0.000015
+
+    var bi = 0.0
+    val buckets = ListBuffer.empty[(Double, Double)]
+
+    for(i <- 0 until numBuckets) {
+      buckets += ((bi, bi + step))
+      bi += step
+    }
+    buckets += ((bi, 1.0))
+
+    println(buckets.toList)
+    buckets.toList
   }
 
   def indexFromScore(score: Double) : Int = {
@@ -24,7 +44,7 @@ class BucketPageRankAnalyzer(val relatednessName: String, val evalName: String,
         }
       }
 
-      throw new IllegalArgumentException("DegreeRatio error %.3f".format(score))
+      throw new IllegalArgumentException("PageRank error %.3f".format(score))
   }
 
   def bucketIndex(wikiRelTask: WikiRelTask) : Int = {
@@ -34,7 +54,7 @@ class BucketPageRankAnalyzer(val relatednessName: String, val evalName: String,
     val srcScore = wikiBVGraph.pageRankScore(srcWikiID)
     val dstScore = wikiBVGraph.pageRankScore(dstWikiID)
 
-    println("PR Scores of %s: %1.2f %1.2f".format(wikiRelTask.wikiTitleString(), srcScore, dstScore))
+    //println("PR Scores of %s: %1.10f %1.10f".format(wikiRelTask.wikiTitleString(), srcScore, dstScore))
     indexFromScore(srcScore max dstScore)
   }
 }

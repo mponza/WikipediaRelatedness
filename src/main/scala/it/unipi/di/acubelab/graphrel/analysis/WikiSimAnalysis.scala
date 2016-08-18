@@ -59,8 +59,14 @@ class WikiSimAnalysis(options: Map[String, Any]) {
         // Number of elements in the index-th bucket of bucketTasks.
         val size = analyzers(0).bucketTasks(index).size
 
-        val bucketPath = Paths.get(path, "bucket_%1.2f-%1.2f_size-%d.csv"
-          .format(bucket._1, bucket._2, size)).toString
+        var bucketPath = ""
+        if (path.contains("Rank") || path.contains("Jaccard")) {
+          bucketPath = Paths.get(path, "bucket_%1.8f-%1.8f_size-%d.csv"
+            .format(bucket._1, bucket._2, size)).toString
+        } else {
+          bucketPath = Paths.get(path, "bucket_%1.2f-%1.2f_size-%d.csv"
+            .format(bucket._1, bucket._2, size)).toString
+        }
 
         val csvWriter = CSVWriter.open(bucketPath)
 

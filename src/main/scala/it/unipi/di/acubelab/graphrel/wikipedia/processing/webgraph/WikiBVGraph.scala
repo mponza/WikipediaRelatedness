@@ -3,10 +3,12 @@ package it.unipi.di.acubelab.graphrel.wikipedia.processing.webgraph
 import it.unimi.dsi.webgraph.algo.{GeometricCentralities, ParallelBreadthFirstVisit}
 import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.law.rank.PageRankParallelGaussSeidel
+import it.unimi.dsi.law.rank.{PageRankParallelGaussSeidel, SpectralRanking}
 import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator, Transform}
 import it.unipi.di.acubelab.graphrel.utils.Configuration
 import org.slf4j.LoggerFactory
+
+import scala.collection.parallel.mutable.ParArray
 
 
 /**
@@ -16,8 +18,8 @@ class WikiBVGraph(path: String) {
   val logger = LoggerFactory.getLogger(classOf[WikiBVGraph])
   val bvGraph = loadBVGraph(path)
 
-  protected lazy val pageRanks = computeCentrality("PageRank")
-  protected lazy val harmonicRanks = computeCentrality("Harmonic")
+  lazy val pageRanks = computeCentrality("PageRank")
+  lazy val harmonicRanks = computeCentrality("Harmonic")
 
   // (srcWikiID, dstWikiID) => distance in the bvGraph
   val distanceCache = scala.collection.mutable.HashMap.empty[Tuple2[Int, Int], Int]
@@ -163,16 +165,26 @@ class WikiBVGraph(path: String) {
     Int.MaxValue
   }
 
-  def computeCentrality(centrality: String = "PageRank", iterations: Int = 100) : Array[Double] = centrality match {
+  def computeCentrality(centrality: String = "PageRank", iterations: Int = 10) : Array[Double] = centrality match {
     case "PageRank" =>
       val pageRanker = new PageRankParallelGaussSeidel(Transform.transpose(bvGraph))
 
       logger.info("Computing PageRank with %d iterations...".format(iterations))
-      for(i <- 0 to iterations) {
-        pageRanker.step()
-      }
+      pageRanker.stepUntil(new SpectralRanking.IterationNumberStoppingCriterion(iterations))
+
+      logger.info("Maximum PageRank found: %1.10f".format(pageRanker.rank.max))
+      val index = pageRanker.rank.indexOf(pageRanker.rank.max)
+      logger.info("Max index: %d which is WikiID %d".format(index, WikiBVGraph.getWikiID(index)))
+
+      val mn = pageRanker.rank.foldRight(1.0)((f, x) => if(x == 0) f else x min f)
+      logger.info("Minimum PageRank found: %1.10f".format(mn))
+      val minIndex = pageRanker.rank.indexOf(mn)
+      logger.info("Minimum index: %d which is WikiID %d".format(index, WikiBVGraph.getWikiID(minIndex)))
+
+      logger.info("Number of PageRank scores: %d".format(pageRanker.rank.length))
 
       pageRanker.rank
+
 
     case "Harmonic" =>
       val harmonicRanker = new GeometricCentralities(bvGraph)
@@ -216,6 +228,7 @@ object WikiBVGraph {
     }
     nodeID
   }
+
 
   def getWikiID(nodeID: Int) : Int = {
     val wikiID = node2wiki.getOrDefault(nodeID, -1)

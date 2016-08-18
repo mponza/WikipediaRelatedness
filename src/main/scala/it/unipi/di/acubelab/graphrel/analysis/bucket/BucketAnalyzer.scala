@@ -1,8 +1,11 @@
 package it.unipi.di.acubelab.graphrel.analysis.bucket
 
+import java.io.FileWriter
+
 import it.unipi.di.acubelab.graphrel.dataset.WikiRelTask
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.graphrel.evaluation.{WikiSimEvaluatorFactory, WikiSimPerformance}
+import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
 
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.HashMap
@@ -60,14 +63,13 @@ trait BucketAnalyzer {
         val evaluator = WikiSimEvaluatorFactory.make(evalName, tasks)
         performance += evaluator.wikiSimPerformance()
 
-      } /*
-      TODO: wtf is this slice of code? WHY?!
+      }
       else {
 
         // If a key has no tasks.
         val evaluator = WikiSimEvaluatorFactory.make(evalName, List.empty[WikiRelTask])
         performance += evaluator.wikiSimPerformance()
-      } */
+      }
     }
 
     performance.toList

@@ -10,4 +10,7 @@ class BucketOutJaccardAnalyzer(val relatednessName: String, val evalName: String
   override def jaccardRelatedness = RelatednessFactory.make(
     Some(Map("relatedness" -> "Jaccard", "graph" -> "outGraph")))
 
+  override def computeBuckets(step: Double = 0.1) : List[(Double, Double)] = {
+    jaccardBuckets(4, 0.005)
+  }
 }

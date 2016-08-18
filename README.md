@@ -84,7 +84,7 @@ The analysis works in two step. First we generate the bucketized statistics and 
 Run sbt analysis with parameters:
 
     run """{
-            "analysis": "Relatedness,InRatio,OutRatio,InDistance,OutDistance,JaccardIn,JaccardOut",
+            "analysis": "Relatedness,InRatio,OutRatio,SymDistance,JaccardIn,JaccardOut,PageRank",
             "eval":"correlation,classification"
         }"""
     
