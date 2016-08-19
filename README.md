@@ -58,7 +58,8 @@ Enable virtualenv and install LDA requirements
 Create tf-idf vectors from the Wikipedia dump:
     
     cd src/main/resources/
-    python -m gensim.scripts.make_wiki
+    mkdir -p ../../../../data/processing/wikipedia/gensim/make_wiki
+    python -m gensim.scripts.make_wiki enwiki-20160305-pages-articles.xml.bz2 ../../../../data/processing/wikipedia/gensim/make_wiki
     bzip2 wiki_en_tfidf.mm
     
 Runs Gensim stuff...
