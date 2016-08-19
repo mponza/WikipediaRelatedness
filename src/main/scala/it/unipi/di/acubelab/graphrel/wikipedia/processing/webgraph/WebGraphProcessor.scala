@@ -98,6 +98,7 @@ class WebGraphProcessor {
     val symGraph = WikiGraph.symGraph
     val distances = scala.collection.mutable.HashMap.empty[Tuple2[Int, Int], Int]
 
+    var i = 1
     wikiSimDataset.foreach {
       case wikiRelTask =>
         val srcWikiID = wikiRelTask.src.wikiID
@@ -108,11 +109,15 @@ class WebGraphProcessor {
           distances.put((srcWikiID, dstWikiID), dist)
           distances.put((dstWikiID, srcWikiID), dist)
         }
+
+        logger.info("%d distances computed.".format(i))
+        i += 1
     }
 
     logger.info("Serializing distances...")
     val distFile = new File(Configuration.wikipedia("symDistances"))
     distFile.getParentFile.mkdirs()
+
     BinIO.storeObject(distances.toMap, distFile)
   }
 }

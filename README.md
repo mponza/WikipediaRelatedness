@@ -35,11 +35,38 @@ If you are planning to use `CoSimRank`, please download [CoSimRankServer](https:
    
    
    
-Processing
-----------
+Webgraph Processing
+-------------------
 
 Run webgraph processing classes in order to generate the graph and the LLP labels.
+
+
+LSA Processing
+--------------
+
+TODO: use [WikiExtractor](https://github.com/attardi/wikiextractor) to clean Wikipedia.
+
+Download Wikipedia dump:
+
+    wget https://dumps.wikimedia.org/enwiki/20160305/enwiki-20160305-pages-articles.xml.bz2 src/main/resources src/main/resources
     
+Enable virtualenv and install LDA requirements 
+ 
+    source venv/bin/activate
+    python -r src/main/python/lda/requirements.txt
+
+Create tf-idf vectors from the Wikipedia dump:
+    
+    cd src/main/resources/
+    python -m gensim.scripts.make_wiki
+    bzip2 wiki_en_tfidf.mm
+    
+Runs Gensim stuff...
+
+
+
+
+
     
 Benchmarking
 ------------
