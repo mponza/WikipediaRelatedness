@@ -18,6 +18,15 @@ object BVGraph {
   }
 }
 
+object Distances {
+  def main(args: Array[String]): Unit = {
+    val wikiSimDataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+
+    val bvGraphProcessing = new WebGraphProcessor
+    bvGraphProcessing.computeDistances(wikiSimDataset)
+  }
+}
+
 object LLP {
   def main(args: Array[String]) {
     val llpOptions =  if (args.length > 0) JSON.parseFull(args(0)) else Some(Map())

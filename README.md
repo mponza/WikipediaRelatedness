@@ -63,7 +63,6 @@ Run the `Bench` class with one following parameter:
     """{"relatedness": "LMModel"}"""
     
     """{"relatedness": "CoSimRank", "graph": "deepCorpus"}"""
-    """{"relatedness": "PPRCos", "graph": "deepCorpus"}"""  
     
     ...
     

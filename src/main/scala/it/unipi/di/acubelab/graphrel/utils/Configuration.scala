@@ -33,8 +33,9 @@ object Configuration {
     "noLoopSymBVGraph" -> Paths.get(projDir,
       "/data/processing/wikipedia/no-loop-sym-bv-graph/no-loop-sym-wiki-links").toString,   // no self loops
 
-    "llp" -> Paths.get(projDir, "/data/processing/wikipedia/llp").toString,
+    "symDistances" -> Paths.get(projDir, "/data/processing/wikipedia/distances/symDistance.bin").toString,
 
+    "llp" -> Paths.get(projDir, "/data/processing/wikipedia/llp").toString,
     "multiLLP" -> Paths.get(projDir, "/data/processing/wikipedia/multiLLP").toString,
 
     "corpus" -> getClass.getResource("/w2v/wikipedia-w2v-linkCorpus.e0.100.tr.bin").getPath,
@@ -42,12 +43,11 @@ object Configuration {
     // Link Corpus and DeepWalk mixed.
     "deepCorpus" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin").getPath,
     "coOccurrence" -> getClass.getResource("/w2v/wikipedia-w2v-coOccurrence.e0.100.tr.bin").getPath,
-
     "el-1st-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st-deepWalk.w2v.bin").getPath,
     "el-1st" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st.w2v.bin").getPath,
     "el-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk.w2v.bin").getPath,
 
-  "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath
+    "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath
   )
 
   val benchmark =  Paths.get(projDir, "/data/benchmark").toString

@@ -6,7 +6,9 @@ import java.io.File
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
+import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.graphrel.utils.Configuration
+import it.unipi.di.acubelab.graphrel.wikipedia.WikiGraph
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.llp.{LLPProcessor, LLPTask}
 import it.unipi.di.acubelab.graphrel.wikipedia.processing.multillp.MultiLLPProcessor
 import org.slf4j.LoggerFactory
@@ -80,7 +82,7 @@ class WebGraphProcessor {
     val graph = BVGraph.load(Configuration.wikipedia("noLoopSymBVGraph"))
 
     llpOptions match {
-      case Some(options: Map[String, Int] @unchecked) =>
+      case Some(options: Map[String, Int]@unchecked) =>
         val nLLP = options.getOrElse("nLLP", 10.0).asInstanceOf[Double].toInt
         val llpTask = LLPTask.makeFromOption(options)
 
@@ -88,5 +90,29 @@ class WebGraphProcessor {
 
       case _ => new LLPProcessor(graph).process()
     }
+  }
+
+  def computeDistances(wikiSimDataset: WikiSimDataset) = {
+    logger.info("Computing Wikipedia Graph distances of WikiSimDataset...")
+
+    val symGraph = WikiGraph.symGraph
+    val distances = scala.collection.mutable.HashMap.empty[Tuple2[Int, Int], Int]
+
+    wikiSimDataset.foreach {
+      case wikiRelTask =>
+        val srcWikiID = wikiRelTask.src.wikiID
+        val dstWikiID = wikiRelTask.dst.wikiID
+
+        if (!distances.contains((srcWikiID, dstWikiID))) {
+          val dist = symGraph.distance(srcWikiID, dstWikiID)
+          distances.put((srcWikiID, dstWikiID), dist)
+          distances.put((dstWikiID, srcWikiID), dist)
+        }
+    }
+
+    logger.info("Serializing distances...")
+    val distFile = new File(Configuration.wikipedia("symDistances"))
+    distFile.getParentFile.mkdirs()
+    BinIO.storeObject(distances.toMap, distFile)
   }
 }

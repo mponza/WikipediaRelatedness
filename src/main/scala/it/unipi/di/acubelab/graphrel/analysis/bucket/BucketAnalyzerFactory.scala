@@ -4,6 +4,7 @@ import it.unipi.di.acubelab.graphrel.analysis.bucket.centrality.BucketPageRankAn
 import it.unipi.di.acubelab.graphrel.analysis.bucket.degree.{BucketInDegreeAnalyzer, BucketOutDegreeAnalyzer, BucketSymDegreeAnalyzer}
 import it.unipi.di.acubelab.graphrel.analysis.bucket.distance.{BucketInDistanceAnalyzer, BucketOutDistanceAnalyzer, BucketSymDistanceAnalyzer}
 import it.unipi.di.acubelab.graphrel.analysis.bucket.jaccard.{BucketInJaccardAnalyzer, BucketOutJaccardAnalyzer}
+import it.unipi.di.acubelab.graphrel.analysis.bucket.relatedness.BucketEmbeddingAnalyzer
 import it.unipi.di.acubelab.graphrel.dataset.wikisim.WikiSimDataset
 
 object BucketAnalyzerFactory {
@@ -27,6 +28,8 @@ object BucketAnalyzerFactory {
       case "JaccardSym" => new BucketSymDegreeAnalyzer(relatednessName, evalName, wikiSimDataset)
 
       case "PageRank" => new BucketPageRankAnalyzer(relatednessName, evalName, wikiSimDataset)
+
+      case "w2v" => new BucketEmbeddingAnalyzer(relatednessName, evalName, wikiSimDataset)
 
       case _ => throw new IllegalArgumentException("Analyzer %s does not exist.".format(analysisName))
     }
