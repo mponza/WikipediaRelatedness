@@ -13,6 +13,7 @@ Resources files:
  * Wikipedia graph:
 
         wikipedia/wiki-links-sorted.gz
+        wikipedia/wikipedia-w2v-linkCorpus.json.gz
 
  * Embeddings:
 
@@ -44,30 +45,25 @@ Run webgraph processing classes in order to generate the graph and the LLP label
 Latent Semantic Processing
 --------------------------
 
-TODO: use [WikiExtractor](https://github.com/attardi/wikiextractor) to clean Wikipedia.
-
-Download Wikipedia dump:
-
-    wget https://dumps.wikimedia.org/enwiki/20160305/enwiki-20160305-pages-articles.xml.bz2 src/main/resources src/main/resources
+Enable virtualenv and install requirements:
     
-Enable virtualenv and install LDA requirements 
- 
+    virtualenv venv
     source venv/bin/activate
-    python -r src/main/python/lda/requirements.txt
+    python -r src/main/python/latent/requirements.txt
 
 Create tf-idf vectors from the Wikipedia dump:
     
-    cd src/main/resources/
-    mkdir -p ../../../../data/processing/wikipedia/gensim/make_wiki
-    python -m gensim.scripts.make_wiki enwiki-20160305-pages-articles.xml.bz2 ../../../../data/processing/wikipedia/latent/gensim/make_wiki
-    bzip2 wiki_en_tfidf.mm
+    python src/main/python/latent/make_wiki src/main/resources/wikipedia/wikipedia-w2v-linkCorpus.json.gz data/processing/wikipedia/latent/gensim/make_wiki
     
-Runs Gensim stuff...
+And then...?
 
 For the eigenvector SVD generation just type:
     
-    python latent/svd ../../../../src/main/resources/wikipedia-w2v-linkCorpus.json.gz ../../../../data/processing/wikipedia/latent/svd
+    python src/main/python/latent/svd ../../../resources/wikipedia-w2v-linkCorpus.json.gz data/processing/wikipedia/latent/svd
 
+
+Explicit Semantic Processing
+----------------------------
 
 
 
