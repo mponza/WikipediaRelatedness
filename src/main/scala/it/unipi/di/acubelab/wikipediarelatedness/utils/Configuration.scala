@@ -26,6 +26,8 @@ object Configuration {
     "wikiLinks" -> getClass.getResource("/wikipedia/wiki-links-sorted.gz").getPath,
     "corpus" -> getClass.getResource("/wikipedia/wikipedia-w2v-linkCorpus.json.gz").getPath,
 
+    "lucene" -> Paths.get(projDir, "/data/processing/wikipedia/lucene").toString,
+
     "wiki2node" -> Paths.get(projDir, "/data/processing/wikipedia/mapping/wiki2node").toString,
 
     "outBVGraph" -> Paths.get(projDir, "/data/processing/wikipedia/out-bv-graph/out-wiki-links").toString,
@@ -61,9 +63,5 @@ object Configuration {
   val eigen = Map(
     "left" -> Paths.get(projDir, "/data/processing/latent/svd/eigen_left.csv.gz").toString,
     "right" -> Paths.get(projDir, "/data/processing/latent/svd/eigen_right.csv.gz").toString
-  )
-
-  val lucene = Map(
-    "index" -> Paths.get(projDir, "/data/processing/lucene/wikipediaIndex.lucene").toString
   )
 }

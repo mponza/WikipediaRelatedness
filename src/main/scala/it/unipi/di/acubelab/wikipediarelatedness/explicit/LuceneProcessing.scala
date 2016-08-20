@@ -22,12 +22,9 @@ class LuceneProcessing {
 
   def process() = {
     logger.info("Indexing Wikipedia documents...")
-    val directory = FSDirectory.open(Paths.get(Configuration.lucene("index")))
+    val directory = FSDirectory.open(Paths.get(Configuration.wikipedia("lucene")))
 
-    val emptyStopWords = new CharArraySet(0, true)
-    val analyzer = new StandardAnalyzer(emptyStopWords)
-
-    val config = new IndexWriterConfig(analyzer)
+    val config = new IndexWriterConfig(LuceneIndex.analyzer)
     val writer = new IndexWriter(directory, config)
     wikipediaDocuments().toStream.par.foreach(wikiDoc => writer.addDocument(wikiDoc))
 
