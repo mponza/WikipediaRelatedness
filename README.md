@@ -41,8 +41,8 @@ Webgraph Processing
 Run webgraph processing classes in order to generate the graph and the LLP labels.
 
 
-LSA Processing
---------------
+Latent Semantic Processing
+--------------------------
 
 TODO: use [WikiExtractor](https://github.com/attardi/wikiextractor) to clean Wikipedia.
 
@@ -59,11 +59,14 @@ Create tf-idf vectors from the Wikipedia dump:
     
     cd src/main/resources/
     mkdir -p ../../../../data/processing/wikipedia/gensim/make_wiki
-    python -m gensim.scripts.make_wiki enwiki-20160305-pages-articles.xml.bz2 ../../../../data/processing/wikipedia/gensim/make_wiki
+    python -m gensim.scripts.make_wiki enwiki-20160305-pages-articles.xml.bz2 ../../../../data/processing/wikipedia/latent/gensim/make_wiki
     bzip2 wiki_en_tfidf.mm
     
 Runs Gensim stuff...
 
+For the eigenvector SVD generation just type:
+    
+    python latent/svd ../../../../src/main/resources/wikipedia-w2v-linkCorpus.json.gz ../../../../data/processing/wikipedia/latent/svd
 
 
 
@@ -94,9 +97,9 @@ Run the `Bench` class with one following parameter:
     
     ...
     
-    sbt "run-main it.unipi.di.acubelab.graphrel.MainClass"
+    sbt "run-main it.unipi.di.acubelab.wikipediarelatedness.MainClass"
 
-See `it.unipi.di.acubelab.graphrel.wikipedia.relatedness` for the extended list of realtedness method avaiable.
+See `it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness` for the extended list of realtedness method avaiable.
 LLP need the label generation (see `processing` package).
 
 

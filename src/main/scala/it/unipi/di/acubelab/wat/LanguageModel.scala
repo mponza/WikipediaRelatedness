@@ -4,7 +4,7 @@ import java.io.File
 
 import edu.berkeley.nlp.lm.NgramLanguageModel
 import edu.berkeley.nlp.lm.io.LmReaders
-import it.unipi.di.acubelab.graphrel.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
 
 object LanguageModel {
