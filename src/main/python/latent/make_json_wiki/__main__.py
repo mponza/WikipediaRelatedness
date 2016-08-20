@@ -33,7 +33,7 @@ if __name__ == '__main__':
     else:
         keep_words = DEFAULT_DICT_SIZE
     online = 'online' in program
-    lemmatize = True # 'lemma' in program
+    lemmatize = 'lemma' in program
     debug = 'nodebug' not in program
 
     if online:

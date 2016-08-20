@@ -1,0 +1,101 @@
+import numpy as np
+from scipy import sparse
+
+from gensim import utils
+import os
+import gzip
+
+
+# Same mapping used by Webgraph in the src/main/scala/ code.
+wiki2node = {}
+
+
+def load_wikipedia_linked_list(path):
+    '''
+    Loads Wikipedia Linked List from path by mapping the Wikipedia IDs
+    to matrix indicies (see wiki2node).
+    '''
+    linked_list = {}
+
+    print 'Loading Wikipedia invertex lists from {0}...'.format(path)
+    with utils.smart_open(path) as f:
+        for line in f:
+            link = line.strip().split('\t')
+            srcWikiID, dstWikiID = int(link[0]), int(link[1])
+
+            srcNodeID = wiki2NodeMapping(srcWikiID)
+            dstNodeID = wiki2NodeMapping(dstWikiID)
+
+            if srcNodeID not in linked_list:
+                linked_list[srcNodeID] = []
+
+            linked_list[srcNodeID].append(dstNodeID)
+
+    print 'Removing duplicated...'
+    for index in linked_list:
+         linked_list[index] = set(linked_list[index])
+
+    return linked_list
+
+
+def wiki2NodeMapping(wikiID):
+    '''
+    Maps wikiID to the matrix index nodeID by updating wiki2node.
+    '''
+    if wikiID in wiki2node:
+        return wiki2node[wikiID]
+
+    nextNodeID = len(wiki2node)
+    wiki2node[wikiID] = nextNodeID
+
+    return nextNodeID
+
+
+def generate_wikipedia_matrix(path):
+    '''
+    Creates scipy sparse linked-list from path.
+    '''
+    linked_list = load_wikipedia_linked_list(path)
+
+    n = len(wiki2node)
+    matrix = sparse.lil_matrix((n, n))
+
+    print 'Creating Sparse Matrix from Linked List...'
+    for src in linked_list:
+        dsts = linked_list[src]
+        prob = 1 / float(len(dsts))
+
+        for dst in dsts:
+            matrix[src, dst] = prob
+
+    return matrix
+
+
+def serialize_matrix(file_path, row_matrix):
+    '''
+    Seriazlies a matrix of rows in a csv file where each 
+    row is a eigvenvector.
+    File: n_eigenvectors rows.
+          Each row is tab separated and contains 4M of floats.
+    '''
+    with gzip.open(file_path, 'w') as f:
+        for column in row_matrix:
+            f.write('\t'.join([str(v) for v in column]))
+
+
+def generate_eigenvectors(wiki_path, eigen_dir, n_eigenvectors=10):
+    matrix = generate_wikipedia_matrix(wiki_path)
+
+    print 'Computing {0} eigenvectors'.format(n_eigenvectors)
+    eigenvectors = sparse.linalg.svds(matrix, k=n_eigenvectors)
+
+    if(not os.path.isdir(eigen_dir)):
+        os.makedirs(eigen_dir)
+
+    print 'Serializing left eigenvectors...'
+    trasp_eigen_left = eigenvectors[0].transpose()
+    serialize_matrix(os.path.join(eigen_dir, 'eigen_left.csv.gz'), trasp_eigen_left)
+
+    print 'Serializing right eigenvectors...'
+    serialize_matrix(os.path.join(eigen_dir, 'eigen_right.csv.gz'), eigenvectors[2])
+

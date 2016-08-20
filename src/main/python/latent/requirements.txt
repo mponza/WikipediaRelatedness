@@ -1,0 +1,4 @@
+gensim==0.13.1
+pattern==2.6
+numpy==1.11.1
+scipy==0.18.0

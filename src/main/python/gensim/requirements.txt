@@ -1,2 +1,0 @@
-gensim==0.13.1
-pattern==2.6

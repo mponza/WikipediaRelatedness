@@ -17,6 +17,9 @@ from gensim import utils
 import gzip
 import multiprocessing
 import json
+import logging
+
+logger = logging.getLogger('gensim.make_json_wiki.json')
 
 def extract_json_pages(filename, filter_namespaces=False):
      with utils.smart_open(filename) as fin:
