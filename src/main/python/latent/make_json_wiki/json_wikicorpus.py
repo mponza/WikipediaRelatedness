@@ -11,6 +11,10 @@ Wikipedia page in the format:
 
 '''
 
+# Copyright (C) 2010 Radim Rehurek <radimrehurek@seznam.cz>
+# Copyright (C) 2012 Lars Buitinck <larsmans@gmail.com>
+# Licensed under the GNU LGPL v2.1 - http://www.gnu.org/licenses/lgpl.html
+
 from gensim.corpora import wikicorpus
 from gensim import utils
 

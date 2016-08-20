@@ -5,6 +5,7 @@ from gensim import utils
 import os
 import gzip
 
+logger = logging.getLogger('latent.svd.eigen')
 
 # Same mapping used by Webgraph in the src/main/scala/ code.
 wiki2node = {}
@@ -17,7 +18,7 @@ def load_wikipedia_linked_list(path):
     '''
     linked_list = {}
 
-    print 'Loading Wikipedia invertex lists from {0}...'.format(path)
+    logger.info('Loading Wikipedia invertex lists from {0}...'.format(path))
     with utils.smart_open(path) as f:
         for line in f:
             link = line.strip().split('\t')
@@ -31,7 +32,7 @@ def load_wikipedia_linked_list(path):
 
             linked_list[srcNodeID].append(dstNodeID)
 
-    print 'Removing duplicated...'
+    logger.info('Removing duplicated...')
     for index in linked_list:
          linked_list[index] = set(linked_list[index])
 
@@ -60,7 +61,7 @@ def generate_wikipedia_matrix(path):
     n = len(wiki2node)
     matrix = sparse.lil_matrix((n, n))
 
-    print 'Creating Sparse Matrix from Linked List...'
+    logger.info('Creating Sparse Matrix from Linked List...')
     for src in linked_list:
         dsts = linked_list[src]
         prob = 1 / float(len(dsts))
@@ -68,7 +69,7 @@ def generate_wikipedia_matrix(path):
         for dst in dsts:
             matrix[src, dst] = prob
 
-    return matrix
+    return sparse.csr_matrix(matrix)
 
 
 def serialize_matrix(file_path, row_matrix):
@@ -83,19 +84,22 @@ def serialize_matrix(file_path, row_matrix):
             f.write('\t'.join([str(v) for v in column]))
 
 
-def generate_eigenvectors(wiki_path, eigen_dir, n_eigenvectors=10):
+def generate_eigenvectors(wiki_path, eigen_dir, n_eigenvectors=100):
     matrix = generate_wikipedia_matrix(wiki_path)
 
-    print 'Computing {0} eigenvectors'.format(n_eigenvectors)
+    logger.info('Computing SVD with {0} eigenvectors'.format(n_eigenvectors))
     eigenvectors = sparse.linalg.svds(matrix, k=n_eigenvectors)
 
     if(not os.path.isdir(eigen_dir)):
         os.makedirs(eigen_dir)
 
-    print 'Serializing left eigenvectors...'
+    logger.info('Serializing left eigenvectors...')
     trasp_eigen_left = eigenvectors[0].transpose()
     serialize_matrix(os.path.join(eigen_dir, 'eigen_left.csv.gz'), trasp_eigen_left)
 
-    print 'Serializing right eigenvectors...'
+    logger.info('Serializing right eigenvectors...')
     serialize_matrix(os.path.join(eigen_dir, 'eigen_right.csv.gz'), eigenvectors[2])
+
+    logger.info('SVD computation ended.')
+
 

@@ -50,6 +50,11 @@ object Configuration {
     "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath
   )
 
+  val eigen = Map(
+    "left" -> Paths.get(projDir, "/data/processing/latent/svd/eigen_left.csv.gz").toString,
+    "right" -> Paths.get(projDir, "/data/processing/latent/svd/eigen_right.csv.gz").toString
+    )
+
   val benchmark =  Paths.get(projDir, "/data/benchmark").toString
 
   val analysis = Map(

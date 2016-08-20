@@ -1,3 +1,13 @@
+'''
+Rewriting of gensim.scripts.make_wikicorpus.py for managing
+Wikipedia as json.gz file. More information can be found 
+in json_wikicorpus.py.
+'''
+
+# Copyright (C) 2010 Radim Rehurek <radimrehurek@seznam.cz>
+# Copyright (C) 2012 Lars Buitinck <larsmans@gmail.com>
+# Licensed under the GNU LGPL v2.1 - http://www.gnu.org/licenses/lgpl.html
+
 import logging
 import os.path
 import sys
