@@ -82,8 +82,8 @@ def serialize_matrix(file_path, row_matrix):
     '''
     Seriazlies a matrix of rows in a csv file where each 
     row is a eigvenvector.
-    File: n_eigenvectors rows.
-          Each row is tab separated and contains 4M of floats.
+    File: 4M of rows.
+          Each row is tab separated and contains 100 floats.
     '''
     with gzip.open(file_path, 'w') as f:
         for column in row_matrix:
@@ -101,10 +101,9 @@ def generate_eigenvectors(wiki_path=WIKI_LINKS, eigen_dir=WIKI_SVD_DIR,
         os.makedirs(eigen_dir)
 
     logger.info('Serializing left eigenvectors...')
-    trasp_eigen_left = eigenvectors[0].transpose()
-    serialize_matrix(os.path.join(eigen_dir, 'eigen_left.csv.gz'), trasp_eigen_left)
+    serialize_matrix(os.path.join(eigen_dir, 'eigen_left.csv.gz'), eigenvectors[0])
 
     logger.info('Serializing right eigenvectors...')
-    serialize_matrix(os.path.join(eigen_dir, 'eigen_right.csv.gz'), eigenvectors[2])
+    serialize_matrix(os.path.join(eigen_dir, 'eigen_right.csv.gz'), eigenvectors[2].transpose())
 
     logger.info('SVD computation ended.')

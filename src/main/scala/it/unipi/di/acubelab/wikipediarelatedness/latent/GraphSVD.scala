@@ -4,7 +4,7 @@ import java.io.{File, FileInputStream}
 import java.util.zip.GZIPInputStream
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WikiBVGraph
 import org.slf4j.LoggerFactory
@@ -19,11 +19,11 @@ class GraphSVD(path : String = Configuration.graphSVD("left")) {
     * Loads eigenvectors from path where each row is a eigenvector of ~4M of doubles.
     * @return {i-th_eigenVector: eigenVector} (0-th is the highest, 1-th the second highest, ...)
     */
-  def loadEigenVectors(path: String) : Int2ObjectArrayMap[DoubleArrayList] = {
+  def loadEigenVectors(path: String) : ObjectArrayList[DoubleArrayList] = {
     // Each row of path is an eigenvector.
-    val eigenVectors = new Int2ObjectArrayMap[DoubleArrayList]
+    val eigenVectors = new ObjectArrayList[DoubleArrayList]
 
-    val fileStream = Source.fromInputStream(
+    val reader = Source.fromInputStream(
       new GZIPInputStream(
         new FileInputStream(
           new File(path)
@@ -32,32 +32,23 @@ class GraphSVD(path : String = Configuration.graphSVD("left")) {
     )
 
     logger.info("Loading eigenvectors from %s...".format(path))
-    for ((line, index) <- fileStream.getLines().zipWithIndex) {
+    for ((line, index) <- reader.getLines().zipWithIndex) {
       val values = line.split("\t").map(_.toDouble)
-      eigenVectors.put(index, new DoubleArrayList(values))
+      eigenVectors.add(new DoubleArrayList(values))
     }
 
     eigenVectors
   }
 
   /**
-    * @return Vector of all elements of eigenVectors which correspond to wikiID.
-    *         In other words: we build a vector where the i-th element is the
-    *         wikiID-th value of the i-th eigenvector.
+    * @return Vector made by all wikiID-th compontents of the first embeddingSize eigenvectors.
     */
   def eigenEmbeddingVector(wikiID: Int, embeddingSize: Int = 0) : DoubleArrayList = {
     val wikiIndex = WikiBVGraph.getNodeID(wikiID)
-    val eigenEmbedding = new DoubleArrayList()
+    val eigenVector =  eigenVectors.get(wikiIndex)
 
-    val eigenSize = if (embeddingSize <= 0 || embeddingSize > eigenVectors.size())
-                      eigenVectors.size()
-                    else embeddingSize
+    val size = if(embeddingSize <= 0) eigenVector.size else embeddingSize
 
-    for(eigenIndex <- 0 until eigenSize) {
-      val eigenValue = eigenVectors.get(0).getDouble(wikiIndex)
-      eigenEmbedding.add(eigenValue)
-    }
-
-    eigenEmbedding
+    new DoubleArrayList(eigenVector.toDoubleArray, 0, size)
   }
 }

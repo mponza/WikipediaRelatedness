@@ -61,7 +61,7 @@ object Configuration {
   )
 
   val graphSVD = Map(
-    "left" -> Paths.get(projDir, "/data/processing/latent/svd/eigen_left.csv.gz").toString,
-    "right" -> Paths.get(projDir, "/data/processing/latent/svd/eigen_right.csv.gz").toString
+    "left" -> Paths.get(projDir, "/data/processing/wikipedia/latent/svd/eigen_left.csv.gz").toString,
+    "right" -> Paths.get(projDir, "/data/processing/wikipedia/latent/svd/eigen_right.csv.gz").toString
   )
 }

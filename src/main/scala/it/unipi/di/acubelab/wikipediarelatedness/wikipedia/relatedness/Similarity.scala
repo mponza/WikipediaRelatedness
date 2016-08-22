@@ -44,7 +44,7 @@ object Similarity {
     sim
   }
 
-  def cosine(srcVec: DoubleArrayList, dstVec: DoubleArrayList) : Double = {
+  def cosineSimilarity(srcVec: DoubleArrayList, dstVec: DoubleArrayList) : Double = {
     if (srcVec.size != dstVec.size)
       throw new IllegalArgumentException("Cosine Similarity error: arrays with different sizes.")
 

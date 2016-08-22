@@ -35,8 +35,12 @@ logger = logging.getLogger('JsonWikiCorpus')
 
 
 def tokenize(text, lowercase=False, deacc=False, errors="strict", to_lower=False, lower=False):
-    # in wikipedia-w2v-linkCorpus.json.gz text is already tokenized by spaces.
-    regexped = {match.group() for match in utils.PAT_ALPHABETIC.finditer(text)}  # remove numbers and co.
+    # In wikipedia-w2v-linkCorpus.json.gz text is already tokenized by spaces.
+
+    # remove numbers and co.
+    regexped = {match.group() for match in utils.PAT_ALPHABETIC.finditer(text)}
+
+    # alwatys keep ent_wikiID tokens.
     return [word for word in text.split(' ')
             if word.startswith('ent_') or word in regexped]
 
