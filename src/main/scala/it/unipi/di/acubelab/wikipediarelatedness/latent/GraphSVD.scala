@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-class GraphSVD(path : String = Configuration.eigen("left")) {
+class GraphSVD(path : String = Configuration.graphSVD("left")) {
   val logger = LoggerFactory.getLogger(classOf[GraphSVD])
   lazy val eigenVectors = loadEigenVectors(path)
 

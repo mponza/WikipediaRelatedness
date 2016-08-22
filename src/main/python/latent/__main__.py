@@ -40,7 +40,7 @@ def process_wiki_corpus():
 
 @baker.command
 def wiki_lda():
-    process_corpus()
+    process_corpus(to_lemmatize=False)
     generate_lda_model()
     map_wikidocs2lda()
 

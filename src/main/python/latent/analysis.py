@@ -11,9 +11,11 @@ import gzip
 from multiprocessing import cpu_count
 from multiprocessing import Pool
 
-from json_wikicorpus import extract_json_pages
 from corpus import process_corpus
 
+from json_wikicorpus import lemmatize
+
+from latent_utils import extract_json_pages
 from latent_utils import WIKI_FILENAME
 from latent_utils import GENSIM_DIR
 
@@ -22,13 +24,16 @@ lda = None
 
 
 def wiki2LDA(title, text, wiki_id):
-    lemmatized_text = gensim.utils.lemmatize(text)
+    lemmatized_text = lemmatize(text)
     wikiLDA = lda[lemmatized_text]
 
     filename = os.path.join(WIKI_LDA_DIR, str(wiki_id))
     with gzip.open(filename, 'wb') as f:
         f.write(wiki_id)
         f.write('\t')
+        print wikiLDA
+        print str(wikiLDA)
+        exit(1)
         f.write(wikiLDA)
 
 
@@ -61,7 +66,7 @@ def generate_lda_model():
     mm = gensim.corpora.MmCorpus(wordtfidf_filename)
 
     logger.info('Generating LDA model...')
-    lda = gensim.models.LdaMulticore(corpus=mm, num_topics=5, id2word=id2word, chunksize=10000)
+    lda = gensim.models.LdaMulticore(corpus=mm, num_topics=100, id2word=id2word, chunksize=10000)
 
     logger.info('Saving LDA model...')
     lda_filename = os.path.join(GENSIM_DIR, 'lda.model')
