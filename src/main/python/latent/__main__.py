@@ -39,6 +39,13 @@ def process_wiki_corpus():
 
 
 @baker.command
+def wiki_lda():
+    process_corpus()
+    generate_lda_model()
+    map_wikidocs2lda()
+
+
+@baker.command
 def graph_svd():
     '''
     Generates left and right eigenvectors of Wikipedia graph.

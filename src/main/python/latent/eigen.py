@@ -10,7 +10,8 @@ from latent_utils import WIKI_LINKS
 from latent_utils import WIKI_SVD_DIR
 
 
-logger = logging.getLogger('latent.svd.eigen')
+logger = logging.getLogger('WikiGraphSVD')
+
 
 # Same mapping used by Webgraph in the src/main/scala/ code.
 wiki2node = {}
@@ -89,7 +90,8 @@ def serialize_matrix(file_path, row_matrix):
             f.write('\t'.join([str(v) for v in column]))
 
 
-def generate_eigenvectors(wiki_path=WIKI_LINKS, eigen_dir=WIKI_SVD_DIR, n_eigenvectors=100):
+def generate_eigenvectors(wiki_path=WIKI_LINKS, eigen_dir=WIKI_SVD_DIR,
+                          n_eigenvectors=100):
     matrix = generate_wikipedia_matrix(wiki_path)
 
     logger.info('Computing SVD with {0} eigenvectors'.format(n_eigenvectors))
@@ -106,5 +108,3 @@ def generate_eigenvectors(wiki_path=WIKI_LINKS, eigen_dir=WIKI_SVD_DIR, n_eigenv
     serialize_matrix(os.path.join(eigen_dir, 'eigen_right.csv.gz'), eigenvectors[2])
 
     logger.info('SVD computation ended.')
-
-

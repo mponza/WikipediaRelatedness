@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import java.util.Collections
 
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.ints.IntArrayList
 
 
@@ -20,7 +21,7 @@ object Similarity {
     val num = hammingSimilarity(src, dst)
     val den = src.size
 
-    num / den.toDouble max 0.0
+    num / den.toDouble
   }
 
   // Code from https://rosettacode.org/wiki/Levenshtein_distance#Scala
@@ -41,5 +42,26 @@ object Similarity {
     }
 
     sim
+  }
+
+  def cosine(srcVec: DoubleArrayList, dstVec: DoubleArrayList) : Double = {
+    if (srcVec.size != dstVec.size)
+      throw new IllegalArgumentException("Cosine Similarity error: arrays with different sizes.")
+
+    var dot = 0.0
+    var srcMagnitude = 0.0
+    var dstMagnitude = 0.0
+
+    for(i <- 0 until srcVec.size()) {
+      dot += srcVec.getDouble(i) * dstVec.getDouble(i)
+
+      srcMagnitude += math.pow(srcVec.getDouble(i), 2.0)
+      dstMagnitude += math.pow(dstVec.getDouble(i), 2.0)
+    }
+
+    if(srcMagnitude == 0.0 || dstMagnitude == 0.0) return 0.0
+    val magnitude = math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)
+
+    dot / magnitude
   }
 }

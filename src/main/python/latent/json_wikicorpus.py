@@ -9,6 +9,8 @@ Wikipedia page in the format:
         'sentences':    [str]
     }
 
+Furthermore, tokenize and lemmatize and process_article functions are changed
+by removing some processing (our Wikipedia dump is already cleaned).
 '''
 
 # Copyright (C) 2010 Radim Rehurek <radimrehurek@seznam.cz>
@@ -23,25 +25,70 @@ import multiprocessing
 import json
 import logging
 
+from pattern.en import parse
+
 from latent_utils import extract_json_pages
 
 
 logger = logging.getLogger('JsonWikiCorpus')
 
 
+def tokenize(text, lowercase=False, deacc=False, errors="strict", to_lower=False, lower=False):
+    # in wikipedia-w2v-linkCorpus.json.gz text is already tokenized by spaces.
+    return iter([word.decode('utf8') for word in text.split(' ')])
+
+
+def lemmatize(content, allowed_tags=re.compile('(NN|VB|JJ|RB)'), light=False,
+        stopwords=frozenset(), min_length=2, max_length=15):
+    '''
+    Lemmatizes content where ent_wiki_ids are never removed. 
+    '''
+    content = (' ').join(tokenize(content, lower=True, errors='ignore')).decode('utf-8')
+
+    parsed = parse(content, lemmata=True, collapse=False)
+    result = []
+    for sentence in parsed:
+        for token, tag, _, _, lemma in sentence:
+
+            if lemma.startswith('ent_') and lemma not in stopwords:
+                # Wikipedia entity
+                result.append(lemma.encode('utf8'))
+                continue
+
+            if min_length <= len(lemma) <= max_length and not lemma.startswith('_') and lemma not in stopwords:
+                if allowed_tags.match(tag):
+                    lemma += "/" + tag[:2]
+                    result.append(lemma.encode('utf8'))
+    return result
+
+
+def process_article(args):
+    """
+    Parse a wikipedia article, returning its content as a list of tokens
+    (utf8-encoded strings).
+    """
+    text, to_be_lemmatized, title, pageid = args
+    text = filter_wiki(text)
+    if to_be_lemmatized:
+        result = lemmatize(text)
+    else:
+        result = tokenize(text)
+    return result, title, pageid
+
+
 class JsonWikiCorpus(wikicorpus.WikiCorpus):
 
-    def __init__(self, fname, processes=None, lemmatize=utils.has_pattern(), dictionary=None, filter_namespaces=('0',)):
-        super(JsonWikiCorpus, self).__init__(fname, processes, lemmatize, dictionary, filter_namespaces)
+    def __init__(self, fname, processes=None, to_be_lemmatized=True, dictionary=None, filter_namespaces=('0',)):
+        super(JsonWikiCorpus, self).__init__(fname, processes, to_be_lemmatized, dictionary, filter_namespaces)
 
     def get_texts(self):
         articles, articles_all = 0, 0
         positions, positions_all = 0, 0
-        texts = ((text, self.lemmatize, title, pageid) for title, text, pageid in extract_json_pages(self.fname, self.filter_namespaces))
+        texts = ((text, self.to_be_lemmatized, title, pageid) for title, text, pageid in extract_json_pages(self.fname, self.filter_namespaces))
         pool = multiprocessing.Pool(self.processes)
 
         for group in utils.chunkize(texts, chunksize=10 * self.processes, maxsize=1):
-            for tokens, title, pageid in pool.imap(wikicorpus.process_article, group):  # chunksize=10):
+            for tokens, title, pageid in pool.imap(process_article, group):  # chunksize=10):
                 articles_all += 1
                 positions_all += len(tokens)
                 # article redirects and short stubs are pruned here

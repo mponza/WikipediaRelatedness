@@ -71,7 +71,3 @@ def process_corpus(input_filename=WIKI_CORPUS, output_dir=GENSIM_DIR,
     MmCorpus.serialize(outp + '_tfidf.mm', tfidf[mm], progress_cnt=10000)
 
     logger.info("finished running %s" % program)
-
-
-
-

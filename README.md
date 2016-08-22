@@ -34,7 +34,9 @@ Remove `webgraph`, `fastutil` and `sux4j` from  the `law-deps` directory.
 
 If you are planning to use `CoSimRank`, please download [CoSimRankServer](https://github.com/mponza/CoSimRankServer) in the `lib` directory.
    
-   
+Some parts require Python processing, so I recommend to install some virtualization tool, like [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/), before installing the corresponding dependencies.
+
+
    
 Webgraph Processing
 -------------------
@@ -58,7 +60,6 @@ Generates statistical information from the Wikipedia corpus:
 Generate LDA model and process each Wikipedia page:
 
     python src/main/python/latent/latent_gensim corpus_lda
-
 
 
 For the eigenvector SVD generation on the Wikipedia graph just type:
@@ -99,7 +100,7 @@ Run the `Bench` class with one following parameter:
     
     sbt "run-main it.unipi.di.acubelab.wikipediarelatedness.MainClass"
 
-See `it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness` for the extended list of realtedness method avaiable.
+See `it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness` for the extended list of relatedness method avaiable.
 LLP need the label generation (see `processing` package).
 
 
@@ -118,7 +119,7 @@ Run sbt analysis with parameters:
             "eval":"correlation,classification"
         }"""
     
-[Enable](http://docs.python-guide.org/en/latest/dev/virtualenvs/) `virtualenv` and install the required dependencies:
+Enable `virtualenv` and install the dependencies:
 
     virtualenv venv
     source venv/bin/activate

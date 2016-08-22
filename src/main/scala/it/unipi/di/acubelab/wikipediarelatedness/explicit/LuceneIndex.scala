@@ -57,7 +57,7 @@ object LuceneIndex {
     val emptyStopWords = new CharArraySet(0, true)
     val bodyAnalyzer = new StandardAnalyzer(emptyStopWords)
 
-    val analyzerMap = new java.util.HashMap()[String, Analyzer]
+    val analyzerMap = new java.util.HashMap[String, Analyzer]
     analyzerMap.put("body", bodyAnalyzer)
 
     new PerFieldAnalyzerWrapper(new KeywordAnalyzer(), analyzerMap)

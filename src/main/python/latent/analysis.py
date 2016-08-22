@@ -15,6 +15,7 @@ from json_wikicorpus import extract_json_pages
 from corpus import process_corpus
 
 from latent_utils import WIKI_FILENAME
+from latent_utils import GENSIM_DIR
 
 
 lda = None
