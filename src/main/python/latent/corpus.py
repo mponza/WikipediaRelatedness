@@ -19,28 +19,29 @@ from json_wikicorpus import JsonWikiCorpus
 
 from latent_utils import WIKI_CORPUS
 from latent_utils import GENSIM_DIR
+from latent_utils import WIKI_STATS
 
 
 DEFAULT_DICT_SIZE = 100000
 
 
 def process_corpus(input_filename=WIKI_CORPUS, output_dir=GENSIM_DIR,
-                         online=False, lemmatize=True, debug=True):
+                         online=False, to_lemmatize=True, debug=True):
     program = 'GensimWikiCorpus'
     logger = logging.getLogger(program)
 
     inp = input_filename
-    outp = os.path.join(output_dir, 'make_wiki')
+    outp = os.path.join(output_dir, WIKI_STATS)
 
     if not os.path.isdir(os.path.dirname(outp)):
-        raise SystemExit("Error: The output directory does not exist. Create the directory and try again.")
+        os.makedirs(outp)
 
     keep_words = DEFAULT_DICT_SIZE
 
     if online:
         dictionary = HashDictionary(id_range=keep_words, debug=debug)
         dictionary.allow_update = True # start collecting document frequencies
-        wiki = JsonWikiCorpus(inp, lemmatize=lemmatize, dictionary=dictionary)
+        wiki = JsonWikiCorpus(inp, to_lemmatize=to_lemmatize, dictionary=dictionary)
         MmCorpus.serialize(outp + '_bow.mm', wiki, progress_cnt=10000) # ~4h on my macbook pro without lemmatization, 3.1m articles (august 2012)
         # with HashDictionary, the token->id mapping is only fully instantiated now, after `serialize`
         dictionary.filter_extremes(no_below=20, no_above=0.1, keep_n=DEFAULT_DICT_SIZE)
@@ -48,7 +49,7 @@ def process_corpus(input_filename=WIKI_CORPUS, output_dir=GENSIM_DIR,
         wiki.save(outp + '_corpus.pkl.bz2')
         dictionary.allow_update = False
     else:
-        wiki = JsonWikiCorpus(inp, lemmatize=lemmatize) # takes about 9h on a macbook pro, for 3.5m articles (june 2011)
+        wiki = JsonWikiCorpus(inp, to_lemmatize=to_lemmatize) # takes about 9h on a macbook pro, for 3.5m articles (june 2011)
         # only keep the most frequent words (out of total ~8.2m unique tokens)
         wiki.dictionary.filter_extremes(no_below=20, no_above=0.1, keep_n=DEFAULT_DICT_SIZE)
         # save dictionary and bag-of-words (term-document frequency matrix)

@@ -20,6 +20,7 @@ by removing some processing (our Wikipedia dump is already cleaned).
 from gensim.corpora import wikicorpus
 from gensim import utils
 
+import re
 import gzip
 import multiprocessing
 import json
@@ -35,7 +36,7 @@ logger = logging.getLogger('JsonWikiCorpus')
 
 def tokenize(text, lowercase=False, deacc=False, errors="strict", to_lower=False, lower=False):
     # in wikipedia-w2v-linkCorpus.json.gz text is already tokenized by spaces.
-    return iter([word.decode('utf8') for word in text.split(' ')])
+    return [word for word in text.split(' ')]
 
 
 def lemmatize(content, allowed_tags=re.compile('(NN|VB|JJ|RB)'), light=False,
@@ -43,7 +44,7 @@ def lemmatize(content, allowed_tags=re.compile('(NN|VB|JJ|RB)'), light=False,
     '''
     Lemmatizes content where ent_wiki_ids are never removed. 
     '''
-    content = (' ').join(tokenize(content, lower=True, errors='ignore')).decode('utf-8')
+    content = (' ').join(tokenize(content, lower=True, errors='ignore'))
 
     parsed = parse(content, lemmata=True, collapse=False)
     result = []
@@ -67,24 +68,25 @@ def process_article(args):
     Parse a wikipedia article, returning its content as a list of tokens
     (utf8-encoded strings).
     """
-    text, to_be_lemmatized, title, pageid = args
-    text = filter_wiki(text)
-    if to_be_lemmatized:
+    text, to_lemmatize, title, pageid = args
+    if to_lemmatize:
         result = lemmatize(text)
     else:
         result = tokenize(text)
+
     return result, title, pageid
 
 
 class JsonWikiCorpus(wikicorpus.WikiCorpus):
 
-    def __init__(self, fname, processes=None, to_be_lemmatized=True, dictionary=None, filter_namespaces=('0',)):
-        super(JsonWikiCorpus, self).__init__(fname, processes, to_be_lemmatized, dictionary, filter_namespaces)
+    def __init__(self, fname, processes=None, to_lemmatize=True, dictionary=None, filter_namespaces=('0',)):
+        self.to_lemmatize = to_lemmatize  # avoid confusion between function and variable
+        super(JsonWikiCorpus, self).__init__(fname, processes, to_lemmatize, dictionary, filter_namespaces)
 
     def get_texts(self):
         articles, articles_all = 0, 0
         positions, positions_all = 0, 0
-        texts = ((text, self.to_be_lemmatized, title, pageid) for title, text, pageid in extract_json_pages(self.fname, self.filter_namespaces))
+        texts = ((text, self.to_lemmatize, title, pageid) for title, text, pageid in extract_json_pages(self.fname, self.filter_namespaces))
         pool = multiprocessing.Pool(self.processes)
 
         for group in utils.chunkize(texts, chunksize=10 * self.processes, maxsize=1):

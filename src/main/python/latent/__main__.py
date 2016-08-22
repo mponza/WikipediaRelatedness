@@ -35,7 +35,7 @@ def process_wiki_corpus():
     Generates Wikipedia statisitcs that are subsequently used
     to generate the LDA model.
     '''
-    process_corpus()
+    process_corpus(to_lemmatize=False)
 
 
 @baker.command
