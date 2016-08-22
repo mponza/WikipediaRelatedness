@@ -1,9 +1,14 @@
+import logging
 import numpy as np
 from scipy import sparse
 
 from gensim import utils
 import os
 import gzip
+
+from latent_utils import WIKI_LINKS
+from latent_utils import WIKI_SVD_DIR
+
 
 logger = logging.getLogger('latent.svd.eigen')
 
@@ -84,7 +89,7 @@ def serialize_matrix(file_path, row_matrix):
             f.write('\t'.join([str(v) for v in column]))
 
 
-def generate_eigenvectors(wiki_path, eigen_dir, n_eigenvectors=100):
+def generate_eigenvectors(wiki_path=WIKI_LINKS, eigen_dir=WIKI_SVD_DIR, n_eigenvectors=100):
     matrix = generate_wikipedia_matrix(wiki_path)
 
     logger.info('Computing SVD with {0} eigenvectors'.format(n_eigenvectors))

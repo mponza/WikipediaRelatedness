@@ -23,18 +23,10 @@ import multiprocessing
 import json
 import logging
 
-logger = logging.getLogger('gensim.make_json_wiki.json')
+from latent_utils import extract_json_pages
 
-def extract_json_pages(filename, filter_namespaces=False):
-     with utils.smart_open(filename) as fin:
-            for line in fin:
-                document = json.loads(line.strip())
 
-                title = document['wikiTitle']
-                text = ' '.join(document['sentences'])
-                wiki_id = str(document['wikiId'])
-
-                yield title, text, wiki_id
+logger = logging.getLogger('JsonWikiCorpus')
 
 
 class JsonWikiCorpus(wikicorpus.WikiCorpus):

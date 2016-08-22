@@ -49,17 +49,21 @@ Enable virtualenv and install requirements:
     
     virtualenv venv
     source venv/bin/activate
-    python -r src/main/python/latent/requirements.txt
+    pip -r src/main/python/latent/requirements.txt
 
-Create tf-idf vectors from the Wikipedia dump:
+Generates statistical information from the Wikipedia corpus:
     
-    python src/main/python/latent/make_wiki src/main/resources/wikipedia/wikipedia-w2v-linkCorpus.json.gz data/processing/wikipedia/latent/gensim/make_wiki
+    python src/main/python/latent/latent_gensim process_wiki_corpus
     
-And then...?
+Generate LDA model and process each Wikipedia page:
 
-For the eigenvector SVD generation just type:
+    python src/main/python/latent/latent_gensim corpus_lda
+
+
+
+For the eigenvector SVD generation on the Wikipedia graph just type:
     
-    python src/main/python/latent/svd ../../../resources/wikipedia-w2v-linkCorpus.json.gz data/processing/wikipedia/latent/svd
+    python src/main/python/latent/latent_gensim graph_svd
 
 
 Explicit Semantic Processing

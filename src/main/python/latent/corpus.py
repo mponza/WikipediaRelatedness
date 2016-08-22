@@ -17,34 +17,25 @@ from gensim.models import TfidfModel
 
 from json_wikicorpus import JsonWikiCorpus
 
+from latent_utils import WIKI_CORPUS
+from latent_utils import GENSIM_DIR
+
 
 DEFAULT_DICT_SIZE = 100000
 
 
-if __name__ == '__main__':
-    program = os.path.basename(sys.argv[0])
+def process_corpus(input_filename=WIKI_CORPUS, output_dir=GENSIM_DIR,
+                         online=False, lemmatize=True, debug=True):
+    program = 'GensimWikiCorpus'
     logger = logging.getLogger(program)
 
-    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s')
-    logging.root.setLevel(level=logging.INFO)
-    logger.info("running %s" % ' '.join(sys.argv))
-
-    # check and process input arguments
-    if len(sys.argv) < 3:
-        print(globals()['__doc__'] % locals())
-        sys.exit(1)
-    inp, outp = sys.argv[1:3]
+    inp = input_filename
+    outp = os.path.join(output_dir, 'make_wiki')
 
     if not os.path.isdir(os.path.dirname(outp)):
         raise SystemExit("Error: The output directory does not exist. Create the directory and try again.")
 
-    if len(sys.argv) > 3:
-        keep_words = int(sys.argv[3])
-    else:
-        keep_words = DEFAULT_DICT_SIZE
-    online = 'online' in program
-    lemmatize = 'lemma' in program
-    debug = 'nodebug' not in program
+    keep_words = DEFAULT_DICT_SIZE
 
     if online:
         dictionary = HashDictionary(id_range=keep_words, debug=debug)
