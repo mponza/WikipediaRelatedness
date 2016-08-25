@@ -69,6 +69,7 @@ def generate_lda_model():
     lda = gensim.models.LdaMulticore(corpus=mm, num_topics=100, id2word=id2word, chunksize=10000)
 
     logger.info('Saving LDA model...')
+    if not os.path.isdir(lda_filename):
+        os.mkdirs(lda_filename)
     lda_filename = os.path.join(GENSIM_DIR, 'lda.model')
-    os.mkdirs(lda_filename)
     lda.save(lda_filename)

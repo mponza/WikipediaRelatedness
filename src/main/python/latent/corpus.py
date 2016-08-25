@@ -31,7 +31,8 @@ def process_corpus(input_filename=WIKI_CORPUS, output_dir=GENSIM_DIR,
     logger = logging.getLogger(program)
 
     inp = input_filename
-    outp = os.path.join(output_dir, WIKI_STATS)
+    # twice because model will be saved into directory/prefixfilenames
+    outp = os.path.join(output_dir, WIKI_STATS + '/' + WIKI_STATS)
 
     if not os.path.isdir(os.path.dirname(outp)):
         os.makedirs(outp)
