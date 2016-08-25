@@ -13,8 +13,8 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
 import org.slf4j.LoggerFactory
 
 
-class Benchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
-  val logger = LoggerFactory.getLogger(classOf[Benchmark])
+class WikiSimBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
+  val logger = LoggerFactory.getLogger(classOf[WikiSimBenchmark])
   val relDir = Paths.get(Configuration.benchmark, relatedness.toString).toString
 
   /**

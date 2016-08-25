@@ -46,9 +46,19 @@ object Configuration {
     // Link Corpus and DeepWalk mixed.
     "deepCorpus" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin").getPath,
     "coOccurrence" -> getClass.getResource("/w2v/wikipedia-w2v-coOccurrence.e0.100.tr.bin").getPath,
+
     "el-1st-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st-deepWalk.w2v.bin").getPath,
     "el-1st" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st.w2v.bin").getPath,
     "el-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk.w2v.bin").getPath,
+
+    "dw10" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.10.w2v.bin").getPath,
+    "dw30" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.30.w2v.bin").getPath,
+    "dw50" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.50.w2v.bin").getPath,
+    "dw70" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.70.w2v.bin").getPath,
+    "dw90" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.90.w2v.bin").getPath,
+
+    "dwsg" -> getClass.getResource("/w2v/wikipedia-w2v-sg-el-deepWalk.w2v.bin").getPath,
+
 
     "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath
   )

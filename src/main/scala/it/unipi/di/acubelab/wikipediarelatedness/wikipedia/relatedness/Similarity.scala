@@ -62,6 +62,6 @@ object Similarity {
     if(srcMagnitude == 0.0 || dstMagnitude == 0.0) return 0.0
     val magnitude = math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)
 
-    dot / magnitude
+    (dot / magnitude) max 0.0
   }
 }

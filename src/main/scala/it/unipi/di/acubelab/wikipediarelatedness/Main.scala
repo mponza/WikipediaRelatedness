@@ -1,11 +1,12 @@
 package it.unipi.di.acubelab.wikipediarelatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
-import it.unipi.di.acubelab.wikipediarelatedness.benchmark.Benchmark
+import it.unipi.di.acubelab.wikipediarelatedness.benchmark.WikiSimBenchmark
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.{WikiSimDataset, WikiSimProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WebGraphProcessor
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.LuceneProcessing
 
 import scala.util.parsing.json.JSON
 
@@ -66,7 +67,7 @@ object Bench {
 
     val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
 
-    val benchmark = new Benchmark(dataset, relatdness)
+    val benchmark = new WikiSimBenchmark(dataset, relatdness)
     benchmark.runBenchmark()
   }
 }
@@ -157,5 +158,12 @@ object Analysis {
 
       case _ => throw new IllegalArgumentException("Options Analysis do not match with nothing!")
     }
+  }
+}
+
+object LuceneProcessing {
+  def main(args: Array[String]): Unit = {
+    val lucene = new LuceneProcessing()
+    lucene.process()
   }
 }

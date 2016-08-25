@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
   * @param options
   *                {
   *                   "relatedness":    "graphSVD"
-  *                   "eigenVectors":   "left/right/left,right"
+  *                   "eigen":   "right/left/left,right"
   *                   "length":
   *                }
   */

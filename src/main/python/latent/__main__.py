@@ -25,7 +25,7 @@ def corpus_lda():
     Maps every Wikipedia document to the corresponding
     latent model.
     '''
-    generate_lda_model()
+    #generate_lda_model()
     map_wikidocs2lda()
 
 

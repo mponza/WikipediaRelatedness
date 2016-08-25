@@ -88,10 +88,11 @@ def serialize_matrix(file_path, row_matrix):
     with gzip.open(file_path, 'w') as f:
         for column in row_matrix:
             f.write('\t'.join([str(v) for v in column]))
+            f.write('\n')
 
 
 def generate_eigenvectors(wiki_path=WIKI_LINKS, eigen_dir=WIKI_SVD_DIR,
-                          n_eigenvectors=100):
+                          n_eigenvectors=200):
     matrix = generate_wikipedia_matrix(wiki_path)
 
     logger.info('Computing SVD with {0} eigenvectors'.format(n_eigenvectors))
@@ -100,8 +101,8 @@ def generate_eigenvectors(wiki_path=WIKI_LINKS, eigen_dir=WIKI_SVD_DIR,
     if(not os.path.isdir(eigen_dir)):
         os.makedirs(eigen_dir)
 
-    logger.info('Serializing left eigenvectors...')
-    serialize_matrix(os.path.join(eigen_dir, 'eigen_left.csv.gz'), eigenvectors[0])
+    #logger.info('Serializing left eigenvectors...')
+    #serialize_matrix(os.path.join(eigen_dir, 'eigen_left.csv.gz'), eigenvectors[0])
 
     logger.info('Serializing right eigenvectors...')
     serialize_matrix(os.path.join(eigen_dir, 'eigen_right.csv.gz'), eigenvectors[2].transpose())

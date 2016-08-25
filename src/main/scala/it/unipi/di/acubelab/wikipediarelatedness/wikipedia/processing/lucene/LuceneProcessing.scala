@@ -1,15 +1,12 @@
-package it.unipi.di.acubelab.wikipediarelatedness.explicit
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene
 
 import java.io.{File, FileInputStream}
 import java.nio.file.Paths
 import java.util.zip.GZIPInputStream
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import org.apache.lucene.analysis.standard.StandardAnalyzer
-import org.apache.lucene.analysis.util.CharArraySet
-import org.apache.lucene.document.{Document, Field, IntPoint, StringField}
-import org.apache.lucene.index.IndexWriterConfig
-import org.apache.lucene.index.IndexWriter
+import org.apache.lucene.document._
+import org.apache.lucene.index.{IndexWriter, IndexWriterConfig}
 import org.apache.lucene.store.FSDirectory
 import org.slf4j.LoggerFactory
 
@@ -24,7 +21,8 @@ class LuceneProcessing {
     logger.info("Indexing Wikipedia documents...")
     val directory = FSDirectory.open(Paths.get(Configuration.wikipedia("lucene")))
 
-    val config = new IndexWriterConfig(LuceneIndex.analyzer)
+    val analyzer = new WikipediaBodyAnalyzer()
+    val config = new IndexWriterConfig(analyzer)
     val writer = new IndexWriter(directory, config)
     wikipediaDocuments().toStream.par.foreach(wikiDoc => writer.addDocument(wikiDoc))
 
@@ -37,7 +35,7 @@ class LuceneProcessing {
   }
 
   /**
-    * Iterator over wikipedia documents.
+    * Iterator over Wikipedia documents.
     *
     * @return (WikiTitle, WikiID, Body)
     */
@@ -62,7 +60,7 @@ class LuceneProcessing {
         wikiID.setIntValue(id)
         wikiDoc.add(wikiID)
 
-        wikiDoc.add(new StringField("body", body, Field.Store.NO))
+        wikiDoc.add(new TextField("body", body, Field.Store.YES))
 
         wikiDoc
       }

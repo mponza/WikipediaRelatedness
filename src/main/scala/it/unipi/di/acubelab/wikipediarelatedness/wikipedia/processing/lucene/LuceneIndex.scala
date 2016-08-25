@@ -1,12 +1,12 @@
-package it.unipi.di.acubelab.wikipediarelatedness.explicit
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene
 
 import java.nio.file.Paths
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import org.apache.lucene.analysis.core.KeywordAnalyzer
-import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.analysis.Analyzer
+import org.apache.lucene.analysis.core.KeywordAnalyzer
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper
+import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.analysis.util.CharArraySet
 import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.queryparser.classic.QueryParser
@@ -35,7 +35,7 @@ class LuceneIndex {
   /**
     * @return List of Wikipedia IDs where wikiID is mentioned and the corresponding score.
     */
-  def wikipediaConcepts(wikiID: Int, resultThreshold: Int = 100) : List[Tuple2[Int, Float]] = {
+  def wikipediaConcepts(wikiID: Int, resultThreshold: Int = 625) : List[Tuple2[Int, Float]] = {
     val entWikiID = "ent_" + wikiID.toString
 
     val parser = new QueryParser("body", LuceneIndex.analyzer)
@@ -51,9 +51,9 @@ class LuceneIndex {
 
 
 object LuceneIndex {
-  lazy val analyzer = luceneAnalyzer()
+  lazy val analyzer = luceneEntityAnalyzer()
 
-  def luceneAnalyzer() : Analyzer = {
+  def luceneEntityAnalyzer() : Analyzer = {
     val emptyStopWords = new CharArraySet(0, true)
     val bodyAnalyzer = new StandardAnalyzer(emptyStopWords)
 
