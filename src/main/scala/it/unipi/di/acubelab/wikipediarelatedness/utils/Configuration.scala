@@ -24,7 +24,7 @@ object Configuration {
 
   lazy val wikipedia = Map(
     "wikiLinks" -> getClass.getResource("/wikipedia/wiki-links-sorted.gz").getPath,
-    "corpus" -> getClass.getResource("/wikipedia/wikipedia-w2v-linkCorpus.json.gz").getPath,
+    "linkCorpus" -> getClass.getResource("/wikipedia/wikipedia-w2v-linkCorpus.json.gz").getPath,
 
     "lucene" -> Paths.get(projDir, "/data/processing/wikipedia/lucene").toString,
 
@@ -73,5 +73,9 @@ object Configuration {
   val graphSVD = Map(
     "left" -> Paths.get(projDir, "/data/processing/wikipedia/latent/svd/eigen_left.csv.gz").toString,
     "right" -> Paths.get(projDir, "/data/processing/wikipedia/latent/svd/eigen_right.csv.gz").toString
+  )
+
+  val lda = Map(
+    "wiki_lda" -> Paths.get(projDir, "/data/processing/wikipedia/latent/gensim/wiki_lda/lda_wiki_docs.gz").toString
   )
 }

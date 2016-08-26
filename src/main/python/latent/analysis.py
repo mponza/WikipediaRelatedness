@@ -94,7 +94,7 @@ def map_wikidocs2lda():
             for wiki_id, lda_text in lda_wiki_docs:
                 f.write(str(wiki_id) + '\t')
 
-                embedding = ['{0}:{1:.8f}'.format(index, value) 
+                embedding = ['{0}:{1:.10f}'.format(index, value) 
                              for index, value in lda_text]
                 f.write('\t'.join(embedding) + '\n')
 

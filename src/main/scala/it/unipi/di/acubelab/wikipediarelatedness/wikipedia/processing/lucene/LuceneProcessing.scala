@@ -43,7 +43,7 @@ class LuceneProcessing {
     val fileStream = Source.fromInputStream(
       new GZIPInputStream(
         new FileInputStream(
-          new File(Configuration.wikipedia("corpus"))
+          new File(Configuration.wikipedia("linkCorpus"))
         )
       )
     )
@@ -55,11 +55,7 @@ class LuceneProcessing {
         val (title, id, body) = line2WikiTitleIDBody(line)
 
         wikiDoc.add(new StringField("title", title, Field.Store.YES))
-
-        val wikiID = new IntPoint("id")
-        wikiID.setIntValue(id)
-        wikiDoc.add(wikiID)
-
+        wikiDoc.add(new StringField("id", id.toString, Field.Store.YES))  // simple int field?
         wikiDoc.add(new TextField("body", body, Field.Store.YES))
 
         wikiDoc
