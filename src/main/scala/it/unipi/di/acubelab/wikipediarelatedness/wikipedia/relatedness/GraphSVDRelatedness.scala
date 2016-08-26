@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory
   *                }
   */
 class GraphSVDRelatedness(options: Map[String, Any]) extends Relatedness  {
-  val logger = LoggerFactory.getLogger(classOf[EmbeddingRelatedness])
+  val logger = LoggerFactory.getLogger(classOf[GraphSVDRelatedness])
   val eigenNames = options.getOrElse("eigen", "right").toString().split(",")
   val vectorLength = options.getOrElse("length", -1.0).toString.toDouble.toInt
 

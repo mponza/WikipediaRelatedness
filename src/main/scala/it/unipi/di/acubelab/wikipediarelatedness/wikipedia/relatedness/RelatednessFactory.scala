@@ -1,5 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
+import it.unipi.di.acubelab.wikipediarelatedness.latent.CorpusLDA
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 
 
@@ -32,6 +33,7 @@ object RelatednessFactory {
         case "LMModel" => new LMRelatedness(opts)
         case "CoSimRank" | "PPRCos" => new CoSimRankRelatedness(opts)
         case "SVD" => new GraphSVDRelatedness(opts)
+        case "LDA" => new LDARelatedness(opts)
 
         case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s."
           .format(relatednessName))

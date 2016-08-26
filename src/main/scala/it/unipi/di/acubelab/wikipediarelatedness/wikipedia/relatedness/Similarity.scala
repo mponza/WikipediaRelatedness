@@ -4,6 +4,7 @@ import java.util.Collections
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.ints.IntArrayList
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 
 object Similarity {
@@ -63,5 +64,44 @@ object Similarity {
     val magnitude = math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)
 
     (dot / magnitude) max 0.0
+  }
+
+  def cosineSimilarity(srcVec: ObjectArrayList[Tuple2[Int, Double]],
+                       dstVec: ObjectArrayList[Tuple2[Int, Double]]) : Double = {
+    var dot = 0.0
+    val srcMagnitude = indexedVectorMagnitude(srcVec)
+    val dstMagnitude = indexedVectorMagnitude(dstVec)
+
+    var i = 0
+    var j = 0
+    while(i < srcVec.size() && j < dstVec.size()) {
+      val srcIndex = srcVec.get(i)._1
+      val dstIndex = dstVec.get(j)._1
+
+      val srcValue = srcVec.get(i)._2
+      val dstValue = dstVec.get(i)._2
+
+      if(srcIndex == dstIndex) {
+        dot += srcValue * dstValue
+        i += 1
+        j += 1
+      } else if(srcIndex < dstIndex) i+= 1 else j += 1
+    }
+
+    if (dot == 0.0) return 0.0
+
+    if(srcMagnitude == 0.0 || dstMagnitude == 0.0) return 0.0
+    val magnitude = math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)
+
+    (dot / magnitude) max 0.0
+  }
+
+  def indexedVectorMagnitude(vec: ObjectArrayList[Tuple2[Int, Double]]) : Double = {
+    var magnitude = 0.0
+    for(i <- 0 until vec.size()) {
+      magnitude += math.pow(vec.get(i)._2, 2.0)
+    }
+
+    magnitude
   }
 }

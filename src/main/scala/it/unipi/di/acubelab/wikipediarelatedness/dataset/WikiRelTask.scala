@@ -55,4 +55,8 @@ class WikiRelTask(_src: WikiEntity, _srcWord: String,
   def wikiTitleString() : String = {
     "%s and %s".format(src.wikiTitle, dst.wikiTitle)
   }
+
+  def wikiIDs() : Tuple2[Int, Int] = {
+    (src.wikiID, dst.wikiID)
+  }
 }
