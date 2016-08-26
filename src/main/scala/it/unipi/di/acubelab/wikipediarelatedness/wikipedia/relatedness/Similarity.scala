@@ -104,4 +104,15 @@ object Similarity {
 
     magnitude
   }
+
+  def cosineSimilarity(srcVec: List[Tuple2[Int, Float]],
+                       dstVec: List[Tuple2[Int, Float]]) : Double = {
+    val fastSrcVec = new ObjectArrayList[Tuple2[Int, Double]]()
+    val fastDstVec = new ObjectArrayList[Tuple2[Int, Double]]()
+
+    srcVec.foreach(indexValue => fastSrcVec.add((indexValue._1, indexValue._2.toDouble)))
+    dstVec.foreach(indexValue => fastDstVec.add((indexValue._1, indexValue._2.toDouble)))
+
+    cosineSimilarity(fastSrcVec, fastDstVec)
+  }
 }

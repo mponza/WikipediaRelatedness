@@ -1,10 +1,10 @@
 package it.unipi.di.acubelab.wikipediarelatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
-import it.unipi.di.acubelab.wikipediarelatedness.benchmark.WikiSimBenchmark
+import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{WikiSimBenchmark, WordSimBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.{WikiSimDataset, WikiSimProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{ESARelatedness, RelatednessFactory}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WebGraphProcessor
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.LuceneProcessing
 
@@ -68,6 +68,17 @@ object Bench {
     val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
 
     val benchmark = new WikiSimBenchmark(dataset, relatdness)
+    benchmark.runBenchmark()
+  }
+}
+
+object WordBench {
+  def main(args: Array[String]) {
+    val esa = new ESARelatedness(Map("conceptThreshold" -> 625))
+
+    val dataset = new WikiSimDataset(Configuration.dataset("wikiSim"))
+
+    val benchmark = new WordSimBenchmark(dataset, esa)
     benchmark.runBenchmark()
   }
 }

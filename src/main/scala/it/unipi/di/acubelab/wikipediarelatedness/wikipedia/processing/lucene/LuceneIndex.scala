@@ -35,15 +35,12 @@ class LuceneIndex {
   /**
     * @return List of Wikipedia IDs where wikiID is mentioned and the corresponding score.
     */
-  def wikipediaConcepts(wikiID: Int, resultThreshold: Int = 625) : List[Tuple2[Int, Float]] = {
-    val entWikiID = "ent_" + wikiID.toString
-
+  def wikipediaConcepts(word: String, resultThreshold: Int = 625) : List[Tuple2[Int, Float]] = {
     val parser = new QueryParser("body", LuceneIndex.analyzer)
-    val query = parser.createBooleanQuery("body", entWikiID)
+    val query = parser.createBooleanQuery("body", word)
 
     searcher.search(query, resultThreshold).scoreDocs.map { hit =>
       val wikiDocID = reader.document(hit.doc).getField("id").numericValue().intValue()
-
       (wikiDocID, hit.score)
     }.toList
   }
@@ -55,7 +52,7 @@ object LuceneIndex {
 
   def luceneEntityAnalyzer() : Analyzer = {
     val emptyStopWords = new CharArraySet(0, true)
-    val bodyAnalyzer = new StandardAnalyzer(emptyStopWords)
+    val bodyAnalyzer = new WikipediaBodyAnalyzer()
 
     val analyzerMap = new java.util.HashMap[String, Analyzer]
     analyzerMap.put("body", bodyAnalyzer)
