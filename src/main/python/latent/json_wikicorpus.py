@@ -73,6 +73,8 @@ def process_article(args):
     """
     Parse a wikipedia article, returning its content as a list of tokens
     (utf8-encoded strings).
+
+    @params args (text, to_lemmatize, title, pageid)
     """
     text, to_lemmatize, title, pageid = args
     if to_lemmatize:
