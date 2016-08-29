@@ -63,7 +63,7 @@ object Similarity {
     if(srcMagnitude == 0.0 || dstMagnitude == 0.0) return 0.0
     val magnitude = math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)
 
-    (dot / magnitude) max 0.0
+    ((dot / magnitude) max 0.0) min 1.0
   }
 
   def cosineSimilarity(srcVec: ObjectArrayList[Tuple2[Int, Double]],
@@ -79,7 +79,7 @@ object Similarity {
       val dstIndex = dstVec.get(j)._1
 
       val srcValue = srcVec.get(i)._2
-      val dstValue = dstVec.get(i)._2
+      val dstValue = dstVec.get(j)._2
 
       if(srcIndex == dstIndex) {
         dot += srcValue * dstValue
@@ -93,7 +93,7 @@ object Similarity {
     if(srcMagnitude == 0.0 || dstMagnitude == 0.0) return 0.0
     val magnitude = math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)
 
-    (dot / magnitude) max 0.0
+    ((dot / magnitude) max 0.0) min 1.0   // avoid representation errors
   }
 
   def indexedVectorMagnitude(vec: ObjectArrayList[Tuple2[Int, Double]]) : Double = {

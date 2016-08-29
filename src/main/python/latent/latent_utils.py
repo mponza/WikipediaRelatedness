@@ -20,6 +20,9 @@ def absolute_path(path_from_latent_gensim):
     return os.path.join(WORKING_DIR, path_from_latent_gensim)
 
 
+LEMMING = True  # whether using lemmatization or not
+
+
 WIKI_CORPUS = absolute_path('../../resources/wikipedia/wikipedia-w2v-linkCorpus.json.gz')
 WIKI_LINKS = absolute_path('../../resources/wikipedia/wiki-links-sorted.gz')
 

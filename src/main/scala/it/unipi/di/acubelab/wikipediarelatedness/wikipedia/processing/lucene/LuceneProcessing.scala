@@ -24,7 +24,10 @@ class LuceneProcessing {
     val analyzer = new WikipediaBodyAnalyzer()
     val config = new IndexWriterConfig(analyzer)
     val writer = new IndexWriter(directory, config)
-    wikipediaDocuments().toStream.par.foreach(wikiDoc => writer.addDocument(wikiDoc))
+
+    for (wikiDocs <- wikipediaDocuments().grouped(10000)) {
+      wikiDocs.par.foreach(writer.addDocument(_))
+    }
 
     logger.info("Wikipedia indexed. Now segment merging...")
     writer.forceMerge(1)
@@ -40,6 +43,8 @@ class LuceneProcessing {
     * @return (WikiTitle, WikiID, Body)
     */
   def wikipediaDocuments(): Iterator[Document] = {
+    logger.info("Reading Wikipedia documents...")
+
     val fileStream = Source.fromInputStream(
       new GZIPInputStream(
         new FileInputStream(
@@ -48,15 +53,19 @@ class LuceneProcessing {
       )
     )
 
-    for (line <- fileStream.getLines())
+    for ((line, index) <- fileStream.getLines().zipWithIndex)
       yield {
         val wikiDoc = new Document()
 
         val (title, id, body) = line2WikiTitleIDBody(line)
 
         wikiDoc.add(new StringField("title", title, Field.Store.YES))
-        wikiDoc.add(new StringField("id", id.toString, Field.Store.YES))  // simple int field?
+        wikiDoc.add(new StringField("id", id.toString, Field.Store.YES))  // int field?
         wikiDoc.add(new TextField("body", body, Field.Store.YES))
+
+        if ((index + 1) % 1000 == 0) {
+          logger.info("Indexed %d Wikipedia documents.".format(index + 1))
+        }
 
         wikiDoc
       }

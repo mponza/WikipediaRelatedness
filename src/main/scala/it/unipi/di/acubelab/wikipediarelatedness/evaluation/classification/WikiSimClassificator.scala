@@ -71,18 +71,30 @@ class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluato
   }
 
   def precision(labels: List[(String, String)], labelClass: String) : Double = {
-    truePositive(labels, labelClass) /
-      math.max(truePositive(labels, labelClass) + falsePositive(labels, labelClass), 1.0)
+    val tp = truePositive(labels, labelClass).toDouble
+    val fp = falsePositive(labels, labelClass)
+
+    if (tp == 0.0) return 0.0
+
+    tp / (tp + fp)
   }
 
   def recall(labels: List[(String, String)], labelClass: String) : Double = {
-    truePositive(labels, labelClass) /
-      math.max(truePositive(labels, labelClass) + falseNegative(labels, labelClass), 1.0)
+    val tp =  truePositive(labels, labelClass).toDouble
+    val fn = falseNegative(labels, labelClass)
+
+    if (tp == 0.0) return 0.0
+
+    tp / (tp + fn)
   }
 
   def f1(labels: List[(String, String)], labelClass: String) : Double = {
-    2 * precision(labels, labelClass) * recall(labels, labelClass) /
-      math.max(precision(labels, labelClass) + recall(labels, labelClass), 1.0)
+    val prec = precision(labels, labelClass)
+    val rec = recall(labels, labelClass)
+
+    if (prec == 0.0 || rec == 0.0) return 0.0
+
+    2 * prec * rec / (prec + rec)
   }
 
   override def wikiSimPerformance() : WikiSimPerformance = {

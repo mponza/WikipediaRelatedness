@@ -29,6 +29,7 @@ import logging
 from pattern.en import parse
 
 from latent_utils import extract_json_pages
+from latent_utils import LEMMING
 
 
 logger = logging.getLogger('JsonWikiCorpus')
@@ -87,7 +88,7 @@ def process_article(args):
 
 class JsonWikiCorpus(wikicorpus.WikiCorpus):
 
-    def __init__(self, fname, processes=None, to_lemmatize=False, dictionary=None, filter_namespaces=('0',)):
+    def __init__(self, fname, processes=None, to_lemmatize=LEMMING, dictionary=None, filter_namespaces=('0',)):
         self.to_lemmatize = to_lemmatize  # avoid confusion between function and variable
         super(JsonWikiCorpus, self).__init__(fname, processes, to_lemmatize, dictionary, filter_namespaces)
 

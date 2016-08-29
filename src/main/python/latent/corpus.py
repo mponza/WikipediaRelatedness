@@ -20,13 +20,14 @@ from json_wikicorpus import JsonWikiCorpus
 from latent_utils import WIKI_CORPUS
 from latent_utils import GENSIM_DIR
 from latent_utils import WIKI_STATS
+from latent_utils import LEMMING
 
 
 DEFAULT_DICT_SIZE = 100000
 
 
 def process_corpus(input_filename=WIKI_CORPUS, output_dir=GENSIM_DIR,
-                         online=False, to_lemmatize=True, debug=True):
+                         online=False, to_lemmatize=LEMMING, debug=True):
     program = 'GensimWikiCorpus'
     logger = logging.getLogger(program)
 

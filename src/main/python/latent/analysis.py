@@ -23,6 +23,7 @@ from latent_utils import WIKI_LDA_DIR
 from latent_utils import WIKI_LDA_MODEL
 from latent_utils import WIKI_CORPUS
 from latent_utils import WIKI_LDA_DOCS
+from latent_utils import LEMMING
 
 
 logger = logging.getLogger('LDA')
@@ -59,10 +60,9 @@ def wiki2LDA(lda_task):
 def wiki_document_generator():
     '''
     Returns [(wiki_id, processed_tokens)] as defined in JsonWikiCorpus.
-    TODO: have a global to_lemmatize field.
     '''
 
-    wiki_corpus = JsonWikiCorpus(WIKI_CORPUS, to_lemmatize=False, dictionary={})
+    wiki_corpus = JsonWikiCorpus(WIKI_CORPUS, to_lemmatize=LEMMING, dictionary={})
     wiki_corpus.metadata = True
 
     wiki_docs = []

@@ -10,7 +10,7 @@ class LDARelatedness(options: Map[String, Any]) extends Relatedness  {
     val corpusLDA = new CorpusLDA()
 
     override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
-      val srcWikiID, dstWikiID = wikiRelTask.wikiIDs
+      val (srcWikiID, dstWikiID) = wikiRelTask.wikiIDs
 
       val srcVector = corpusLDA.lda.get(srcWikiID)
       val dstVector = corpusLDA.lda.get(dstWikiID)
@@ -20,7 +20,7 @@ class LDARelatedness(options: Map[String, Any]) extends Relatedness  {
 
 
     override def toString(): String = {
-      "CorpysLDA"
+      "CorpusLDA"
     }
 }
 
