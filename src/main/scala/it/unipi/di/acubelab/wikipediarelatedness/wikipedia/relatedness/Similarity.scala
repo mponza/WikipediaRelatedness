@@ -18,11 +18,15 @@ object Similarity {
     }
   }
 
+  def cosineSimilarity(src: Array[Int], dst: Array[Int]) : Double = {
+    cosineSimilarity(new IntArrayList(src), new IntArrayList(dst))
+  }
+
   def cosineSimilarity(src: IntArrayList, dst: IntArrayList) : Double = {
     val num = hammingSimilarity(src, dst)
     val den = src.size
 
-    num / den.toDouble
+    (num / den.toDouble max 0.0) min 1.0
   }
 
   // Code from https://rosettacode.org/wiki/Levenshtein_distance#Scala
@@ -105,8 +109,7 @@ object Similarity {
     magnitude
   }
 
-  def cosineSimilarity(srcVec: List[Tuple2[Int, Float]],
-                       dstVec: List[Tuple2[Int, Float]]) : Double = {
+  def cosineSimilarity(srcVec: List[Tuple2[Int, Float]], dstVec: List[Tuple2[Int, Float]]) : Double = {
     val fastSrcVec = new ObjectArrayList[Tuple2[Int, Double]]()
     val fastDstVec = new ObjectArrayList[Tuple2[Int, Double]]()
 
@@ -114,5 +117,25 @@ object Similarity {
     dstVec.foreach(indexValue => fastDstVec.add((indexValue._1, indexValue._2.toDouble)))
 
     cosineSimilarity(fastSrcVec, fastDstVec)
+  }
+
+  def zeroKLSimilarity(p: List[Double], q: List[Double]) : Double = {
+    val gamma = 20.0  // http://dl.acm.org/citation.cfm?id=2661887
+
+    val P = p.map(pi => if(pi >= 0.0) pi else )
+    val Q = q.map(qi => if(qi >= 0.0) qi else 0.0)
+
+    val zeroKLDivergence = (P zip Q).foldLeft(0.0) {
+      case (kl: Double, (pi: Double, qi: Double)) =>
+        if (qi == 0.0 || pi == 0.0) kl + gamma
+        else {
+          kl + pi * math.log(pi / qi)
+        }
+    }
+    //println(zeroKLDivergence)
+
+    if (zeroKLDivergence == 0.0) return 0.0
+
+    1 / zeroKLDivergence
   }
 }

@@ -1,7 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.lemma
 
-import java.nio.file.Paths
-
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.{LuceneIndex, WikipediaBodyAnalyzer}
 import org.slf4j.LoggerFactory

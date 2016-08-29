@@ -17,8 +17,8 @@ class WikiSimClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluato
     * */
   def classificationScores() : Map[String, Map[String, Double]] = {
     val buckets = Map("low" -> Range.closed(new Double(0.0), new Double(0.3)),
-                      "medium" -> Range.openClosed(new Double(0.3), new Double(0.7)),
-                      "high" -> Range.openClosed(new Double(0.7), new Double(1.0)))
+                      "medium" -> Range.openClosed(new Double(0.3), new Double(0.6)),
+                      "high" -> Range.openClosed(new Double(0.6), new Double(1.0)))
 
     val bucketLabels = tasks.map{
       task =>
