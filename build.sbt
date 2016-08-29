@@ -36,7 +36,9 @@ libraryDependencies ++= Seq(
 
   "org.apache.lucene" % "lucene-core" % "6.1.0",
   "org.apache.lucene" % "lucene-queryparser" % "6.1.0",
-  "org.apache.lucene" % "lucene-analyzers-common" % "6.1.0"
+  "org.apache.lucene" % "lucene-analyzers-common" % "6.1.0",
+
+  "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0"
 )
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html

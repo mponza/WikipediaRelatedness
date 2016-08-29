@@ -7,6 +7,7 @@ import org.apache.lucene.analysis.core.{LowerCaseFilter, StopAnalyzer, StopFilte
 import org.apache.lucene.analysis.Analyzer
 import org.slf4j.LoggerFactory
 
+
 /**
   * Analyzer which takes into account a body where Wikipedia entities are
   * marked as ent_wikiID.
@@ -24,10 +25,11 @@ class WikipediaBodyAnalyzer extends Analyzer {
     val lowerFilter = new LowerCaseFilter(whiteTokenizer)
     val stopFilter = new StopFilter(lowerFilter,  StopAnalyzer.ENGLISH_STOP_WORDS_SET)
 
-    return new TokenStreamComponents(whiteTokenizer, stopFilter) {
+    new TokenStreamComponents(whiteTokenizer, stopFilter) {
       override def setReader(reader: Reader): Unit = {
         super.setReader(reader)
       }
     }
   }
 }
+
