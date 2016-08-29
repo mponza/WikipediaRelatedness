@@ -55,22 +55,22 @@ Enable virtualenv and install requirements:
 
 Generates statistical information from the Wikipedia corpus:
     
-    python src/main/python/latent/latent_gensim process_wiki_corpus
+    python src/main/python/latent process_wiki_corpus
     
 Generate LDA model and process each Wikipedia page:
 
-    python src/main/python/latent/latent_gensim corpus_lda
+    python src/main/python/latent corpus_lda
 
 
 For the eigenvector SVD generation on the Wikipedia graph just type:
     
-    python src/main/python/latent/latent_gensim graph_svd
+    python src/main/python/latent graph_svd
 
 
 Explicit Semantic Processing
 ----------------------------
 
-
+    
 
     
 Benchmarking

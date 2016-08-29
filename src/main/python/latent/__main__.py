@@ -25,7 +25,7 @@ def corpus_lda():
     Maps every Wikipedia document to the corresponding
     latent model.
     '''
-    #generate_lda_model()
+    generate_lda_model()
     map_wikidocs2lda()
 
 
@@ -35,12 +35,12 @@ def process_wiki_corpus():
     Generates Wikipedia statisitcs that are subsequently used
     to generate the LDA model.
     '''
-    process_corpus(to_lemmatize=False)
+    process_corpus()
 
 
 @baker.command
 def wiki_lda():
-    process_corpus(to_lemmatize=False)
+    process_corpus()
     generate_lda_model()
     map_wikidocs2lda()
 
