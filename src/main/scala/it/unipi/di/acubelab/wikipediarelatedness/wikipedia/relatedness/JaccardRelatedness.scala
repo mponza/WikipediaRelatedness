@@ -21,8 +21,6 @@ class JaccardRelatedness(options: Map[String, Any]) extends Relatedness {
     val intersection = graph.linkIntersection(srcWikiID, dstWikiID)
     if (intersection == 0) return 0.0
 
-    return (Similarity.cosineSimilarity(graph.successorArray(srcWikiID), graph.successorArray(srcWikiID)))
-
     val sizeA = graph.outdegree(srcWikiID)
     val sizeB = graph.outdegree(dstWikiID)
 

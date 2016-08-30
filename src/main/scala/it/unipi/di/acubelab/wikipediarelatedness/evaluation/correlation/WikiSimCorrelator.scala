@@ -47,17 +47,6 @@ class WikiSimCorrelator(val tasks: List[WikiRelTask]) extends WikiSimEvaluator {
     (humanScores, relatedScores)
   }
 
-  def writeTmpScores(scores: Array[Double], path: String = "tmp/rel.txt") : Unit = {
-    val pw = new PrintWriter(path)
-    pw.write(scores.mkString(","))
-    pw.close
-  }
-
-  def objectArrayList2List(objectArrayList : ObjectArrayList[WikiRelTask]) : List[WikiRelTask] = {
-    val arrayTasks = Array.ofDim[WikiRelTask](objectArrayList.size)
-    objectArrayList.toArray[WikiRelTask](arrayTasks).toList
-  }
-
   override def wikiSimPerformance(): WikiSimPerformance = {
     new WikiSimCorrPerformance(pearson, spearman)
   }

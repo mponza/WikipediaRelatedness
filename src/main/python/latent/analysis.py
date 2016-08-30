@@ -112,7 +112,7 @@ def generate_lda_model():
     mm = gensim.corpora.MmCorpus(wordtfidf_filename)
 
     logger.info('Generating LDA model...')
-    lda = gensim.models.LdaMulticore(corpus=mm, num_topics=num_topics,
+    lda = gensim.models.LdaMulticore(corpus=mm, num_topics=100,
                                      id2word=id2word, chunksize=10000)
 
     logger.info('Saving LDA model...')

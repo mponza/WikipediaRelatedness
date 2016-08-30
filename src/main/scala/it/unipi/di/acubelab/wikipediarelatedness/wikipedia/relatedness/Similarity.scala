@@ -89,7 +89,7 @@ object Similarity {
         dot += srcValue * dstValue
         i += 1
         j += 1
-      } else if(srcIndex < dstIndex) i+= 1 else j += 1
+      } else if(srcIndex < dstIndex) i += 1 else j += 1
     }
 
     if (dot == 0.0) return 0.0
@@ -102,6 +102,7 @@ object Similarity {
 
   def indexedVectorMagnitude(vec: ObjectArrayList[Tuple2[Int, Double]]) : Double = {
     var magnitude = 0.0
+
     for(i <- 0 until vec.size()) {
       magnitude += math.pow(vec.get(i)._2, 2.0)
     }
@@ -122,7 +123,7 @@ object Similarity {
   def zeroKLSimilarity(p: List[Double], q: List[Double]) : Double = {
     val gamma = 20.0  // http://dl.acm.org/citation.cfm?id=2661887
 
-    val P = p.map(pi => if(pi >= 0.0) pi else )
+    val P = p.map(pi => if(pi >= 0.0) pi else 0.0)
     val Q = q.map(qi => if(qi >= 0.0) qi else 0.0)
 
     val zeroKLDivergence = (P zip Q).foldLeft(0.0) {

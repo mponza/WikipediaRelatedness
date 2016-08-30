@@ -1,12 +1,10 @@
 package it.unipi.di.acubelab.wikipediarelatedness.utils
 
 import edu.stanford.nlp.ling.CoreAnnotations.{SentencesAnnotation, TokensAnnotation}
-import edu.stanford.nlp.ling.CoreLabel
 import edu.stanford.nlp.pipeline.StanfordCoreNLP
-import edu.stanford.nlp.util.CoreMap
 
 import scala.collection.mutable.ArrayBuffer
-
+import scala.collection.JavaConversions._
 
 object CoreNLP {
   lazy val coreNLP = coreNLPPipeline()
@@ -27,13 +25,13 @@ object CoreNLP {
     val document = new edu.stanford.nlp.pipeline.Annotation(text)
     coreNLP.annotate(document)
 
-    val sentences = document.get(classOf[SentencesAnnotation]).asInstanceOf[List[CoreMap]]
+    val sentences = document.get(classOf[SentencesAnnotation])
 
     for(sentence <- sentences) {
-      val tokens = sentence.get(classOf[TokensAnnotation]).asInstanceOf[List[CoreLabel]]
+      val tokens = sentence.get(classOf[TokensAnnotation])
 
       for(token <- tokens) {
-        val lemma = token.get(classOf[TokensAnnotation]).asInstanceOf[String]
+        val lemma = token.lemma()
         lemmas.append(lemma)
       }
     }

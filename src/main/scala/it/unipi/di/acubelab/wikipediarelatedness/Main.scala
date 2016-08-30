@@ -1,5 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness
 
+import java.io.PrintWriter
+
 import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{WikiSimBenchmark, WordSimBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.{WikiSimDataset, WikiSimProcessing}
@@ -7,6 +9,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{ESARelatedness, RelatednessFactory}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WebGraphProcessor
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.LuceneProcessing
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.lemma.LemmaLuceneProcessing
 
 import scala.util.parsing.json.JSON
 
@@ -82,6 +85,25 @@ object WordBench {
     benchmark.runBenchmark()
   }
 }
+
+
+object ESAGrid {
+  def main(args: Array[String]) {
+    for{
+      th <- 100 to 1000 by 100
+    } {
+        println("**************")
+        val esa = new ESARelatedness(Map("conceptThreshold" -> th))
+        println(esa.toString())
+
+        val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+
+        val benchmark = new WordSimBenchmark(dataset, esa)
+        benchmark.runBenchmark()
+    }
+  }
+}
+
 
 object GridLLP {
   def main(args: Array[String]) = {
@@ -172,9 +194,26 @@ object Analysis {
   }
 }
 
-object LuceneProcessing {
+object ProcessStandardLucene {
   def main(args: Array[String]): Unit = {
     val lucene = new LuceneProcessing()
     lucene.process()
+  }
+}
+
+object ProcessLemmaLucene {
+  def main(args: Array[String]): Unit = {
+    println("Lucene processing with lemmatization...")
+    val lucene = new LemmaLuceneProcessing()
+    lucene.process()
+  }
+}
+
+object ExtractsWikiIDs {
+  def main(args: Array[String]): Unit = {
+    val wikiDataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+
+    val csv = wikiDataset.map(task => "%d,%d".format(task.src.wikiID, task.dst.wikiID)) mkString "\n"
+    new PrintWriter("/tmp/wikiPairs.csv") { write(csv); close() }
   }
 }

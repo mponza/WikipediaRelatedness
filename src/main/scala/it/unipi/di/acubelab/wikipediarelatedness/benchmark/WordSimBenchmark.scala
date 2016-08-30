@@ -25,17 +25,22 @@ class WordSimBenchmark(dataset: RelatednessDataset, esa: ESARelatedness)
     val relScores = dataset.foldLeft (List.empty[WikiRelTask]) {
       case (relTasks: List[WikiRelTask], wikiRelTask: WikiRelTask) =>
 
-        if(wikiRelTask.srcWord != null && wikiRelTask.srcWord != null) {
-          val relScore = esa.relatedness(wikiRelTask.srcWord, wikiRelTask.srcWord)
+        if(wikiRelTask.srcWord != null && wikiRelTask.dstWord != null &&
+           wikiRelTask.srcWord != "" && wikiRelTask.dstWord != "") {
+
+          val relScore = esa.relatedness(wikiRelTask.srcWord, wikiRelTask.dstWord, -1)
+
+          println("%s %s: %1.3f".format(wikiRelTask.srcWord, wikiRelTask.dstWord, relScore))
+
           relTasks :+ wikiRelTask.make(relScore)
+
         } else {
           relTasks
         }
     }
 
     writeRelatednessScores(relScores)
-
     writeCorrelationScores(relScores)
-    writeClassificationScores(relScores)
+    //writeClassificationScores(relScores)
   }
 }

@@ -61,7 +61,11 @@ class LuceneProcessing {
 
         wikiDoc.add(new StringField("title", title, Field.Store.YES))
         wikiDoc.add(new StringField("id", id.toString, Field.Store.YES))  // int field?
-        wikiDoc.add(new TextField("body", body, Field.Store.YES))
+
+        val ft = new FieldType(TextField.TYPE_STORED)
+        ft.setStored(true)
+        ft.setStoreTermVectors(true)
+        wikiDoc.add(new Field("body", body, ft))
 
         if ((index + 1) % 1000 == 0) {
           logger.info("Indexed %d Wikipedia documents.".format(index + 1))

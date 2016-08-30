@@ -34,6 +34,7 @@ object RelatednessFactory {
         case "CoSimRank" | "PPRCos" => new CoSimRankRelatedness(opts)
         case "SVD" => new GraphSVDRelatedness(opts)
         case "LDA" => new LDARelatedness(opts)
+        case "ESA" => new ESARelatedness(opts)
 
         case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s."
           .format(relatednessName))

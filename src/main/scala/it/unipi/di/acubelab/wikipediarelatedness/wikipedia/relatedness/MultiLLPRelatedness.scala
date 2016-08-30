@@ -29,13 +29,12 @@ class MultiLLPRelatedness(options: Map[String, Any]) extends Relatedness {
   }
 
   def computeRelatedness(wikiRelTask: WikiRelTask) : Double = {
-    multiLLPRels.map(llpRels => llpRels.computeRelatedness(wikiRelTask)).sum / nLLP.toDouble
+    multiLLPRels.map(llpRels => llpRels.computeCosineRelatedness(wikiRelTask)).sum / nLLP.toDouble
   }
 
   override def toString() : String = {
     "MultiLLPRelatedness-nLLP_%d-%s".format(nLLP, llpTask)
   }
-
 
   def dirPath() : String = {
     Paths.get(Configuration.wikipedia("multiLLP"), "multiLLP-nLLP_%d-%s".format(nLLP, llpTask.toString)).toString

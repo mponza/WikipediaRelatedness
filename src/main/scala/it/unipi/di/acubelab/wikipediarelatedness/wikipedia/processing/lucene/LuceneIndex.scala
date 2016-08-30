@@ -6,11 +6,11 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.core.KeywordAnalyzer
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper
-import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.analysis.util.CharArraySet
 import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.queryparser.classic.QueryParser
-import org.apache.lucene.search.IndexSearcher
+import org.apache.lucene.search.{BooleanQuery, IndexSearcher}
+import org.apache.lucene.search.similarities.BM25Similarity
 import org.apache.lucene.store.{FSDirectory, IOContext, RAMDirectory}
 import org.slf4j.LoggerFactory
 
@@ -19,10 +19,14 @@ class LuceneIndex {
   val logger = LoggerFactory.getLogger(classOf[LuceneIndex])
 
   val reader = loadIndexInMemory()
+
   val searcher = new IndexSearcher(reader)
+  searcher.setSimilarity(new BM25Similarity())
+
+  BooleanQuery.setMaxClauseCount(Integer.MAX_VALUE)
 
 
-  def loadIndexInMemory() : DirectoryReader = {
+  def loadIndexInMemory(): DirectoryReader = {
     logger.info("Loading Lucene index in memory...")
 
     val fsDir = FSDirectory.open(Paths.get(Configuration.wikipedia("lucene")))
@@ -35,17 +39,38 @@ class LuceneIndex {
   /**
     * @return List of Wikipedia IDs where wikiID is mentioned and the corresponding score.
     */
-  def wikipediaConcepts(word: String, resultThreshold: Int = 625) : List[Tuple2[Int, Float]] = {
+  def wikipediaConcepts(text: String, resultThreshold: Int = 625): List[Tuple2[Int, Float]] = {
     val parser = new QueryParser("body", LuceneIndex.analyzer)
-    val query = parser.createBooleanQuery("body", word)
+    val query = parser.createBooleanQuery("body", text)
 
-    searcher.search(query, resultThreshold).scoreDocs.map { hit =>
-      val wikiDocID = reader.document(hit.doc).getField("id").numericValue().intValue()
+    val threshold = if (resultThreshold >= 0) resultThreshold else Integer.MAX_VALUE
+
+    val x = searcher.search(query, threshold).scoreDocs.map { hit =>
+      val wikiDocID = reader.document(hit.doc).getField("id").stringValue().toInt
       (wikiDocID, hit.score)
     }.toList
-  }
-}
 
+    x.sortBy(_._1)
+  }
+
+
+  def wikipediaBody(wikiID: Int) : String = {
+    val parser = new QueryParser("id", LuceneIndex.analyzer)
+    val query = parser.createBooleanQuery("id", wikiID.toString)
+
+    val wikiDoc = searcher.search(query, 1).scoreDocs(0).doc
+    reader.document(wikiDoc).getField("body").stringValue()
+  }
+
+
+  def vectorSpaceProjection(wikiID: Int) : String = {
+    val text = wikipediaBody(wikiID)
+    reader.getTermVector(wikiID, "id")
+
+    ""
+  }
+
+}
 
 object LuceneIndex {
   lazy val analyzer = luceneEntityAnalyzer()

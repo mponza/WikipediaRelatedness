@@ -31,9 +31,9 @@ class LemmaLuceneProcessing extends LuceneProcessing {
   }
 
   def processBody(sentences: List[String]) : List[String] = {
-    sentences.map {
+    sentences.par.map {
       sentence =>
         CoreNLP.lemmatize(sentence) mkString(" ")
-    }
+    }.toList
   }
 }
