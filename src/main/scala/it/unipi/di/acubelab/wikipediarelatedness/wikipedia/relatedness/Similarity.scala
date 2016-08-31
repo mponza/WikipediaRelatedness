@@ -26,7 +26,7 @@ object Similarity {
     val num = hammingSimilarity(src, dst)
     val den = src.size
 
-    (num / den.toDouble max 0.0) min 1.0
+    num / den.toDouble
   }
 
   // Code from https://rosettacode.org/wiki/Levenshtein_distance#Scala
@@ -67,7 +67,7 @@ object Similarity {
     if(srcMagnitude == 0.0 || dstMagnitude == 0.0) return 0.0
     val magnitude = math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)
 
-    ((dot / magnitude) max 0.0) min 1.0
+    dot / magnitude
   }
 
   def cosineSimilarity(srcVec: ObjectArrayList[Tuple2[Int, Double]],
@@ -97,7 +97,7 @@ object Similarity {
     if(srcMagnitude == 0.0 || dstMagnitude == 0.0) return 0.0
     val magnitude = math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)
 
-    ((dot / magnitude) max 0.0) min 1.0   // avoid representation errors
+    dot / magnitude   // avoid representation errors
   }
 
   def indexedVectorMagnitude(vec: ObjectArrayList[Tuple2[Int, Double]]) : Double = {
@@ -133,10 +133,16 @@ object Similarity {
           kl + pi * math.log(pi / qi)
         }
     }
-    //println(zeroKLDivergence)
 
     if (zeroKLDivergence == 0.0) return 0.0
 
     1 / zeroKLDivergence
+  }
+
+  def testCosine() = {
+    val src = List(13f, 0f, 14f, 0f, 15f).zipWithIndex.map(pair => Tuple2(pair._2, pair._1)).filter(p => p._2 != 0f)
+    val dst = List(15f, 0f, 16f, 17f, 0f, 20f).zipWithIndex.map(pair => Tuple2(pair._2, pair._1)).filter(p => p._2 != 0f)
+
+    println("%1.3f".format(cosineSimilarity(src, dst)))
   }
 }

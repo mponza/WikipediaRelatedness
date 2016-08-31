@@ -6,7 +6,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{WikiSimBenchmark, WordSimBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.{WikiSimDataset, WikiSimProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{ESARelatedness, RelatednessFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{ESARelatedness, RelatednessFactory, Similarity}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WebGraphProcessor
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.lemma.LemmaLuceneProcessing
@@ -215,5 +215,12 @@ object ExtractsWikiIDs {
 
     val csv = wikiDataset.map(task => "%d,%d".format(task.src.wikiID, task.dst.wikiID)) mkString "\n"
     new PrintWriter("/tmp/wikiPairs.csv") { write(csv); close() }
+  }
+}
+
+
+object Cosine {
+  def main(args: Array[String]): Unit = {
+    Similarity.testCosine()
   }
 }
