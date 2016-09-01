@@ -30,8 +30,6 @@ class ESARelatedness(options: Map[String, Any])  extends  Relatedness {
 
     val cosine = Similarity.cosineSimilarity(srcSCs, dstSCs)
 
-    println(cosine)
-
     cosine
   }
 

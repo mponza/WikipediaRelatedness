@@ -1,8 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
-import it.unipi.di.acubelab.wikipediarelatedness.latent.CorpusLDA
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
-
 
 object RelatednessFactory {
   /**
@@ -42,4 +39,7 @@ object RelatednessFactory {
 
     case _ => throw new IllegalArgumentException("Relatedness Options are not valid: %s".format(relateOptions))
   }
+
+  def make(options: Map[String, String]) : Relatedness = { make(Some(options)) }
+  def make(relatednessName: String) : Relatedness = { make(Map("relatedness" -> relatednessName)) }
 }

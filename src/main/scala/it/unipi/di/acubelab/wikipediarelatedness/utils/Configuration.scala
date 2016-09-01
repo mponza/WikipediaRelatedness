@@ -58,6 +58,7 @@ object Configuration {
     "dw90" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.90.w2v.bin").getPath,
 
     "dwsg" -> getClass.getResource("/w2v/wikipedia-w2v-sg-el-deepWalk.w2v.bin").getPath,
+    "sg" -> getClass.getResource("/w2v/wikipedia-w2v-sg-et.w2v.bin").getPath,
 
 
     "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath
@@ -78,4 +79,6 @@ object Configuration {
   val lda = Map(
     "wiki_lda" -> Paths.get(projDir, "/data/processing/wikipedia/latent/gensim/wiki_lda/lda_wiki_docs.gz").toString
   )
+
+  val intervals = Map("white" -> (0.0, 0.4), "gray" -> (0.4, 0.7), "black" -> (0.7, 1.0))
 }

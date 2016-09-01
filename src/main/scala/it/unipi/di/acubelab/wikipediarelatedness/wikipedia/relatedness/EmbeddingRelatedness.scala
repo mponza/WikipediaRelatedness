@@ -34,7 +34,7 @@ class EmbeddingRelatedness(options: Map[String, Any]) extends Relatedness  {
 
       if (cosine < 0) logger.warn("Negative cosine between %s.".format(wikiRelTask.wikiTitleString()))
 
-      math.min(math.max(cosine, 0.0), 1.0)
+      cosine
     }
 
     override def toString(): String = {

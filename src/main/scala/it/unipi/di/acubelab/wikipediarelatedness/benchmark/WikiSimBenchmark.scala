@@ -1,12 +1,12 @@
 package it.unipi.di.acubelab.wikipediarelatedness.benchmark
 
-import java.io.File
+import java.io.{File, PrintWriter}
 import java.nio.file.Paths
 
 import com.github.tototoshi.csv.CSVWriter
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiRelTask}
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.WikiSimEvaluatorFactory
-import it.unipi.di.acubelab.wikipediarelatedness.evaluation.classification.{WikiSimClassPerformance}
+import it.unipi.di.acubelab.wikipediarelatedness.evaluation.bucketclassification.WikiSimBucketClassPerformance
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.correlation.WikiSimCorrPerformance
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
@@ -48,14 +48,19 @@ class WikiSimBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     new File(relDir).mkdirs
     val path = Paths.get(relDir, relatedness.toString() + ".data.csv").toString
 
+    val writer = new PrintWriter(new File(path))
+    tasks.foreach(task => writer.write(task.toCSVString()))
+    writer.close()
+
+    /*
     val csvWriter = CSVWriter.open(new File(path))
 
     tasks.foreach {
       case wikiRelTask =>
-        csvWriter.writeRow(wikiRelTask.toList )
+        csvWriter.writeRow(wikiRelTask.toList)
     }
 
-    csvWriter.close
+    csvWriter.close*/
   }
 
 
@@ -73,7 +78,7 @@ class WikiSimBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
 
   def writeClassificationScores(tasks: List[WikiRelTask]) : Unit = {
     val classificator = WikiSimEvaluatorFactory.make("classification", tasks)
-    val classification = classificator.wikiSimPerformance().asInstanceOf[WikiSimClassPerformance]
+    val classification = classificator.wikiSimPerformance().asInstanceOf[WikiSimBucketClassPerformance]
 
     logger.info("%s Classification Scores: %s".format(relatedness.toString, classification.toString))
 
