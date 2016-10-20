@@ -13,10 +13,7 @@ class MilneWittenRelatedness(options: MilneWittenOptions) extends Relatedness {
   /**
     * Paper: https://www.aaai.org/Papers/Workshops/2008/WS-08-15/WS08-15-005.pdf
     */
-  def computeRelatedness(wikiRelTask: WikiRelateTask) : Double = {
-    val srcWikiID = wikiRelTask.src.wikiID
-    val dstWikiID = wikiRelTask.dst.wikiID
-
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Double = {
     val sizeA = graph.outdegree(srcWikiID)
     val sizeB = graph.outdegree(dstWikiID)
 

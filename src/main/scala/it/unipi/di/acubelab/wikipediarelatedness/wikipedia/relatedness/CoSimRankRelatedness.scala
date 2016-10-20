@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 import it.unimi.dsi.fastutil.ints.Int2DoubleOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
+import it.unipi.di.acubelab.wikipediarelatedness.options.CoSimRankOptions
 import it.unipi.di.acubelab.wikipediarelatedness.utils.{CoSimRank, Configuration}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WikiBVGraph
@@ -30,7 +31,7 @@ import scala.collection.mutable.ListBuffer
   *     }
   * }
   * */
-class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
+class CoSimRankRelatedness(options: CoSimRankOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
   val graphs = wikiGraphs()
   val cosimrank = CoSimRank.make(options)

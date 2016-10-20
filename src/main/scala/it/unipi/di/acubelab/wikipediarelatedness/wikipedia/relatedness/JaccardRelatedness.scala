@@ -14,10 +14,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 class JaccardRelatedness(val options: JaccardOptions) extends Relatedness {
   val graph = WikiGraph.wikiBVGraph(options.graph)
 
-  def computeRelatedness(wikiRelTask: WikiRelateTask) : Double = {
-    val srcWikiID = wikiRelTask.src.wikiID
-    val dstWikiID = wikiRelTask.dst.wikiID
-
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Double = {
     val intersection = graph.linkIntersection(srcWikiID, dstWikiID)
     if (intersection == 0) return 0.0
 

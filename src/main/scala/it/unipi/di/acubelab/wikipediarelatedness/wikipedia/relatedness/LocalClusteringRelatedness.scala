@@ -17,23 +17,23 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.{
 class LocalClusteringRelatedness(options: LocalClusteringOptions) extends Relatedness {
   val neighborGraph = WikiGraph.wikiBVGraph(options.neighborGraph)
 
-  val clustGraph = WikiGraph.wikiBVGraph(options.clusterGraph)
-  val clustCoeff = new ClusteringCoefficient(clustGraph)
+  val clusterGraph = WikiGraph.wikiBVGraph(options.clusterGraph)
+  val clustCoeff = new ClusteringCoefficient(clusterGraph)
 
 
   def computeRelatedness(wikiRelTask: WikiRelateTask) : Double = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 
-    val intersection = neighboGraph.nodeIntersection(srcWikiID, dstWikiID)
+    val intersection = neighborGraph.nodeIntersection(srcWikiID, dstWikiID)
     if (intersection.size == 0) return 0.0
 
     val numerator = localClusterNumerator(intersection)
 
-    val x = numerator / intersection.size.toDouble
-    println("Coeff: %1.2f with numerator %1.2f".format(x, numerator))
+    val relatedness = numerator / intersection.size.toDouble
+    println("Coeff: %1.2f with numerator %1.2f".format(relatedness, numerator))
 
-    x
+    relatedness
   }
 
   def localClusterNumerator(wikiIDs: IntArrayList) : Double = {

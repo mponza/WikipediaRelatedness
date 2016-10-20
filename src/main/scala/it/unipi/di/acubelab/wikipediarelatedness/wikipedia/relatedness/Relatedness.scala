@@ -6,12 +6,16 @@ trait Relatedness {
 
   /**
     *
-    * @param wikiRelTask
-    * @return The relatedness between src and dst of wikiRelTask.
+    * @param task
+    * @return The relatedness between src and dst of the WikiRelTask at hand.
     */
-  def computeRelatedness(wikiRelTask: WikiRelateTask) : Double
+  def computeRelatedness(task: WikiRelateTask) : Float = {
+    computeRelatedness(task.src.wikiID, task.dst.wikiID)
+  }
 
-  def computeRelatredness(srcWikiID: Int, dstWikiID: Int) : Double = {
+
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float
+  /*def computeRelatredness(srcWikiID: Int, dstWikiID: Int) : Float = {
     val fakeTask =
       new WikiRelateTask(
 
@@ -25,7 +29,7 @@ trait Relatedness {
     )
 
     computeRelatedness(fakeTask)
-  }
+  }*/
 
   override def toString() : String
 }

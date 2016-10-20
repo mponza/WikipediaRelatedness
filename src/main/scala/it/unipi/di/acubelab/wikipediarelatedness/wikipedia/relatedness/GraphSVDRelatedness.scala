@@ -3,6 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.latent.GraphSVD
+import it.unipi.di.acubelab.wikipediarelatedness.options.GraphSVDOptions
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
 
@@ -15,10 +16,8 @@ import org.slf4j.LoggerFactory
   *                   "length":
   *                }
   */
-class GraphSVDRelatedness(options: Map[String, Any]) extends Relatedness  {
+class GraphSVDRelatedness(options: GraphSVDOptions) extends Relatedness  {
   val logger = LoggerFactory.getLogger(classOf[GraphSVDRelatedness])
-  val eigenNames = options.getOrElse("eigen", "right").toString().split(",")
-  val vectorLength = options.getOrElse("length", -1.0).toString.toDouble.toInt
 
   val svds = eigenNames.map(name => new GraphSVD(Configuration.graphSVD(name))).toList
 

@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.{EmbeddingOptions, JaccardOptions, LocalClusteringOptions, MilneWittenOptions}
+import it.unipi.di.acubelab.wikipediarelatedness.options._
 
 
 object RelatednessFactory {
@@ -26,20 +26,21 @@ object RelatednessFactory {
 
       case "LocalClustering" => new LocalClusteringRelatedness(new LocalClusteringOptions(json))
 
-      case "LLP" => new LLPRelatedness(json)
+      /*case "LLP" => new LLPRelatedness(json)
       case "MultiLLP" => new MultiLLPRelatedness(json)
+      */
 
-      case "LMModel" => new LMRelatedness(json)
+      case "LMModel" => new LMRelatedness(new LMOptions(json))
 
-      case "CoSimRank" | "PPRCos" => new CoSimRankRelatedness(json)
+      //case "CoSimRank" => new CoSimRankRelatedness(new CoSimRankOptions(json))
+      // case "PPRCos" => new PPRCosRelatedness(new PPRCosOptions(json))
 
-      case "SVD" => new GraphSVDRelatedness(json)
-      case "LDA" => new LDARelatedness(json)
+      case "SVD" => new GraphSVDRelatedness(new GraphSVDOptions(json))
+      case "LDA" => new LDARelatedness(new LDAOptions(json))
 
-      case "ESA" => new ESARelatedness(json)
+      //case "ESA" => new ESARelatedness(new ESAOptions(json))
 
-      case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s."
-        .format(relatednessName))
+      case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s.".format(relatednessName))
     }
   }
 
