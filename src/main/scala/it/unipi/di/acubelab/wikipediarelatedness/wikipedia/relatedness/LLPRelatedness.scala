@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 import it.unimi.dsi.fastutil.ints.{Int2DoubleOpenHashMap, IntArrayList}
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.llp.{LLPClustering, LLPTask}
 import org.slf4j.LoggerFactory
 
@@ -12,8 +12,8 @@ import scala.collection.mutable.ListBuffer
   * @param options Warning: before using this, you have to process the graph via LLP with the relative parameters.
   *                {
   *                   "nLabels"
-                      "gammaThreshold"
-                      "maxUpdates"
+                      *"gammaThreshold"
+                      *"maxUpdates"
   *                }
   */
 class LLPRelatedness(options: Map[String, Any], dirPath: String = null) extends Relatedness {
@@ -24,7 +24,7 @@ class LLPRelatedness(options: Map[String, Any], dirPath: String = null) extends 
 
   val llpClustering = new LLPClustering(llpTask, dirPath)
 
-  override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
+  override def computeRelatedness(wikiRelTask: WikiRelateTask): Double = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 
@@ -65,7 +65,7 @@ class LLPRelatedness(options: Map[String, Any], dirPath: String = null) extends 
     probs
   }
 
-  def computeCosineRelatedness(wikiRelTask: WikiRelTask): Double = {
+  def computeCosineRelatedness(wikiRelTask: WikiRelateTask): Double = {
     val (srcWikiID, dstWikiID) = wikiRelTask.wikiIDs()
 
     val srcVec = probabilityVector(srcWikiID)

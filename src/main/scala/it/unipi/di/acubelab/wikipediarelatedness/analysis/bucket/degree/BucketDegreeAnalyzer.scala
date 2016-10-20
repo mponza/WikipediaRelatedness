@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.analysis.bucket.degree
 
 import it.unipi.di.acubelab.wikipediarelatedness.analysis.bucket.BucketAnalyzer
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WikiBVGraph
 
 trait BucketDegreeAnalyzer extends BucketAnalyzer {
@@ -11,7 +11,7 @@ trait BucketDegreeAnalyzer extends BucketAnalyzer {
     super.computeBuckets(step)
   }
 
-  override def bucketIndex(wikiRelTask: WikiRelTask) : Int = {
+  override def bucketIndex(wikiRelTask: WikiRelateTask) : Int = {
     val ratio = degreeRatio(wikiRelTask)
 
     for((bucket, index) <- buckets.zipWithIndex) {
@@ -22,7 +22,7 @@ trait BucketDegreeAnalyzer extends BucketAnalyzer {
     throw new IllegalArgumentException("DegreeRatio error %.3f".format(ratio))
   }
 
-  def degreeRatio(wikiRelTask: WikiRelTask) : Float = {
+  def degreeRatio(wikiRelTask: WikiRelateTask) : Float = {
     val srcInDegree = wikiBVGraph.outdegree(wikiRelTask.src.wikiID)
     val dstInDegree = wikiBVGraph.outdegree(wikiRelTask.dst.wikiID)
 

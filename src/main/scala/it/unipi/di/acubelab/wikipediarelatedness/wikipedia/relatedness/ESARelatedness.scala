@@ -1,13 +1,13 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.LuceneIndex
 
 class ESARelatedness(options: Map[String, Any])  extends  Relatedness {
   val lucene = new LuceneIndex
   val conceptThreshold = options.getOrElse("conceptThreshold", 625).toString.toDouble.toInt // wtf casting
 
-  override def computeRelatedness(wikiRelTask: WikiRelTask) : Double = {
+  override def computeRelatedness(wikiRelTask: WikiRelateTask) : Double = {
 
     if(wikiRelTask.src.wikiID == wikiRelTask.dst.wikiID) return 1.0
 

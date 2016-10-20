@@ -4,11 +4,11 @@ import java.lang.Double
 import scala.language.existentials
 
 import com.google.common.collect.Range
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.WikiSimEvaluator
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.WikiSimPerformance
 
-class WikiSimBucketClassificator(val tasks: List[WikiRelTask]) extends WikiSimEvaluator {
+class WikiSimBucketClassificator(val tasks: List[WikiRelateTask]) extends WikiSimEvaluator {
 
   def scores = classificationScores()
 
@@ -22,7 +22,7 @@ class WikiSimBucketClassificator(val tasks: List[WikiRelTask]) extends WikiSimEv
 
     val bucketLabels = tasks.map{
       task =>
-          val relLabel = value2Label(task.rel, buckets)
+          val relLabel = value2Label(task.humanRelatedness, buckets)
           val computedLabel = value2Label(task.computedRel, buckets)
 
           (relLabel, computedLabel)

@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 import it.unimi.dsi.fastutil.ints.Int2DoubleOpenHashMap
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.utils.{CoSimRank, Configuration}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WikiBVGraph
@@ -48,7 +48,7 @@ class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
   }
 
 
-  override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
+  override def computeRelatedness(wikiRelTask: WikiRelateTask): Double = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 
@@ -124,7 +124,7 @@ class CoSimRankRelatedness(options: Map[String, Any]) extends Relatedness {
 
 // Default Weighter. It assigns the same weight to all edges.
 class EdgeWeighter extends Relatedness {
-  override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
+  override def computeRelatedness(wikiRelTask: WikiRelateTask): Double = {
     1.0
   }
   override def toString: String = "Prob"

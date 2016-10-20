@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.analysis.bucket.jaccard
 
 import it.unipi.di.acubelab.wikipediarelatedness.analysis.bucket.BucketAnalyzer
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
 import scala.collection.mutable.ListBuffer
@@ -28,7 +28,7 @@ trait BucketJaccardAnalyzer extends BucketAnalyzer {
     buckets.toList
   }
 
-  override def bucketIndex(wikiRelTask: WikiRelTask) : Int = {
+  override def bucketIndex(wikiRelTask: WikiRelateTask) : Int = {
     val ratio = jaccardRelatedness.computeRelatedness(wikiRelTask).toFloat
 
     for((bucket, index) <- buckets.zipWithIndex) {

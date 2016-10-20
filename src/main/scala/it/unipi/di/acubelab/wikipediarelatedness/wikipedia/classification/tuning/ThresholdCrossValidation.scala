@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.classification.tuning
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
 import org.slf4j.LoggerFactory
@@ -15,7 +15,6 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.classification.classi
   *                   "threshold" thresholdValue
   *
   *                }
-  *
   * @param wikiSimDataset
   */
 class ThresholdCrossValidation(options: Map[String, String], wikiSimDataset: WikiSimDataset) {
@@ -31,7 +30,7 @@ class ThresholdCrossValidation(options: Map[String, String], wikiSimDataset: Wik
 
   }
 
-  def tun(train: List[WikiRelTask], eval: List[WikiRelTask]) = {
+  def tun(train: List[WikiRelateTask], eval: List[WikiRelateTask]) = {
 
   }
 

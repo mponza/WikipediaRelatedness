@@ -4,7 +4,7 @@ import java.io.{File, PrintWriter}
 import java.nio.file.Paths
 
 import com.github.tototoshi.csv.CSVWriter
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiRelTask}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiRelateTask}
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.WikiSimEvaluatorFactory
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.bucketclassification.WikiSimBucketClassPerformance
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.correlation.WikiSimCorrPerformance
@@ -25,8 +25,8 @@ class WikiSimBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     logger.info("Running benchmark of %s on dataset %s...".format(relatedness.toString, dataset))
 
     // List of (wikiRelTask, relatedness computed by using the given relatedenss).
-    val relScores = dataset.foldLeft (List.empty[WikiRelTask]) {
-        case (relTasks: List[WikiRelTask], wikiRelTask: WikiRelTask) =>
+    val relScores = dataset.foldLeft (List.empty[WikiRelateTask]) {
+        case (relTasks: List[WikiRelateTask], wikiRelTask: WikiRelateTask) =>
           val relScore = relatedness.computeRelatedness(wikiRelTask)
           relTasks :+ wikiRelTask.make(relScore)
       }
@@ -42,7 +42,7 @@ class WikiSimBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
     *
     * @param tasks
     */
-  def writeRelatednessScores(tasks: List[WikiRelTask]) : Unit = {
+  def writeRelatednessScores(tasks: List[WikiRelateTask]) : Unit = {
     logger.info("Writing %s Relatedness scores...".format(relatedness.toString))
 
     new File(relDir).mkdirs
@@ -64,7 +64,7 @@ class WikiSimBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
   }
 
 
-  def writeCorrelationScores(tasks: List[WikiRelTask]) : Unit = {
+  def writeCorrelationScores(tasks: List[WikiRelateTask]) : Unit = {
     val correlator = WikiSimEvaluatorFactory.make("correlation", tasks)
     val correlation = correlator.wikiSimPerformance().asInstanceOf[WikiSimCorrPerformance]
 
@@ -76,7 +76,7 @@ class WikiSimBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
   }
 
 
-  def writeClassificationScores(tasks: List[WikiRelTask]) : Unit = {
+  def writeClassificationScores(tasks: List[WikiRelateTask]) : Unit = {
     val classificator = WikiSimEvaluatorFactory.make("classification", tasks)
     val classification = classificator.wikiSimPerformance().asInstanceOf[WikiSimBucketClassPerformance]
 

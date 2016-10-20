@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelTask}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateTask}
 
 trait Relatedness {
 
@@ -9,11 +9,11 @@ trait Relatedness {
     * @param wikiRelTask
     * @return The relatedness between src and dst of wikiRelTask.
     */
-  def computeRelatedness(wikiRelTask: WikiRelTask) : Double
+  def computeRelatedness(wikiRelTask: WikiRelateTask) : Double
 
   def computeRelatredness(srcWikiID: Int, dstWikiID: Int) : Double = {
     val fakeTask =
-      new WikiRelTask(
+      new WikiRelateTask(
 
         new WikiEntity(srcWikiID, "fakeTitle_" + srcWikiID.toString),
         "fakeWord" + srcWikiID.toString,

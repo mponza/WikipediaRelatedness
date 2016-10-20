@@ -1,16 +1,16 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.classification.tuning
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
-class WikiTaskFolds(val tasks: List[WikiRelTask], nBuckets : Int = 10) {
+class WikiTaskFolds(val tasks: List[WikiRelateTask], nBuckets : Int = 10) {
   val logger = LoggerFactory.getLogger(classOf[WikiTaskFolds])
   val folds = generateFolds(tasks, nBuckets)
 
 
-  def trainEvalTasks() : List[Tuple2[List[WikiRelTask], List[WikiRelTask]]] = {
+  def trainEvalTasks() : List[Tuple2[List[WikiRelateTask], List[WikiRelateTask]]] = {
     for ((evalTasks, index) <- folds.zipWithIndex) yield {
       val trainTasks = folds.zipWithIndex.filter(_._2 != index).flatMap(_._1)
 
@@ -23,8 +23,8 @@ class WikiTaskFolds(val tasks: List[WikiRelTask], nBuckets : Int = 10) {
     *
     * @return [wikiRelTasks_0, wikiRelTasks_1, ..., wikiRelTasks_nBuckets] where wikiRelTasks is a List[WikiRelTask].
     */
-  def generateFolds(tasks: List[WikiRelTask], nBuckets : Int) : List[List[WikiRelTask]]= {
-    val bucketsBuffer = List.fill(nBuckets)(ListBuffer.empty[WikiRelTask])
+  def generateFolds(tasks: List[WikiRelateTask], nBuckets : Int) : List[List[WikiRelateTask]]= {
+    val bucketsBuffer = List.fill(nBuckets)(ListBuffer.empty[WikiRelateTask])
 
     val positives = tasks.filter(_.humanLabelClass == 1)
     val negatives = tasks.filter(_.humanLabelClass == 0)
@@ -39,7 +39,7 @@ class WikiTaskFolds(val tasks: List[WikiRelTask], nBuckets : Int = 10) {
   }
 
 
-  def fillBuckets(buckets: List[ListBuffer[WikiRelTask]], samples: List[WikiRelTask]) = {
+  def fillBuckets(buckets: List[ListBuffer[WikiRelateTask]], samples: List[WikiRelateTask]) = {
     var b = 0
 
     for(i <- 0 until samples.size) {
@@ -48,9 +48,9 @@ class WikiTaskFolds(val tasks: List[WikiRelTask], nBuckets : Int = 10) {
     }
   }
 
-  def printBucketInformation(buckets: List[List[WikiRelTask]]) = {
+  def printBucketInformation(buckets: List[List[WikiRelateTask]]) = {
     buckets.zipWithIndex.foreach {
-      case (bucket: List[WikiRelTask], index: Int) =>
+      case (bucket: List[WikiRelateTask], index: Int) =>
 
         val pos = bucket.count(_.humanLabelClass == 1)
         val neg = bucket.count(_.humanLabelClass == 1)

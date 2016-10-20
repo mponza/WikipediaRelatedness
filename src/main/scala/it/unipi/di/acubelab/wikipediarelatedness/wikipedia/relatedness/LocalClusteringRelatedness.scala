@@ -1,30 +1,31 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unimi.dsi.fastutil.ints.IntArrayList
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
+import it.unipi.di.acubelab.wikipediarelatedness.options.LocalClusteringOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.{ClusteringCoefficient, WikiBVGraph}
 
 /**
   * rel(u, v) = 1 / | \intersection(in(u), in(v)) |  *  \sum_{ w \in \intersection(in(u), in(v)) } \frac{ local_clust_out(w) }
+ *
   * @param
   *       {
   *           graph: inGraph/outGraph   // graph where compute the clustering coefficient
   *       }
   */
-class LocalClusteringRelatedness(options: Map[String, Any]) extends Relatedness {
-  val inGraph = WikiGraph.wikiBVGraph("inGraph")
+class LocalClusteringRelatedness(options: LocalClusteringOptions) extends Relatedness {
+  val neighborGraph = WikiGraph.wikiBVGraph(options.neighborGraph)
 
-  val graphName = options.getOrElse("graph", "outGraph").toString
-  val clustGraph = WikiGraph.wikiBVGraph(graphName)
+  val clustGraph = WikiGraph.wikiBVGraph(options.clusterGraph)
   val clustCoeff = new ClusteringCoefficient(clustGraph)
 
 
-  def computeRelatedness(wikiRelTask: WikiRelTask) : Double = {
+  def computeRelatedness(wikiRelTask: WikiRelateTask) : Double = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 
-    val intersection = inGraph.nodeIntersection(srcWikiID, dstWikiID)
+    val intersection = neighboGraph.nodeIntersection(srcWikiID, dstWikiID)
     if (intersection.size == 0) return 0.0
 
     val numerator = localClusterNumerator(intersection)

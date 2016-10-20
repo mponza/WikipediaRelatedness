@@ -1,23 +1,19 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
+import it.unipi.di.acubelab.wikipediarelatedness.options.MilneWittenOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 import org.slf4j.LoggerFactory
 
-class MilneWittenRelatedness(options: Map[String, Any]) extends Relatedness {
-  val graphName = if (options.contains("graph")) options("name").toString else "inGraph"
-  val graph = WikiGraph.wikiBVGraph(graphName)
-
+class MilneWittenRelatedness(options: MilneWittenOptions) extends Relatedness {
+  val graph = WikiGraph.wikiBVGraph(options.graph)
   val W = graph.bvGraph.numNodes
-
   val logger = LoggerFactory.getLogger(classOf[MilneWittenRelatedness])
 
   /**
     * Paper: https://www.aaai.org/Papers/Workshops/2008/WS-08-15/WS08-15-005.pdf
-    *
-    * @return
     */
-  def computeRelatedness(wikiRelTask: WikiRelTask) : Double = {
+  def computeRelatedness(wikiRelTask: WikiRelateTask) : Double = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 

@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim
 import java.io.File
 
 import com.github.tototoshi.csv.CSVReader
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiEntity, WikiRelTask}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiEntity, WikiRelateTask}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
 
@@ -18,10 +18,10 @@ class WikiSimDataset(path: String) extends RelatednessDataset {
     *
     * @return List of WikiSimPair with the corresponding human relatedness.
     */
-  def loadWikiSimPairs(path: String) : List[WikiRelTask]= {
+  def loadWikiSimPairs(path: String) : List[WikiRelateTask]= {
     logger.info("Loading WikiSimDataset... %s".format(path))
 
-    val pairs = new mutable.MutableList[WikiRelTask]
+    val pairs = new mutable.MutableList[WikiRelateTask]
     val csvReader = CSVReader.open(new File(path))
 
     csvReader.foreach {
@@ -32,12 +32,9 @@ class WikiSimDataset(path: String) extends RelatednessDataset {
         val dstWord = fields(3)
         val dst = new WikiEntity(fields(4).toInt, fields(5).replaceAll(" ", "_"))
 
-        val rel = fields(6).toDouble
-        val computedRel = if (fields.length != 8) Double.NaN else fields(7).toDouble
+        val humanRelatedness = fields(6).toDouble
 
-        val humanClass = rel2Class(computedRel)
-
-        pairs += new WikiRelTask(src, srcWord, dst, dstWord, rel, computedRel, humanClass)
+        pairs += new WikiRelateTask(src, dst, humanRelatedness)
     }
 
     csvReader.close()
@@ -46,20 +43,7 @@ class WikiSimDataset(path: String) extends RelatednessDataset {
     pairs.toList
   }
 
-  def rel2Class(rel: Double) : Int = {
-    val intervals = Configuration.intervals
-    if (rel >= intervals("white")._1 && rel <= intervals("white")._2) {
-      0
-    } else if (rel > intervals("gray")._1 && rel < intervals("gray")._2) {
-      2
-    } else if (rel > intervals("black")._1 && rel < intervals("black")._2) {
-      1
-    } else {
-      throw new IllegalArgumentException("Error while mapping relatedenss to class: %1.2f not in range.".format(rel))
-    }
-  }
-
-  def foreach[U](f: (WikiRelTask) => U) {
+  def foreach[U](f: (WikiRelateTask) => U) {
     wikiSimPairs.foreach(wikiRelTask => f(wikiRelTask))
   }
 

@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import edu.berkeley.nlp.lm.io.LmReaders
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 
 
@@ -9,7 +9,7 @@ class LMRelatedness(options: Map[String, Any]) extends Relatedness {
 
   lazy val nGramModel = LmReaders.readLmBinary[String](Configuration.wikipedia("langModel"))
 
-  override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
+  override def computeRelatedness(wikiRelTask: WikiRelateTask): Double = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 

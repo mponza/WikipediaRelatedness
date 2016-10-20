@@ -1,9 +1,11 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
+import it.unipi.di.acubelab.wikipediarelatedness.options.{EmbeddingOptions, JaccardOptions, LocalClusteringOptions, MilneWittenOptions}
+
 
 object RelatednessFactory {
   /**
-    * @param relateOptions JSON file:
+    * @param json Json string:
     *                      {
     *                          // Relatedness measure
     *                         "relatedness": MilneWitten/Jaccard/LLP/MultiLLP/w2v
@@ -11,33 +13,77 @@ object RelatednessFactory {
     *                         // Wikipedia graph to be used
     *                         "graph": "in", "out", "sym", "noloopsym"
     *                      }
-    *
     * @return Relatedness object, instatiated with the specified parameters.
     */
-  def make(relateOptions: Option[Any]) : Relatedness = relateOptions match {
+  def make(json: Option[Any]) : Relatedness = {
+    val relatednessName = getRelatednessName(json)
 
-    case Some(opts: Map[String, Any] @unchecked) =>
+    relatednessName match {
+      case "MilneWitten" => new MilneWittenRelatedness(new MilneWittenOptions(json))
+      case "Jaccard" => new JaccardRelatedness(new JaccardOptions(json))
 
-      val relatednessName = opts("relatedness")
+      case "w2v" => new EmbeddingRelatedness(new EmbeddingOptions(json))
+
+      case "LocalClustering" => new LocalClusteringRelatedness(new LocalClusteringOptions(json))
+
+      case "LLP" => new LLPRelatedness(json)
+      case "MultiLLP" => new MultiLLPRelatedness(json)
+
+      case "LMModel" => new LMRelatedness(json)
+
+      case "CoSimRank" | "PPRCos" => new CoSimRankRelatedness(json)
+
+      case "SVD" => new GraphSVDRelatedness(json)
+      case "LDA" => new LDARelatedness(json)
+
+      case "ESA" => new ESARelatedness(json)
+
+      case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s."
+        .format(relatednessName))
+    }
+  }
+
+
+  /*
+  json match {
+
+    case Some(json: Map[String, Any] @unchecked) =>
+
+
+      val relatednessName = json("relatedness")
       relatednessName match {
 
-        case "MilneWitten" => new MilneWittenRelatedness(opts)
-        case "Jaccard" => new JaccardRelatedness(opts)
-        case "w2v" => new EmbeddingRelatedness(opts)
-        case "LocalClustering" => new LocalClusteringRelatedness(opts)
-        case "LLP" => new LLPRelatedness(opts)
-        case "MultiLLP" => new MultiLLPRelatedness(opts)
-        case "LMModel" => new LMRelatedness(opts)
-        case "CoSimRank" | "PPRCos" => new CoSimRankRelatedness(opts)
-        case "SVD" => new GraphSVDRelatedness(opts)
-        case "LDA" => new LDARelatedness(opts)
-        case "ESA" => new ESARelatedness(opts)
+        case "MilneWitten" => new MilneWittenRelatedness(json)
+        case "Jaccard" => new JaccardRelatedness(json)
+        case "w2v" => new EmbeddingRelatedness(json)
+        case "LocalClustering" => new LocalClusteringRelatedness(json)
+        case "LLP" => new LLPRelatedness(json)
+        case "MultiLLP" => new MultiLLPRelatedness(json)
+        case "LMModel" => new LMRelatedness(json)
+        case "CoSimRank" | "PPRCos" => new CoSimRankRelatedness(json)
+        case "SVD" => new GraphSVDRelatedness(json)
+        case "LDA" => new LDARelatedness(json)
+        case "ESA" => new ESARelatedness(json)
 
         case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s."
           .format(relatednessName))
       }
 
-    case _ => throw new IllegalArgumentException("Relatedness Options are not valid: %s".format(relateOptions))
+    case _ => throw new IllegalArgumentException("Relatedness Options are not valid: %s".format(json))
+  }*/
+
+  /**
+    * Get the name of the specified relatedness algorithm.
+    */
+  def getRelatednessName(json: Option[Any]) : String = {
+    json match {
+      case Some(options: Map[String, Any] @unchecked) =>
+        try {
+          options("relatedness").toString
+        } catch {
+          case e: Exception => throw new IllegalArgumentException("Error in getting relatedness name")
+        }
+    }
   }
 
   def make(options: Map[String, String]) : Relatedness = { make(Some(options)) }

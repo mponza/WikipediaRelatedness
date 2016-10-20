@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.analysis.bucket
 
 import java.io.FileWriter
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.{WikiSimEvaluatorFactory, WikiSimPerformance}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
@@ -28,15 +28,15 @@ trait BucketAnalyzer {
     (for(i <- 0.0 to 1.0 - step by step) yield (i, i + step)).toList
   }
 
-  def computeBucketTasks() : Map[Int, List[WikiRelTask]] = {
-    val bucketTasks = HashMap.empty[Int, ListBuffer[WikiRelTask]]
+  def computeBucketTasks() : Map[Int, List[WikiRelateTask]] = {
+    val bucketTasks = HashMap.empty[Int, ListBuffer[WikiRelateTask]]
 
     wikiSimDataset.foreach {
       wikiRelTask =>
         val index = bucketIndex(wikiRelTask)
 
         if(index >= 0) { // Skips negative indices.
-          val tasks = bucketTasks.getOrElse(index, ListBuffer.empty[WikiRelTask])
+          val tasks = bucketTasks.getOrElse(index, ListBuffer.empty[WikiRelateTask])
           tasks += wikiRelTask
           bucketTasks.put(index, tasks)
         }
@@ -50,7 +50,7 @@ trait BucketAnalyzer {
     * @param wikiRelTask
     * @return Bucket index of wikiRelTask.
     */
-  def bucketIndex(wikiRelTask: WikiRelTask) : Int
+  def bucketIndex(wikiRelTask: WikiRelateTask) : Int
 
   def computePerformance() : List[WikiSimPerformance] = {
     val performance = ListBuffer.empty[WikiSimPerformance]
@@ -67,7 +67,7 @@ trait BucketAnalyzer {
       else {
 
         // If a key has no tasks.
-        val evaluator = WikiSimEvaluatorFactory.make(evalName, List.empty[WikiRelTask])
+        val evaluator = WikiSimEvaluatorFactory.make(evalName, List.empty[WikiRelateTask])
         performance += evaluator.wikiSimPerformance()
       }
     }

@@ -1,9 +1,9 @@
 package it.unipi.di.acubelab.wikipediarelatedness.evaluation.classification
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.{WikiSimEvaluator, WikiSimPerformance}
 
-class WikiSimClassificator (val tasks: List[WikiRelTask]) extends WikiSimEvaluator {
+class WikiSimClassificator (val tasks: List[WikiRelateTask]) extends WikiSimEvaluator {
 
   tasks.foreach(task => if(task.humanLabelClass < 0 || task.computedLabelClass < 0)
                             throw new IllegalArgumentException("Class label with negative value."))

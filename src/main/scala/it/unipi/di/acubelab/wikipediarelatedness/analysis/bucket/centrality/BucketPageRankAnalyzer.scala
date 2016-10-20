@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.analysis.bucket.centrality
 import java.io.FileWriter
 
 import it.unipi.di.acubelab.wikipediarelatedness.analysis.bucket.BucketAnalyzer
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 
@@ -47,7 +47,7 @@ class BucketPageRankAnalyzer(val relatednessName: String, val evalName: String,
       throw new IllegalArgumentException("PageRank error %.3f".format(score))
   }
 
-  def bucketIndex(wikiRelTask: WikiRelTask) : Int = {
+  def bucketIndex(wikiRelTask: WikiRelateTask) : Int = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 

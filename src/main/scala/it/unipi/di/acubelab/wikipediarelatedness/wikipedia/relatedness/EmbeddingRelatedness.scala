@@ -2,9 +2,10 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import java.io.File
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
+import it.unipi.di.acubelab.wikipediarelatedness.options.EmbeddingOptions
 import org.slf4j.LoggerFactory
 
 /**
@@ -14,10 +15,9 @@ import org.slf4j.LoggerFactory
   *                   "model": corpus/deepWalk/deepCorpus/coOccurrence
   *                }
   */
-class EmbeddingRelatedness(options: Map[String, Any]) extends Relatedness  {
+class EmbeddingRelatedness(options: EmbeddingOptions) extends Relatedness  {
     val logger = LoggerFactory.getLogger(classOf[EmbeddingRelatedness])
-    val modelName = options.getOrElse("model", "corpus").toString
-    val w2v = loadw2v(modelName)
+    val w2v = loadw2v(options.model)
 
     def loadw2v(modelName : String) : EmbeddingsDataset  = {
       logger.info("Loading w2v %s model...".format(modelName))
@@ -26,7 +26,7 @@ class EmbeddingRelatedness(options: Map[String, Any]) extends Relatedness  {
       EmbeddingsDataset.apply(new File(w2vPath))
     }
 
-    def computeRelatedness(wikiRelTask: WikiRelTask) : Double = {
+    def computeRelatedness(wikiRelTask: WikiRelateTask) : Double = {
       val srcEntWikiID = "ent_" + wikiRelTask.src.wikiID
       val dstEntWikiID = "ent_" + wikiRelTask.dst.wikiID
 
@@ -38,6 +38,6 @@ class EmbeddingRelatedness(options: Map[String, Any]) extends Relatedness  {
     }
 
     override def toString(): String = {
-      "W2V-%s".format(modelName)
+      "W2V-%s".format(options.model)
     }
 }

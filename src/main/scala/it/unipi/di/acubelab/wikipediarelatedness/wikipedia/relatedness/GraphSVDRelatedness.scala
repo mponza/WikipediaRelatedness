@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.latent.GraphSVD
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
@@ -22,7 +22,7 @@ class GraphSVDRelatedness(options: Map[String, Any]) extends Relatedness  {
 
   val svds = eigenNames.map(name => new GraphSVD(Configuration.graphSVD(name))).toList
 
-  override def computeRelatedness(wikiRelTask: WikiRelTask): Double = {
+  override def computeRelatedness(wikiRelTask: WikiRelateTask): Double = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 

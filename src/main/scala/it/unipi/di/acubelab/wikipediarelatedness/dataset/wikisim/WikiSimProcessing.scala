@@ -1,9 +1,10 @@
 package it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim
 
 import java.io.{BufferedWriter, File, FileOutputStream, OutputStreamWriter}
+import java.util.Locale
 
 import com.github.tototoshi.csv.CSVWriter
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelTask}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateTask}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.{Configuration, WAT}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WikiBVGraph
 import org.slf4j.LoggerFactory
@@ -29,16 +30,14 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
     *
     * @return List of normalized Wikipedia Similarity Pairs between the specified range.
     */
-  def normalize(wikiSimPairs: List[WikiRelTask]) : List[WikiRelTask] = {
+  def normalize(wikiSimPairs: List[WikiRelateTask]) : List[WikiRelateTask] = {
     logger.info("Normalizing...")
 
     wikiSimPairs.map {
-      case wikiRelTask: WikiRelTask =>
-        val normalizedRel = (wikiRelTask.rel) / 10.0
+      case wikiRelateTask: WikiRelateTask =>
+        val normalizedRelatedness = (wikiRelateTask.humanRelatedness) / 10.0
 
-        new WikiRelTask(wikiRelTask.src, wikiRelTask.srcWord,
-                        wikiRelTask.dst, wikiRelTask.dstWord,
-                        normalizedRel)
+        new WikiRelateTask(wikiRelateTask.src, wikiRelateTask.dst,  normalizedRelatedness)
     }
   }
 
@@ -46,33 +45,32 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
     * @param wikiSimPairs
     * @return wikiSimPairs re-mapped when they are Wikipedia redirects.
     */
-  def redirect(wikiSimPairs: List[WikiRelTask]) : List[WikiRelTask]  = {
+  def redirect(wikiSimPairs: List[WikiRelateTask]) : List[WikiRelateTask]  = {
     logger.info("Redirecting...")
 
     wikiSimPairs.map {
-      case wikiRelTask: WikiRelTask =>
+      case wikiRelTask: WikiRelateTask =>
         val (srcWikiTitle, srcWikiID) = WAT.redirect(wikiRelTask.src.wikiTitle)
         val srcRedWikiEntity = new WikiEntity(srcWikiID, srcWikiTitle)
 
         val (dstWikiTitle, dstWikiID) = WAT.redirect(wikiRelTask.dst.wikiTitle)
         val dstRedWikiEntity = new WikiEntity(dstWikiID, dstWikiTitle)
 
-        new WikiRelTask(srcRedWikiEntity, wikiRelTask.srcWord,
-                        dstRedWikiEntity, wikiRelTask.dstWord,
-                        wikiRelTask.rel)
+        new WikiRelateTask(srcRedWikiEntity, dstRedWikiEntity, wikiRelTask.humanRelatedness)
     }
   }
 
   /**
     * Removes pages which are not "real" Wikipedia Pages (e.g. disambiguation pages).
-    * @param wikiRelTasks
+    *
+    * @param wikiRelateTasks
     * @return
     */
-  def wikiFilter(wikiRelTasks: List[WikiRelTask]) : List[WikiRelTask] = {
+  def wikiFilter(wikiRelateTasks: List[WikiRelateTask]) : List[WikiRelateTask] = {
     logger.info("Filtering...")
 
-    val realWikiPairs = wikiRelTasks.filter {
-      case wikiRelTask: WikiRelTask =>
+    val realWikiPairs = wikiRelateTasks.filter {
+      case wikiRelTask: WikiRelateTask =>
         val keep = WikiBVGraph.contains(wikiRelTask.src.wikiID) && WikiBVGraph.contains(wikiRelTask.dst.wikiID)
         if (!keep) {
           logger.warn("The following tuple: %s has been removed (Not present in the Wikipedia Graph)."
@@ -84,8 +82,8 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
     realWikiPairs
   }
 
-  def checkDuplicated(wikiRelTasks: List[WikiRelTask]) = {
-    val groupedPairs = wikiRelTasks.groupBy(wikiRelTask => "%s,%s"
+  def checkDuplicated(wikiRelateTasks: List[WikiRelateTask]) = {
+    val groupedPairs = wikiRelateTasks.groupBy(wikiRelTask => "%s,%s"
       .format(wikiRelTask.src.wikiTitle, wikiRelTask.dst.wikiTitle))
 
     groupedPairs.foreach{
@@ -94,18 +92,22 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
     }
   }
 
-  def store(wikiSimPairs: List[WikiRelTask], path: String) : Unit = {
+  def store(wikiSimPairs: List[WikiRelateTask], path: String) : Unit = {
     logger.info("Writing...")
 
     new File(path).getParentFile.mkdirs
     val csvWriter = CSVWriter.open(path)
 
     wikiSimPairs.foreach {
-      case wikiRelTask: WikiRelTask =>
-        csvWriter.writeRow(wikiRelTask.toList)
+      case wikiRelateTask: WikiRelateTask =>
+        csvWriter.writeRow(toCSVString(wikiRelateTask))
     }
 
     csvWriter.close
+  }
+
+  def toCSVString(wikiRelateTask: WikiRelateTask) : String = {
+    "%s,,%s,,%1.f".formatLocal(Locale.US, wikiRelateTask.src, wikiRelateTask.dst, wikiRelateTask.humanRelatedness)
   }
 
 }

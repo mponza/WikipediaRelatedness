@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelTask
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
+import it.unipi.di.acubelab.wikipediarelatedness.options.JaccardOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 
 /**
@@ -10,11 +11,10 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
   *                   graph: inGraph/outGraph/symGraph
   *                }
   */
-class JaccardRelatedness(options: Map[String, Any]) extends Relatedness {
-  val graphName = if (options.contains("graph")) options("graph").toString else "inGraph"
-  val graph = WikiGraph.wikiBVGraph(graphName)
+class JaccardRelatedness(val options: JaccardOptions) extends Relatedness {
+  val graph = WikiGraph.wikiBVGraph(options.graph)
 
-  def computeRelatedness(wikiRelTask: WikiRelTask) : Double = {
+  def computeRelatedness(wikiRelTask: WikiRelateTask) : Double = {
     val srcWikiID = wikiRelTask.src.wikiID
     val dstWikiID = wikiRelTask.dst.wikiID
 
@@ -27,5 +27,5 @@ class JaccardRelatedness(options: Map[String, Any]) extends Relatedness {
     intersection / (sizeA + sizeB - intersection).toDouble
   }
 
-  override def toString () : String = { "Jaccard_%s".format(graphName) }
+  override def toString () : String = { "Jaccard_%s".format(options.graph) }
 }
