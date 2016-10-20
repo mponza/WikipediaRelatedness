@@ -16,6 +16,7 @@ import scala.collection.mutable.ListBuffer
                       *"maxUpdates"
   *                }
   */
+/*
 class LLPRelatedness(options: Map[String, Any], dirPath: String = null) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[LLPRelatedness])
 
@@ -73,4 +74,4 @@ class LLPRelatedness(options: Map[String, Any], dirPath: String = null) extends 
 
     Similarity.cosineSimilarity(srcVec, dstVec)
   }
-}
+}*/

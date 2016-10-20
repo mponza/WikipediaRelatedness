@@ -35,7 +35,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
 
     wikiSimPairs.map {
       case wikiRelateTask: WikiRelateTask =>
-        val normalizedRelatedness = (wikiRelateTask.humanRelatedness) / 10.0
+        val normalizedRelatedness = (wikiRelateTask.humanRelatedness) / 10.0f
 
         new WikiRelateTask(wikiRelateTask.src, wikiRelateTask.dst,  normalizedRelatedness)
     }

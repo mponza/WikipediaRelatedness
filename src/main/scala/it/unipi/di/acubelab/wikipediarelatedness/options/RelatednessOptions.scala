@@ -26,15 +26,14 @@ class RelatednessOptions(val json: Option[Any]) {
     }
   }
 
-  def getInt(key: String, default: Int = null) : Int = {
+  def getInt(key: String, default: Int) : Int = {
     json match {
       case Some(options: Map[String, Any] @unchecked) =>
 
         try {
 
           if (!options.contains(key)) {
-            if (default != null) return default
-            throw new IllegalArgumentException("Key not present, default value is null.")
+            return default
 
           } else {
             options(key).asInstanceOf[Double].toInt
@@ -48,15 +47,32 @@ class RelatednessOptions(val json: Option[Any]) {
     }
   }
 
-  def getFloat(key: String, default: Float = null) : Float = {
+  def getInt(key: String) : Int = {
+    json match {
+      case Some(options: Map[String, Any] @unchecked) =>
+
+        try {
+
+          options(key).asInstanceOf[Double].toInt
+
+        } catch {
+          case e : Exception =>
+            throw new IllegalArgumentException("Error while getting %s value (no default): %s".format(key, e))
+        }
+
+      case _ => throw new IllegalArgumentException("Error in matching json string.")
+    }
+  }
+
+  def getFloat(key: String, default: Float = Float.NaN) : Float = {
     json match {
       case Some(options: Map[String, Any] @unchecked) =>
 
         try {
 
           if (!options.contains(key)) {
-            if (default != null) return default
-            throw new IllegalArgumentException("Key not present, default value is null.")
+            if (default != Float.NaN) return default
+            throw new IllegalArgumentException("Key not present, default value is NaN.")
 
           } else {
             options(key).asInstanceOf[Double].toFloat

@@ -14,14 +14,14 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 class JaccardRelatedness(val options: JaccardOptions) extends Relatedness {
   val graph = WikiGraph.wikiBVGraph(options.graph)
 
-  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Double = {
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     val intersection = graph.linkIntersection(srcWikiID, dstWikiID)
-    if (intersection == 0) return 0.0
+    if (intersection == 0) return 0.0f
 
     val sizeA = graph.outdegree(srcWikiID)
     val sizeB = graph.outdegree(dstWikiID)
 
-    intersection / (sizeA + sizeB - intersection).toDouble
+    intersection / (sizeA + sizeB - intersection).toFloat
   }
 
   override def toString () : String = { "Jaccard_%s".format(options.graph) }

@@ -6,7 +6,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.options.LDAOptions
 import org.slf4j.LoggerFactory
 
 
-class LDARelatedness(options: LDAOptions) extends Relatedness  {
+/*class LDARelatedness(options: LDAOptions) extends Relatedness  {
     val logger = LoggerFactory.getLogger(classOf[LDARelatedness])
     val corpusLDA = new CorpusLDA()
 
@@ -24,3 +24,4 @@ class LDARelatedness(options: LDAOptions) extends Relatedness  {
     }
 }
 
+*/

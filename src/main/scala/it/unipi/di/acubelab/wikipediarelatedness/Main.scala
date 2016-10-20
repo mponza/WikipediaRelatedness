@@ -64,6 +64,7 @@ object WikiSimProcess {
   }
 }
 */
+
 object Bench {
   def main(args: Array[String]) {
     val relatednessOptions = JSON.parseFull(args(0))
@@ -75,6 +76,7 @@ object Bench {
     benchmark.runBenchmark()
   }
 }
+
 /*
 object WordBench {
   def main(args: Array[String]) {
@@ -118,10 +120,10 @@ object GridLLP {
       Bench.main(Array(llpBench))
     }
   }
-}*/
+}
 
 
-/*object GridCoSimRank {
+object GridCoSimRank {
   def main(args: Array[String]) = {
     val weightings = Array(
       """{"relatedness": "MilneWitten"}""",
@@ -163,7 +165,7 @@ object AllBench {
     """{"relatedness": "MilneWitten"}""",
     """{"relatedness": "Jaccard"}""",
 
-    /*"""{"relatedness": "Jaccard", graph: "inGraph"}""",
+    """{"relatedness": "Jaccard", graph: "inGraph"}""",
     """{"relatedness": "Jaccard", graph: "outGraph"}""",
     """{"relatedness": "Jaccard", graph: "symGraph"}""",
 
@@ -175,13 +177,13 @@ object AllBench {
 
     """{"relatedness": "MultiLLP"}""",
 
-    """{"relatedness": "CoSimRank", "iters": 5, "decay": 0.8}"""*/
+    """{"relatedness": "CoSimRank", "iters": 5, "decay": 0.8}"""
 
   )
 
   jsons.foreach(json => Bench.main(Array(json)))
 }
-/*
+
 object Analysis {
   def main(args: Array[String]): Unit = {
     val options =  if (args.length > 0) JSON.parseFull(args(0)) else Some(Map())

@@ -1,10 +1,10 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph
 
-import it.unimi.dsi.fastutil.ints.{Int2DoubleArrayMap, Int2IntArrayMap, Int2ObjectOpenHashMap, IntOpenHashSet}
+import it.unimi.dsi.fastutil.ints._
 
 class ClusteringCoefficient(wikiBVGraph: WikiBVGraph) {
-  val localClustCoeffCache = new Int2DoubleArrayMap    // local clustering coefficients already computed on wikiBVGraph.
-                                                  // {wikiID: localClusteringScore}
+  val localClustCoeffCache = new Int2FloatArrayMap() // local clustering coefficients already computed on wikiBVGraph.
+                                                      // {wikiID: localClusteringScore}
 
   /**
     * @param wikiID
@@ -32,15 +32,15 @@ class ClusteringCoefficient(wikiBVGraph: WikiBVGraph) {
     succMap
   }
 
-  def localClusteringCoefficient(wikiID: Int): Double = {
+  def localClusteringCoefficient(wikiID: Int): Float = {
 
     if (localClustCoeffCache.containsKey(wikiID)) return localClustCoeffCache.get(wikiID)
 
     val k = wikiBVGraph.outdegree(wikiID)
     if(k > 10000) println(k)
     if(k <= 1 || k > 30000) {
-      localClustCoeffCache.put(wikiID, 0.0)
-      return 0.0
+      localClustCoeffCache.put(wikiID, 0.0f)
+      return 0.0f
     }
 
     var triangles = 0
@@ -68,7 +68,7 @@ class ClusteringCoefficient(wikiBVGraph: WikiBVGraph) {
       vJ = iterJ.nextInt
     }
 
-    val clustCoeff = triangles / (k * (k - 1)).toDouble
+    val clustCoeff = triangles / (k * (k - 1)).toFloat
     localClustCoeffCache.put(wikiID, clustCoeff)
 
     clustCoeff

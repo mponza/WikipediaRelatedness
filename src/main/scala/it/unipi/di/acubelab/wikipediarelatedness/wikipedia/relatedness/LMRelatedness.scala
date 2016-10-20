@@ -5,7 +5,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.options.LMOptions
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 
-
+/*
 class LMRelatedness(options: LMOptions) extends Relatedness {
 
   lazy val nGramModel = LmReaders.readLmBinary[String](Configuration.wikipedia("langModel"))
@@ -24,3 +24,4 @@ class LMRelatedness(options: LMOptions) extends Relatedness {
     "LMRelatedness"
   }
 }
+*/

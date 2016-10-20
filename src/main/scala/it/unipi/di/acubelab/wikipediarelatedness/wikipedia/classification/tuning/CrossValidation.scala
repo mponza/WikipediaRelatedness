@@ -1,12 +1,12 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.classification.tuning
 
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
-import it.unipi.di.acubelab.wikipediarelatedness.evaluation.classification.WikiSimClassPerformance
-import it.unipi.di.acubelab.wikipediarelatedness.evaluation.classification.WikiSimClassificator
+//import it.unipi.di.acubelab.wikipediarelatedness.evaluation.classification.WikiSimClassPerformance
+//import it.unipi.di.acubelab.wikipediarelatedness.evaluation.classification.WikiSimClassificator
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.classification.classifiers.RelatednessClassifier
 
 
-
+/*
 trait CrossValidation {
   val wikiTaskFolds: WikiTaskFolds
 
@@ -21,4 +21,4 @@ trait CrossValidation {
         WikiSimCl
     }
   }
-}
+}*/

@@ -31,7 +31,7 @@ import scala.collection.mutable.ListBuffer
   *     }
   * }
   * */
-class CoSimRankRelatedness(options: CoSimRankOptions) extends Relatedness {
+/*class CoSimRankRelatedness(options: CoSimRankOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
   val graphs = wikiGraphs()
   val cosimrank = CoSimRank.make(options)
@@ -139,4 +139,4 @@ object CoSimRankRelatedness {
     else
       new EdgeWeighter
   }
-}
+}*/

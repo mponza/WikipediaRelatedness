@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
 
+
+/*
 class MultiLLPRelatedness(options: Map[String, Any]) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[LLPRelatedness])
 
@@ -40,3 +42,4 @@ class MultiLLPRelatedness(options: Map[String, Any]) extends Relatedness {
     Paths.get(Configuration.wikipedia("multiLLP"), "multiLLP-nLLP_%d-%s".format(nLLP, llpTask.toString)).toString
   }
 }
+*/

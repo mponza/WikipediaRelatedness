@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory
   *                   "model": corpus/deepWalk/deepCorpus/coOccurrence
   *                }
   */
-class EmbeddingRelatedness(options: EmbeddingOptions) extends Relatedness  {
+/*class EmbeddingRelatedness(options: EmbeddingOptions) extends Relatedness  {
     val logger = LoggerFactory.getLogger(classOf[EmbeddingRelatedness])
     val w2v = loadw2v(options.model)
 
@@ -32,7 +32,7 @@ class EmbeddingRelatedness(options: EmbeddingOptions) extends Relatedness  {
 
       val cosine = w2v.similarity(srcEntWikiID, dstEntWikiID).toDouble
 
-      if (cosine < 0) logger.warn("Negative cosine between %s.".format(wikiRelTask.wikiTitleString()))
+      //if (cosine < 0) logger.warn("Negative cosine between %s.".format(wikiRelTask.wikiTitleString()))
 
       cosine
     }
@@ -41,3 +41,4 @@ class EmbeddingRelatedness(options: EmbeddingOptions) extends Relatedness  {
       "W2V-%s".format(options.model)
     }
 }
+*/

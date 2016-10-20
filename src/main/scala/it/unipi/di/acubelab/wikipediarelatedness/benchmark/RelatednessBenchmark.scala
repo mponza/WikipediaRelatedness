@@ -6,8 +6,6 @@ import java.nio.file.Paths
 import com.github.tototoshi.csv.CSVWriter
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiRelateTask}
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Correlation
-import it.unipi.di.acubelab.wikipediarelatedness.evaluation.bucketclassification.WikiSimBucketClassPerformance
-import it.unipi.di.acubelab.wikipediarelatedness.evaluation.correlation.WikiSimCorrPerformance
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory

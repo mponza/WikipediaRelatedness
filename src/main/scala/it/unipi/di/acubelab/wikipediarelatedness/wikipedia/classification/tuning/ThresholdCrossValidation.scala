@@ -4,7 +4,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
 import org.slf4j.LoggerFactory
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.classification.classifiers.ThresholdClassifier
+//import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.classification.classifiers.ThresholdClassifier
 
 
 /**
@@ -17,7 +17,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.classification.classi
   *                }
   * @param wikiSimDataset
   */
-class ThresholdCrossValidation(options: Map[String, String], wikiSimDataset: WikiSimDataset) {
+/*class ThresholdCrossValidation(options: Map[String, String], wikiSimDataset: WikiSimDataset) {
   val logger = LoggerFactory.getLogger(classOf[ThresholdCrossValidation])
 
   val threshold = options("threshold").toDouble
@@ -68,3 +68,4 @@ object ThresholdCrossValidation {
       .format(options("relatedness")))
   }
 }
+*/

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
+/*
 class WikiTaskFolds(val tasks: List[WikiRelateTask], nBuckets : Int = 10) {
   val logger = LoggerFactory.getLogger(classOf[WikiTaskFolds])
   val folds = generateFolds(tasks, nBuckets)
@@ -59,3 +60,4 @@ class WikiTaskFolds(val tasks: List[WikiRelateTask], nBuckets : Int = 10) {
     }
   }
 }
+*/

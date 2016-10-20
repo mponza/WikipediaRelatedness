@@ -21,20 +21,19 @@ class LocalClusteringRelatedness(options: LocalClusteringOptions) extends Relate
   val clustCoeff = new ClusteringCoefficient(clusterGraph)
 
 
-  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Double = {
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     val intersection = neighborGraph.nodeIntersection(srcWikiID, dstWikiID)
-    if (intersection.size == 0) return 0.0
+    if (intersection.size == 0) return 0.0f
 
     val numerator = localClusterNumerator(intersection)
 
-    val relatedness = numerator / intersection.size.toDouble
-    println("Coeff: %1.2f with numerator %1.2f".format(relatedness, numerator))
+    val relatedness = numerator / intersection.size
 
     relatedness
   }
 
-  def localClusterNumerator(wikiIDs: IntArrayList) : Double = {
-    var localClusterSum = 0.0
+  def localClusterNumerator(wikiIDs: IntArrayList) : Float = {
+    var localClusterSum = 0.0f
 
     for(i <- 0 until wikiIDs.size) {
       localClusterSum += clustCoeff.localClusteringCoefficient(wikiIDs.getInt(i))
