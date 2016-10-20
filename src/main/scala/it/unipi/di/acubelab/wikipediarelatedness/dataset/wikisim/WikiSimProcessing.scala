@@ -19,8 +19,8 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
     val normWikiSimPairs = normalize(wikiSim.wikiSimPairs)
     val redirWikiSimPairs = redirect(normWikiSimPairs)
     val filterWikiSimPairs = wikiFilter(redirWikiSimPairs)
-    checkDuplicated(filterWikiSimPairs)
 
+    checkDuplicated(filterWikiSimPairs)
     store(filterWikiSimPairs, Configuration.dataset("procWikiSim"))
 
     logger.info("Dataset has been processed!")
@@ -50,6 +50,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
 
     wikiSimPairs.map {
       case wikiRelTask: WikiRelateTask =>
+
         val (srcWikiTitle, srcWikiID) = WAT.redirect(wikiRelTask.src.wikiTitle)
         val srcRedWikiEntity = new WikiEntity(srcWikiID, srcWikiTitle)
 
@@ -71,11 +72,13 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
 
     val realWikiPairs = wikiRelateTasks.filter {
       case wikiRelTask: WikiRelateTask =>
+
         val keep = WikiBVGraph.contains(wikiRelTask.src.wikiID) && WikiBVGraph.contains(wikiRelTask.dst.wikiID)
         if (!keep) {
           logger.warn("The following tuple: %s has been removed (Not present in the Wikipedia Graph)."
             .format(wikiRelTask))
         }
+
         keep
     }
 
@@ -88,7 +91,8 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
 
     groupedPairs.foreach{
       case (strPair, pairTasks) =>
-      if (pairTasks.length > 1) logger.warn("Duplicated pair %s".format(strPair))
+
+        if (pairTasks.length > 1) logger.warn("Duplicated pair %s".format(strPair))
     }
   }
 
@@ -100,6 +104,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
 
     wikiSimPairs.foreach {
       case wikiRelateTask: WikiRelateTask =>
+
         csvWriter.writeRow(toCSVString(wikiRelateTask))
     }
 

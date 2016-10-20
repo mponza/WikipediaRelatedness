@@ -4,7 +4,6 @@ import java.io.PrintWriter
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
-import it.unipi.di.acubelab.wikipediarelatedness.evaluation.{WikiSimEvaluator, WikiSimPerformance}
 import org.apache.commons.math.stat.correlation.{PearsonsCorrelation, SpearmansCorrelation}
 import org.slf4j.LoggerFactory
 

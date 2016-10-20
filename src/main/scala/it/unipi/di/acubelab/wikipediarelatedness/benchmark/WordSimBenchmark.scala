@@ -12,12 +12,12 @@ import org.slf4j.LoggerFactory
  *
   * @param dataset
   * @param esa
-  */
+
 class WordSimBenchmark(dataset: RelatednessDataset, esa: ESARelatedness)
-  extends WikiSimBenchmark(dataset, esa) {
+  extends RelatednessBenchmark(dataset, esa) {
   override val logger = LoggerFactory.getLogger(classOf[WordSimBenchmark])
 
-  override val relDir = Paths.get(Configuration.benchmark, "WORD" + esa.toString).toString
+  override val relatednessDirectory = Paths.get(Configuration.benchmark, "WORD" + esa.toString).toString
 
   override def runBenchmark() : Unit = {
     logger.info("Running word similarity benchmark of %s on dataset %s...".format(esa.toString, dataset))
@@ -44,4 +44,4 @@ class WordSimBenchmark(dataset: RelatednessDataset, esa: ESARelatedness)
     writeCorrelationScores(relScores)
     //writeClassificationScores(relScores)
   }
-}
+}*/

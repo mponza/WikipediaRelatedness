@@ -1,7 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.evaluation.correlation
 
-import it.unipi.di.acubelab.wikipediarelatedness.evaluation.WikiSimPerformance
-
 class WikiSimCorrPerformance(val pearson: Double, val spearman: Double) extends WikiSimPerformance {
 
   override def toString: String = {

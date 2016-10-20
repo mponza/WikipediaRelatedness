@@ -26,9 +26,9 @@ class EmbeddingRelatedness(options: EmbeddingOptions) extends Relatedness  {
       EmbeddingsDataset.apply(new File(w2vPath))
     }
 
-    def computeRelatedness(wikiRelTask: WikiRelateTask) : Double = {
-      val srcEntWikiID = "ent_" + wikiRelTask.src.wikiID
-      val dstEntWikiID = "ent_" + wikiRelTask.dst.wikiID
+    def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Double = {
+      val srcEntWikiID = "ent_" + srcWikiID
+      val dstEntWikiID = "ent_" + dstWikiID
 
       val cosine = w2v.similarity(srcEntWikiID, dstEntWikiID).toDouble
 

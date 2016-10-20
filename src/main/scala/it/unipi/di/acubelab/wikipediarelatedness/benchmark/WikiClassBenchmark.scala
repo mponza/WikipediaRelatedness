@@ -3,9 +3,9 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, Wi
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
-
+/*
 class WikiClassBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) extends
-  WikiSimBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
+  RelatednessBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
 
   override def runBenchmark() : Unit = {
     // Removes gray pairs.
@@ -29,3 +29,4 @@ class WikiClassBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) 
     writeClassificationScores(relScores)
   }
 }
+*/

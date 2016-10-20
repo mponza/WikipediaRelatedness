@@ -2,17 +2,18 @@ package it.unipi.di.acubelab.wikipediarelatedness
 
 import java.io.PrintWriter
 
-import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
-import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{WikiSimBenchmark, WordSimBenchmark}
+//import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
+import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{RelatednessBenchmark, WordSimBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.{WikiSimDataset, WikiSimProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{ESARelatedness, RelatednessFactory, Similarity}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WebGraphProcessor
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.lemma.LemmaLuceneProcessing
 
 import scala.util.parsing.json.JSON
 
+/*
 object BVGraph {
   def main(args: Array[String]) {
     val bvGraphProcessing = new WebGraphProcessor
@@ -62,7 +63,7 @@ object WikiSimProcess {
     processor.process()
   }
 }
-
+*/
 object Bench {
   def main(args: Array[String]) {
     val relatednessOptions = JSON.parseFull(args(0))
@@ -70,11 +71,11 @@ object Bench {
 
     val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
 
-    val benchmark = new WikiSimBenchmark(dataset, relatdness)
+    val benchmark = new RelatednessBenchmark(dataset, relatdness)
     benchmark.runBenchmark()
   }
 }
-
+/*
 object WordBench {
   def main(args: Array[String]) {
     val esa = new ESARelatedness(Map("conceptThreshold" -> 625))
@@ -104,7 +105,6 @@ object ESAGrid {
   }
 }
 
-
 object GridLLP {
   def main(args: Array[String]) = {
     for {
@@ -118,10 +118,10 @@ object GridLLP {
       Bench.main(Array(llpBench))
     }
   }
-}
+}*/
 
 
-object GridCoSimRank {
+/*object GridCoSimRank {
   def main(args: Array[String]) = {
     val weightings = Array(
       """{"relatedness": "MilneWitten"}""",
@@ -157,11 +157,13 @@ object GridCoSimRank {
 }
 
 
+
 object AllBench {
   val jsons = Array(
     """{"relatedness": "MilneWitten"}""",
+    """{"relatedness": "Jaccard"}""",
 
-    """{"relatedness": "Jaccard", graph: "inGraph"}""",
+    /*"""{"relatedness": "Jaccard", graph: "inGraph"}""",
     """{"relatedness": "Jaccard", graph: "outGraph"}""",
     """{"relatedness": "Jaccard", graph: "symGraph"}""",
 
@@ -173,13 +175,13 @@ object AllBench {
 
     """{"relatedness": "MultiLLP"}""",
 
-    """{"relatedness": "CoSimRank", "iters": 5, "decay": 0.8}"""
+    """{"relatedness": "CoSimRank", "iters": 5, "decay": 0.8}"""*/
 
   )
 
   jsons.foreach(json => Bench.main(Array(json)))
 }
-
+/*
 object Analysis {
   def main(args: Array[String]): Unit = {
     val options =  if (args.length > 0) JSON.parseFull(args(0)) else Some(Map())
@@ -223,4 +225,4 @@ object Cosine {
   def main(args: Array[String]): Unit = {
     Similarity.testCosine()
   }
-}
+}*/

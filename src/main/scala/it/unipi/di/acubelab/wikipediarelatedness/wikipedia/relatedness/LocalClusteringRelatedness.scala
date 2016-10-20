@@ -21,10 +21,7 @@ class LocalClusteringRelatedness(options: LocalClusteringOptions) extends Relate
   val clustCoeff = new ClusteringCoefficient(clusterGraph)
 
 
-  def computeRelatedness(wikiRelTask: WikiRelateTask) : Double = {
-    val srcWikiID = wikiRelTask.src.wikiID
-    val dstWikiID = wikiRelTask.dst.wikiID
-
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Double = {
     val intersection = neighborGraph.nodeIntersection(srcWikiID, dstWikiID)
     if (intersection.size == 0) return 0.0
 

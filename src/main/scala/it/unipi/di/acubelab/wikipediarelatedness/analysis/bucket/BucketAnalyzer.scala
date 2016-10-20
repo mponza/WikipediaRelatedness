@@ -4,7 +4,6 @@ import java.io.FileWriter
 
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
-import it.unipi.di.acubelab.wikipediarelatedness.evaluation.{WikiSimEvaluatorFactory, WikiSimPerformance}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 
 import scala.collection.mutable.ListBuffer

@@ -8,6 +8,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 
 
 class WikiSimDataset(path: String) extends RelatednessDataset {
@@ -32,7 +33,7 @@ class WikiSimDataset(path: String) extends RelatednessDataset {
         val dstWord = fields(3)
         val dst = new WikiEntity(fields(4).toInt, fields(5).replaceAll(" ", "_"))
 
-        val humanRelatedness = fields(6).toDouble
+        val humanRelatedness = fields(6).toFloat
 
         pairs += new WikiRelateTask(src, dst, humanRelatedness)
     }
