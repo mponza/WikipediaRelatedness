@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph
 import it.unimi.dsi.fastutil.ints.{Int2DoubleArrayMap, Int2IntArrayMap, Int2ObjectOpenHashMap, IntOpenHashSet}
 
 class ClusteringCoefficient(wikiBVGraph: WikiBVGraph) {
-  val localClustCoeff = new Int2DoubleArrayMap    // local clustering coefficients already computed on wikiBVGraph.
+  val localClustCoeffCache = new Int2DoubleArrayMap    // local clustering coefficients already computed on wikiBVGraph.
                                                   // {wikiID: localClusteringScore}
 
   /**
@@ -34,12 +34,12 @@ class ClusteringCoefficient(wikiBVGraph: WikiBVGraph) {
 
   def localClusteringCoefficient(wikiID: Int): Double = {
 
-    if (localClustCoeff.containsKey(wikiID)) return localClustCoeff.get(wikiID)
+    if (localClustCoeffCache.containsKey(wikiID)) return localClustCoeffCache.get(wikiID)
 
     val k = wikiBVGraph.outdegree(wikiID)
     if(k > 10000) println(k)
     if(k <= 1 || k > 30000) {
-      localClustCoeff.put(wikiID, 0.0)
+      localClustCoeffCache.put(wikiID, 0.0)
       return 0.0
     }
 
@@ -69,7 +69,7 @@ class ClusteringCoefficient(wikiBVGraph: WikiBVGraph) {
     }
 
     val clustCoeff = triangles / (k * (k - 1)).toDouble
-    localClustCoeff.put(wikiID, clustCoeff)
+    localClustCoeffCache.put(wikiID, clustCoeff)
 
     clustCoeff
   }
