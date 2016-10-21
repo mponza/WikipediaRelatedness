@@ -1,13 +1,94 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
+package it.unipi.di.acubelab.wikipediarelatedness.utils
 
-import java.util.Collections
-
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList
-import it.unimi.dsi.fastutil.ints.IntArrayList
+import it.unimi.dsi.fastutil.floats.FloatArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 
-object Similarity {
+object  Similarity {
+
+  // Cosine between [(index, float)]
+  def cosineSimilarity(src: ObjectArrayList[Tuple2[Int, Float]],
+                       dst: ObjectArrayList[Tuple2[Int, Float]]) : Float = {
+
+    // Computes vectors magnitude
+    val srcMagnitude = indexedVectorMagnitude(src)
+    val dstMagnitude = indexedVectorMagnitude(dst)
+    if(srcMagnitude == 0.0f || dstMagnitude == 0.0f) return 0.0f
+
+    val magnitude = (math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)).toFloat
+
+    // Computes vectors dot product
+    var dot = 0.0f
+    var i = 0
+    var j = 0
+    while(i < src.size() && j < dst.size()) {
+      val srcIndex = src.get(i)._1
+      val dstIndex = dst.get(j)._1
+
+      val srcValue = src.get(i)._2
+      val dstValue = dst.get(j)._2
+
+      if(srcIndex == dstIndex) {
+        dot += srcValue * dstValue
+        i += 1
+        j += 1
+      } else if(srcIndex < dstIndex) i += 1 else j += 1
+    }
+
+    if (dot == 0.0f) return 0.0f
+
+    dot / magnitude
+  }
+
+  def indexedVectorMagnitude(vec: ObjectArrayList[Tuple2[Int, Float]]) : Float = {
+    var magnitude = 0.0f
+
+    for(i <- 0 until vec.size()) {
+      magnitude += math.pow(vec.get(i)._2, 2.0f).toFloat
+    }
+
+    magnitude
+  }
+
+  def cosineSimilarity(src: FloatArrayList,
+                       dst: FloatArrayList) : Float = {
+
+    if (src.size() != dst.size()) throw new IllegalArgumentException("src and dst vectors have different sizes.")
+
+    // Computes vectors magnitude
+    val srcMagnitude = vectorMagnitude(src)
+    val dstMagnitude = vectorMagnitude(dst)
+    if(srcMagnitude == 0.0f || dstMagnitude == 0.0f) return 0.0f
+
+    val magnitude = (math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)).toFloat
+
+    // Computes vectors dot product
+    var dot = 0.0f
+    for(i <- 0 until src.size()) {
+      dot += src.getFloat(i) * dst.getFloat(i)
+    }
+
+    if (dot == 0.0f) return 0.0f
+
+    dot / magnitude
+  }
+
+  def vectorMagnitude(vec: FloatArrayList) : Float = {
+    var magnitude = 0.0f
+
+    for(i <- 0 until vec.size()) {
+      magnitude += math.pow(vec.getFloat(i).toDouble, 2.0f).toFloat
+    }
+
+    magnitude
+  }
+
+
+
+
+
+/*
+
 
   def computeSimilarity(similarityName: String, src: IntArrayList, dst:IntArrayList) : Double = {
     similarityName match {
@@ -70,46 +151,6 @@ object Similarity {
     dot / magnitude
   }
 
-  def cosineSimilarity(srcVec: ObjectArrayList[Tuple2[Int, Double]],
-                       dstVec: ObjectArrayList[Tuple2[Int, Double]]) : Double = {
-    var dot = 0.0
-    val srcMagnitude = indexedVectorMagnitude(srcVec)
-    val dstMagnitude = indexedVectorMagnitude(dstVec)
-
-    var i = 0
-    var j = 0
-    while(i < srcVec.size() && j < dstVec.size()) {
-      val srcIndex = srcVec.get(i)._1
-      val dstIndex = dstVec.get(j)._1
-
-      val srcValue = srcVec.get(i)._2
-      val dstValue = dstVec.get(j)._2
-
-      if(srcIndex == dstIndex) {
-        dot += srcValue * dstValue
-        i += 1
-        j += 1
-      } else if(srcIndex < dstIndex) i += 1 else j += 1
-    }
-
-    if (dot == 0.0) return 0.0
-
-    if(srcMagnitude == 0.0 || dstMagnitude == 0.0) return 0.0
-    val magnitude = math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)
-
-    dot / magnitude   // avoid representation errors
-  }
-
-  def indexedVectorMagnitude(vec: ObjectArrayList[Tuple2[Int, Double]]) : Double = {
-    var magnitude = 0.0
-
-    for(i <- 0 until vec.size()) {
-      magnitude += math.pow(vec.get(i)._2, 2.0)
-    }
-
-    magnitude
-  }
-
   def cosineSimilarity(srcVec: List[Tuple2[Int, Float]], dstVec: List[Tuple2[Int, Float]]) : Double = {
     val fastSrcVec = new ObjectArrayList[Tuple2[Int, Double]]()
     val fastDstVec = new ObjectArrayList[Tuple2[Int, Double]]()
@@ -144,5 +185,5 @@ object Similarity {
     val dst = List(15f, 0f, 16f, 17f, 0f, 20f).zipWithIndex.map(pair => Tuple2(pair._2, pair._1)).filter(p => p._2 != 0f)
 
     println("%1.3f".format(cosineSimilarity(src, dst)))
-  }
+  }*/
 }

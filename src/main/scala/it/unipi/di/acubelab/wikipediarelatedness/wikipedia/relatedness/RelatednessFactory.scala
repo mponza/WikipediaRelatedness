@@ -36,7 +36,7 @@ object RelatednessFactory {
       // case "PPRCos" => new PPRCosRelatedness(new PPRCosOptions(json))
 
       //case "SVD" => new GraphSVDRelatedness(new GraphSVDOptions(json))
-      //case "LDA" => new LDARelatedness(new LDAOptions(json))
+      case "LDA" => new LDARelatedness(new LDAOptions(json))
 
       //case "ESA" => new ESARelatedness(new ESAOptions(json))
 
@@ -56,7 +56,4 @@ object RelatednessFactory {
       case _ => throw new IllegalArgumentException("Error while matchin json string.")
     }
   }
-
-  def make(options: Map[String, String]) : Relatedness = { make(Some(options)) }
-  def make(relatednessName: String) : Relatedness = { make(Map("relatedness" -> relatednessName)) }
 }
