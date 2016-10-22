@@ -206,8 +206,8 @@ class WikiBVGraph(path: String) {
 }
 
 object WikiBVGraph {
-  lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia("wiki2node")).asInstanceOf[Int2IntOpenHashMap]
-  lazy val node2wiki = reverseWiki2Node()
+  protected lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia("wiki2node")).asInstanceOf[Int2IntOpenHashMap]
+  protected lazy val node2wiki = reverseWiki2Node()
 
   def contains(wikiID: Int): Boolean = {
     wiki2node.containsKey(wikiID)

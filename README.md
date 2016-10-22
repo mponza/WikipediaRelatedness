@@ -51,7 +51,7 @@ Enable virtualenv and install requirements:
     
     virtualenv venv
     source venv/bin/activate
-    pip -r src/main/python/latent/requirements.txt
+    pip install -r src/main/python/latent/requirements.txt
 
 Generates statistical information from the Wikipedia corpus:
     

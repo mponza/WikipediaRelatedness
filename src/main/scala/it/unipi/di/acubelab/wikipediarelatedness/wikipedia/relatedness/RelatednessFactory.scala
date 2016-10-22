@@ -22,7 +22,7 @@ object RelatednessFactory {
       case "MilneWitten" => new MilneWittenRelatedness(new MilneWittenOptions(json))
       case "Jaccard" => new JaccardRelatedness(new JaccardOptions(json))
 
-      //case "w2v" => new EmbeddingRelatedness(new EmbeddingOptions(json))
+      case "w2v" => new NeuralRelatedness(new NeuralOptions(json))
 
       //case "LocalClustering" => new LocalClusteringRelatedness(new LocalClusteringOptions(json))
 
@@ -35,7 +35,7 @@ object RelatednessFactory {
       //case "CoSimRank" => new CoSimRankRelatedness(new CoSimRankOptions(json))
       // case "PPRCos" => new PPRCosRelatedness(new PPRCosOptions(json))
 
-      //case "SVD" => new GraphSVDRelatedness(new GraphSVDOptions(json))
+      case "SVD" => new GraphSVDRelatedness(new GraphSVDOptions(json))
       case "LDA" => new LDARelatedness(new LDAOptions(json))
 
       //case "ESA" => new ESARelatedness(new ESAOptions(json))

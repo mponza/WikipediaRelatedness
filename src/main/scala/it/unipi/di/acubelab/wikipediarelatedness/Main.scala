@@ -204,6 +204,7 @@ object ProcessStandardLucene {
     lucene.process()
   }
 }
+*/
 
 object ProcessLemmaLucene {
   def main(args: Array[String]): Unit = {
@@ -213,6 +214,7 @@ object ProcessLemmaLucene {
   }
 }
 
+/*
 object ExtractsWikiIDs {
   def main(args: Array[String]): Unit = {
     val wikiDataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))

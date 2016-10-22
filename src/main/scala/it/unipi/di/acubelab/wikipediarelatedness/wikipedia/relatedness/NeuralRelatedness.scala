@@ -5,7 +5,7 @@ import java.io.File
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
-import it.unipi.di.acubelab.wikipediarelatedness.options.EmbeddingOptions
+import it.unipi.di.acubelab.wikipediarelatedness.options.NeuralOptions
 import org.slf4j.LoggerFactory
 
 /**
@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory
   *                   "model": corpus/deepWalk/deepCorpus/coOccurrence
   *                }
   */
-/*class EmbeddingRelatedness(options: EmbeddingOptions) extends Relatedness  {
-    val logger = LoggerFactory.getLogger(classOf[EmbeddingRelatedness])
+class NeuralRelatedness(options: NeuralOptions) extends Relatedness  {
+    val logger = LoggerFactory.getLogger(classOf[NeuralRelatedness])
     val w2v = loadw2v(options.model)
 
     def loadw2v(modelName : String) : EmbeddingsDataset  = {
@@ -26,12 +26,11 @@ import org.slf4j.LoggerFactory
       EmbeddingsDataset.apply(new File(w2vPath))
     }
 
-    def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Double = {
+    def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
       val srcEntWikiID = "ent_" + srcWikiID
       val dstEntWikiID = "ent_" + dstWikiID
 
-      val cosine = w2v.similarity(srcEntWikiID, dstEntWikiID).toDouble
-
+      val cosine = w2v.similarity(srcEntWikiID, dstEntWikiID)
       //if (cosine < 0) logger.warn("Negative cosine between %s.".format(wikiRelTask.wikiTitleString()))
 
       cosine
@@ -41,4 +40,3 @@ import org.slf4j.LoggerFactory
       "W2V-%s".format(options.model)
     }
 }
-*/

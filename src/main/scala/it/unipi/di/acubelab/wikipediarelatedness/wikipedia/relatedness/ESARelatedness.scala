@@ -4,7 +4,8 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.options.ESAOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.LuceneIndex
 
-/*class ESARelatedness(options: ESAOptions)  extends  Relatedness {
+/*
+class ESARelatedness(options: ESAOptions)  extends  Relatedness {
   val lucene = new LuceneIndex
   val conceptThreshold = options.threshold
 
@@ -35,4 +36,5 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.Luc
   }
 
   override def toString() : String = { "ESA_%s".format(conceptThreshold) }
-}*/
+}
+*/

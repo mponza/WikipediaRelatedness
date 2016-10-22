@@ -39,10 +39,12 @@ object Configuration {
     "symDistances" -> Paths.get(projDir, "/data/processing/wikipedia/distances/symDistance.bin").toString,
 
     "llp" -> Paths.get(projDir, "/data/processing/wikipedia/llp").toString,
-    "multiLLP" -> Paths.get(projDir, "/data/processing/wikipedia/multiLLP").toString
+    "multiLLP" -> Paths.get(projDir, "/data/processing/wikipedia/multiLLP").toString,
 
-    /*"corpus" -> getClass.getResource("/w2v/wikipedia-w2v-linkCorpus.e0.100.tr.bin").getPath,
-    "deepWalk" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalk.e0.100.tr.bin").getPath,
+    "corpus" -> getClass.getResource("/w2v/wikipedia-w2v-linkCorpus.e0.100.tr.bin").getPath,
+    "deepWalk" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalk.e0.100.tr.bin").getPath
+
+  /*
     // Link Corpus and DeepWalk mixed.
     "deepCorpus" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin").getPath,
     "coOccurrence" -> getClass.getResource("/w2v/wikipedia-w2v-coOccurrence.e0.100.tr.bin").getPath,

@@ -1,6 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.options.JaccardOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
 
