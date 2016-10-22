@@ -15,21 +15,6 @@ trait Relatedness {
 
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float
-  /*def computeRelatredness(srcWikiID: Int, dstWikiID: Int) : Float = {
-    val fakeTask =
-      new WikiRelateTask(
-
-        new WikiEntity(srcWikiID, "fakeTitle_" + srcWikiID.toString),
-        "fakeWord" + srcWikiID.toString,
-
-        new WikiEntity(dstWikiID, "fakeTitle_" + dstWikiID.toString),
-        "fakeWord" + dstWikiID.toString,
-
-        Double.NaN, Double.NaN
-    )
-
-    computeRelatedness(fakeTask)
-  }*/
 
   override def toString() : String
 }

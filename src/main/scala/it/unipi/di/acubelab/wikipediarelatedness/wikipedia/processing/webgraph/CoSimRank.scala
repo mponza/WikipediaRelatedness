@@ -5,7 +5,10 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.law.rank.{PageRankParallelGaussSeidel, SpectralRanking}
 import it.unimi.dsi.webgraph.Transform
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
-
+import org.slf4j.LoggerFactory
+import org.slf4j.Logger
+import it.unimi.dsi.webgraph.ImmutableGraph
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
 
 /**
   * CoSimRank algorithm for the Wikipedia graph.
@@ -18,6 +21,8 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
   */
 class CoSimRank(val wikiBVGraph: WikiBVGraph = WikiGraph.outGraph, val iterations: Int = 30,
                  val pprDecay: Float = 0.8f, val csrDecay: Float = 0.8f) {
+
+  val logger = LoggerFactory.getLogger(classOf[CoSimRank])
 
   /**
     * Computes CoSimRank similarity score between two Wikipedia nodes.
@@ -33,7 +38,7 @@ class CoSimRank(val wikiBVGraph: WikiBVGraph = WikiGraph.outGraph, val iteration
       val srcPPRvector = srcPPRvectors.get(i)
       val dstPPRvector = dstPPRvectors.get(i)
 
-      csrSimilarity += math.pow(csrDecay, i) * dotProduct(srcPPRvector, dstPPRvector)
+      csrSimilarity += math.pow(csrDecay, i) * Similarity.cosineSimilarity(srcPPRvector, dstPPRvector)//dotProduct(srcPPRvector, dstPPRvector)
     }
 
     csrSimilarity.toFloat
@@ -47,6 +52,7 @@ class CoSimRank(val wikiBVGraph: WikiBVGraph = WikiGraph.outGraph, val iteration
       dot += src.getDouble(i) * dst.getDouble(i)
     }
 
+    println("DOT %1.5f".format(dot))
     dot
   }
 
@@ -67,18 +73,31 @@ class CoSimRank(val wikiBVGraph: WikiBVGraph = WikiGraph.outGraph, val iteration
 
     // At each PPR iteration we save the PPR distribution.
     for (i <- 0 until iterations) {
-      pageRanker.stepUntil(new SpectralRanking.IterationNumberStoppingCriterion(1))
+      pageRanker.stepUntil(new SpectralRanking.IterationNumberStoppingCriterion(i))
 
       val pprVector = new DoubleArrayList(pageRanker.rank)
       pprVectors.add(pprVector)
+
+      if(i >= 1 && checkVectors(pprVectors.get(i - 1), pprVectors.get(i))) {
+        println("Equal vectors WTF")
+      }
+    }
+    pprVectors
+  }
+
+  def checkVectors(old: DoubleArrayList, n: DoubleArrayList) : Boolean = {
+    for(i <- 0 until old.size()) {
+      if(old.getDouble(i) != n.getDouble(i)) {
+        return false
+      }
     }
 
-    pprVectors
+    true
   }
 
   /**
     * Builds the preference vector of a given WikipediaID.
-    * */
+    */
   def preferenceVector(wikiID: Int) : DoubleList = {
     val preference = Array.fill[Double](wikiBVGraph.bvGraph.numNodes())(0.0)
 
@@ -87,5 +106,4 @@ class CoSimRank(val wikiBVGraph: WikiBVGraph = WikiGraph.outGraph, val iteration
 
     new DoubleArrayList(preference)
   }
-
 }

@@ -32,7 +32,7 @@ object RelatednessFactory {
 
       //case "LMModel" => new LMRelatedness(new LMOptions(json))
 
-      //case "CoSimRank" => new CoSimRankRelatedness(new CoSimRankOptions(json))
+      case "CoSimRank" => new CoSimRankRelatedness(new CoSimRankOptions(json))
       // case "PPRCos" => new PPRCosRelatedness(new PPRCosOptions(json))
 
       case "SVD" => new GraphSVDRelatedness(new GraphSVDOptions(json))

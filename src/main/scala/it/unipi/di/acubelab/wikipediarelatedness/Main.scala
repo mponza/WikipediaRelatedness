@@ -77,6 +77,34 @@ object Bench {
   }
 }
 
+object BenchCoSimRank {
+  def main(args: Array[String]) {
+    for {
+      iterations <- 10 to 50 by 10
+      pprDecay <- 0.2f to 0.8f by 0.2f
+      csrDecay <- 0.2f to 0.8f by 0.2f
+    } {
+
+      try {
+        val s =
+          """{"relatedness": "CoSimRank", "iterations": %d, "pprDecay": %1.2f, "csrDecay": %1.2f}"""
+            .formatLocal(java.util.Locale.US, iterations, pprDecay, csrDecay)
+
+        val relatednessOptions = JSON.parseFull(s)
+        val relatdness = RelatednessFactory.make(relatednessOptions)
+
+        val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+
+        val benchmark = new RelatednessBenchmark(dataset, relatdness)
+        benchmark.runBenchmark()
+      } catch {
+        case e: Exception => println(e)
+      }
+      return
+    }
+  }
+}
+
 /*
 object WordBench {
   def main(args: Array[String]) {

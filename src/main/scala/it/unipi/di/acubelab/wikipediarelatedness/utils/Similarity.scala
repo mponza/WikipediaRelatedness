@@ -1,54 +1,11 @@
 package it.unipi.di.acubelab.wikipediarelatedness.utils
 
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.floats.FloatArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 
 object  Similarity {
-
-  // Cosine between [(index, float)]
-  def cosineSimilarity(src: ObjectArrayList[Tuple2[Int, Float]],
-                       dst: ObjectArrayList[Tuple2[Int, Float]]) : Float = {
-
-    // Computes vectors magnitude
-    val srcMagnitude = indexedVectorMagnitude(src)
-    val dstMagnitude = indexedVectorMagnitude(dst)
-    if(srcMagnitude == 0.0f || dstMagnitude == 0.0f) return 0.0f
-
-    val magnitude = (math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)).toFloat
-
-    // Computes vectors dot product
-    var dot = 0.0f
-    var i = 0
-    var j = 0
-    while(i < src.size() && j < dst.size()) {
-      val srcIndex = src.get(i)._1
-      val dstIndex = dst.get(j)._1
-
-      val srcValue = src.get(i)._2
-      val dstValue = dst.get(j)._2
-
-      if(srcIndex == dstIndex) {
-        dot += srcValue * dstValue
-        i += 1
-        j += 1
-      } else if(srcIndex < dstIndex) i += 1 else j += 1
-    }
-
-    if (dot == 0.0f) return 0.0f
-
-    dot / magnitude
-  }
-
-  def indexedVectorMagnitude(vec: ObjectArrayList[Tuple2[Int, Float]]) : Float = {
-    var magnitude = 0.0f
-
-    for(i <- 0 until vec.size()) {
-      magnitude += math.pow(vec.get(i)._2, 2.0f).toFloat
-    }
-
-    magnitude
-  }
 
   def cosineSimilarity(src: FloatArrayList,
                        dst: FloatArrayList) : Float = {
@@ -83,6 +40,13 @@ object  Similarity {
     magnitude
   }
 
+
+  def cosineSimilarity(src: DoubleArrayList, dst: DoubleArrayList) : Float = {
+    val srcFloats = new FloatArrayList(src.toDoubleArray().map(_.toFloat))
+    val dstFloats = new FloatArrayList(dst.toDoubleArray().map(_.toFloat))
+
+    cosineSimilarity(srcFloats, dstFloats)
+  }
 
 
 

@@ -18,7 +18,7 @@ class ClusteringCoefficient(wikiBVGraph: WikiBVGraph) {
     var nodeID = succIter.nextInt
     while(nodeID != -1) {
 
-      val nodeIter = wikiBVGraph.successors(WikiBVGraph.node2wiki.get(nodeID))
+      val nodeIter = wikiBVGraph.successors(WikiBVGraph.getWikiID(nodeID))
       var succID = nodeIter.nextInt
       succMap.put(nodeID, new IntOpenHashSet)
       while(succID != -1) {
