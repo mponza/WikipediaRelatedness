@@ -1,5 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph
-
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph
 
 import java.io.File
 
@@ -8,7 +7,7 @@ import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
+import WikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.llp.{LLPProcessor, LLPTask}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.multillp.MultiLLPProcessor
 import org.slf4j.LoggerFactory
@@ -95,7 +94,7 @@ class WebGraphProcessor {
   def computeDistances(wikiSimDataset: WikiSimDataset) = {
     logger.info("Computing Wikipedia Graph distances of WikiSimDataset...")
 
-    val symGraph = WikiGraph.symGraph
+    val symGraph = WikiGraphFactory.symGraph
     val distances = scala.collection.mutable.HashMap.empty[Tuple2[Int, Int], Int]
 
     var i = 1

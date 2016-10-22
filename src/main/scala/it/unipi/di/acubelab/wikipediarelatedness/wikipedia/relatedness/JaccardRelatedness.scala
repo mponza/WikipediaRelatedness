@@ -1,7 +1,8 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.options.JaccardOptions
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.SetOperations
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
 
 /**
   *
@@ -11,14 +12,15 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
   *                }
   */
 class JaccardRelatedness(val options: JaccardOptions) extends Relatedness {
-  val graph = WikiGraph.wikiBVGraph(options.graph)
+  val wikiGraph = WikiGraphFactory.wikiBVGraph(options.graph)
+  val setOperations = new SetOperations(wikiGraph)
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
-    val intersection = graph.linkIntersection(srcWikiID, dstWikiID)
+    val intersection = setOperations.linkIntersection(srcWikiID, dstWikiID)
     if (intersection == 0) return 0.0f
 
-    val sizeA = graph.outdegree(srcWikiID)
-    val sizeB = graph.outdegree(dstWikiID)
+    val sizeA = wikiGraph.outdegree(srcWikiID)
+    val sizeB = wikiGraph.outdegree(dstWikiID)
 
     intersection / (sizeA + sizeB - intersection).toFloat
   }

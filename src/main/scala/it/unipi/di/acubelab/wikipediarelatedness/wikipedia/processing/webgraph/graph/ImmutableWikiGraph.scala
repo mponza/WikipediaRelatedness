@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph
 
 import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, Int2ObjectOpenHashMap, IntArrayList}
 import it.unimi.dsi.webgraph.{ImmutableGraph, LazyIntIterator}

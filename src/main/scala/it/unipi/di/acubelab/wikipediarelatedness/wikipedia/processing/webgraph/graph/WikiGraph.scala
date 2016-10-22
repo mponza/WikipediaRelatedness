@@ -1,55 +1,51 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph
 
-import it.unimi.dsi.webgraph.algo.{GeometricCentralities, ParallelBreadthFirstVisit}
-import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList, IntOpenHashSet}
+import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList}
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.law.rank.{PageRankParallelGaussSeidel, SpectralRanking}
+import it.unimi.dsi.webgraph.algo.{GeometricCentralities, ParallelBreadthFirstVisit}
 import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator, Transform}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unimi.dsi.webgraph.ImmutableGraph
 import org.slf4j.LoggerFactory
-
-import scala.collection.parallel.mutable.ParArray
 
 
 /**
   * Wrapper of BVGraph which transparently manages the mapping between wikiID and nodeID.
   */
-class WikiBVGraph(path: String) {
-  val logger = LoggerFactory.getLogger(classOf[WikiBVGraph])
-  val bvGraph = loadBVGraph(path)
+class WikiGraph(path: String) {
+  val logger = LoggerFactory.getLogger(classOf[WikiGraph])
 
-  lazy val pageRanks = computeCentrality("PageRank")
-  lazy val harmonicRanks = computeCentrality("Harmonic")
+  lazy val graph = loadImmutableGraph(path)
+  protected lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia("wiki2node")).asInstanceOf[Int2IntOpenHashMap]
+  protected lazy val node2wiki = reverseWiki2Node()
 
-  // (srcWikiID, dstWikiID) => distance in the bvGraph
-  val distanceCache = scala.collection.mutable.HashMap.empty[Tuple2[Int, Int], Int]
 
-  def loadBVGraph(path: String) = {
+  def loadImmutableGraph(path: String) : ImmutableGraph = {
     logger.info("Loading BVGraph from %s".format(path))
     val graph = BVGraph.load(path)
     logger.info("BVGraph loaded. |Nodes| = %d and |Edges| = %d".format(graph.numNodes, graph.numArcs))
+
     graph
   }
 
+
+  // Neighborhood Operations
+
   def successors(wikiID: Int) : LazyIntIterator = {
-    bvGraph.successors(WikiBVGraph.getNodeID(wikiID))
+    graph.successors(getNodeID(wikiID))
   }
 
   def successorArray(wikiID: Int) : Array[Int] = {
-    bvGraph.successorArray(WikiBVGraph.getNodeID(wikiID))
+    graph.successorArray(getNodeID(wikiID))
   }
 
   def outdegree(wikiID: Int) : Int = {
-    bvGraph.outdegree(WikiBVGraph.getNodeID(wikiID))
+    graph.outdegree(getNodeID(wikiID))
   }
 
-  /**
-    * @param srcWikiID
-    * @param dstWikiID
-    * @return True if the successor list of srcWikiID contains dstWikiID.
-    */
   def containSuccessor(srcWikiID: Int, dstWikiID: Int) : Boolean = {
-    val dstNodeID = WikiBVGraph.getNodeID(dstWikiID)
+    val dstNodeID = getNodeID(dstWikiID)
 
     val srcIter = successors(srcWikiID)
     var succ = srcIter.nextInt()
@@ -62,6 +58,40 @@ class WikiBVGraph(path: String) {
     false
   }
 
+
+  // WikiID -> NodeID mapping operations
+
+  def contains(wikiID: Int): Boolean = {
+    wiki2node.containsKey(wikiID)
+  }
+
+  def reverseWiki2Node() : Int2IntOpenHashMap = {
+    val node2wiki = new Int2IntOpenHashMap
+    wiki2node.keySet().toIntArray.foreach {
+      wikiID : Int => node2wiki.put(wiki2node.get(wikiID), wikiID)
+    }
+    node2wiki
+  }
+
+  def getNodeID(wikiID: Int) = {
+    val nodeID = wiki2node.getOrDefault(wikiID, -1)
+    if (nodeID < 0) {
+      throw new IllegalArgumentException("WikiID %d not present in the Wikipedia graph.".format(wikiID))
+    }
+    nodeID
+  }
+
+  def getWikiID(nodeID: Int) : Int = {
+    val wikiID = node2wiki.getOrDefault(nodeID, -1)
+    if (wikiID < 0) {
+      throw new IllegalArgumentException("NodeIndex %d not present in the Wikipedia mapping.".format(nodeID))
+    }
+    wikiID
+  }
+
+
+
+  /*
   def linkIntersection(srcWikiID: Int, dstWikiID: Int) : Int = {
     val iterA =  successors(srcWikiID)
     val iterB = successors(dstWikiID)
@@ -133,7 +163,7 @@ class WikiBVGraph(path: String) {
   /**
     * @return Distance in bvGraph from srcWikiID to dstWikiID. -1 if infinity distance.
     */
-  def distance(srcWikiID: Int, dstWikiID: Int) : Int = {
+  /*def distance(srcWikiID: Int, dstWikiID: Int) : Int = {
 
     if (!distanceCache.contains((srcWikiID, dstWikiID))) {
 
@@ -163,49 +193,13 @@ class WikiBVGraph(path: String) {
     }
 
     Int.MaxValue
-  }
-
-  def computeCentrality(centrality: String = "PageRank", iterations: Int = 10) : Array[Double] = centrality match {
-    case "PageRank" =>
-      val pageRanker = new PageRankParallelGaussSeidel(Transform.transpose(bvGraph))
-
-      logger.info("Computing PageRank with %d iterations...".format(iterations))
-      pageRanker.stepUntil(new SpectralRanking.IterationNumberStoppingCriterion(iterations))
-
-      logger.info("Maximum PageRank found: %1.10f".format(pageRanker.rank.max))
-      val index = pageRanker.rank.indexOf(pageRanker.rank.max)
-      logger.info("Max index: %d which is WikiID %d".format(index, WikiBVGraph.getWikiID(index)))
-
-      val mn = pageRanker.rank.foldRight(1.0)((f, x) => if(x == 0) f else x min f)
-      logger.info("Minimum PageRank found: %1.10f".format(mn))
-      val minIndex = pageRanker.rank.indexOf(mn)
-      logger.info("Minimum index: %d which is WikiID %d".format(index, WikiBVGraph.getWikiID(minIndex)))
-
-      logger.info("Number of PageRank scores: %d".format(pageRanker.rank.length))
-
-      pageRanker.rank
-
-
-    case "Harmonic" =>
-      val harmonicRanker = new GeometricCentralities(bvGraph)
-
-      logger.info("Computing Harmonic Centrality...")
-      harmonicRanker.harmonic
-
-    case _ => throw new IllegalArgumentException("%s Centrality not supported.".format(centrality))
-  }
-
-  def pageRankScore(wikiID: Int): Double = {
-    pageRanks(WikiBVGraph.getNodeID(wikiID))
-  }
-
-  def harmonicScore(wikiID: Int): Double = {
-    harmonicRanks(WikiBVGraph.getNodeID(wikiID))
-  }
+  }*/
+*/
 
 }
 
-object WikiBVGraph {
+/*
+object WikiGraph {
   protected lazy val wiki2node = BinIO.loadObject(Configuration.wikipedia("wiki2node")).asInstanceOf[Int2IntOpenHashMap]
   protected lazy val node2wiki = reverseWiki2Node()
 
@@ -237,4 +231,4 @@ object WikiBVGraph {
     }
     wikiID
   }
-}
+}*/

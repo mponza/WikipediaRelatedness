@@ -6,7 +6,7 @@ import java.util.Locale
 import com.github.tototoshi.csv.CSVWriter
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateTask}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.{Configuration, WAT}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WikiBVGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph$
 import org.slf4j.LoggerFactory
 
 class WikiSimProcessing(wikiSim: WikiSimDataset) {
@@ -73,7 +73,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
     val realWikiPairs = wikiRelateTasks.filter {
       case wikiRelTask: WikiRelateTask =>
 
-        val keep = WikiBVGraph.contains(wikiRelTask.src.wikiID) && WikiBVGraph.contains(wikiRelTask.dst.wikiID)
+        val keep = WikiGraph.contains(wikiRelTask.src.wikiID) && WikiGraph.contains(wikiRelTask.dst.wikiID)
         if (!keep) {
           logger.warn("The following tuple: %s has been removed (Not present in the Wikipedia Graph)."
             .format(wikiRelTask))

@@ -38,10 +38,13 @@ Some parts require Python processing, so I recommend to install some virtualizat
 
 
    
-Webgraph Processing
+WebGraph Processing
 -------------------
 
-Run webgraph processing classes in order to generate the graph and the LLP labels.
+Run `WikiWebGraph.generateBVGraphs` in order to process the Wikipedia graph with WebGraph and generatre the corresponding BVGraphs (in, out and symmetric).
+
+LLP: tobedone
+
 
 
 Latent Semantic Processing

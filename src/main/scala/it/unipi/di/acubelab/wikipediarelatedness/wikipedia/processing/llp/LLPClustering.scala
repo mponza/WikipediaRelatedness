@@ -6,7 +6,7 @@ import java.nio.file.Paths
 import it.unimi.dsi.fastutil.ints.{Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WikiBVGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph$
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
@@ -56,7 +56,7 @@ class LLPClustering(llpTask: LLPTask = new LLPTask, dirPath: String = null) {
 
       while(it.hasNext) {
         val label = it.nextInt()
-        val wikiID = WikiBVGraph.getWikiID(nodeIndex)
+        val wikiID = WikiGraph.getWikiID(nodeIndex)
 
         labels.putIfAbsent(wikiID, new IntArrayList)
         labels.get(wikiID).add(label)

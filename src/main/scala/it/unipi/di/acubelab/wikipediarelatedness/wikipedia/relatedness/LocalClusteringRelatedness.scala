@@ -3,8 +3,8 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.options.LocalClusteringOptions
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.WikiGraph
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.{ClusteringCoefficient, WikiBVGraph}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.ClusteringCoefficient
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph$, WikiGraphFactory}
 
 /**
   * rel(u, v) = 1 / | \intersection(in(u), in(v)) |  *  \sum_{ w \in \intersection(in(u), in(v)) } \frac{ local_clust_out(w) }
@@ -15,9 +15,9 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.{
   *       }
   */
 class LocalClusteringRelatedness(options: LocalClusteringOptions) extends Relatedness {
-  val neighborGraph = WikiGraph.wikiBVGraph(options.neighborGraph)
+  val neighborGraph = WikiGraphFactory.wikiBVGraph(options.neighborGraph)
 
-  val clusterGraph = WikiGraph.wikiBVGraph(options.clusterGraph)
+  val clusterGraph = WikiGraphFactory.wikiBVGraph(options.clusterGraph)
   val clustCoeff = new ClusteringCoefficient(clusterGraph)
 
 

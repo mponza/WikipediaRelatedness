@@ -1,8 +1,9 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms
 
 import it.unimi.dsi.fastutil.ints._
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph$
 
-class ClusteringCoefficient(wikiBVGraph: WikiBVGraph) {
+class ClusteringCoefficient(wikiBVGraph: WikiGraph) {
   val localClustCoeffCache = new Int2FloatArrayMap() // local clustering coefficients already computed on wikiBVGraph.
                                                       // {wikiID: localClusteringScore}
 
@@ -18,7 +19,7 @@ class ClusteringCoefficient(wikiBVGraph: WikiBVGraph) {
     var nodeID = succIter.nextInt
     while(nodeID != -1) {
 
-      val nodeIter = wikiBVGraph.successors(WikiBVGraph.getWikiID(nodeID))
+      val nodeIter = wikiBVGraph.successors(WikiGraph.getWikiID(nodeID))
       var succID = nodeIter.nextInt
       succMap.put(nodeID, new IntOpenHashSet)
       while(succID != -1) {
@@ -50,7 +51,7 @@ class ClusteringCoefficient(wikiBVGraph: WikiBVGraph) {
     val iterJ = wikiBVGraph.successors(wikiID)
     var vJ = iterJ.nextInt()
     while(vJ != -1) {
-      val wikiIDJ = WikiBVGraph.getWikiID(vJ)
+      val wikiIDJ = WikiGraph.getWikiID(vJ)
 
       val iterK = wikiBVGraph.successors(wikiID)
       var vK = iterK.nextInt

@@ -2,12 +2,13 @@ package it.unipi.di.acubelab.wikipediarelatedness
 
 import java.io.PrintWriter
 
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WebGraphProcessor
+
 //import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{RelatednessBenchmark, WordSimBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.{WikiSimDataset, WikiSimProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.WebGraphProcessor
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.lemma.LemmaLuceneProcessing
 
@@ -99,8 +100,8 @@ object BenchCoSimRank {
         benchmark.runBenchmark()
       } catch {
         case e: Exception => println(e)
+
       }
-      return
     }
   }
 }
