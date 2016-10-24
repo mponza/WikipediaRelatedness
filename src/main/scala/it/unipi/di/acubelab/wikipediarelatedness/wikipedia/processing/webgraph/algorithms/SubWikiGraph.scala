@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory
   * Generates a subgraph built from several superGraphs (in, out).
   * Warning: all superBVgraph have to use the same wikiID-nodeID mapping.
   *
-  * @param superBVGraphs
+  * @param superWikiGraphs
   * @param srcWikiID
   * @param dstWikiID
   */
-class SubWikiGraph(val superBVGraphs: List[WikiGraph] = List(WikiGraphFactory.inGraph, WikiGraphFactory.outGraph),
-                    val srcWikiID: Int, val dstWikiID: Int) extends WikiGraph("") {
+class SubWikiGraph(val superWikiGraphs: List[WikiGraph] = List(WikiGraphFactory.inGraph, WikiGraphFactory.outGraph),
+                   val srcWikiID: Int, val dstWikiID: Int) extends WikiGraph("") {
   override val logger = LoggerFactory.getLogger(classOf[SubWikiGraph])
 
   // The field graph is an ImmutableSubGraph generated from superBVGraphs.
@@ -27,8 +27,8 @@ class SubWikiGraph(val superBVGraphs: List[WikiGraph] = List(WikiGraphFactory.in
   override def loadImmutableGraph(path: String) : ImmutableGraph = {
     logger.info("Generating subgraph starting from %d and %d...".format(srcWikiID, dstWikiID))
 
-    val srcNodes = neighbrohood(srcWikiID, superBVGraphs)
-    val dstNodes = neighbrohood(dstWikiID, superBVGraphs)
+    val srcNodes = superNeighborhood(srcWikiID, superWikiGraphs)
+    val dstNodes = superNeighborhood(dstWikiID, superWikiGraphs)
 
     val subgraphNodes = new IntOpenHashSet()
 
@@ -45,13 +45,16 @@ class SubWikiGraph(val superBVGraphs: List[WikiGraph] = List(WikiGraphFactory.in
     subGraph
   }
 
-  def neighbrohood(srcWikiID: Int, superBVGraphs: List[WikiGraph]) : Array[Int] = {
+  def superNeighborhood(srcWikiID: Int, superBVGraphs: List[WikiGraph]) : Array[Int] = {
     superBVGraphs.map(bvGraph => bvGraph.successorArray(srcWikiID)).toArray.flatten.distinct
   }
 
+
   protected def subWikiGraph() : ImmutableSubgraph = graph.asInstanceOf[ImmutableSubgraph]
 
-  protected def superWikiGraph() : WikiGraph = superBVGraphs(0)
+
+  protected def superWikiGraph() : WikiGraph = superWikiGraphs(0)
+
 
   /**
     * @param wikiID
@@ -62,10 +65,12 @@ class SubWikiGraph(val superBVGraphs: List[WikiGraph] = List(WikiGraphFactory.in
     subWikiGraph().fromSupergraphNode(superNodeID)
   }
 
+
   override def getWikiID(subNodeID: Int) : Int = {
     val superNodeID = subWikiGraph().toSupergraphNode(subNodeID)
     superWikiGraph().getWikiID(superNodeID)
   }
+
 
   override def outdegree(wikiID: Int) : Int = {
     subWikiGraph().outdegree(getNodeID(wikiID))

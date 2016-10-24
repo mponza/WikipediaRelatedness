@@ -34,13 +34,18 @@ class WikiGraph(path: String) {
     graph.successors(getNodeID(wikiID))
   }
 
+
   def successorArray(wikiID: Int): Array[Int] = {
     graph.successorArray(getNodeID(wikiID))
   }
 
+
+  // Fare get successor from nodeID
+
   def outdegree(wikiID: Int): Int = {
     graph.outdegree(getNodeID(wikiID))
   }
+
 
   def containSuccessor(srcWikiID: Int, dstWikiID: Int): Boolean = {
     val dstNodeID = getNodeID(dstWikiID)
@@ -63,6 +68,7 @@ class WikiGraph(path: String) {
     wiki2node.containsKey(wikiID)
   }
 
+
   def reverseWiki2Node(): Int2IntOpenHashMap = {
     val node2wiki = new Int2IntOpenHashMap
     wiki2node.keySet().toIntArray.foreach {
@@ -71,6 +77,7 @@ class WikiGraph(path: String) {
     node2wiki
   }
 
+
   def getNodeID(wikiID: Int) : Int = {
     val nodeID = wiki2node.getOrDefault(wikiID, -1)
     if (nodeID < 0) {
@@ -78,6 +85,7 @@ class WikiGraph(path: String) {
     }
     nodeID
   }
+
 
   def getWikiID(nodeID: Int): Int = {
     val wikiID = node2wiki.getOrDefault(nodeID, -1)

@@ -121,8 +121,6 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
     }
 
 
-
-
     @Override
     public void init() throws IOException {
         super.init();
@@ -163,8 +161,8 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
             else {
                 int j = outdegree;
                 succ = nodeIterator.successorArray();
-                while (j -- != 0)newRank[ succ[ j ] ] += oldRank[ i ] * getWeight(i, j);
-                //while ( j-- != 0 ) newRank[ succ[ j ] ] += oldRank[ i ] / outdegree;
+                while (j -- != 0) newRank[ succ[ j ] ] += oldRank[ i ] * getWeight(i, j);
+                // while ( j-- != 0 ) newRank[ succ[ j ] ] += oldRank[ i ] / outdegree;
             }
             progressLogger.update();
         }
