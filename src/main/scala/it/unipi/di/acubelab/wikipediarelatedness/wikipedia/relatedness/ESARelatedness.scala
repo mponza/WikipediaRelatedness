@@ -2,7 +2,8 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.options.ESAOptions
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.LuceneIndex
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneIndex
+
 
 /*
 class ESARelatedness(options: ESAOptions)  extends  Relatedness {

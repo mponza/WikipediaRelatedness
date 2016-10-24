@@ -15,7 +15,8 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.g
   *       }
   */
 class LocalClusteringRelatedness(options: LocalClusteringOptions) extends Relatedness {
-  val neighborGraph = WikiGraphFactory.wikiBVGraph(options.neighborGraph)
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = 0f
+  /*val neighborGraph = WikiGraphFactory.wikiBVGraph(options.neighborGraph)
 
   val clusterGraph = WikiGraphFactory.wikiBVGraph(options.clusterGraph)
   val clustCoeff = new ClusteringCoefficient(clusterGraph)
@@ -44,5 +45,5 @@ class LocalClusteringRelatedness(options: LocalClusteringOptions) extends Relate
 
   override def toString() : String = {
     "LocalClusteringRelatedness"
-  }
+  }*/
 }

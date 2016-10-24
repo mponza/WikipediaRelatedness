@@ -1,7 +1,7 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.lemma
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene.{LuceneIndex, WikipediaBodyAnalyzer}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneIndex
 import org.slf4j.LoggerFactory
 
 

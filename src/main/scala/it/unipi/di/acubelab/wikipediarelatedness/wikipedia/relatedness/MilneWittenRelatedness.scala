@@ -10,9 +10,8 @@ class MilneWittenRelatedness(options: MilneWittenOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[MilneWittenRelatedness])
 
   val wikiGraph = WikiGraphFactory.wikiBVGraph(options.graph)
-  val W = setOperations.wikiGraph.graph.numNodes
-
   val setOperations = new SetOperations(wikiGraph)
+  val W = setOperations.wikiGraph.graph.numNodes
 
 
   /**
@@ -24,12 +23,12 @@ class MilneWittenRelatedness(options: MilneWittenOptions) extends Relatedness {
 
     val intersection = setOperations.linkIntersection(srcWikiID, dstWikiID)
 
-    if (intersection == 0) return 0.0f
+    if (intersection == 0) return 0f
 
     val rel = (math.log(sizeA max sizeB) - math.log(intersection) ) /
                 (math.log(W) - math.log(sizeA min sizeB))
 
-    val normRel = 1 - ((rel.toFloat max 0.0f) min 1.0f)
+    val normRel = 1 - ((rel.toFloat max 0f) min 1f)
 
     normRel
   }

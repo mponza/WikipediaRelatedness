@@ -7,7 +7,6 @@ import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import WikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.llp.{LLPProcessor, LLPTask}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.multillp.MultiLLPProcessor
 import org.slf4j.LoggerFactory
@@ -91,7 +90,7 @@ class WebGraphProcessor {
     }
   }
 
-  def computeDistances(wikiSimDataset: WikiSimDataset) = {
+  /*def computeDistances(wikiSimDataset: WikiSimDataset) = {
     logger.info("Computing Wikipedia Graph distances of WikiSimDataset...")
 
     val symGraph = WikiGraphFactory.symGraph
@@ -118,5 +117,5 @@ class WebGraphProcessor {
     distFile.getParentFile.mkdirs()
 
     BinIO.storeObject(distances.toMap, distFile)
-  }
+  }*/
 }

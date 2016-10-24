@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
 
 /**
   * Class used to process and store the Wikipedia graph into BVGraphs (in/out/sym).
-  *  Just run generateBGH
+  *  Just run generateWikiWebGraphs.
   */
 class WikiWebGraph {}
 

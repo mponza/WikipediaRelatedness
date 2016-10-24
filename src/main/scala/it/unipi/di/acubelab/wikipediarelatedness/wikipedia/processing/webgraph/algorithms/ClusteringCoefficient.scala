@@ -3,8 +3,8 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.
 import it.unimi.dsi.fastutil.ints._
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph$
 
-class ClusteringCoefficient(wikiBVGraph: WikiGraph) {
-  val localClustCoeffCache = new Int2FloatArrayMap() // local clustering coefficients already computed on wikiBVGraph.
+class ClusteringCoefficient {
+  /*val localClustCoeffCache = new Int2FloatArrayMap() // local clustering coefficients already computed on wikiBVGraph.
                                                       // {wikiID: localClusteringScore}
 
   /**
@@ -73,5 +73,5 @@ class ClusteringCoefficient(wikiBVGraph: WikiGraph) {
     localClustCoeffCache.put(wikiID, clustCoeff)
 
     clustCoeff
-  }
+  }*/
 }

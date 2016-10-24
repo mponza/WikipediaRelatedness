@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.lucene
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
 
 import java.io.{File, FileInputStream}
 import java.nio.file.Paths

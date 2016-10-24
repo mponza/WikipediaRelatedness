@@ -62,7 +62,7 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
 
     val path = Paths.get(relatednessDirectory, relatedness.toString + ".correlation.csv").toString
     new PrintWriter(path).write(
-      "Pearson:%1.2f, Spearman: %1.2f".format(pearson, spearman)
+      "Pearson:%1.2f, Spearman: %1.2f".formatLocal(java.util.Locale.US, pearson, spearman)
     )
   }
 }
