@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import it.unimi.dsi.law.rank.{PageRank, PageRankPowerSeries, SpectralRanking}
+import it.unimi.dsi.law.rank.{PageRank, PageRankPowerSeries}
 import it.unimi.dsi.webgraph.Transform
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
@@ -37,7 +37,7 @@ class CoSimRankPowerSeries(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, ite
   override def getPageRanker() : PageRank = {
     logger.info("Initializing PageRankPowerSeries...")
 
-    val pageRanker = new PageRankPowerSeries(Transform.transpose(wikiGraph.graph))
+    val pageRanker = new PageRankPowerSeries(wikiGraph.graph)
     pageRanker.alpha = pprDecay.toDouble
 
     pageRanker
