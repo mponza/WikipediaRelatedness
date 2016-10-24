@@ -1,12 +1,11 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.cosimrank
 
 import it.unimi.dsi.fastutil.doubles.{DoubleArrayList, DoubleList}
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import it.unimi.dsi.law.rank.{PageRankParallelGaussSeidel, SpectralRanking}
-import it.unimi.dsi.webgraph.Transform
+import it.unimi.dsi.law.rank.PageRank
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
-import org.slf4j.LoggerFactory
+import org.slf4j.Logger
 
 /**
   * CoSimRank algorithm for the Wikipedia graph.
@@ -17,15 +16,14 @@ import org.slf4j.LoggerFactory
   * @param csrDecay    CoSimRank weight decay (c in the paper)
   *
   */
-class CoSimRank(val wikiGraph: WikiGraph = WikiGraphFactory.outGraph, val iterations: Int = 30,
-                val pprDecay: Float = 0.8f, val csrDecay: Float = 0.8f) {
+abstract class CoSimRank(val wikiGraph: WikiGraph = WikiGraphFactory.outGraph, val iterations: Int = 30,
+                           val pprDecay: Float = 0.8f, val csrDecay: Float = 0.8f) {
+  protected val logger = getLogger()
+  protected val pageRanker = getPageRanker()
 
-  val logger = LoggerFactory.getLogger(classOf[CoSimRank])
+  def getLogger() : Logger
 
-  logger.info("Initializing PageRankParallelGaussSeidel ...")
-  val pageRanker = new PageRankParallelGaussSeidel(Transform.transpose(wikiGraph.graph))
-  pageRanker.alpha = pprDecay.toDouble
-
+  def getPageRanker(): PageRank
 
   /**
     * Computes CoSimRank similarity score between two Wikipedia nodes.
@@ -48,39 +46,12 @@ class CoSimRank(val wikiGraph: WikiGraph = WikiGraphFactory.outGraph, val iterat
     csrSimilarity.toFloat
   }
 
-  def dotProduct(src: DoubleArrayList, dst: DoubleArrayList) : Double = {
-    if (src.size() != dst.size()) throw new IllegalArgumentException("Dot product error. Lists have different size.")
-
-    var dot = 0.0
-    for(i <- 0 until src.size()) {
-      dot += src.getDouble(i) * dst.getDouble(i)
-    }
-
-    dot
-  }
-
   /**
     * Runs PersonalizedPageRank on the Wikipedia graph by drugging the preference vector of wikiID.
- *
+    *
     * @return List of PPRVectors, where the i-th vector is the PPR distribution at i-th iteration.
     */
-  def computePPRVectors(wikiID: Int): ObjectArrayList[DoubleArrayList] = {
-
-    // Vector of 0.0 with 1.0 in wikiID.
-    pageRanker.preference = preferenceVector(wikiID)
-
-    val pprVectors = new ObjectArrayList[DoubleArrayList]()
-
-    // At each PPR iteration we save the PPR distribution.
-    for (i <- 0 until iterations) {
-      pageRanker.stepUntil(new SpectralRanking.IterationNumberStoppingCriterion(i))
-
-      val pprVector = new DoubleArrayList(pageRanker.rank)
-      pprVectors.add(pprVector)
-
-    }
-    pprVectors
-  }
+  def computePPRVectors(wikiID: Int): ObjectArrayList[DoubleArrayList]
 
   /**
     * Builds the preference vector of a given WikipediaID.
