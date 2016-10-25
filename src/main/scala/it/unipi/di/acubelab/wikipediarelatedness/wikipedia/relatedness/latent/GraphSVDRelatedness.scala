@@ -1,9 +1,9 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
-
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.latent
 
 import it.unipi.di.acubelab.wikipediarelatedness.latent.GraphSVD
 import it.unipi.di.acubelab.wikipediarelatedness.options.GraphSVDOptions
 import it.unipi.di.acubelab.wikipediarelatedness.utils.{Configuration, Similarity}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
 /**

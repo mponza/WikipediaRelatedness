@@ -1,8 +1,9 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set
 
 import it.unipi.di.acubelab.wikipediarelatedness.options.JaccardOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.SetOperations
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
 /**
   *

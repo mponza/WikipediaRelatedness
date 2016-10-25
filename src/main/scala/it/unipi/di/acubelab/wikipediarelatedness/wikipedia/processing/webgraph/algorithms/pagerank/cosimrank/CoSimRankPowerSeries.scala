@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.cosimrank
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.cosimrank
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
@@ -13,28 +13,6 @@ class CoSimRankPowerSeries(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, ite
   extends CoSimRank(wikiGraph, iterations, pprDecay, csrDecay) {
 
   override def getLogger() = LoggerFactory.getLogger(classOf[CoSimRankPowerSeries])
-
-  override def similarity(srcWikiID: Int, dstWikiID: Int) : Float = {
-    val pprVectors = List(srcWikiID, dstWikiID).par.map(computePPRVectors(_))
-    // Parallel PPR vector mapping
-    val srcPPRvectors = pprVectors(0)
-    val dstPPRvectors = pprVectors(1)
-
-    var csrSimilarity = 0.0
-    for(i <- 0 until iterations) {
-      val srcPPRvector = srcPPRvectors.get(i)
-      val dstPPRvector = dstPPRvectors.get(i)
-
-      csrSimilarity += math.pow(csrDecay, i) * Similarity.cosineSimilarity(srcPPRvector, dstPPRvector)
-    }
-
-    println("*************")
-    println(csrSimilarity.toFloat)
-    csrSimilarity.toFloat
-    System.exit(1)
-    csrSimilarity.toFloat
-
-  }
 
   override def getPageRanker() : PageRank = {
     logger.info("Initializing PageRankPowerSeries...")

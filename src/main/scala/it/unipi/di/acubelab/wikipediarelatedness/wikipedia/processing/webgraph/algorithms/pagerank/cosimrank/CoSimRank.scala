@@ -1,9 +1,10 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.cosimrank
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.cosimrank
 
 import it.unimi.dsi.fastutil.doubles.{DoubleArrayList, DoubleList}
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.law.rank.PageRank
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.PersonalizedPageRank
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.Logger
 
@@ -16,10 +17,10 @@ import org.slf4j.Logger
   * @param csrDecay    CoSimRank weight decay (c in the paper)
   *
   */
-abstract class CoSimRank(val wikiGraph: WikiGraph = WikiGraphFactory.outGraph, val iterations: Int = 30,
-                           val pprDecay: Float = 0.8f, val csrDecay: Float = 0.8f) {
-  protected val logger = getLogger()
-  protected val pageRanker = getPageRanker()
+abstract class CoSimRank(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, iterations: Int = 30,
+                           pprDecay: Float = 0.8f, val csrDecay: Float = 0.8f)
+
+           extends PersonalizedPageRank(wikiGraph, iterations, pprDecay) {
 
   def getLogger() : Logger
 
@@ -53,15 +54,4 @@ abstract class CoSimRank(val wikiGraph: WikiGraph = WikiGraphFactory.outGraph, v
     */
   def computePPRVectors(wikiID: Int): ObjectArrayList[DoubleArrayList]
 
-  /**
-    * Builds the preference vector of a given WikipediaID.
-    */
-  def preferenceVector(wikiID: Int) : DoubleList = {
-    val preference = Array.fill[Double](wikiGraph.graph.numNodes())(0.0)
-
-    val nodeID = wikiGraph.getNodeID(wikiID)
-    preference(nodeID) = 1.0
-
-    new DoubleArrayList(preference)
-  }
 }

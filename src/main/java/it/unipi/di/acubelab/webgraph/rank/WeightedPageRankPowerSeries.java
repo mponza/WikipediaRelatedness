@@ -11,7 +11,6 @@ import it.unimi.dsi.webgraph.ImmutableGraph;
 import it.unimi.dsi.webgraph.LazyIntIterator;
 import it.unimi.dsi.webgraph.NodeIterator;
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph;
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory;
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

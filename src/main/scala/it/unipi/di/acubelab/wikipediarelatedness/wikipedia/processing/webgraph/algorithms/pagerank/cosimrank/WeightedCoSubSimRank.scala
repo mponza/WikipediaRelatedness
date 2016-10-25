@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.cosimrank
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.cosimrank
 
 import it.unimi.dsi.law.rank.PageRank
 import it.unipi.di.acubelab.webgraph.rank.WeightedPageRankPowerSeries
@@ -12,27 +12,6 @@ class WeightedCoSubSimRank (wikiGraph: WikiGraph, iterations: Int = 30,
 
   extends CoSimRankPowerSeries(wikiGraph, iterations, pprDecay, csrDecay) {
 
-  override def similarity(srcWikiID: Int, dstWikiID: Int) : Float = {
-    // Parallel PPR vector mapping
-    val srcPPRvectors = computePPRVectors(srcWikiID)
-    val dstPPRvectors = computePPRVectors(dstWikiID)
-
-    var csrSimilarity = 0.0
-    for(i <- 0 until iterations) {
-      val srcPPRvector = srcPPRvectors.get(i)
-      val dstPPRvector = dstPPRvectors.get(i)
-
-      csrSimilarity += math.pow(csrDecay, i) * Similarity.cosineSimilarity(srcPPRvector, dstPPRvector)
-    }
-
-    println("*************")
-    println(csrSimilarity.toFloat)
-    csrSimilarity.toFloat
-    System.exit(1)
-    csrSimilarity.toFloat
-
-  }
-
   override def getPageRanker(): PageRank = {
     logger.info("Initializing WegihtedPageRankPowerSeries...")
 
@@ -41,6 +20,5 @@ class WeightedCoSubSimRank (wikiGraph: WikiGraph, iterations: Int = 30,
 
     pageRanker
   }
-
 
 }

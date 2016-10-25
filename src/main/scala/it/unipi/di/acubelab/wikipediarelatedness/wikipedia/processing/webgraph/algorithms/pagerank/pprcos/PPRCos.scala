@@ -1,0 +1,63 @@
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.pprcos
+
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
+import it.unimi.dsi.law.rank.{PageRank, PageRankPowerSeries}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.PersonalizedPageRank
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import org.slf4j.LoggerFactory
+
+abstract class PPRCos (wikiGraph: WikiGraph = WikiGraphFactory.outGraph, iterations: Int = 30, pprDecay: Float = 0.8f)
+
+  extends PersonalizedPageRank(wikiGraph, iterations, pprDecay) {
+
+  def getLogger() = LoggerFactory.getLogger(classOf[PersonalizedPageRank])
+
+
+  /**
+    * Computes CoSimRank similarity score between two Wikipedia nodes.
+    *
+    * @param srcWikiID
+    * @param dstWikiID
+    */
+  def similarity(srcWikiID: Int, dstWikiID: Int) : Float = {
+    val srcPPRvector = computePPRVector(srcWikiID)
+    val dstPPRvector = computePPRVector(dstWikiID)
+
+    val pprSimilarity = Similarity.cosineSimilarity(srcPPRvector, dstPPRvector)
+
+    pprSimilarity.toFloat
+  }
+
+
+  /**
+    * Runs PersonalizedPageRank on the Wikipedia graph by drugging the preference vector of wikiID.
+    *
+    * @return List of PPRVectors, where the i-th vector is the PPR distribution at i-th iteration.
+    */
+  override def getPageRanker() : PageRank = {
+    logger.info("Initializing PageRankPowerSeries...")
+
+    val pageRanker = new PageRankPowerSeries(wikiGraph.graph)
+    pageRanker.alpha = pprDecay.toDouble
+
+    pageRanker
+  }
+
+
+  def computePPRVector(wikiID: Int): DoubleArrayList = {
+    // Vector of 0.0 with 1.0 in wikiID.
+    pageRanker.preference = preferenceVector(wikiID)
+
+    val pprVector = new ObjectArrayList[DoubleArrayList]()
+
+    pageRanker.init()
+    for (i <- 0 until iterations) {
+      pageRanker.step()
+    }
+
+    new DoubleArrayList(pageRanker.rank)
+  }
+
+}

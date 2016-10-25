@@ -1,9 +1,9 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.options.MilneWittenOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.SetOperations
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
 class MilneWittenRelatedness(options: MilneWittenOptions) extends Relatedness {

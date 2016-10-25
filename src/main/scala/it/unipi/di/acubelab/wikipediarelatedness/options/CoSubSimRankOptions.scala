@@ -4,6 +4,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
 
 class CoSubSimRankOptions(json: Option[Any]) extends CoSimRankOptions(json) {
 
+  override val iterations = getInt("iterations", 100)
   val weighting = RelatednessFactory.make(getOptionAny("weighting"))
 
   override def toString() : String = {

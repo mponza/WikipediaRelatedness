@@ -1,6 +1,6 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.cosimrank
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.cosimrank
 
-import it.unimi.dsi.fastutil.doubles.{DoubleArrayList}
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.law.rank.{PageRank, PageRankParallelGaussSeidel, SpectralRanking}
 import it.unimi.dsi.webgraph.Transform
