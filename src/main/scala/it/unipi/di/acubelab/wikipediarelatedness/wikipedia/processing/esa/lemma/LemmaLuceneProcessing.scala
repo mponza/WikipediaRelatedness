@@ -7,8 +7,7 @@ import org.slf4j.LoggerFactory
 import scala.util.parsing.json.JSON
 
 class LemmaLuceneProcessing extends LuceneProcessing {
-  override  val logger = LoggerFactory.getLogger(classOf[LemmaLuceneProcessing])
-
+  override def getLogger() = LoggerFactory.getLogger(classOf[LemmaLuceneProcessing])
 
   override def line2WikiTitleIDBody(line: String): Tuple3[String, Int, String] = {
     val jsonLine = JSON.parseFull(line)

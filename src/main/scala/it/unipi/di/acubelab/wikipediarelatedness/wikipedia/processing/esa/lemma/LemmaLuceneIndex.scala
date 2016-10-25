@@ -5,8 +5,9 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.Lucene
 import org.slf4j.LoggerFactory
 
 
-class LemmaLuceneIndex extends LuceneIndex {
-  override val logger = LoggerFactory.getLogger(classOf[LemmaLuceneIndex])
+class LemmaLuceneIndex() extends LuceneIndex() {
+
+  override def getLogger() = LoggerFactory.getLogger(classOf[LemmaLuceneIndex])
 
   override def wikipediaConcepts(text: String, resultThreshold: Int = 625) : List[Tuple2[Int, Float]] = {
     val lemmaWords = CoreNLP.lemmatize(text) mkString(" ")

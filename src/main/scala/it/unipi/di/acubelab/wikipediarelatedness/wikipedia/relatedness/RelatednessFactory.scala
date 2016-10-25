@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.options._
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa.IBMESARelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa.{IBMESARelatedness, ESARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.latent.{GraphSVDRelatedness, LDARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.{CoSimRankRelatedness, CoSubSimRankRelatedness, PPRCosRelatedness, PPRSubCosRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, MilneWittenRelatedness}
@@ -33,6 +33,7 @@ object RelatednessFactory {
 
       // ESA
       case "IBMESA" => new IBMESARelatedness(new IBMESAOptions(json))
+      case "ESA" => new ESARelatedness(new ESAOptions(json))
 
       //
 

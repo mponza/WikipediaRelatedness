@@ -2,12 +2,13 @@ package it.unipi.di.acubelab.wikipediarelatedness
 
 import java.io.PrintWriter
 
+import it.unipi.di.acubelab.wikipediarelatedness.benchmark.RelatednessBenchmark
+import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.LemmaLuceneProcessing
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WebGraphProcessor
 
 //import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
-import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{RelatednessBenchmark, WordSimBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.{WikiSimDataset, WikiSimProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
@@ -66,6 +67,14 @@ object WikiSimProcess {
 }
 */
 
+object Core {
+  def main(args: Array[String]): Unit = {
+    val s = "there was a time when ent_12345 was so cool and he was awesome but the house was dark."
+
+  }
+}
+
+
 object Bench {
   def main(args: Array[String]) {
     val relatednessOptions = JSON.parseFull(args(0))
@@ -77,6 +86,14 @@ object Bench {
     benchmark.runBenchmark()
   }
 }
+
+
+object Text {
+  def main(args: Array[String]): Unit = {
+    println(new LemmaLuceneIndex().wikipediaBody(47197315))
+  }
+}
+
 
 object BenchCoSimRank {
   def main(args: Array[String]) {

@@ -4,6 +4,7 @@ import java.io.{File, FileInputStream}
 import java.nio.file.Paths
 import java.util.zip.GZIPInputStream
 
+import it.unipi.di.acubelab.lucene.VecTextField
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.apache.lucene.document._
 import org.apache.lucene.index.{IndexWriter, IndexWriterConfig}
@@ -15,13 +16,15 @@ import scala.util.parsing.json.JSON
 
 
 class LuceneProcessing {
-  val logger = LoggerFactory.getLogger(classOf[LuceneProcessing])
+  val logger = getLogger()
+
+  def getLogger() = LoggerFactory.getLogger(classOf[LuceneProcessing])
 
   def process() = {
     logger.info("Indexing Wikipedia documents...")
     val directory = FSDirectory.open(Paths.get(Configuration.wikipedia("lucene")))
 
-    val analyzer = new WikipediaBodyAnalyzer()
+    val analyzer = LuceneIndex.analyzer
     val config = new IndexWriterConfig(analyzer)
     val writer = new IndexWriter(directory, config)
 
@@ -53,19 +56,23 @@ class LuceneProcessing {
       )
     )
 
-    for ((line, index) <- fileStream.getLines().zipWithIndex)
+    for ((line, index) <- fileStream.getLines().zipWithIndex.filter(_._2 <= 2000))
       yield {
         val wikiDoc = new Document()
 
         val (title, id, body) = line2WikiTitleIDBody(line)
 
+
         wikiDoc.add(new StringField("title", title, Field.Store.YES))
         wikiDoc.add(new StringField("id", id.toString, Field.Store.YES))  // int field?
 
-        val ft = new FieldType(TextField.TYPE_STORED)
-        ft.setStored(true)
-        ft.setStoreTermVectors(true)
-        wikiDoc.add(new Field("body", body, ft))
+        // val ft = new FieldType()
+        // ft.setStored(true)
+        // ft.setStoreTermVectors(true)
+        //  ft.setTokenized(true)
+
+        wikiDoc.add(new VecTextField("body", body, Field.Store.YES)) 
+
 
         if ((index + 1) % 1000 == 0) {
           logger.info("Indexed %d Wikipedia documents.".format(index + 1))

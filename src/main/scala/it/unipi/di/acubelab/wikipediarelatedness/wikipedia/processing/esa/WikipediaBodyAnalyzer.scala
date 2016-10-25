@@ -17,11 +17,6 @@ class WikipediaBodyAnalyzer extends Analyzer {
   val logger = LoggerFactory.getLogger(classOf[WikipediaBodyAnalyzer])
 
   override def createComponents(fieldName : String) : TokenStreamComponents = {
-    if(fieldName != "body") {
-      logger.warn("You are using WikipediaBodyAnalyzer for a fieldName which is not 'body': %s"
-        .format(fieldName))
-    }
-
     val whiteTokenizer = new WhitespaceTokenizer()
     val lowerFilter = new LowerCaseFilter(whiteTokenizer)
     val stopFilter = new StopFilter(lowerFilter,  WikipediaBodyAnalyzer.GOOGLE_STOP_WORDS_SET)
@@ -52,3 +47,11 @@ object WikipediaBodyAnalyzer {
   val GOOGLE_STOP_WORDS_SET = CharArraySet.unmodifiableSet(new CharArraySet(_googleStopWords, false))
 }
 
+/**
+  * val bodyAnalyzer = new StandardAnalyzer(Version.LUCENE_46, emptyStopWords)
+
+    // Use keyword analyzer for every field but body for which we are using a standard analyzer without stopwords
+    val analyzer = new PerFieldAnalyzerWrapper(new KeywordAnalyzer(),
+      Map[String,Analyzer]("body" -> bodyAnalyzer))
+
+    val writerConfig = new IndexWriterConfig(Version.LUCENE_46, analyzer)*/

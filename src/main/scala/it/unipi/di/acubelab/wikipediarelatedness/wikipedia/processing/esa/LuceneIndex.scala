@@ -2,10 +2,11 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
 
 import java.nio.file.Paths
 
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.{Configuration, CoreNLP}
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.core.KeywordAnalyzer
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper
+import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.analysis.util.CharArraySet
 import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.queryparser.classic.QueryParser
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory
 
 
 class LuceneIndex {
-  val logger = LoggerFactory.getLogger(classOf[LuceneIndex])
+  val logger = getLogger()
 
   val reader = loadIndexInMemory()
 
@@ -24,6 +25,9 @@ class LuceneIndex {
   searcher.setSimilarity(new BM25Similarity())
 
   BooleanQuery.setMaxClauseCount(Integer.MAX_VALUE)
+
+
+  def getLogger() = LoggerFactory.getLogger(classOf[LuceneIndex])
 
 
   def loadIndexInMemory(): DirectoryReader = {
@@ -41,7 +45,9 @@ class LuceneIndex {
     */
   def wikipediaConcepts(text: String, resultThreshold: Int = 625): List[Tuple2[Int, Float]] = {
     val parser = new QueryParser("body", LuceneIndex.analyzer)
-    val query = parser.createBooleanQuery("body", text)
+    val coreText = CoreNLP.lemmatize(text).mkString(" ")
+
+    val query = parser.createBooleanQuery("body", coreText)
 
     val threshold = if (resultThreshold >= 0) resultThreshold else Integer.MAX_VALUE
 
@@ -69,7 +75,6 @@ class LuceneIndex {
 
     ""
   }
-
 }
 
 object LuceneIndex {
@@ -80,7 +85,11 @@ object LuceneIndex {
     val bodyAnalyzer = new WikipediaBodyAnalyzer()
 
     val analyzerMap = new java.util.HashMap[String, Analyzer]
-    analyzerMap.put("body", bodyAnalyzer)
+    //analyzerMap.put("body", bodyAnalyzer)
+
+    analyzerMap.put("body", new StandardAnalyzer())
+
+    return new PerFieldAnalyzerWrapper(new KeywordAnalyzer(),  analyzerMap )
 
     new PerFieldAnalyzerWrapper(new KeywordAnalyzer(), analyzerMap)
   }
