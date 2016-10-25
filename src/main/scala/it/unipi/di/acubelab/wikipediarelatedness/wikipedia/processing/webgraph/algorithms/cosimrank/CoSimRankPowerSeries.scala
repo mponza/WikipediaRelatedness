@@ -3,12 +3,9 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.law.rank.{PageRank, PageRankPowerSeries}
-import it.unimi.dsi.webgraph.Transform
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.LoggerFactory
-
-import scala.collection.parallel.immutable.{ParSeq, ParVector}
 
 class CoSimRankPowerSeries(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, iterations: Int = 30,
                            pprDecay: Float = 0.8f, csrDecay: Float = 0.8f)
@@ -31,7 +28,12 @@ class CoSimRankPowerSeries(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, ite
       csrSimilarity += math.pow(csrDecay, i) * Similarity.cosineSimilarity(srcPPRvector, dstPPRvector)
     }
 
+    println("*************")
+    println(csrSimilarity.toFloat)
     csrSimilarity.toFloat
+    System.exit(1)
+    csrSimilarity.toFloat
+
   }
 
   override def getPageRanker() : PageRank = {
@@ -44,7 +46,7 @@ class CoSimRankPowerSeries(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, ite
   }
 
   override def computePPRVectors(wikiID: Int): ObjectArrayList[DoubleArrayList] = {
-    val ranker = new PageRankPowerSeries(pageRanker.graph)  // allows parallel computations (.par.map(...))
+    val ranker = getPageRanker()  // allows parallel computations (.par.map(...))
 
     // Vector of 0.0 with 1.0 in wikiID.
     ranker.preference = preferenceVector(wikiID)

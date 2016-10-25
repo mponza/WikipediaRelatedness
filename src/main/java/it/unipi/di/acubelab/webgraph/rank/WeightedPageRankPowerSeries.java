@@ -1,7 +1,6 @@
 package it.unipi.di.acubelab.webgraph.rank;
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrays;
-import it.unimi.dsi.fastutil.ints.Int2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.io.BinIO;
 import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
@@ -15,6 +14,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.g
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory;
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.Tuple2;
 
 import java.io.DataOutputStream;
@@ -27,6 +27,7 @@ import java.io.IOException;
  *  - step(), the PageRank score is distributed by the weights (line: while (j -- != 0)newRank[ succ[ j ] ] += oldRank[ i ] * getWeight(i, j);)
  */
 public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
+    private final static Logger LOGGER = LoggerFactory.getLogger(WeightedPageRankPowerSeries.class);
 
     private final ProgressLogger progressLogger;
     private final ProgressLogger iterationLogger;
@@ -37,10 +38,12 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
     public Object2DoubleOpenHashMap weights;  // {(src, dst) -> (normalized) relatedness}
 
 
-    public WeightedPageRankPowerSeries(Relatedness relatedness, final Logger logger) {
-        this(WikiGraphFactory.outGraph().graph(), logger);
-        wikiGraph = WikiGraphFactory.outGraph();
+    public WeightedPageRankPowerSeries(WikiGraph wikiGraph, Relatedness relatedness) {
+        this(wikiGraph.graph(), LOGGER);
+
+        this.wikiGraph = wikiGraph;
         this.relatedness = relatedness;
+        this.weights = new Object2DoubleOpenHashMap<Tuple2<Integer, Integer>>();
     }
 
 
@@ -77,9 +80,8 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
     public void generateWeights() {
         logger.info("Graph weighting...");
 
-        for(int i = 0; i < n; i--) {
-
-            LazyIntIterator nodeIterator = wikiGraph.successors(i);
+        for(int i = 0; i < n; i++) {
+            LazyIntIterator nodeIterator = wikiGraph.nodeSuccessors(i);
             int successor = nodeIterator.nextInt();
 
             while(successor != -1) {
@@ -95,8 +97,9 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
     public void normalizeWeights() {
         logger.info("Graph weight normalization...");
 
-        for(int i = 0; i < n; i--) {
-            LazyIntIterator nodeIterator = wikiGraph.successors(i);
+        for(int i = 0; i < n; i++) {
+            System.out.println(i);
+            LazyIntIterator nodeIterator = wikiGraph.nodeSuccessors(i);
 
             // Gets sum of the relatedness (weights) between i and its successors.
             int successor = nodeIterator.nextInt();
@@ -104,15 +107,20 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
 
             while(successor != -1) {
                 sumWeights += getWeight(i, successor);
+                successor = nodeIterator.nextInt();
             }
 
+            sumWeights = sumWeights == 0.0 ? 1.0 : sumWeights;
+
             // Normalize weights
-            nodeIterator = wikiGraph.successors(i);
+            nodeIterator = wikiGraph.nodeSuccessors(i);
             successor = nodeIterator.nextInt();
 
             while(successor != -1) {
                 Tuple2<Integer, Integer> key = new Tuple2<>(i, successor);
-               weights.put(key, weights.getDouble(key) / sumWeights);
+                weights.put(key, weights.getDouble(key) / sumWeights);
+                System.out.println("Weight between " + i + " and " + successor + " is " + getWeight(i, successor));
+                successor = nodeIterator.nextInt();
             }
 
         }

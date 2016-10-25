@@ -86,13 +86,16 @@ class RelatednessOptions(val json: Option[Any]) {
     }
   }
 
-  def getOptionAny(key: String) : Option[Any] = {
+  def getOptionAny(key: String) : Option[Map[String, Any]] = {
     json match {
       case Some(options: Map[String, Any] @unchecked) =>
 
         try {
 
-          options(key).asInstanceOf[Option[Any]]
+          val o = options.get(key)//.asInstanceOf[Option[Any]]
+          println(o)
+
+          o.asInstanceOf[Option[Map[String, Any]]]
 
         } catch {
           case e : Exception => throw new IllegalArgumentException("Error while getting %s value: %s".format(key, e))

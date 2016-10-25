@@ -14,8 +14,10 @@ import org.slf4j.LoggerFactory
   * @param srcWikiID
   * @param dstWikiID
   */
-class SubWikiGraph(val superWikiGraphs: List[WikiGraph] = List(WikiGraphFactory.inGraph, WikiGraphFactory.outGraph),
-                   val srcWikiID: Int, val dstWikiID: Int) extends WikiGraph("") {
+class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int,
+                    val superWikiGraphs: List[WikiGraph] = List(WikiGraphFactory.inGraph, WikiGraphFactory.outGraph))
+    extends WikiGraph("") {
+
   override val logger = LoggerFactory.getLogger(classOf[SubWikiGraph])
 
   // The field graph is an ImmutableSubGraph generated from superBVGraphs.

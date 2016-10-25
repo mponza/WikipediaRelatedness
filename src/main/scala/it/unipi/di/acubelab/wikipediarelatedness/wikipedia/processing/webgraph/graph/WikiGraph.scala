@@ -28,24 +28,19 @@ class WikiGraph(path: String) {
   }
 
 
-  // Neighborhood Operations
+  // Neighborhood Operations (wikiID -> nodeIDs)
 
   def successors(wikiID: Int): LazyIntIterator = {
     graph.successors(getNodeID(wikiID))
   }
 
-
   def successorArray(wikiID: Int): Array[Int] = {
     graph.successorArray(getNodeID(wikiID))
   }
 
-
-  // Fare get successor from nodeID
-
   def outdegree(wikiID: Int): Int = {
     graph.outdegree(getNodeID(wikiID))
   }
-
 
   def containSuccessor(srcWikiID: Int, dstWikiID: Int): Boolean = {
     val dstNodeID = getNodeID(dstWikiID)
@@ -59,6 +54,12 @@ class WikiGraph(path: String) {
     }
 
     false
+  }
+
+  // Neighborhood Operations (nodeID -> nodeIDs)
+
+  def nodeSuccessors(nodeID: Int): LazyIntIterator = {
+    graph.successors(nodeID)
   }
 
 
