@@ -2,7 +2,6 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import java.io.File
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.options.NeuralOptions

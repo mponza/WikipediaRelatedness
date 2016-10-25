@@ -35,7 +35,13 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
     // Computes relatedness for each pair.
     dataset.foreach {
       case task: WikiRelateTask =>
-        task.machineRelatedness = relatedness.computeRelatedness(task)
+        try {
+          task.machineRelatedness = relatedness.computeRelatedness(task)
+        } catch {
+          case e: NoSuchElementException =>
+            logger.warn(e.toString)
+            task.machineRelatedness = Float.NaN
+        }
     }
   }
 
@@ -49,11 +55,17 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
     val path = Paths.get(relatednessDirectory, relatedness.toString() + ".data.csv").toString
 
     val writer = new PrintWriter(new File(path))
-    dataset.foreach(task => writer.write(task.toString() + "\n"))
+
+    // Can be NaN becasue IBMESA removed some pairs not present in their ESA.
+    dataset.filter(task => !task.machineRelatedness.isNaN).foreach(task => writer.write(task.toString() + "\n"))
+    //dataset.foreach(task => writer.write(task.toString() + "\n"))
+
     writer.close()
   }
 
+
   def writeCorrelationScores() : Unit = {
+
     val pearson = Correlation.pearson(dataset)
     val spearman = Correlation.spearman(dataset)
 

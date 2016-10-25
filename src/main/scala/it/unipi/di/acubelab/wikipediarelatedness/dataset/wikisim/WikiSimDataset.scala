@@ -4,11 +4,9 @@ import java.io.File
 
 import com.github.tototoshi.csv.CSVReader
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiEntity, WikiRelateTask}
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
 
 
 class WikiSimDataset(path: String) extends RelatednessDataset {

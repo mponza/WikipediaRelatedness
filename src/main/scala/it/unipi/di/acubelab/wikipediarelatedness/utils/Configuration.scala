@@ -22,6 +22,8 @@ object Configuration {
     "procWikiSim" -> Paths.get(projDir, "/data/dataset/wikiSim411.csv").toString
   )
 
+  lazy val ibmDir = getClass.getResource("/ibm").getPath
+
   lazy val wikipedia = Map(
     "wikiLinks" -> getClass.getResource("/wikipedia/wiki-links-sorted.gz").getPath,
     "linkCorpus" -> getClass.getResource("/wikipedia/wikipedia-w2v-linkCorpus.json.gz").getPath,

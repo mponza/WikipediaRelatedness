@@ -6,8 +6,6 @@ class PPRCosOptions (json: Option[Any]) extends RelatednessOptions(json) {
   val iterations = getInt("iterations", 30)
   val pprDecay = getFloat("pprDecay", 0.8f)
 
-  val weigher = getOptionAny("weighting")
-
   override def toString() : String = {
     "graph:%s_iters:%d_pprDecay:%1.2f".format(
       graph, iterations, pprDecay

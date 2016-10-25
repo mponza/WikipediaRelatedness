@@ -12,16 +12,14 @@ import org.slf4j.LoggerFactory
   */
 class CoSimRankRelatedness(options: CoSimRankOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
-  //val csr = new CoSimRankGaussSeidel(WikiGraphFactory.outGraph, options.iterations, options.pprDecay, options.csrDecay)
+
   val csr = new CoSimRankPowerSeries(WikiGraphFactory.outGraph, options.iterations, options.pprDecay, options.csrDecay)
 
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
-
-    val s = csr.similarity(srcWikiID, dstWikiID)
-    println("%d %d %1.5f".formatLocal(java.util.Locale.US, srcWikiID, dstWikiID, s))
-    s
+    csr.similarity(srcWikiID, dstWikiID)
   }
+
 
   override def toString(): String = {
     "CoSimRank_%s".format(options)

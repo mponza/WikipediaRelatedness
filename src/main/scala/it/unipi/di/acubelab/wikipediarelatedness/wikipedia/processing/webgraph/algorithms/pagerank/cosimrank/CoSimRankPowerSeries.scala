@@ -24,18 +24,16 @@ class CoSimRankPowerSeries(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, ite
   }
 
   override def computePPRVectors(wikiID: Int): ObjectArrayList[DoubleArrayList] = {
-    val ranker = getPageRanker()  // allows parallel computations (.par.map(...))
-
     // Vector of 0.0 with 1.0 in wikiID.
-    ranker.preference = preferenceVector(wikiID)
+    pageRanker.preference = preferenceVector(wikiID)
 
     val pprVectors = new ObjectArrayList[DoubleArrayList]()
 
-    ranker.init()
+    pageRanker.init()
     for (i <- 0 until iterations) {
-      ranker.step()
+      pageRanker.step()
 
-      val pprVector = new DoubleArrayList(ranker.rank)
+      val pprVector = new DoubleArrayList(pageRanker.rank)
       pprVectors.add(pprVector)
 
     }
