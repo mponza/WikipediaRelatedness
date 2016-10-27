@@ -1,10 +1,10 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms
 
 import it.unimi.dsi.fastutil.ints._
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph$
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph
 
-class ClusteringCoefficient {
-  /*val localClustCoeffCache = new Int2FloatArrayMap() // local clustering coefficients already computed on wikiBVGraph.
+class ClusteringCoefficient(val wikiGraph: WikiGraph) {
+  val localClustCoeffCache = new Int2FloatArrayMap() // local clustering coefficients already computed on wikiBVGraph.
                                                       // {wikiID: localClusteringScore}
 
   /**
@@ -15,11 +15,11 @@ class ClusteringCoefficient {
   def successorsOfSuccessors(wikiID: Int) : Int2ObjectOpenHashMap[IntOpenHashSet] = {
     val succMap = new Int2ObjectOpenHashMap[IntOpenHashSet]
 
-    val succIter = wikiBVGraph.successors(wikiID)
+    val succIter = wikiGraph.successors(wikiID)
     var nodeID = succIter.nextInt
     while(nodeID != -1) {
 
-      val nodeIter = wikiBVGraph.successors(WikiGraph.getWikiID(nodeID))
+      val nodeIter = wikiGraph.successors(wikiGraph.getWikiID(nodeID))
       var succID = nodeIter.nextInt
       succMap.put(nodeID, new IntOpenHashSet)
       while(succID != -1) {
@@ -37,7 +37,7 @@ class ClusteringCoefficient {
 
     if (localClustCoeffCache.containsKey(wikiID)) return localClustCoeffCache.get(wikiID)
 
-    val k = wikiBVGraph.outdegree(wikiID)
+    val k = wikiGraph.outdegree(wikiID)
     if(k > 10000) println(k)
     if(k <= 1 || k > 30000) {
       localClustCoeffCache.put(wikiID, 0.0f)
@@ -48,12 +48,12 @@ class ClusteringCoefficient {
 
     val succSucc = successorsOfSuccessors(wikiID)
 
-    val iterJ = wikiBVGraph.successors(wikiID)
+    val iterJ = wikiGraph.successors(wikiID)
     var vJ = iterJ.nextInt()
     while(vJ != -1) {
-      val wikiIDJ = WikiGraph.getWikiID(vJ)
+      val wikiIDJ = wikiGraph.getWikiID(vJ)
 
-      val iterK = wikiBVGraph.successors(wikiID)
+      val iterK = wikiGraph.successors(wikiID)
       var vK = iterK.nextInt
       while(vK != -1) {
 
@@ -73,5 +73,5 @@ class ClusteringCoefficient {
     localClustCoeffCache.put(wikiID, clustCoeff)
 
     clustCoeff
-  }*/
+  }
 }

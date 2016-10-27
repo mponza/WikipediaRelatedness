@@ -31,11 +31,6 @@ abstract class PPRCos (wikiGraph: WikiGraph = WikiGraphFactory.outGraph, iterati
   }
 
 
-  /**
-    * Runs PersonalizedPageRank on the Wikipedia graph by drugging the preference vector of wikiID.
-    *
-    * @return List of PPRVectors, where the i-th vector is the PPR distribution at i-th iteration.
-    */
   override def getPageRanker() : PageRank = {
     logger.info("Initializing PageRankPowerSeries...")
 
@@ -45,7 +40,11 @@ abstract class PPRCos (wikiGraph: WikiGraph = WikiGraphFactory.outGraph, iterati
     pageRanker
   }
 
-
+  /**
+    * Runs PersonalizedPageRank on the Wikipedia graph by drugging the preference vector of wikiID.
+    *
+    * @return List of PPRVectors, where the i-th vector is the PPR distribution at i-th iteration.
+    */
   def computePPRVector(wikiID: Int): DoubleArrayList = {
     // Vector of 0.0 with 1.0 in wikiID.
     pageRanker.preference = preferenceVector(wikiID)

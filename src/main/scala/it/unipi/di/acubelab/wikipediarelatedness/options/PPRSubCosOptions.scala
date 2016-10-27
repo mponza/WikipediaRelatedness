@@ -5,9 +5,12 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
 class PPRSubCosOptions(json: Option[Any]) extends PPRCosOptions(json) {
   val weighting = RelatednessFactory.make(getOptionAny("weighting"))
 
+  val subGraph = getString("subGraph", "neighborhood")
+
+
   override def toString() : String = {
-    "%s,weighting:%s".formatLocal(java.util.Locale.US,
-      super.toString(), weighting
+    "%s,weighting:%s,subGraph:%s".formatLocal(java.util.Locale.US,
+      super.toString(), weighting, subGraph
     )
   }
 }
