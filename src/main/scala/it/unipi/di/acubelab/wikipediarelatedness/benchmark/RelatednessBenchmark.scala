@@ -55,11 +55,9 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
     val path = Paths.get(relatednessDirectory, relatedness.toString() + ".data.csv").toString
 
     val writer = new PrintWriter(new File(path))
-
     // Can be NaN becasue IBMESA removed some pairs not present in their ESA.
     dataset.filter(task => !task.machineRelatedness.isNaN).foreach(task => writer.write(task.toString() + "\n"))
     //dataset.foreach(task => writer.write(task.toString() + "\n"))
-
     writer.close()
   }
 
@@ -73,8 +71,9 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
     logger.info("%s Spearman: %.2f".format(relatedness.toString, spearman))
 
     val path = Paths.get(relatednessDirectory, relatedness.toString + ".correlation.csv").toString
-    new PrintWriter(path).write(
-      "Pearson:%1.2f, Spearman: %1.2f".formatLocal(java.util.Locale.US, pearson, spearman)
-    )
+
+    val writer = new PrintWriter(path)
+    writer.write("Pearson:%1.2f\nSpearman: %1.2f".formatLocal(java.util.Locale.US, pearson, spearman))
+    writer.close()
   }
 }

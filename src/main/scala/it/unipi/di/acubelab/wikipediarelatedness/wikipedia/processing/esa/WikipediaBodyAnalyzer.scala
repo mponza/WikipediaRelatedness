@@ -5,6 +5,7 @@ import java.io.Reader
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents
 import org.apache.lucene.analysis.core.{LowerCaseFilter, StopAnalyzer, StopFilter, WhitespaceTokenizer}
 import org.apache.lucene.analysis.Analyzer
+import org.apache.lucene.analysis.snowball.SnowballFilter
 import org.apache.lucene.analysis.util.CharArraySet
 import org.slf4j.LoggerFactory
 
@@ -46,12 +47,3 @@ object WikipediaBodyAnalyzer {
   import scala.collection.JavaConversions._
   val GOOGLE_STOP_WORDS_SET = CharArraySet.unmodifiableSet(new CharArraySet(_googleStopWords, false))
 }
-
-/**
-  * val bodyAnalyzer = new StandardAnalyzer(Version.LUCENE_46, emptyStopWords)
-
-    // Use keyword analyzer for every field but body for which we are using a standard analyzer without stopwords
-    val analyzer = new PerFieldAnalyzerWrapper(new KeywordAnalyzer(),
-      Map[String,Analyzer]("body" -> bodyAnalyzer))
-
-    val writerConfig = new IndexWriterConfig(Version.LUCENE_46, analyzer)*/

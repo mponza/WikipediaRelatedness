@@ -90,7 +90,8 @@ object Bench {
 
 object Text {
   def main(args: Array[String]): Unit = {
-    println(new LemmaLuceneIndex().wikipediaBody(47197315))
+    //println(new LemmaLuceneIndex().wikipediaBody(47197315))
+    new LemmaLuceneIndex().vectorSpaceProjection(47197315)
   }
 }
 

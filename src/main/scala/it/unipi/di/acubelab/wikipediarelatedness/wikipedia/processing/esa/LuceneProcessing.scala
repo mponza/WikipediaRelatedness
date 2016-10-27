@@ -16,6 +16,8 @@ import scala.util.parsing.json.JSON
 
 
 class LuceneProcessing {
+  protected val indexedDocs = 1000000
+
   val logger = getLogger()
 
   def getLogger() = LoggerFactory.getLogger(classOf[LuceneProcessing])
@@ -28,7 +30,7 @@ class LuceneProcessing {
     val config = new IndexWriterConfig(analyzer)
     val writer = new IndexWriter(directory, config)
 
-    for (wikiDocs <- wikipediaDocuments().grouped(10000)) {
+    for (wikiDocs <- wikipediaDocuments().grouped(indexedDocs)) {
       wikiDocs.par.foreach(writer.addDocument(_))
     }
 
@@ -56,7 +58,7 @@ class LuceneProcessing {
       )
     )
 
-    for ((line, index) <- fileStream.getLines().zipWithIndex.filter(_._2 <= 2000))
+    for ((line, index) <- fileStream.getLines().zipWithIndex)
       yield {
         val wikiDoc = new Document()
 
@@ -71,10 +73,10 @@ class LuceneProcessing {
         // ft.setStoreTermVectors(true)
         //  ft.setTokenized(true)
 
-        wikiDoc.add(new VecTextField("body", body, Field.Store.YES)) 
+        wikiDoc.add(new VecTextField("body", body, Field.Store.YES))
 
 
-        if ((index + 1) % 1000 == 0) {
+        if ((index + 1) % 10000 == 0) {
           logger.info("Indexed %d Wikipedia documents.".format(index + 1))
         }
 

@@ -1,6 +1,6 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.subgraph
 
-import it.unimi.dsi.fastutil.ints.{Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
+import it.unimi.dsi.fastutil.ints.{IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.webgraph.{ImmutableGraph, ImmutableSubgraph}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.LoggerFactory
@@ -10,17 +10,21 @@ import org.slf4j.LoggerFactory
   * Generates a subgraph built from several superGraphs (in, out).
   * Warning: all superBVgraph have to use the same wikiID-nodeID mapping.
   *
-  * @param superWikiGraphs
   * @param srcWikiID
   * @param dstWikiID
   */
-class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int,
-                    val superWikiGraphs: List[WikiGraph] = List(WikiGraphFactory.inGraph, WikiGraphFactory.outGraph))
+abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int)
     extends WikiGraph("") {
 
-  override val logger = LoggerFactory.getLogger(classOf[SubWikiGraph])
+  // Respect the WikiGraph class, here the field graph is an ImmutableSubGraph generated from superBVGraphs.
+  // Warning: Keep attention how you map wikiID to nodeID!
 
-  // The field graph is an ImmutableSubGraph generated from superBVGraphs.
+  protected val inGraph = WikiGraphFactory.inGraph
+  protected val outGraph = WikiGraphFactory.outGraph
+
+  override val logger = getLogger()
+
+  def getLogger() = LoggerFactory.getLogger(classOf[SubWikiGraph])
 
   /**
     * @param path Ignored.
@@ -29,8 +33,8 @@ class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int,
   override def loadImmutableGraph(path: String) : ImmutableGraph = {
     logger.info("Generating subgraph starting from %d and %d...".format(srcWikiID, dstWikiID))
 
-    val srcNodes = superNeighborhood(srcWikiID, superWikiGraphs)
-    val dstNodes = superNeighborhood(dstWikiID, superWikiGraphs)
+    val srcNodes = neighborhood(srcWikiID)
+    val dstNodes = neighborhood(dstWikiID)
 
     val subgraphNodes = new IntOpenHashSet()
 
@@ -47,15 +51,19 @@ class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int,
     subGraph
   }
 
-  def superNeighborhood(srcWikiID: Int, superBVGraphs: List[WikiGraph]) : Array[Int] = {
-    superBVGraphs.map(bvGraph => bvGraph.successorArray(srcWikiID)).toArray.flatten.distinct
-  }
+
+  /**
+   * Generates the subgraph neighborhood of wikiID.
+   *
+   * @return NodeIDs of outGraph.
+   */
+  def neighborhood(wikiID: Int) : Array[Int]
 
 
   protected def subWikiGraph() : ImmutableSubgraph = graph.asInstanceOf[ImmutableSubgraph]
 
 
-  protected def superWikiGraph() : WikiGraph = superWikiGraphs(0)
+  protected def superWikiGraph() : WikiGraph = outGraph
 
 
   /**

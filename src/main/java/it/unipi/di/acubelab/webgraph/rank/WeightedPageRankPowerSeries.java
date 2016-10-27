@@ -97,7 +97,6 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
         logger.info("Graph weight normalization...");
 
         for(int i = 0; i < n; i++) {
-            System.out.println(i);
             LazyIntIterator nodeIterator = wikiGraph.nodeSuccessors(i);
 
             // Gets sum of the relatedness (weights) between i and its successors.
@@ -118,7 +117,6 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
             while(successor != -1) {
                 Tuple2<Integer, Integer> key = new Tuple2<>(i, successor);
                 weights.put(key, weights.getDouble(key) / sumWeights);
-                System.out.println("Weight between " + i + " and " + successor + " is " + getWeight(i, successor));
                 successor = nodeIterator.nextInt();
             }
 
