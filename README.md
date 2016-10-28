@@ -68,6 +68,10 @@ Generate LDA model and process each Wikipedia page:
 For the eigenvector SVD generation on the Wikipedia graph just type:
     
     python src/main/python/latent graph_svd
+    
+For the Laplacian Moore-Penrose pseudoinverse:
+
+    python src/main/python/latent laplacian_pinv
 
 
 Explicit Semantic Processing

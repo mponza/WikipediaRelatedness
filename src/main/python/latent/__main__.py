@@ -56,7 +56,7 @@ def graph_svd():
 
 
 @baker.command
-def graph_pinv():
+def laplacian_pinv():
     generate_laplacian_pseudoinverse()
 
 
