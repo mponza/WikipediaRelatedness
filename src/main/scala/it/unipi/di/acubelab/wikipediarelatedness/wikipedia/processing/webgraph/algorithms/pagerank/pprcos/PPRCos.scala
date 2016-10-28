@@ -49,8 +49,6 @@ abstract class PPRCos (wikiGraph: WikiGraph = WikiGraphFactory.outGraph, iterati
     // Vector of 0.0 with 1.0 in wikiID.
     pageRanker.preference = preferenceVector(wikiID)
 
-    val pprVector = new ObjectArrayList[DoubleArrayList]()
-
     pageRanker.init()
     for (i <- 0 until iterations) {
       pageRanker.step()

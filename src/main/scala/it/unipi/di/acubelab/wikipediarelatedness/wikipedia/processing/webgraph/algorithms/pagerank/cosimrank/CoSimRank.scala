@@ -44,7 +44,7 @@ abstract class CoSimRank(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, itera
       csrSimilarity += math.pow(csrDecay, i) * Similarity.cosineSimilarity(srcPPRvector, dstPPRvector)
     }
 
-    csrSimilarity.toFloat
+    (1 - csrDecay) * csrSimilarity.toFloat
   }
 
   /**

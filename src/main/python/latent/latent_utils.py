@@ -36,3 +36,5 @@ WIKI_LDA_MODEL = os.path.join(WIKI_LDA_DIR, 'lda_model')
 WIKI_LDA_DOCS = os.path.join(WIKI_LDA_DIR, 'lda_wiki_docs.gz')
 
 WIKI_SVD_DIR = absolute_path('../../../../data/processing/wikipedia/latent/svd')
+
+LAPLACIAN_PINV = absolute_path('../../../../data/processing/wikipedia/latent/pinv/laplacian_pinv.gz')

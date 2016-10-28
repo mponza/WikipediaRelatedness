@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.g
 import org.slf4j.LoggerFactory
 
 /**
-  * PPRCos with a preference vector built with ESA.
+  * PPRCos with a preference vector built by using the semantic interpreter of ESA.
   * @param wikiGraph
   * @param iterations
   * @param pprDecay

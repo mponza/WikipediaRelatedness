@@ -17,6 +17,8 @@ from analysis import map_wikidocs2lda
 
 from eigen import generate_eigenvectors
 
+from commute_time import generate_laplacian_pseudoinverse
+
 
 @baker.command
 def corpus_lda():
@@ -51,6 +53,11 @@ def graph_svd():
     Generates left and right eigenvectors of Wikipedia graph.
     '''
     generate_eigenvectors()
+
+
+@baker.command
+def graph_pinv():
+    generate_laplacian_pseudoinverse()
 
 
 if __name__ == '__main__':

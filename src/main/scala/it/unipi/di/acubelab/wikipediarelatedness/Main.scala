@@ -125,6 +125,35 @@ object BenchCoSimRank {
 }
 
 
+object BenchPPRCos {
+  def main(args: Array[String]) {
+    for {
+      iterations <- List(5, 10, 20)
+      pprDecay <- List(0.2f, 0.5f, 0.8f)
+    } {
+
+      try {
+        val s =
+          """{"relatedness": "PPRCos", "iterations": %d, "pprDecay": %1.2f}"""
+            .formatLocal(java.util.Locale.US, iterations, pprDecay)
+
+        val relatednessOptions = JSON.parseFull(s)
+        val relatdness = RelatednessFactory.make(relatednessOptions)
+
+        val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+
+        val benchmark = new RelatednessBenchmark(dataset, relatdness)
+        benchmark.runBenchmark()
+      } catch {
+        case e: Exception => println(e)
+
+      }
+    }
+  }
+}
+
+
+
 object BenchIBMESA {
   def main(args: Array[String]) = {
     for {

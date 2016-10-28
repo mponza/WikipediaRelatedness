@@ -3,11 +3,10 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.law.rank.{PageRank, PageRankParallelGaussSeidel, SpectralRanking}
-import it.unimi.dsi.webgraph.Transform
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.LoggerFactory
 
-class CoSimRankParallelGaussSeidel(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, iterations: Int = 30,
+class CoSimRankParallelGaussSeidel(wikiGraph: WikiGraph = WikiGraphFactory.inGraph, iterations: Int = 30,
                                    pprDecay: Float = 0.8f, csrDecay: Float = 0.8f)
 
   extends CoSimRank(wikiGraph, iterations, pprDecay, csrDecay) {
@@ -18,7 +17,7 @@ class CoSimRankParallelGaussSeidel(wikiGraph: WikiGraph = WikiGraphFactory.outGr
   override def getPageRanker() : PageRank = {
     logger.info("Initializing PageRankParallelGaussSeidel ...")
 
-    val pageRanker = new PageRankParallelGaussSeidel(Transform.transpose(wikiGraph.graph))
+    val pageRanker = new PageRankParallelGaussSeidel(wikiGraph.graph)
     pageRanker.alpha = pprDecay.toDouble
 
     pageRanker

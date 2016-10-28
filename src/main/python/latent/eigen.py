@@ -24,7 +24,7 @@ def load_wikipedia_linked_list(path):
     '''
     linked_list = {}
 
-    logger.info('Loading Wikipedia invertex lists from {0}...'.format(path))
+    logger.info('Loading Wikipedia inverted lists from {0}...'.format(path))
     with utils.smart_open(path) as f:
         for line in f:
             link = line.strip().split('\t')
