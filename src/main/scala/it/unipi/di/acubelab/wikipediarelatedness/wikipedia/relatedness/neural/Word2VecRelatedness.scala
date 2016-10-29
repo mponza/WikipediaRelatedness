@@ -1,10 +1,11 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural
 
 import java.io.File
 
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
-import it.unipi.di.acubelab.wikipediarelatedness.options.NeuralOptions
+import it.unipi.di.acubelab.wikipediarelatedness.options.Word2VecOptions
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
 /**
@@ -14,8 +15,8 @@ import org.slf4j.LoggerFactory
   *                   "model": corpus/deepWalk/deepCorpus/coOccurrence
   *                }
   */
-class NeuralRelatedness(options: NeuralOptions) extends Relatedness  {
-    val logger = LoggerFactory.getLogger(classOf[NeuralRelatedness])
+class Word2VecRelatedness(options: Word2VecOptions) extends Relatedness  {
+    val logger = LoggerFactory.getLogger(classOf[Word2VecRelatedness])
     val w2v = loadw2v(options.model)
 
     def loadw2v(modelName : String) : EmbeddingsDataset  = {

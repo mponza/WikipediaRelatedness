@@ -20,6 +20,7 @@ from eigen import generate_eigenvectors
 from commute_time import generate_laplacian_pseudoinverse
 
 
+
 @baker.command
 def corpus_lda():
     '''

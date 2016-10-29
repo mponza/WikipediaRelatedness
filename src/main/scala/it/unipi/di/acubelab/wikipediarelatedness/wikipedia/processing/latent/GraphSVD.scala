@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.latent
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.latent
 
 import java.io.{File, FileInputStream}
 import java.util.zip.GZIPInputStream

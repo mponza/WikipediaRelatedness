@@ -72,6 +72,30 @@ For the eigenvector SVD generation on the Wikipedia graph just type:
 For the Laplacian Moore-Penrose pseudoinverse:
 
     python src/main/python/latent laplacian_pinv
+    
+    
+
+LINE Embeddings
+---------------
+    
+Unzip Wikipedia graph and create the corresponding line directory:
+
+    gunzip -k src/main/resources/wikipedia/wiki-links-sorted.gz
+    mkdir src/main/resources/wikipedia/line
+
+Install the `GSL` package:
+
+    sudo apt-get install libgsl0ldbl
+
+Go to `lib` directory, download LINE and run it: 
+    
+    cd lib
+    git clone https://github.com/tangjianpku/LINE.git
+    cd LINE/linux
+    ./line -train ../../../src/main/resources/wikipedia/wiki-links-sorted -output  ../../../src/main/resources/wikipedia/line/line_size100_o2_n5 -binary 0 -size 100 -order 2 -negative 5
+    
+    
+
 
 
 Explicit Semantic Processing

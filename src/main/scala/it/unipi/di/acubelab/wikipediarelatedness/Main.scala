@@ -173,6 +173,34 @@ object BenchIBMESA {
 }
 
 
+object LINEBench {
+  def main(args: Array[String]) {
+    for {
+      size <- List(100, 200, 500)
+      order <- List(1, 2)
+      negative <- List(1, 2, 5)
+    } {
+
+      try {
+        val s =
+          """{"relatedness": "LINE", "size": %d, "order": %f, "negative": %d}""".format(size, order, negative)
+
+        val relatednessOptions = JSON.parseFull(s)
+        val relatdness = RelatednessFactory.make(relatednessOptions)
+
+        val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+
+        val benchmark = new RelatednessBenchmark(dataset, relatdness)
+        benchmark.runBenchmark()
+      } catch {
+        case e: Exception => println(e)
+
+      }
+    }
+  }
+}
+
+
 /*
 object WordBench {
   def main(args: Array[String]) {

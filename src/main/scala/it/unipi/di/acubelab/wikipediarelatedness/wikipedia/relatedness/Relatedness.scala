@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateTask}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 
 trait Relatedness {
 

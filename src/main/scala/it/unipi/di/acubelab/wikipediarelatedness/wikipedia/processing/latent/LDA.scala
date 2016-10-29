@@ -1,11 +1,10 @@
-package it.unipi.di.acubelab.wikipediarelatedness.latent
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.latent
 
 import java.io.{File, FileInputStream}
 import java.util.zip.GZIPInputStream
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
 
