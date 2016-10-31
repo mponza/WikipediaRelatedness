@@ -4,8 +4,8 @@ import java.nio.file.Paths
 
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.llp.LLPTask
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.llp.LLPClustering
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.LLPTask
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.LLPClustering
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable

@@ -18,4 +18,8 @@ class LINERelatedness(val options: LINEOptions) extends Relatedness {
 
     Similarity.cosineSimilarity(srcEmbeddings, dstEmbeddings)
   }
+
+  override def toString(): String = {
+    "LINE-%s".format(options)
+  }
 }

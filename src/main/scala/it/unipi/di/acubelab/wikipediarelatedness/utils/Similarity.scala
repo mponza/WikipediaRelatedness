@@ -17,7 +17,7 @@ object  Similarity {
     val dstMagnitude = vectorMagnitude(dst)
     if(srcMagnitude == 0.0f || dstMagnitude == 0.0f) return 0.0f
 
-    val magnitude = (math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude)).toFloat
+    val magnitude = srcMagnitude * dstMagnitude
 
     // Computes vectors dot product
     var dot = 0.0f
@@ -31,13 +31,13 @@ object  Similarity {
   }
 
   def vectorMagnitude(vec: FloatArrayList) : Float = {
-    var magnitude = 0.0f
+    var magnitude = 0f
 
     for(i <- 0 until vec.size()) {
-      magnitude += math.pow(vec.getFloat(i).toDouble, 2.0f).toFloat
+      magnitude += math.pow(vec.getFloat(i).toDouble, 2f).toFloat
     }
 
-    magnitude
+    math.sqrt(magnitude).toFloat
   }
 
 
@@ -48,6 +48,46 @@ object  Similarity {
     cosineSimilarity(srcFloats, dstFloats)
   }
 
+
+  def cosineSimilarity(src: List[Tuple2[Int, Float]], dst: List[Tuple2[Int, Float]]) : Float = {
+    if (src.size != dst.size) throw new IllegalArgumentException("Cosine similarity between two different vectors!")
+
+    val srcMagnitude = vectorMagnitude(src)
+    val dstMagnitude = vectorMagnitude(dst)
+    if (srcMagnitude == 0f || dstMagnitude == 0f) return 0f
+
+    val magnitude = srcMagnitude * dstMagnitude
+
+    var dot = 0f
+    var (i, j) = (0, 0)
+    while(i < src.length && j < dst.length) {
+      val (srcIndex, srcValue) = src(i)
+      val (dstIndex, dstValue) = dst(i)
+
+      if(srcIndex == dstIndex) {
+        dot += srcValue * dstValue
+        i += 1
+        j += 1
+
+      } else if (srcIndex < dstIndex) {
+        i += 1
+
+      } else {
+        j += 1
+      }
+    }
+
+    if (dot == 0f) return 0f
+
+    dot / magnitude
+
+  }
+
+  def vectorMagnitude(vec: List[Tuple2[Int, Float]]) : Float = {
+    val powMagnitude = vec.foldLeft(0.0)((magnitude, elemTuple) => magnitude + math.pow(elemTuple._2, 2.0))
+
+    math.sqrt(powMagnitude).toFloat
+  }
 
 
 

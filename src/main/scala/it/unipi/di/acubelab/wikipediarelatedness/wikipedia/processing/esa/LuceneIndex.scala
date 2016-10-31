@@ -49,12 +49,12 @@ class LuceneIndex {
 
     val threshold = if (resultThreshold >= 0) resultThreshold else Integer.MAX_VALUE
 
-    val x = searcher.search(query, threshold).scoreDocs.map { hit =>
+    val concepts = searcher.search(query, threshold).scoreDocs.map { hit =>
       val wikiDocID = reader.document(hit.doc).getField("id").stringValue().toInt
       (wikiDocID, hit.score)
     }.toList
 
-    x.sortBy(_._1)
+    concepts.sortBy(_._1)
   }
 
   def wikipediaConcepts(text: String): List[Tuple2[Int, Float]] = wikipediaConcepts(text, 625)
@@ -66,7 +66,6 @@ class LuceneIndex {
   }
 
   def wikipediaConcepts(wikiID: Int): List[Tuple2[Int, Float]] = wikipediaConcepts(wikiID, 625)
-
 
 
   def wikipediaBody(wikiID: Int) : String = {

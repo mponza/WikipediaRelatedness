@@ -46,7 +46,7 @@ object Configuration {
     "corpus" -> getClass.getResource("/w2v/wikipedia-w2v-linkCorpus.e0.100.tr.bin").getPath,
     "deepWalk" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalk.e0.100.tr.bin").getPath,
 
-    "line" -> getClass.getResource("/line").getPath
+    "line" -> Paths.get(projDir, "/data/processing/wikipedia/line").toString
 
   /*
     // Link Corpus and DeepWalk mixed.

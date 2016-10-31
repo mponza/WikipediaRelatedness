@@ -177,13 +177,13 @@ object LINEBench {
   def main(args: Array[String]) {
     for {
       size <- List(100, 200, 500)
-      order <- List(1, 2)
+      order <- List(1, 2, 3)
       negative <- List(1, 2, 5)
     } {
 
       try {
         val s =
-          """{"relatedness": "LINE", "size": %d, "order": %f, "negative": %d}""".format(size, order, negative)
+          """{"relatedness": "LINE", "size": %d, "order": %d, "negative": %d}""".format(size, order, negative)
 
         val relatednessOptions = JSON.parseFull(s)
         val relatdness = RelatednessFactory.make(relatednessOptions)

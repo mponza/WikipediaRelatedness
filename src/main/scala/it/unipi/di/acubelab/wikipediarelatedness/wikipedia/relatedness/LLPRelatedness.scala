@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 import it.unimi.dsi.fastutil.ints.{Int2DoubleOpenHashMap, IntArrayList}
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.llp.{LLPClustering, LLPTask}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.{LLPClustering, LLPTask}
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer

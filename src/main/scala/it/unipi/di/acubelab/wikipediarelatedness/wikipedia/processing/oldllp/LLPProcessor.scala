@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.llp
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp
 
 import java.io.{File, PrintWriter}
 import java.nio.file.Paths
@@ -12,10 +12,9 @@ import org.slf4j.LoggerFactory
 import scala.util.Random
 
 /**
-  * TODO: Multiple runnings. More labels?
   * @param graph
   */
-class LLPProcessor(graph: BVGraph, llpTask : LLPTask = new LLPTask) extends {
+class LLPProcessor(graph: BVGraph, llpTask : LLPTask = new LLPTask) {
 
   val logger = LoggerFactory.getLogger(classOf[LLPProcessor])
   val llp = new LayeredLabelPropagation(graph, System.currentTimeMillis)

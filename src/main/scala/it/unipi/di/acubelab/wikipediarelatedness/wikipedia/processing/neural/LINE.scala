@@ -32,10 +32,10 @@ class LINE(val size: Int, val order: Int, val negative: Int) {
 
     val lineEmbeddings = new Int2ObjectOpenHashMap[FloatArrayList]()
     for (line <- reader.getLines().drop(1)) {
-      val values = line.split("\t").map(_.toFloat)
+      val values = line.split(" ")
 
       val wikiID = values(0).toInt
-      val emebedding = values.slice(1, values.length)
+      val emebedding = values.slice(1, values.length).map(_.toFloat)
 
       lineEmbeddings.put(wikiID, new FloatArrayList(emebedding))
     }
@@ -46,7 +46,7 @@ class LINE(val size: Int, val order: Int, val negative: Int) {
 
   def getLINEPath() = {
     val directory =  Configuration.wikipedia("line")
-    val filename = "line_size%d_order%d_negative%d.gz"
+    val filename = "line_size%d_order%d_negative%d.gz".format(size, order, negative)
 
     Paths.get(directory, filename).toString
   }

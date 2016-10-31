@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.llp
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp
 
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
 

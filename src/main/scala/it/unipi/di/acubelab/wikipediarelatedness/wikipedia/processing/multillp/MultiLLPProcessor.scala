@@ -4,7 +4,7 @@ import java.nio.file.Paths
 
 import it.unimi.dsi.webgraph.BVGraph
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.llp.{LLPProcessor, LLPTask}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.{LLPProcessor, LLPTask}
 import org.slf4j.LoggerFactory
 
 /**

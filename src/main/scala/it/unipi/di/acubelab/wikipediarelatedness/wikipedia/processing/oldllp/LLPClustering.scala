@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.llp
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp
 
 import java.io.File
 import java.nio.file.Paths
