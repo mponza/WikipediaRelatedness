@@ -45,7 +45,7 @@ libraryDependencies ++= Seq(
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html
 unmanagedJars in Compile ++= {
   val base = baseDirectory.value / "lib"
-  val baseDirectories = (base / "law-2.3") +++ (base / "law-deps")
+  val baseDirectories = (base / "law-2.3") +++ (base / "law-deps") +++ (base / "triangles")
   val customJars = (baseDirectories ** "*.jar")
   customJars.classpath
 }

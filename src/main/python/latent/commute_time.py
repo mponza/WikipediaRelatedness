@@ -97,7 +97,7 @@ def serialize_laplacian_pseudoinverse(file_path, volume, row_matrix):
 
 
 def generate_laplacian_pseudoinverse(wiki_path=WIKI_LINKS, pinv_filename=LAPLACIAN_PINV):
-    (volume, laplacian_matrix) = generate_wikipedia_laplacian_matrix(wiki_path)
+    (laplacian_matrix, volume) = generate_wikipedia_laplacian_matrix(wiki_path)
 
     logger.info('Computing the Moore-Penrose pseudo-inverse of the Laplacian matrix...')
     laplacian_pinv = np.linalg.pinv(laplacian_matrix)

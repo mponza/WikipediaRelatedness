@@ -33,6 +33,7 @@ class ClusteringCoefficient(val wikiGraph: WikiGraph) {
     succMap
   }
 
+
   def localClusteringCoefficient(wikiID: Int): Float = {
 
     if (localClustCoeffCache.containsKey(wikiID)) return localClustCoeffCache.get(wikiID)

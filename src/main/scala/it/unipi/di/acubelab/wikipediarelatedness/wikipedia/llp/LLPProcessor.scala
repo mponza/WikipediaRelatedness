@@ -12,7 +12,7 @@ class LLPProcessor(val wikiGraph: WikiGraph = WikiGraphFactory.noLoopSymGraph,
                     val task: LLPTask = new LLPTask()) {
   val logger = LoggerFactory.getLogger(classOf[LLPProcessor])
 
-
+/*
   def clusterize(dir: String = Configuration.wikipedia("llp")) = {
     val llpPath = Paths.get(dir, task)
     createLLPPaths()
@@ -31,7 +31,7 @@ class LLPProcessor(val wikiGraph: WikiGraph = WikiGraphFactory.noLoopSymGraph,
   def createLLPPaths(dir: String) : String = {
     val llpPath
   }
-
+*/
 
   def saveGammas(path: String) = {
     val gammaPath = Paths.get(path, "gammas.txt").toString

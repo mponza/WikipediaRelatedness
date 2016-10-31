@@ -102,6 +102,15 @@ Explicit Semantic Processing
 ----------------------------
 
     
+    
+
+Clustering Coefficient Processing
+---------------------------------
+
+Download `triangles-1.1.jar` into `lib/triangle` folder.
+
+    
+
 
     
 Benchmarking
