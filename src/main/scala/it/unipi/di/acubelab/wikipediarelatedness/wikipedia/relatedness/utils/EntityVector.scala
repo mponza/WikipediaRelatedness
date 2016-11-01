@@ -28,7 +28,7 @@ object EntityVector {
     * @return Array of wikiIDs which are neighborhs of wikiID in wikiGraph.
     */
   protected def getGraphNeighborhs(wikiID: Int, wikiGraph: WikiGraph) = {
-    wikiGraph.successorArray(wikiID).map(wikiGraph.getWikiID(_))
+    wikiGraph.successorArray(wikiID).map(wikiGraph.getWikiID(_)).sorted
   }
 
 

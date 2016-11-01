@@ -17,8 +17,8 @@ class JaccardRelatedness(val options: JaccardOptions) extends Relatedness {
   val setOperations = new SetOperations(wikiGraph)
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
-    val intersection = setOperations.linkIntersection(srcWikiID, dstWikiID)
-    if (intersection == 0) return 0.0f
+    val intersection = setOperations.intersectionSize(srcWikiID, dstWikiID)
+    if (intersection == 0) return 0f
 
     val sizeA = wikiGraph.outdegree(srcWikiID)
     val sizeB = wikiGraph.outdegree(dstWikiID)

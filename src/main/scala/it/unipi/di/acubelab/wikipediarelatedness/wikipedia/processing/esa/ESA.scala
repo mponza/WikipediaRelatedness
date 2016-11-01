@@ -1,6 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
 
-import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.LemmaLuceneIndex
 import org.apache.lucene.queryparser.classic.QueryParser
 
@@ -9,13 +8,12 @@ object ESA {
 
 
   /**
+    * @param text LEMMATIZED text
     * @return List of Wikipedia IDs where wikiID is mentioned and the corresponding score.
     */
   def wikipediaConcepts(text: String, resultThreshold: Int): List[Tuple2[Int, Float]] = {
     val parser = new QueryParser("body", LuceneIndex.analyzer)
-    val coreText = CoreNLP.lemmatize(text).mkString(" ")
-
-    val query = parser.createBooleanQuery("body", coreText)
+    val query = parser.createBooleanQuery("body", text)
 
     val threshold = if (resultThreshold >= 0) resultThreshold else Integer.MAX_VALUE
 
@@ -32,7 +30,7 @@ object ESA {
 
   def wikipediaConcepts(wikiID: Int, resultThreshold: Int): List[Tuple2[Int, Float]] = {
     val wikiBody = lucene.wikipediaBody(wikiID)
-    lucene.wikipediaConcepts(wikiBody, resultThreshold)
+    ESA.wikipediaConcepts(wikiBody, resultThreshold)
   }
 
   def wikipediaConcepts(wikiID: Int): List[Tuple2[Int, Float]] = wikipediaConcepts(wikiID, 625)

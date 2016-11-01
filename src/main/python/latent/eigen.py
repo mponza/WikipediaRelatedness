@@ -91,8 +91,7 @@ def serialize_matrix(file_path, row_matrix):
             f.write('\n')
 
 
-def generate_eigenvectors(wiki_path=WIKI_LINKS, eigen_dir=WIKI_SVD_DIR,
-                          n_eigenvectors=200):
+def generate_eigenvectors(wiki_path=WIKI_LINKS, eigen_dir=WIKI_SVD_DIR, n_eigenvectors=200):
     matrix = generate_wikipedia_matrix(wiki_path)
 
     logger.info('Computing SVD with {0} eigenvectors'.format(n_eigenvectors))

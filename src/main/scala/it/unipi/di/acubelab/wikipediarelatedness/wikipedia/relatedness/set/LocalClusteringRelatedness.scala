@@ -1,35 +1,31 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set
 
 import it.unipi.di.acubelab.wikipediarelatedness.options.LocalClusteringOptions
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.SetOperations
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.triangles.LocalClustering
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.utils.EntityVector
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
 import org.slf4j.LoggerFactory
 
 class LocalClusteringRelatedness(val options: LocalClusteringOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[LocalClusteringRelatedness])
 
-  val lc = new LocalClustering
+  val setOperations = new SetOperations(WikiGraphFactory.makeWikiGraph(options.graph))
+  val lc = new LocalClustering()
 
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
+    if (srcWikiID == dstWikiID) return 1f
 
-    val srcLCvector = localClusteringVector(srcWikiID)
-    val dstLCvector = localClusteringVector(dstWikiID)
+    // Intersection and union weighted by local clustering coefficients.
+    val intersection  = setOperations.wikiIntersection(srcWikiID, dstWikiID).toIntArray().map(lc.getCoefficient(_)).sum
+    if (intersection == 0) return 0f
 
-    Similarity.cosineSimilarity(srcLCvector, dstLCvector)
+    val union = setOperations.wikiUnion(srcWikiID, dstWikiID).toIntArray().map(lc.getCoefficient(_)).sum
+
+    intersection / union
   }
 
 
-  /**
-    *
-    * @param wikiID
-    * @return Vector of wikiIDs weighted by their local clustering coefficient.
-    */
-  def localClusteringVector(wikiID: Int): List[Tuple2[Int, Float]] = {
-    val wikiVector = EntityVector.make(wikiID, options.vectorizer)
-
-    wikiVector.map(wID => (wID, lc.getCoefficient(wID))).toList
-  }
+  override def toString(): String = "LocalClustering_%s".format(options)
 }

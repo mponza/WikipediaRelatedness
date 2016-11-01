@@ -10,7 +10,13 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.g
   */
 class SetOperations(val wikiGraph: WikiGraph) {
 
-  def linkIntersection(srcWikiID: Int, dstWikiID: Int) : Int = {
+  /**
+    *
+    * @param srcWikiID
+    * @param dstWikiID
+    * @return Number of intersected nodes between srcWikiID and dstWikiID.
+    */
+  def intersectionSize(srcWikiID: Int, dstWikiID: Int) : Int = {
     val iterA =  wikiGraph.successors(srcWikiID)
     val iterB = wikiGraph.successors(dstWikiID)
 
@@ -40,12 +46,13 @@ class SetOperations(val wikiGraph: WikiGraph) {
     * @param dstWikiID
     * @return wikiIDs which belong to the union between srcWikiID and dstWikiID.
     */
-  def nodeUnion(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
+  def wikiUnion(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
     val srcArray = wikiGraph.successorArray(srcWikiID)
     val dstArray = wikiGraph.successorArray(dstWikiID)
 
     new IntArrayList((srcArray ++ dstArray).distinct.map(nodeID => wikiGraph.getWikiID(nodeID)))
   }
+
 
   /**
     *
@@ -53,7 +60,7 @@ class SetOperations(val wikiGraph: WikiGraph) {
     * @param dstWikiID
     * @return wikiIDs which belong to the intersection between srcWikiID and dstWikiID.
     */
-  def nodeIntersection(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
+  def wikiIntersection(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
 
     val iterA =  wikiGraph.successors(srcWikiID)
     val iterB = wikiGraph.successors(dstWikiID)

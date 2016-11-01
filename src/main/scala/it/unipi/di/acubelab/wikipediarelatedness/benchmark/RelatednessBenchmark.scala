@@ -33,6 +33,8 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
     logger.info("Running Relatedness %s on dataset %s...".format(relatedness.toString, dataset))
 
     // Computes relatedness for each pair.
+    relatedness.computeRelatedness(dataset.toList)
+    /*
     dataset.foreach {
       case task: WikiRelateTask =>
         try {
@@ -42,7 +44,7 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
             logger.warn(e.toString)
             task.machineRelatedness = Float.NaN
         }
-    }
+    }*/
   }
 
   /**

@@ -50,8 +50,6 @@ object  Similarity {
 
 
   def cosineSimilarity(src: List[Tuple2[Int, Float]], dst: List[Tuple2[Int, Float]]) : Float = {
-    if (src.size != dst.size) throw new IllegalArgumentException("Cosine similarity between two different vectors!")
-
     val srcMagnitude = vectorMagnitude(src)
     val dstMagnitude = vectorMagnitude(dst)
     if (srcMagnitude == 0f || dstMagnitude == 0f) return 0f
@@ -62,10 +60,14 @@ object  Similarity {
     var (i, j) = (0, 0)
     while(i < src.length && j < dst.length) {
       val (srcIndex, srcValue) = src(i)
-      val (dstIndex, dstValue) = dst(i)
+      val (dstIndex, dstValue) = dst(j)
+
+      if (srcValue.isNaN || dstValue.isNaN) {
+        throw new IllegalArgumentException("Element in Cosine Similarity is NaN.")
+      }
 
       if(srcIndex == dstIndex) {
-        dot += srcValue * dstValue
+        dot = dot + srcValue * dstValue
         i += 1
         j += 1
 
@@ -85,10 +87,8 @@ object  Similarity {
 
   def vectorMagnitude(vec: List[Tuple2[Int, Float]]) : Float = {
     val powMagnitude = vec.foldLeft(0.0)((magnitude, elemTuple) => magnitude + math.pow(elemTuple._2, 2.0))
-
     math.sqrt(powMagnitude).toFloat
   }
-
 
 
 /*

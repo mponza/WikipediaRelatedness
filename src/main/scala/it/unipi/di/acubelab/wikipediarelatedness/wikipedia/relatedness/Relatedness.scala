@@ -4,6 +4,12 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 
 trait Relatedness {
 
+  def computeRelatedness(tasks: List[WikiRelateTask]) : Unit = {
+    tasks.foreach{
+      case task => task.machineRelatedness = computeRelatedness(task)
+    }
+  }
+
   /**
     *
     * @param task

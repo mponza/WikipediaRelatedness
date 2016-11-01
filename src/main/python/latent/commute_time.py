@@ -11,14 +11,14 @@ from eigen import wiki2node
 from eigen import wiki2NodeMapping
 
 from latent_utils import WIKI_LINKS
-from latent_utils import LAPLACIAN_PINV
+from latent_utils import LAPLACIAN_PINV_DIR
 
 
 
 
 logger = logging.getLogger('Average Commute Time')
 
-normalized_laplacian = True
+normalize_laplacian = True
 
 
 def load_symmetric_wikipedia_linked_list(path):
@@ -29,6 +29,7 @@ def load_symmetric_wikipedia_linked_list(path):
     linked_list = {}
 
     logger.info('Loading Wikipedia inverted lists from {0}...'.format(path))
+    i = 0
     with utils.smart_open(path) as f:
         for line in f:
             link = line.strip().split('\t')
@@ -44,6 +45,11 @@ def load_symmetric_wikipedia_linked_list(path):
 
             linked_list[srcNodeID].append(dstNodeID)
             linked_list[dstNodeID].append(srcNodeID)
+
+            i += 1
+
+            if i > 10000:
+                break
 
     logger.info('Removing duplicated...')
     for index in linked_list:
@@ -74,37 +80,58 @@ def generate_wikipedia_laplacian_matrix(path):
     csr_adj_matrix = sparse.csr_matrix(adj_matrix)
 
     logger.info("Generating Laplacian matrix...")
-    laplacian_matrix = sparse.csgraph.laplacian(csr_adj_matrix, normalized_laplacian)
+    laplacian_matrix = sparse.csgraph.laplacian(csr_adj_matrix, normalize_laplacian)
 
     return (laplacian_matrix, volume)
 
 
-def serialize_laplacian_pseudoinverse(file_path, volume, row_matrix):
-    '''
-    Seriazlies a matrix of rows in a csv file where each
-    row is a eigvenvector.
-    File: 4M of rows.
-          Each row is tab separated and contains 100 floats.
-    '''
-    with gzip.open(file_path, 'w') as f:
-        f.write("Volume:%d\n".format(volume))
+def compute_pseduoinverse(laplacian_matrix):
+    logger.info('Computing the pseudo-inverse of the Laplacian matrix...')
 
-        for column in row_matrix:
-            # from here, to be checked!
-            f.write('\t'.join(['%d:%1.10f'.format(index, column[index]) for index in np.nonzero(column)]))
+    logger.info('Computing SVD...')
+    n = len(wiki2node) - 1
+    print n
+    print laplacian_matrix.shape
+    diagonal = sparse.linalg.svds(laplacian_matrix, k=n, return_singular_vectors=False)
+
+    print diagonal.shape
+    return None
+    logger.info('Inverting diagonal elements...')
+    for i in range(0, len(wiki2node)):
+        print i
+        d = diagonal[i]
+        if np.nonzero(d):
+            diagonal[i] = 1 / d
+
+    # moltiplicare per le altre due scambiate cosi da ottenere la pseudoinversa e poi salvarla
+    return diagonal
+
+
+def serialize_laplacian_pseudoinverse(filename, volume, diagonal):
+    '''
+    Seriazlies diagonal of laplacian pseudoinverse.
+    The i-th row is the (i, i) element of the pseudoinverse matrix.
+    '''
+    with gzip.open(filename, 'w') as f:
+        f.write("%d\n\n".format(volume))
+
+        for element in diagonal:
+            if np.nonzero(element):
+                f.write(element)
+            else:
+                f.write(0.0)
+
             f.write('\n')
 
 
-
-def generate_laplacian_pseudoinverse(wiki_path=WIKI_LINKS, pinv_filename=LAPLACIAN_PINV):
+def generate_laplacian_pseudoinverse(wiki_path=WIKI_LINKS, pinv_dir=LAPLACIAN_PINV_DIR):
     (laplacian_matrix, volume) = generate_wikipedia_laplacian_matrix(wiki_path)
 
-    logger.info('Computing the Moore-Penrose pseudo-inverse of the Laplacian matrix...')
-    laplacian_pinv = np.linalg.pinv(laplacian_matrix)
+    laplacian_pinv_diagonal = compute_pseduoinverse(laplacian_matrix)
 
-    if(not os.path.isdir(pinv_filename)):
-        os.makedirs(pinv_filename)
+    if(not os.path.isdir(pinv_dir)):
+        os.makedirs(pinv_dir)
 
     logger.info('Serializing Laplacian pseudoinverse...')
-    serialize_laplacian_pseudoinverse(LAPLACIAN_PINV, volume, laplacian_pinv)
+    serialize_laplacian_pseudoinverse(os.path.join(pinv_dir, 'laplacian_pinv.gz'), volume, laplacian_pinv_diagonal)
     logger.info('Laplacian pseudoinverse computation ended.')

@@ -13,6 +13,7 @@ object CoreNLP {
     val props = new java.util.Properties()
     props.put("annotators", "tokenize, ssplit, pos, lemma")
     props.put("tokenize.whitespace", "true")
+    props.put("threads", Math.max(1, Runtime.getRuntime().availableProcessors()).toString)
 
     new StanfordCoreNLP(props)
   }

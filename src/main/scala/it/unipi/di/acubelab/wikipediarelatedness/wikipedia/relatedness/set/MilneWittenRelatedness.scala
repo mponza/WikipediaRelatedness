@@ -21,7 +21,7 @@ class MilneWittenRelatedness(options: MilneWittenOptions) extends Relatedness {
     val sizeA = wikiGraph.outdegree(srcWikiID)
     val sizeB = wikiGraph.outdegree(dstWikiID)
 
-    val intersection = setOperations.linkIntersection(srcWikiID, dstWikiID)
+    val intersection = setOperations.intersectionSize(srcWikiID, dstWikiID)
 
     if (intersection == 0) return 0f
 
