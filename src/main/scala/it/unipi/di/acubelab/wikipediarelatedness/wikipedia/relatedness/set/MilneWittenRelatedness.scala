@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 class MilneWittenRelatedness(options: MilneWittenOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[MilneWittenRelatedness])
 
-  val wikiGraph = WikiGraphFactory.wikiBVGraph(options.graph)
+  val wikiGraph = WikiGraphFactory.makeWikiGraph(options.graph)
   val setOperations = new SetOperations(wikiGraph)
   val W = setOperations.wikiGraph.graph.numNodes
 

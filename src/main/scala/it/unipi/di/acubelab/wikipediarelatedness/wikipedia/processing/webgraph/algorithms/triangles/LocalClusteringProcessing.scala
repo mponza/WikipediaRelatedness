@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory
   * For more info see "Efficient Semi-streaming Algorithms for Local
   * Triangle Counting in Massive Graphs" (Becchetti, Boldi, Castillo, Gionis; KDD'08)
   */
-class LocalClusteringCoefficientProcessing {
-  val logger = LoggerFactory.getLogger(classOf[LocalClusteringCoefficientProcessing])
+class LocalClusteringProcessing {
+  val logger = LoggerFactory.getLogger(classOf[LocalClusteringProcessing])
 
 
   def generateClusteringCoefficients(path: String = Configuration.wikipedia("localClustering")) = {

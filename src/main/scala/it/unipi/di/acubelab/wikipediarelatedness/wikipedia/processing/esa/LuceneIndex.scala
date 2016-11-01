@@ -18,7 +18,6 @@ class LuceneIndex {
   val logger = getLogger()
 
   val reader = loadIndexInMemory()
-
   val searcher = new IndexSearcher(reader)
   searcher.setSimilarity(new BM25Similarity())
 
@@ -36,37 +35,6 @@ class LuceneIndex {
 
     DirectoryReader.open(directory)
   }
-
-
-  /**
-    * @return List of Wikipedia IDs where wikiID is mentioned and the corresponding score.
-    */
-  def wikipediaConcepts(text: String, resultThreshold: Int): List[Tuple2[Int, Float]] = {
-    val parser = new QueryParser("body", LuceneIndex.analyzer)
-    val coreText = CoreNLP.lemmatize(text).mkString(" ")
-
-    val query = parser.createBooleanQuery("body", coreText)
-
-    val threshold = if (resultThreshold >= 0) resultThreshold else Integer.MAX_VALUE
-
-    val concepts = searcher.search(query, threshold).scoreDocs.map { hit =>
-      val wikiDocID = reader.document(hit.doc).getField("id").stringValue().toInt
-      (wikiDocID, hit.score)
-    }.toList
-
-    concepts.sortBy(_._1)
-  }
-
-  def wikipediaConcepts(text: String): List[Tuple2[Int, Float]] = wikipediaConcepts(text, 625)
-
-
-  def wikipediaConcepts(wikiID: Int, resultThreshold: Int): List[Tuple2[Int, Float]] = {
-    val wikiBody = wikipediaBody(wikiID)
-    wikipediaConcepts(wikiBody, resultThreshold)
-  }
-
-  def wikipediaConcepts(wikiID: Int): List[Tuple2[Int, Float]] = wikipediaConcepts(wikiID, 625)
-
 
   def wikipediaBody(wikiID: Int) : String = {
     val parser = new QueryParser("id", LuceneIndex.analyzer)

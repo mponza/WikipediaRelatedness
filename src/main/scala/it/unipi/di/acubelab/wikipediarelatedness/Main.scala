@@ -6,7 +6,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.benchmark.RelatednessBenchmark
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.triangles.LocalClusteringCoefficientProcessing
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.triangles.LocalClusteringProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WebGraphProcessor
 
 //import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
@@ -204,7 +204,7 @@ object LINEBench {
 
 object ClustProcessing {
   def main(args: Array[String]) = {
-    val llcp = new LocalClusteringCoefficientProcessing
+    val llcp = new LocalClusteringProcessing
     llcp.generateClusteringCoefficients()
   }
 }

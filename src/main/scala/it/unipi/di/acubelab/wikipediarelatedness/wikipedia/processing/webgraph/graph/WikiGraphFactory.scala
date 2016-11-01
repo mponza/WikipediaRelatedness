@@ -9,7 +9,7 @@ object WikiGraphFactory {
   lazy val symGraph = new WikiGraph(Configuration.wikipedia("symBVGraph"))
   lazy val noLoopSymGraph = new WikiGraph(Configuration.wikipedia("noLoopSymBVGraph"))
 
-  def wikiBVGraph(graphName: String) : WikiGraph = graphName match {
+  def makeWikiGraph(graphName: String) : WikiGraph = graphName match {
     case "outGraph" => outGraph
     case "inGraph" => inGraph
     case "symGraph" => symGraph
