@@ -48,7 +48,9 @@ object Configuration {
 
     "line" -> Paths.get(projDir, "/data/processing/wikipedia/line").toString,
 
-    "localClustering" -> Paths.get(projDir, "/data/processing/wikipedia/localClustering").toString
+    "localClustering" -> Paths.get(projDir, "/data/processing/wikipedia/localClustering").toString,
+
+    "esaCache" -> Paths.get(projDir, "/data/processing/wikipedia/ESACache").toString
 
   /*
     // Link Corpus and DeepWalk mixed.

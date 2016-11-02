@@ -5,6 +5,7 @@ import java.io.PrintWriter
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.RelatednessBenchmark
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.triangles.LocalClusteringProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WebGraphProcessor
@@ -210,6 +211,16 @@ object ClustProcessing {
 }
 
 
+object ESACache {
+  def main(args: Array[String]) = {
+    val esaCache = new ESACache()
+    val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+
+    esaCache.generateCache(dataset.toList)
+  }
+}
+
+
 /*
 object WordBench {
   def main(args: Array[String]) {
@@ -346,6 +357,9 @@ object ProcessLemmaLucene {
     lucene.process()
   }
 }
+
+
+
 
 /*
 object ExtractsWikiIDs {

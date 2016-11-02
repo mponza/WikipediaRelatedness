@@ -6,11 +6,11 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.{Configuration, CoreNLP}
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.core.KeywordAnalyzer
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper
-import org.apache.lucene.index.{DirectoryReader}
+import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.queryparser.classic.QueryParser
 import org.apache.lucene.search.{BooleanQuery, IndexSearcher}
 import org.apache.lucene.search.similarities.BM25Similarity
-import org.apache.lucene.store.{FSDirectory, IOContext, RAMDirectory}
+import org.apache.lucene.store.{FSDirectory, IOContext, MMapDirectory, RAMDirectory}
 import org.slf4j.LoggerFactory
 
 
@@ -30,8 +30,8 @@ class LuceneIndex {
   def loadIndexInMemory(): DirectoryReader = {
     logger.info("Loading Lucene index in memory...")
 
-    val fsDir = FSDirectory.open(Paths.get(Configuration.wikipedia("lucene")))
-    val directory = new RAMDirectory(fsDir, IOContext.DEFAULT)
+    val fsDir = Paths.get(Configuration.wikipedia("lucene"))
+    val directory = new MMapDirectory(fsDir)
 
     DirectoryReader.open(directory)
   }

@@ -11,7 +11,11 @@ class IBMESARelatedness(options: IBMESAOptions) extends Relatedness {
 
 
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = {
-    ibmESA.getRelatedness(srcWikiID, dstWikiID)
+    try {
+      ibmESA.getRelatedness(srcWikiID, dstWikiID)
+    } catch {
+        case e: Exception => Float.NaN
+    }
   }
 
 

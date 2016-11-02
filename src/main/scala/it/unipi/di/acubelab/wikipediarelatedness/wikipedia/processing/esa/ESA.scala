@@ -5,7 +5,7 @@ import org.apache.lucene.queryparser.classic.QueryParser
 
 object ESA {
   val lucene = new LemmaLuceneIndex()
-
+  val cache = new ESACache()
 
   /**
     * @param text LEMMATIZED text
@@ -29,6 +29,9 @@ object ESA {
 
 
   def wikipediaConcepts(wikiID: Int, resultThreshold: Int): List[Tuple2[Int, Float]] = {
+    val cachedConcepts = cache.get(wikiID, resultThreshold)
+    if (cachedConcepts != null) return cachedConcepts
+
     val wikiBody = lucene.wikipediaBody(wikiID)
     ESA.wikipediaConcepts(wikiBody, resultThreshold)
   }
