@@ -14,8 +14,8 @@ class ESARelatedness(val options: ESAOptions)  extends  Relatedness {
 
 
   override def computeRelatedness(tasks: List[WikiRelateTask]) = {
-    tasks.grouped(100).toList.par.foreach{
-      case subTasks => subTasks.foreach(task => task.machineRelatedness = computeRelatedness(task))
+    tasks.par.foreach{
+      case task => task.machineRelatedness = computeRelatedness(task)
     }
   }
 
@@ -26,7 +26,6 @@ class ESARelatedness(val options: ESAOptions)  extends  Relatedness {
     val srcConcepts = ESA.wikipediaConcepts(srcWikiID, options.threshold)
     val dstConcepts = ESA.wikipediaConcepts(dstWikiID, options.threshold)
 
-    println("%d %d".format(srcWikiID, dstWikiID))
     Similarity.cosineSimilarity(srcConcepts, dstConcepts)
   }
 

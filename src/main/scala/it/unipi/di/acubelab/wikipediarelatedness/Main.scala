@@ -3,6 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness
 import java.io.PrintWriter
 
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.RelatednessBenchmark
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
@@ -10,8 +11,9 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.triangles.LocalClusteringProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WebGraphProcessor
 
+import scala.collection.mutable.ListBuffer
+
 //import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.{WikiSimDataset, WikiSimProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
 
@@ -101,7 +103,7 @@ object Text {
 object BenchCoSimRank {
   def main(args: Array[String]) {
     for {
-      iterations <- 10 to 50 by 10
+      iterations <- List(5)
       pprDecay <- 0.2f to 0.8f by 0.2f
       csrDecay <- 0.2f to 0.8f by 0.2f
     } {
@@ -174,13 +176,62 @@ object BenchIBMESA {
   }
 }
 
+object ESABench {
+  def main(args: Array[String]) = {
+    val performance = ListBuffer.empty[Tuple2[Int, List[Float]]]
+    for {
+      threshold <- (50 to 10000 by 50).toList
+    } {
+      val s = """{"relatedness": "ESA", "threshold": %d}""".format(threshold)
+
+      val relatednessOptions = JSON.parseFull(s)
+      val relatdness = RelatednessFactory.make(relatednessOptions)
+
+      val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+
+      val benchmark = new RelatednessBenchmark(dataset, relatdness)
+      benchmark.runBenchmark()
+
+      performance += Tuple2(threshold, benchmark.getPerformance())
+    }
+
+    println(performance.sortBy(p => p._2(2)))
+  }
+}
+
+
+
+
+object JaccardTopBench {
+  def main(args: Array[String]) = {
+    val performance = ListBuffer.empty[Tuple2[Int, List[Float]]]
+    for {
+      threshold <- (10 to 10000 by 50).toList
+    } {
+      val s = """{"relatedness": "JaccardTop", "threshold": %d}""".format(threshold)
+
+      val relatednessOptions = JSON.parseFull(s)
+      val relatdness = RelatednessFactory.make(relatednessOptions)
+
+      val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+
+      val benchmark = new RelatednessBenchmark(dataset, relatdness)
+      benchmark.runBenchmark()
+
+      performance += Tuple2(threshold, benchmark.getPerformance())
+    }
+
+    println(performance.sortBy(p => p._2(2)).reverse)
+  }
+}
+
 
 object LINEBench {
   def main(args: Array[String]) {
     for {
       size <- List(100, 200, 500)
-      order <- List(1, 2, 3)
-      negative <- List(1, 2, 5)
+      order <- List(1)
+      negative <- List(5, 8, 10)
     } {
 
       try {

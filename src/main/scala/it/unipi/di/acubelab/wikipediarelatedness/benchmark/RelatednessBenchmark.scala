@@ -3,7 +3,6 @@ package it.unipi.di.acubelab.wikipediarelatedness.benchmark
 import java.io.{File, PrintWriter}
 import java.nio.file.Paths
 
-import com.github.tototoshi.csv.CSVWriter
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiRelateTask}
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Correlation
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
@@ -21,7 +20,6 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
     */
   def runBenchmark() : Unit = {
     runRelatedness()
-
     writeRelatednessScores()
     writeCorrelationScores()
   }
@@ -77,5 +75,14 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
     val writer = new PrintWriter(path)
     writer.write("Pearson:%1.2f\nSpearman: %1.2f".formatLocal(java.util.Locale.US, pearson, spearman))
     writer.close()
+  }
+
+
+  def getPerformance() : List[Float] = {
+    val pearson = Correlation.pearson(dataset).toFloat
+    val spearman = Correlation.spearman(dataset).toFloat
+    val harmonic = 2 * pearson * spearman / (pearson  + spearman)
+
+    List(pearson, spearman, harmonic)
   }
 }

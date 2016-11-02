@@ -10,6 +10,7 @@ object ESA {
   /**
     * @param text LEMMATIZED text
     * @return List of Wikipedia IDs where wikiID is mentioned and the corresponding score.
+    *         The best resultThreshold concepts are returned by increasing order by their wikiID.
     */
   def wikipediaConcepts(text: String, resultThreshold: Int): List[Tuple2[Int, Float]] = {
     val parser = new QueryParser("body", LuceneIndex.analyzer)

@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph
 
-import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap}
+import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList}
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
@@ -96,5 +96,10 @@ class WikiGraph(path: String) {
     wikiID
   }
 
+
+  // WikiID -> WikiIDs operations
+  def wikiSuccessors(wikiID: Int) : Array[Int] = {
+    successorArray(wikiID).map(getWikiID(_))
+  }
 
 }

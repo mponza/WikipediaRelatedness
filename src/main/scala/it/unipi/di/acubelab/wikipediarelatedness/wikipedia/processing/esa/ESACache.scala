@@ -31,7 +31,7 @@ class ESACache(val dirPath: String = Configuration.wikipedia("esaCache"), val si
     logger.info("Retrieving bodies...")
     val bodies = wikiIDs.par.map(wikiID => ESA.lucene.wikipediaBody(wikiID))
     logger.info("Retrieving concepts...")
-    val concepts = bodies.par.map(body => ESA.wikipediaConcepts(body))
+    val concepts = bodies.par.map(body => ESA.wikipediaConcepts(body, size))
 
     logger.info("Building wikiID concepts mapping...")
     val wikiID2Concepts = new Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]()

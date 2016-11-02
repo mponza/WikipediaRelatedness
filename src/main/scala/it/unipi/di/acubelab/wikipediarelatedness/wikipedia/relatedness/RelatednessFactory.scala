@@ -5,7 +5,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa.{ESAR
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.latent.{GraphSVDRelatedness, LDARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.{LINERelatedness, Word2VecRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.{CoSimRankRelatedness, CoSubSimRankRelatedness, PPRCosRelatedness, PPRSubCosRelatedness}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, LocalClusteringRelatedness, MilneWittenRelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, JaccardTopRelatedness, LocalClusteringRelatedness, MilneWittenRelatedness}
 
 
 object RelatednessFactory {
@@ -28,6 +28,7 @@ object RelatednessFactory {
       case "MilneWitten" => new MilneWittenRelatedness(new MilneWittenOptions(json))
       case "Jaccard" => new JaccardRelatedness(new JaccardOptions(json))
       case "LC" | "localClustering" => new LocalClusteringRelatedness(new LocalClusteringOptions(json))
+      case "JaccardTop" => new JaccardTopRelatedness(new JaccardTopOptions(json))
       // case "LocalClustering" => new LocalClusteringRelatedness(new LocalClusteringOptions(json))
 
       // Embeddings

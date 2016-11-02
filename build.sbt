@@ -39,7 +39,10 @@ libraryDependencies ++= Seq(
   "org.apache.lucene" % "lucene-analyzers-common" % "6.1.0",
 
   "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0",
-  "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models"
+  "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models",
+
+  "nz.ac.waikato.cms.weka" % "LibSVM" % "1.0.9"
+
 )
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html

@@ -6,6 +6,14 @@ import it.unimi.dsi.law.rank.{PageRank, PageRankParallelGaussSeidel, SpectralRan
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.LoggerFactory
 
+/**
+  *
+  * @param wikiGraph Wikipedia Graph, stored via WebGraph. It have to be transposed!
+  * @param iterations  number of PPR vectors by CoSimRank
+  * @param pprDecay    PageRank weight decay (d in the paper)
+  * @param csrDecay    CoSimRank weight decay (c in the paper)
+  *
+  */
 class CoSimRankParallelGaussSeidel(wikiGraph: WikiGraph = WikiGraphFactory.inGraph, iterations: Int = 30,
                                    pprDecay: Float = 0.8f, csrDecay: Float = 0.8f)
 

@@ -75,6 +75,7 @@ object Configuration {
   )
 
   val benchmark =  Paths.get(projDir, "/data/benchmark").toString
+  val classification = Paths.get(projDir, "/data/classification").toString
 
   val analysis = Map(
     "correlation" -> Paths.get(projDir, "/data/analysis/correlation").toString,

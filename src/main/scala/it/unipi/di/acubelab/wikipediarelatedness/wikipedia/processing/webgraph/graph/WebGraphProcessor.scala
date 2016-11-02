@@ -5,7 +5,6 @@ import java.io.File
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.{LLPProcessor, LLPTask}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.multillp.MultiLLPProcessor

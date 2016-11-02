@@ -92,19 +92,20 @@ def compute_pseduoinverse(laplacian_matrix):
     n = len(wiki2node) - 1
     print n
     print laplacian_matrix.shape
-    diagonal = sparse.linalg.svds(laplacian_matrix, k=n, return_singular_vectors=False)
+    (u, s, vt) = sparse.linalg.svds(laplacian_matrix, k=n)
 
-    print diagonal.shape
-    return None
+    # compute s+
     logger.info('Inverting diagonal elements...')
     for i in range(0, len(wiki2node)):
         print i
-        d = diagonal[i]
+        d = s[i]
         if np.nonzero(d):
-            diagonal[i] = 1 / d
+            s[i] = 1 / d
 
     # moltiplicare per le altre due scambiate cosi da ottenere la pseudoinversa e poi salvarla
-    return diagonal
+    logger.info('Pseudo-inverse multiplication...')
+    pinv_matrix = sparse.csr_matrix.transpose(vt) * s * sparse.csr_matrix.transpose(u)
+    return pinv_matrix
 
 
 def serialize_laplacian_pseudoinverse(filename, volume, diagonal):

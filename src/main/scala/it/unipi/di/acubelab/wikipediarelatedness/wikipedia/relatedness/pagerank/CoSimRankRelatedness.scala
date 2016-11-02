@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
 
 import it.unipi.di.acubelab.wikipediarelatedness.options.CoSimRankOptions
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.cosimrank.CoSimRankPowerSeries
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.cosimrank.{CoSimRankParallelGaussSeidel, CoSimRankPowerSeries}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory
 class CoSimRankRelatedness(options: CoSimRankOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
 
-  val csr = new CoSimRankPowerSeries(WikiGraphFactory.outGraph, options.iterations, options.pprDecay, options.csrDecay)
+  val csr = new CoSimRankParallelGaussSeidel(WikiGraphFactory.inGraph, options.iterations, options.pprDecay, options.csrDecay)
 
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {

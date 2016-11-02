@@ -13,7 +13,6 @@ class PPRCosRelatedness(options: PPRCosOptions) extends Relatedness {
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     val rel = pprcos.similarity(srcWikiID, dstWikiID)
-    println("Relatedness between %d %d %1.5f".format(srcWikiID, dstWikiID, rel))
 
     rel
   }
