@@ -9,7 +9,7 @@ object Classification {
   val logger = LoggerFactory.getLogger(classOf[Classification])
 
 
-  def precRecF1(predictions: Array[Double], groundTruth: Array[Double]) : List[Float] = {
+  def precRecF1(predictions: List[Double], groundTruth: List[Double]) : List[Float] = {
     if (predictions.length != groundTruth.length) {
       throw new IllegalArgumentException("Prediction and groundtruth array have the be the same size.")
     }

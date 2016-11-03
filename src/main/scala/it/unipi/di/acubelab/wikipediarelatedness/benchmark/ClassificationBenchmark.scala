@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.benchmark
 
 
+import it.unipi.di.acubelab.wikipediarelatedness.classifiers.LinearSVM
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.RelatednessDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiClassTask
@@ -21,23 +22,28 @@ class ClassificationBenchmark(dataset: RelatednessDataset, relatedness: Relatedn
 
 
   def runClassificationBenchmark() = {
-    val classTasks = dataset.map(new WikiClassTask(_)).filter(_.groundClass >= 0)
-
+    val classTasks = dataset.map(new WikiClassTask(_)).filter(_.groundClass >= 0).toList
+    kFoldCrossValidation(classTasks)
   }
 
 
-  def kFoldCrossValidation(tasks: List[WikiClassTask]) : List[Float] = {
+  def kFoldCrossValidation(tasks: List[WikiClassTask], k: Int = 4) : List[Float] = {
     val stats = ListBuffer.empty[List[Float]]  // [(prec, rec, f1)] for each k
+    val folds = getBalancedFolds(tasks, k)
 
     logger.info("Running K-Fold Cross-Validation...")
-    for(k <- 0 until tasks.size) {
-      val train = tasks.slice(0, k) ++ tasks.slice(k + 1, tasks.size)  // all tasks but k-th
-      val test = List(tasks(k))
+    for(i <- 0 until k) {
 
-      val (training, validation)  = getBalancedSplit(train)
+      val train = (folds.slice(0, i) ++ folds.slice(i + 1, folds.size)).flatten // all tasks but k-th
+      val test = folds(i)
 
-      // best SVM
-      val svm = LinearSVM.gridClassifiers().sortBy(_.evaluate(training, validation)(2)).reverse.head
+      logger.info("Running %d-th fold...)".format(i))
+      logger.info("Training has Pos: %d, Neg: %d".format(train.count(_.groundClass == 1), train.count(_.groundClass == 0)))
+      logger.info("Test has has Pos: %d, Neg: %d".format(test.count(_.groundClass == 1), test.count(_.groundClass == 0)))
+
+      // Tune best SVM on training/Validation
+      val tuningValidation = getBalancedFolds(train, 2)
+      val svm = LinearSVM.gridClassifiers().sortBy(_.evaluate(tuningValidation(0), tuningValidation(1))(2)).reverse.head
 
       stats += svm.evaluate(train, test)
     }
@@ -53,13 +59,20 @@ class ClassificationBenchmark(dataset: RelatednessDataset, relatedness: Relatedn
   }
 
 
-  def getBalancedSplit(tasks: List[WikiClassTask]) : Tuple2[List[WikiClassTask], List[WikiClassTask]] = {
+  def getBalancedFolds(tasks: List[WikiClassTask], k: Int) : List[List[WikiClassTask]] = {
     val positives = tasks.filter(_.groundClass == 1)
     val negatives = tasks.filter(_.groundClass == 0)
 
-    val training = positives.slice(0, positives.size / 2) ++ negatives.slice(0, negatives.size / 2)
-    val validation = positives.slice(positives.size / 2, positives.size) ++ negatives.slice(negatives.size / 2, negatives.size)
+    val folds = List.fill(k)(ListBuffer.empty[WikiClassTask])
 
-    (training, validation)
+    positives.zipWithIndex.foreach {
+      case (pos, index) => folds(index % k) += pos
+    }
+
+    negatives.zipWithIndex.foreach {
+      case (neg, index) => folds(index % k) += neg
+    }
+
+    folds.map(_.toList)
   }
 }

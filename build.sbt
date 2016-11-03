@@ -41,7 +41,10 @@ libraryDependencies ++= Seq(
   "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0",
   "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models",
 
-  "tw.edu.ntu.csie" % "libsvm" % "3.17"
+  "tw.edu.ntu.csie" % "libsvm" % "3.17",
+
+  "com.github.haifengl" % "smile-core" % "1.2.0"
+
 
 )
 

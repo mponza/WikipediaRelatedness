@@ -1,12 +1,11 @@
-package it.unipi.di.acubelab.wikipediarelatedness.benchmark
+package it.unipi.di.acubelab.wikipediarelatedness.classifiers
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiClassTask, WikiRelateTask}
-import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiClassTask
 import libsvm._
 
 import scala.collection.mutable.ListBuffer
 
-class LinearSVM(C: Double, posWeight: Double = 1.0, negWeight: Double = 1.0) {
+class LinearSVM(C: Double, posWeight: Double = 1.0, negWeight: Double = 1.0) extends Classifier {
   val parameter = getParameter(C, posWeight, negWeight)
 
 
@@ -63,14 +62,12 @@ class LinearSVM(C: Double, posWeight: Double = 1.0, negWeight: Double = 1.0) {
   }
 
 
-  def evaluate(train: List[WikiClassTask], test: List[WikiClassTask]): List[Float] = {
+  override def trainNpredict(train: List[WikiClassTask], test: List[WikiClassTask]): List[Int] = {
     val trainProblem = generateProblem(train)
     val testProblem = generateProblem(test)
 
     val svmModel = svm.svm_train(trainProblem, parameter)
-    val predictions = testProblem.x.map(node => svm.svm_predict(svmModel, node))
-
-    Classification.precRecF1(predictions, testProblem.y)
+    testProblem.x.map(node => svm.svm_predict(svmModel, node)).toList.map(_.toInt)
   }
 }
 
