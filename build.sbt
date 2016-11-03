@@ -41,7 +41,7 @@ libraryDependencies ++= Seq(
   "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0",
   "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models",
 
-  "nz.ac.waikato.cms.weka" % "LibSVM" % "1.0.9"
+  "tw.edu.ntu.csie" % "libsvm" % "3.17"
 
 )
 

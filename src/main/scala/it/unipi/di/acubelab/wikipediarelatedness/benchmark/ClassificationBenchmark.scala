@@ -20,13 +20,21 @@ class ClassificationBenchmark(dataset: RelatednessDataset, relatedness: Relatedn
 
   def runClassificationBenchmark() = {
     val classTasks = dataset.map(new WikiClassTask(_)).filter(_.groundClass >= 0)
+
+    val train = classTasks.slice(0, 300).toList
+    val test = classTasks.slice(300, classTasks.size).toList
+
+    val svm = new LinearSVM(1.0)
+    val stats = svm.evaluate(train, test)
+
+    println(stats)
   }
 }
 
 
 
 /*
-*
+* "tw.edu.ntu.csie" % "libsvm" % "3.17"
 class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Relatedness) {
   val logger = LoggerFactory.getLogger(classOf[RelatednessBenchmark])
   val relatednessDirectory = Paths.get(Configuration.benchmark, relatedness.toString).toString
