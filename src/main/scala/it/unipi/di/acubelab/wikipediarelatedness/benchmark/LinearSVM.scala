@@ -4,45 +4,66 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiClassTask, WikiRel
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
 import libsvm._
 
-class LinearSVM(C: Double) {
-  val parameter = getParameter(C)
+import scala.collection.mutable.ListBuffer
+
+class LinearSVM(C: Double, posWeight: Double = 1.0, negWeight: Double = 1.0) {
+  val parameter = getParameter(C, posWeight, negWeight)
 
 
-  def getParameter(C: Double) : svm_parameter = {
+  def getParameter(C: Double, posWeight: Double, negWeight: Double): svm_parameter = {
     val param = new svm_parameter()
+
+    param.C = C
+    param.weight = Array(posWeight, negWeight)
 
     param.svm_type = svm_parameter.C_SVC
     param.kernel_type = svm_parameter.LINEAR
 
-    param.C = C
+    param.degree = 2
+    param.coef0 = 0
+    param.nu = 0.5
+    param.cache_size = 100
+    param.eps = 0.001
+    param.p = 0.1
+    param.shrinking = 1
+    param.probability = 0
+    param.nr_weight = 2
+    param.weight_label = Array(1, 0)
 
     param
   }
 
 
-  def generateProblem(wikiClassTasks: List[WikiClassTask]) : svm_problem = {
+  def generateProblem(wikiClassTasks: List[WikiClassTask]): svm_problem = {
     val problem = new svm_problem()
 
     problem.l = wikiClassTasks.size
 
-    problem.x = Array.ofDim[svm_node](problem.l, 1)
-    for(i <- 0 until problem.l) {
+    // Matrix of examples with their features
+    val features = ListBuffer.empty[Array[svm_node]] // examples x feature vector
+
+    for (i <- 0 until problem.l) {
 
       val node = new svm_node()
-      node.index = i
-      node.value = wikiClassTasks(i).wikiRelateTask.machineRelatedness
+      node.index = 1
+      node.value = wikiClassTasks(i).wikiRelateTask.machineRelatedness.toDouble
 
-      problem.x(i)(0) = node
+      if (node.value == Float.NaN || node.value < 0 || node.value > 1) {
+        throw new IllegalArgumentException("SVM Value wrong value: %1.2f".format(node.value))
+      }
+
+      features += Array(node)
     }
 
+    problem.x = features.toArray
 
-    problem.y = wikiClassTasks.map(task => task.groundClass.toDouble).toArray
+    problem.y = wikiClassTasks.map(task => task.groundClass.toDouble).toArray.slice(0, problem.l)
 
     problem
   }
 
 
-  def evaluate(train: List[WikiClassTask], test: List[WikiClassTask]) : List[Float] = {
+  def evaluate(train: List[WikiClassTask], test: List[WikiClassTask]): List[Float] = {
     val trainProblem = generateProblem(train)
     val testProblem = generateProblem(test)
 
@@ -51,9 +72,18 @@ class LinearSVM(C: Double) {
 
     Classification.precRecF1(predictions, testProblem.y)
   }
-
-
 }
 
 
-// fare wegiht label e weight
+object LinearSVM {
+
+  def gridClassifiers(): List[LinearSVM] = {
+    for {
+
+      c <- List(1000f, 100f, 10f, 1f, 0.1f, 0.001f, 0.0001f)
+      pos <- for (i <- 1 to 10 by 2) yield i
+      neg <- for (i <- 1 to 10 by 2) yield i
+
+    } yield new LinearSVM(c.toDouble, pos.toDouble, neg.toDouble)
+  }
+}

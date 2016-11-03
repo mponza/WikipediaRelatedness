@@ -2,8 +2,9 @@ package it.unipi.di.acubelab.wikipediarelatedness
 
 import java.io.PrintWriter
 
-import it.unipi.di.acubelab.wikipediarelatedness.benchmark.RelatednessBenchmark
+import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
+import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
@@ -92,6 +93,22 @@ object Bench {
 }
 
 
+
+object ClassBench {
+  def main(args: Array[String]) {
+    val relatednessOptions = JSON.parseFull(args(0))
+    val relatdness = RelatednessFactory.make(relatednessOptions)
+
+    val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+
+    val benchmark = new ClassificationBenchmark(dataset, relatdness)
+    benchmark.runBenchmark()
+  }
+}
+
+
+
+
 object Text {
   def main(args: Array[String]): Unit = {
     //println(new LemmaLuceneIndex().wikipediaBody(47197315))
@@ -103,9 +120,9 @@ object Text {
 object BenchCoSimRank {
   def main(args: Array[String]) {
     for {
-      iterations <- List(5)
-      pprDecay <- 0.2f to 0.8f by 0.2f
-      csrDecay <- 0.2f to 0.8f by 0.2f
+      iterations <- List(5, 10)
+      pprDecay <- List(0.5f, 0.8f)//0.2f to 0.8f by 0.2f
+      csrDecay <- List(0.5f, 0.8f)//0.2f to 0.8f by 0.2f
     } {
 
       try {

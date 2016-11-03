@@ -19,9 +19,9 @@ object Classification {
     for((pred, truth) <- predictions.zip(groundTruth)) {
       (pred, truth) match {
         case (1.0, 1.0) => stats.incrementTP()
-        case (0.0, 0.0) => _
         case (1.0, 0.0) => stats.incrementFP()
         case (0.0, 1.0) => stats.incrementFN()
+        case (0.0, 0.0) => ;
       }
     }
 
