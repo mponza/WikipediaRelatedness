@@ -16,7 +16,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
   def process() : Unit = {
     logger.info("Processing Dataset...")
 
-    val normWikiSimPairs = normalize(wikiSim.wikiSimPairs)
+    val normWikiSimPairs = normalize(wikiSim.wikiPairs)
     val redirWikiSimPairs = redirect(normWikiSimPairs)
     val filterWikiSimPairs = wikiFilter(redirWikiSimPairs)
 
