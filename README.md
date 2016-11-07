@@ -51,6 +51,8 @@ Enable virtualenv and install requirements:
     source venv/bin/activate
     
     pip install -r src/main/python/latent/requirements.txt
+    
+Warning: 'python' has to invoke the 2.7 interpreter.
 
 
 NYT Dataset
