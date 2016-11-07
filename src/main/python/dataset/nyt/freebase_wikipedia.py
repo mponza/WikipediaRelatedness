@@ -1,7 +1,7 @@
 import csv
 import logging
 
-from dataset.dataset_utils import FB_WIKI
+from dataset_utils import FB_WIKI
 
 
 logger = logging.getLogger('Freebase-Wikipedia Mapping')

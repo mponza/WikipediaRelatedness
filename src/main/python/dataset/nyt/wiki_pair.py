@@ -4,11 +4,12 @@ Given a GoogleDataset, call build_wiki_pairs method.
 '''
 
 import sys
-import os
 import logging
 
-from freebase_wikipedia import fb_wiki_title
-from freebase_wikipedia import fb_wiki_id
+from itertools import combinations
+
+from .freebase_wikipedia import fb_wiki_title
+from .freebase_wikipedia import fb_wiki_id
 
 
 logger = logging.getLogger('WikiPair')
@@ -121,10 +122,6 @@ class WikiPairs:
 
 
 def build_wiki_pairs(docs):
-    '''
-    :param NYT documents
-    :return: WikiPairs
-    '''
     logger.info('Generating NYT Salience Wikipedia pairs...')
 
     wiki_pairs = WikiPairs()

@@ -4,10 +4,10 @@ Generates nyt/nyt-wikipairs data according to the salience sampling of NYT Googl
 
 import logging
 
-from google import get_google_dataset
+from .google import get_google_dataset
 
-from wiki_pair import build_wiki_pairs
-from wiki_writer import WikiPairWriter
+from .wiki_pair import build_wiki_pairs
+from .wiki_writer import WikiPairWriter
 
 from dataset_utils import NYT_PAIRS_DIR
 

@@ -7,7 +7,7 @@ import os
 import logging
 import csv
 
-from dataset.dataset_utils import NYT_DIR
+from dataset_utils import NYT_DIR
 
 
 logger = logging.getLogger('Google')
@@ -23,7 +23,7 @@ class GoogleEntity:
     def __init__(self):
         self.index = None # int
         self.salience = None # string
-        self.mention_counts = None
+        self.mention_counts = None # int
         self.text = None # string
         self.start_byte_offset = None # int
         self.end_byte_offset = None # int
@@ -58,6 +58,7 @@ def row_google_entity(row):
 def get_google_documents(path):
     logger.info('Loading {0} file...'.format(path))
     google_docs = []
+
     with open(path, 'r') as f:
 
         r = csv.reader(f, delimiter='\t')

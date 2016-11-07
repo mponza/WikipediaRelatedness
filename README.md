@@ -49,6 +49,7 @@ Enable virtualenv and install requirements:
     
     virtualenv venv
     source venv/bin/activate
+    
     pip install -r src/main/python/latent/requirements.txt
 
 
@@ -62,6 +63,8 @@ Download the Google's salience annotation of the NYT documents:
 Generates pairs according with the NYT sampling:
 
     python src/python/dataset nyt_salience_dataset
+    
+This will generate into `data/dataset/nyt-salience`
 
 
 
