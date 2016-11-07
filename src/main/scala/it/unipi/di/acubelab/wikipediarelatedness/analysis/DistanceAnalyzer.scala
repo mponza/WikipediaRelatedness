@@ -1,36 +1,49 @@
 package it.unipi.di.acubelab.wikipediarelatedness.analysis
 
+import java.io.{File, PrintWriter}
+
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.RelatednessDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.distance.DistanceMeter
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.LoggerFactory
 
-import scala.collection.mutable.ListBuffer
+class DistanceAnalyzer(val dataset: RelatednessDataset, val wikiGraph: WikiGraph = WikiGraphFactory.outGraph) {
+  val logger = LoggerFactory.getLogger(classOf[DistanceAnalyzer])
 
-class Distance(val dataset: RelatednessDataset, val wikiGraph: WikiGraph = WikiGraphFactory.outGraph) {
-  val logger = LoggerFactory.getLogger(classOf[Distance])
 
-  def computeDistances() = {
+  def computeDistances(path: String) = {
+    val tmpWriter = new PrintWriter(new File(path))
+
+
     val distanceMeter = new DistanceMeter(wikiGraph)
 
     var i = 0
-    val distances = dataset.slice(0, 10).map {
+    var errors = 0
+    val distances = dataset.map {
       wikiRelTask =>
-        val distance = distanceMeter.getDistance(wikiRelTask.src.wikiID, wikiRelTask.dst.wikiID)
-        logger.info("Distance between %s and %s is %d.".format(wikiRelTask.src, wikiRelTask.dst))
-
+        val distance = try { distanceMeter.getDistance(wikiRelTask.src.wikiID, wikiRelTask.dst.wikiID) } catch {case e: Exception => errors += 1; -1}
         i += 1
-        if (i > 0 && i % 10 == 0) logger.info("*** %d distances computed. ***".format(i))  // yeah, it's not totally correct...
+        if (i > 0 && i % 10 == 0) logger.info("*** %d distances computed. ***".format(i))
+
+        tmpWriter.write("%d\n".format(distance))
 
         distance
     }.toList
 
-    logger.info("Distance statistics")
-    logger.info("Min %d".format(distances.min))
-    logger.info("Max %d".format(distances.max))
 
-    logger.info("AVG %1.2f".format(distances.sum / distances.size.toFloat))
-    logger.info("StdDev %1.2f".format(standardDeviation(distances)))
+    tmpWriter.close()
+
+    logger.warn("Errors: %d".format(errors))
+    logger.info("Nodes not too far %d".format(distances.count(_ < 0)))
+
+
+    val reachedDistances = distances.filter(_ >= 0)
+    logger.info("Distance statistics")
+    logger.info("Min %d".format(reachedDistances.min))
+    logger.info("Max %d".format(reachedDistances.max))
+
+    logger.info("AVG %1.2f".format(reachedDistances.sum / reachedDistances.size.toFloat))
+    logger.info("StdDev %1.2f".format(standardDeviation(reachedDistances)))
   }
 
 

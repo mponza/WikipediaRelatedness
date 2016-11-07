@@ -18,7 +18,7 @@ class NYTDataset(path: String) extends RelatednessDataset {
 
 
   def loadNYTPairs(path: String) : List[WikiRelateTask] = {
-    logger.info("Loadgin NYT dataset %s...".format(path))
+    logger.info("Loading NYT dataset %s...".format(path))
 
     val pairs = ListBuffer.empty[WikiRelateTask]
     val csvReader = CSVReader.open(new File(path))
@@ -26,7 +26,7 @@ class NYTDataset(path: String) extends RelatednessDataset {
     csvReader.foreach {
       fields =>
         val srcEntity = new WikiEntity(fields(0).toInt, fields(1).toString)
-        val dstEntity = new WikiEntity(fields(2).toInt, fields(3).toString)
+        val dstEntity = new WikiEntity(fields(3).toInt, fields(4).toString)
 
         val wikiPair = new WikiRelateTask(srcEntity, dstEntity, -1)
         pairs += wikiPair

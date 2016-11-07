@@ -16,7 +16,7 @@ class DistanceCache {
     */
   def getDistance(srcNodeID: Int, dstNodeID: Int) : Int = {
     // BFS of srcNodeID never computed before in the graph.
-    if (!visits.containsKey(srcNodeID))  return null
+    if (!visits.containsKey(srcNodeID)) throw new IllegalArgumentException("Src node not yet visited.")
 
     // src has been already visited.
     val (queue,  cutPoints) = visits.get(srcNodeID)

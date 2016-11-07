@@ -22,6 +22,12 @@ object Configuration {
     "procWikiSim" -> Paths.get(projDir, "/data/dataset/wikiSim411.csv").toString
   )
 
+  lazy val nyt = Map(
+    "ss" -> Paths.get(projDir, "/data/dataset/nyt/ss.csv").toString,
+    "ns" -> Paths.get(projDir, "/data/dataset/nyt/ns.csv").toString,
+    "nn" -> Paths.get(projDir, "/data/dataset/nyt/nn.csv").toString
+  )
+
   lazy val ibmDir = getClass.getResource("/ibm").getPath
 
   lazy val wikipedia = Map(

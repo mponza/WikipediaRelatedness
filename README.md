@@ -24,6 +24,10 @@ Resources files:
  * Language Model:
 
         languageModel/wiki.binary
+        
+ * Freebase-Wikipedia mapping:
+ 
+        src/main/resources/wikipedia/freebase-mapping.tsv
 
 
 Setting Up
@@ -34,10 +38,35 @@ Remove `webgraph`, `fastutil` and `sux4j` from  the `law-deps` directory.
 
 If you are planning to use `CoSimRank`, please download [CoSimRankServer](https://github.com/mponza/CoSimRankServer) in the `lib` directory.
    
+   
+   
+Python Configuration
+--------------------
+
 Some parts require Python processing, so I recommend to install some virtualization tool, like [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/), before installing the corresponding dependencies.
 
+Enable virtualenv and install requirements:
+    
+    virtualenv venv
+    source venv/bin/activate
+    pip install -r src/main/python/latent/requirements.txt
 
-   
+
+NYT Dataset
+-----------
+
+Download the Google's salience annotation of the NYT documents:
+
+    git clone https://github.com/dmorr-google/nyt-salience.git data/dataset/
+    
+Generates pairs according with the NYT sampling:
+
+    python src/python/dataset nyt_salience_dataset
+
+
+
+
+
 WebGraph Processing
 -------------------
 
@@ -50,11 +79,6 @@ LLP: tobedone
 Latent Semantic Processing
 --------------------------
 
-Enable virtualenv and install requirements:
-    
-    virtualenv venv
-    source venv/bin/activate
-    pip install -r src/main/python/latent/requirements.txt
 
 Generates statistical information from the Wikipedia corpus:
     
@@ -107,7 +131,7 @@ Explicit Semantic Processing
 Clustering Coefficient Processing
 ---------------------------------
 
-Download `triangles-1.1.jar` into `lib/triangle` folder.
+Download `triangles-1.1.jar` from `LAW` into `lib/triangle` folder.
 
     
 

@@ -10,17 +10,18 @@ class DistanceMeter(val wikiGraph: WikiGraph) {
   def getDistance(srcWikiID: Int, dstWikiID: Int) : Int = {
     if (srcWikiID == dstWikiID) return 0
 
-    val srcNodeID = wikiGraph.getNodeID(srcNodeID)
-    val dstNodeID = wikiGraph.getNodeID(srcNodeID)
+    val srcNodeID = wikiGraph.getNodeID(srcWikiID)
+    val dstNodeID = wikiGraph.getNodeID(dstWikiID)
 
     // Src has been already visited
-    val cachedDistance = cache.getDistance(srcNodeID, dstNodeID)
-    if (cachedDistance != null) return cachedDistance
-
-    // New distance computation
-    val bfs = computeBFS(srcNodeID)
-
-    cache.updateCacheNgetDistance(srcNodeID, dstNodeID, bfs)
+    try {
+      cache.getDistance(srcNodeID, dstNodeID)
+    } catch {
+      case e: IllegalArgumentException =>
+        // New distance computation
+        val bfs = computeBFS(srcNodeID)
+        cache.updateCacheNgetDistance(srcNodeID, dstNodeID, bfs)
+    }
   }
 
 

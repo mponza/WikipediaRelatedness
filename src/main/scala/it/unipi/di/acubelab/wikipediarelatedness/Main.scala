@@ -1,8 +1,11 @@
 package it.unipi.di.acubelab.wikipediarelatedness
 
 import java.io.PrintWriter
+import java.nio.file.Paths
 
+import it.unipi.di.acubelab.wikipediarelatedness.analysis.DistanceAnalyzer
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
@@ -10,7 +13,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.Lucene
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.triangles.LocalClusteringProcessing
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WebGraphProcessor
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WebGraphProcessor, WikiGraphFactory}
 
 import scala.collection.mutable.ListBuffer
 
@@ -279,7 +282,7 @@ object ClustProcessing {
 }
 
 
-object ESACache {
+object ESACacher {
   def main(args: Array[String]) = {
     val esaCache = new ESACache()
     val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
@@ -287,6 +290,24 @@ object ESACache {
     esaCache.generateCache(dataset.toList)
   }
 }
+
+
+
+object DistanceStats {
+  def main(args: Array[String]) = {
+    for(name <- List("ss", "ns", "nn")) {
+
+      for(graph <- List("outGraph", "symGraph")) {
+        val dataset = new NYTDataset(Configuration.nyt(name))
+        val distanceAnalyzer = new DistanceAnalyzer(dataset, WikiGraphFactory.makeWikiGraph(graph))
+
+        val path = Paths.get(Configuration.projDir, "/data/dataset/%s_%s_dist.csv".format(graph, name)).toString
+        distanceAnalyzer.computeDistances(path)
+      }
+    }
+  }
+}
+
 
 
 /*
