@@ -12,7 +12,7 @@ import java.nio.file.Paths
 object Configuration {
 
   val wat = "http://wat.mkapp.it/wikidocs?lang=en"
-  val cosimrank = "http://localhost:5555"
+  val cosimrank = "http://127.0.0.1:9080"
   val subgraphThreshold = 4000
 
   val projDir = System.getProperty("user.dir")

@@ -62,6 +62,10 @@ class WikiGraph(path: String) {
     graph.successors(nodeID)
   }
 
+  def nodeSuccessorArray(nodeID: Int): Array[Int] = {
+    graph.successorArray(nodeID)
+  }
+
 
   def nodeOutDegree(nodeID: Int): Int = {
     graph.outdegree(nodeID)

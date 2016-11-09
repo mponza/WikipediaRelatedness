@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness
 import java.io.PrintWriter
 import java.nio.file.Paths
 
-import it.unipi.di.acubelab.wikipediarelatedness.analysis.DistanceAnalyzer
+import it.unipi.di.acubelab.wikipediarelatedness.analysis.{AllDistanceAnalyzer, DistanceAnalyzer}
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
@@ -307,6 +307,26 @@ object DistanceStats {
       }
     }
   }
+}
+
+
+object AllDistances {
+  def main(args: Array[String]) = {
+
+    for(name <- List("ss", "ns", "nn")) {
+
+      for(graph <- List("outGraph")) {
+
+        val dataset = new NYTDataset(Configuration.nyt(name))
+        val distanceAnalyzer = new AllDistanceAnalyzer(dataset, WikiGraphFactory.makeWikiGraph(graph))
+
+        val path = "/tmp/%s_%s_dist.csv".format(graph, name)
+        distanceAnalyzer.computeDistances(path)
+
+      }
+    }
+  }
+
 }
 
 

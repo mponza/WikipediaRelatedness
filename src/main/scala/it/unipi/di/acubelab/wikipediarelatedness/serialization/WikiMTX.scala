@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.serialization
 
 import java.io.{File, PrintWriter}
 import java.nio.file.Paths
+import java.util.Locale
 
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
@@ -15,13 +16,13 @@ import org.slf4j.LoggerFactory
 class WikiMTX(val dir: String) {
    val logger = LoggerFactory.getLogger(classOf[WikiMTX])
 
-   new File(dir).getParentFile.mkdirs
+   new File(dir).mkdirs
    val wikiGraph = WikiGraphFactory.outGraph
 
 
   def serializeGraph() = {
 
-    val header = "%%MatrixMarket matrix coordinate real general\n%"
+    val header = "%%MatrixMarket matrix coordinate real general\n%\n"
     val nodesArcs = "%d %d %d\n".format(wikiGraph.graph.numNodes(), wikiGraph.graph.numNodes(), wikiGraph.graph.numArcs())
 
     logger.info("Serializing Graph...")
@@ -34,8 +35,8 @@ class WikiMTX(val dir: String) {
     for(i <- 0 until wikiGraph.graph.numNodes()) {
 
       val outDegree = wikiGraph.nodeOutDegree(i)
-      for(node <- wikiGraph.nodeSuccessors(i)) {
-        writer.write("%d %d %1.5f\n".format(i, node, 1 / outDegree.toFloat))
+      for(node <- wikiGraph.nodeSuccessorArray(i)) {
+        writer.write("%d %d %1.5f\n".formatLocal(Locale.US, i + 1, node + 1, 1 / outDegree.toFloat))
       }
     }
 
@@ -53,7 +54,7 @@ class WikiMTX(val dir: String) {
     val writer = new PrintWriter(new File(path))
 
     for(wikiID <- wiki2node.keySet().toIntArray()) {
-      writer.write("%d %d n\n".format(wikiID, wiki2node.get(wikiID)))
+      writer.write("%d %d n\n".format(wiki2node.get(wikiID) + 1, wikiID))
     }
 
     writer.close()
