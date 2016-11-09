@@ -23,9 +23,9 @@ object Configuration {
   )
 
   lazy val nyt = Map(
-    "ss" -> Paths.get(projDir, "/data/dataset/nyt/ss.csv").toString,
-    "ns" -> Paths.get(projDir, "/data/dataset/nyt/ns.csv").toString,
-    "nn" -> Paths.get(projDir, "/data/dataset/nyt/nn.csv").toString
+    "ss" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/ss.csv").toString,
+    "ns" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/ns.csv").toString,
+    "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/nn.csv").toString
   )
 
   lazy val ibmDir = getClass.getResource("/ibm").getPath

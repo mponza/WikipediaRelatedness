@@ -18,15 +18,18 @@ class WikiPairWriter:
 
         logger.info("Sorting & writing ss...")
         ss = self.sorted_bucket(wiki_pairs.ss)
-        self.write_to_file(ss[0:100] + self.middle(ss) + ss[-100:], "ss.csv")
+        self.write_to_file(ss, "ss.csv")
+        # self.write_to_file(ss[0:100] + self.middle(ss) + ss[-100:], "ss.csv")
 
         logger.info("Sorting & writing  ns...")
         ns = self.sorted_bucket(wiki_pairs.ns)
-        self.write_to_file(ns[0:100] + self.middle(ns) + ns[-100:], "ns.csv")
+        self.write_to_file(ns, "ns.csv")
+        # self.write_to_file(ns[0:100] + self.middle(ns) + ns[-100:], "ns.csv")
 
         logger.info("Sorting & writing  nn...")
         nn = self.sorted_bucket(wiki_pairs.nn)
-        self.write_to_file(nn[0:100] + self.middle(nn) + nn[-100:], "nn.csv")
+        self.write_to_file(nn, "nn.csv")
+        # self.write_to_file(nn[0:100] + self.middle(nn) + nn[-100:], "nn.csv")
 
 
     def middle(self, a):

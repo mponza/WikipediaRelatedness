@@ -19,7 +19,7 @@ def generate_nyt_dataset():
     logger.info('NYTWP Dataset generation...')
 
     google_dataset = get_google_dataset()
-    google_docs = google_dataset.train[0:100] + google_dataset.eval[0:100]
+    google_docs = google_dataset.train + google_dataset.eval
 
     wiki_pairs = build_wiki_pairs(google_docs)
 

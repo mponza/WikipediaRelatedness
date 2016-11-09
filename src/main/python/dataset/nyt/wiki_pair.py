@@ -18,8 +18,8 @@ logger = logging.getLogger('WikiPair')
 class WikiEntity:
 
     def __init__(self, google_entity):
-        self.wiki_title = fb_wiki_title[google_entity.freebase_mid][0]
-        self.wiki_id = fb_wiki_id[google_entity.freebase_mid][1]
+        self.wiki_title = fb_wiki_title[google_entity.freebase_mid]
+        self.wiki_id = fb_wiki_id[google_entity.freebase_mid]
         self.frequency = 0
 
     def __hash__(self):

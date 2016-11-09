@@ -8,6 +8,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchm
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
+import it.unipi.di.acubelab.wikipediarelatedness.serialization.WikiMTX
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
@@ -305,6 +306,15 @@ object DistanceStats {
         distanceAnalyzer.computeDistances(path)
       }
     }
+  }
+}
+
+
+object MTX  {
+  def main(args: Array[String]) = {
+    val mtx = new WikiMTX("/data/ponza/graph")
+    mtx.serializeGraph()
+    mtx.serializeDictionary()
   }
 }
 
