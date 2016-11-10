@@ -2,8 +2,9 @@ package it.unipi.di.acubelab.wikipediarelatedness.analysis
 
 import java.io.{File, PrintWriter}
 
+import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.RelatednessDataset
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.distance.{DistanceMeter, MultipleDistanceMeter}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.distance.MultipleDistanceMeter
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.LoggerFactory
 
@@ -13,11 +14,14 @@ class AllDistanceAnalyzer(val dataset: RelatednessDataset, val wikiGraph: WikiGr
   def computeDistances(path: String) = {
     val writer = new PrintWriter(new File(path))
 
-    val sortedDataset = dataset.toList.sortBy(_.dst.wikiID).groupBy(_.src.wikiID).toList.sortBy(_._2.size).reverse
+    val sortedDataset = dataset.toList.sortBy(_.dst.wikiID).groupBy(_.src.wikiID).toList.sortBy(_._2.size)
     val distanceMeter = new MultipleDistanceMeter(wikiGraph)
 
     logger.info("Computing %d distances...".format(sortedDataset.map(_._2.size).sum))
     var i = 0
+
+    val allDistances = new IntArrayList()
+
     sortedDataset.foreach {
       case (srcWikiID, wikiRelTasks) =>
         val dstWikiIDs = wikiRelTasks.map(_.dst.wikiID)
@@ -27,6 +31,7 @@ class AllDistanceAnalyzer(val dataset: RelatednessDataset, val wikiGraph: WikiGr
         dstWikiIDs.zipWithIndex.foreach {
           case (wikiID, index) =>
             writer.write("%d %d %d\n".format(srcWikiID, wikiID, distances(index)))
+            allDistances.add(distances(index))
         }
 
         i += wikiRelTasks.size
@@ -36,33 +41,12 @@ class AllDistanceAnalyzer(val dataset: RelatednessDataset, val wikiGraph: WikiGr
     writer.close()
 
     logger.info("Distances computed.")
-  }
-}
 
 
-/**
-  *
-val distanceMeter = new DistanceMeter(wikiGraph)
+    // Statistics
 
-    var i = 0
-    var errors = 0
-    val distances = dataset.map {
-      wikiRelTask =>
-        val distance = try { distanceMeter.getDistance(wikiRelTask.src.wikiID, wikiRelTask.dst.wikiID) } catch {case e: Exception => errors += 1; -1}
-        i += 1
-        if (i > 0 && i % 10 == 0) logger.info("*** %d distances computed. ***".format(i))
-
-        tmpWriter.write("%d\n".format(distance))
-
-        distance
-    }.toList
-
-
-    tmpWriter.close()
-
-    logger.warn("Errors: %d".format(errors))
+    val distances = allDistances.toIntArray().toList
     logger.info("Nodes not too far %d".format(distances.count(_ < 0)))
-
 
     val reachedDistances = distances.filter(_ >= 0)
     logger.info("Distance statistics")
@@ -81,54 +65,4 @@ val distanceMeter = new DistanceMeter(wikiGraph)
     powSum / ints.size.toFloat
   }
 
-
-
-
-
-
-/*
-  * def distance(srcWikiID: Int, dstWikiID: Int) : Int = {
- +
- +    if (!distanceCache.contains((srcWikiID, dstWikiID))) {
- +
- +      val distance = bfsDistance(srcWikiID, dstWikiID)
- +      distanceCache.put((srcWikiID, dstWikiID), distance)
- +    }
- +
- +    distanceCache((srcWikiID, dstWikiID))
- +  }
- +
- +
- +  def bfsDistance(srcWikiID: Int, dstWikiID: Int) : Int = {
-      if (srcWikiID == dstWikiID) return 0
-
-      val bfs = new ParallelBreadthFirstVisit(bvGraph, 0, false, null)
-
- -    var prevRound = 0
- -    do {
- -        prevRound = bfs.round
- +    bfs.visit(WikiBVGraph.getNodeID(srcWikiID))
- +
- +    for(d <- 1 until bfs.cutPoints.size - 1) {
-
- -        // BFS visit and check if dstWikiID has been reached.
- -        bfs.visit(srcWikiID)
- -        if(bfs.queue.contains(WikiBVGraph.getNodeID(dstWikiID))) {
- -          return bfs.round
- -        }
- +      // Get nodes visited at d-th iteration of BFS.
- +      val dIndex = bfs.cutPoints.getInt(d)
- +      val dPlusOneIndex = bfs.cutPoints.getInt(d + 1)
- +      val dNodes = bfs.queue.subList(dIndex, dPlusOneIndex)
-
- -    } while(prevRound > 0 && prevRound != bfs.round)
- +      if(dNodes.contains(WikiBVGraph.getNodeID(dstWikiID))) return d
- +    }
-
- -    -1
- +    Int.MaxValue
-    }
-  *
-  * */
-  *
-  */
+}

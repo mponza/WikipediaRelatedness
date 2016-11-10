@@ -316,14 +316,13 @@ object AllDistances {
 
     for(name <- List("ss", "ns", "nn")) {
 
-      for(graph <- List("symGraph")) {
+      for(graph <- List("outGraph")) {
 
         val dataset = new NYTDataset(Configuration.nyt(name))
         val distanceAnalyzer = new AllDistanceAnalyzer(dataset, WikiGraphFactory.makeWikiGraph(graph))
 
         val path = "/tmp/%s_%s_dist.csv".format(graph, name)
         distanceAnalyzer.computeDistances(path)
-
       }
     }
   }
