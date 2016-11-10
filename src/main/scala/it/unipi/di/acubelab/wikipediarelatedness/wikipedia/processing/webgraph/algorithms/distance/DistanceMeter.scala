@@ -13,7 +13,8 @@ class DistanceMeter(val wikiGraph: WikiGraph) {
     val srcNodeID = wikiGraph.getNodeID(srcWikiID)
     val dstNodeID = wikiGraph.getNodeID(dstWikiID)
 
-    // Src has been already visited
+    if (wikiGraph.nodeSuccessorArray(srcNodeID).contains(dstNodeID)) return 1
+
     try {
       cache.getDistance(srcNodeID, dstNodeID)
     } catch {

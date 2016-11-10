@@ -3,6 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness
 import java.io.PrintWriter
 import java.nio.file.Paths
 
+import it.unimi.dsi.webgraph.algo.StronglyConnectedComponents
 import it.unipi.di.acubelab.wikipediarelatedness.analysis.{AllDistanceAnalyzer, DistanceAnalyzer}
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
@@ -315,7 +316,7 @@ object AllDistances {
 
     for(name <- List("ss", "ns", "nn")) {
 
-      for(graph <- List("outGraph")) {
+      for(graph <- List("symGraph")) {
 
         val dataset = new NYTDataset(Configuration.nyt(name))
         val distanceAnalyzer = new AllDistanceAnalyzer(dataset, WikiGraphFactory.makeWikiGraph(graph))
@@ -339,6 +340,24 @@ object MTX  {
 }
 
 
+
+object CC {
+  def main(args: Array[String]) = {
+    val scc = StronglyConnectedComponents.compute(WikiGraphFactory.outGraph.graph, false, null)
+
+    println("Number of components: %d".format(scc.numberOfComponents))
+
+
+    val sccs = scc.component.zipWithIndex.groupBy {
+      case (ccID, nodeID) => ccID
+    }.toList.sortBy(_._2.length).reverse
+
+    sccs.slice(0, 1000).foreach {
+      case (ccsID, nodeIDs) => println("Component %d with size %d".format(ccsID, nodeIDs.length))
+    }
+  }
+
+}
 
 /*
 object WordBench {

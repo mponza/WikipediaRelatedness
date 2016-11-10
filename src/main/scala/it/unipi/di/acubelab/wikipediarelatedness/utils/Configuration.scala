@@ -34,6 +34,8 @@ object Configuration {
     "wikiLinks" -> getClass.getResource("/wikipedia/wiki-links-sorted.gz").getPath,
     "linkCorpus" -> getClass.getResource("/wikipedia/wikipedia-w2v-linkCorpus.json.gz").getPath,
 
+    "distances" -> Paths.get(projDir, "/data/processing/wikipedia/distances").toString,
+
     "lucene" -> Paths.get(projDir, "/data/processing/wikipedia/lucene").toString,
 
     "wiki2node" -> Paths.get(projDir, "/data/processing/wikipedia/mapping/wiki2node").toString,

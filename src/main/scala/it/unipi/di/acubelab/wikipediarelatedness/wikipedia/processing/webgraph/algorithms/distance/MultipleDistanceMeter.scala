@@ -1,14 +1,19 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.distance
 
 import it.unimi.dsi.webgraph.algo.ParallelBreadthFirstVisit
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
+import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph
+import org.slf4j.LoggerFactory
 
 /**
   * Class which allows to compute multiple distance from a source to a list of nodes (see computeDistances function)
+  *
   * @param wikiGraph
   */
-class MultipleDistanceMeter(wikiGraph: WikiGraph) extends DistanceMeter(wikiGraph) {
+class MultipleDistanceMeter(wikiGraph: WikiGraph) {
+  val logger = LoggerFactory.getLogger(classOf[MultipleDistanceMeter])
+
+  val maxDistance = 3
 
   /**
     *
@@ -16,31 +21,44 @@ class MultipleDistanceMeter(wikiGraph: WikiGraph) extends DistanceMeter(wikiGrap
     * @param dstWikiIDs
     * @return dstNodeIDs mapped into the corresponding distance.
     */
-  def computeDistances(srcWikiID: Int, dstWikiIDs: List[Int]) : List[Int] = {
-    val bfs = computeBFS(wikiGraph.getNodeID(srcWikiID))
-    val distances = distanceMap(bfs)
+  def getDistances(srcWikiID: Int, dstWikiIDs: List[Int]) : Array[Int] = {
+    val srcNodeID = wikiGraph.getNodeID(srcWikiID)
 
-    dstWikiIDs.map(wikiID => distances.getOrDefault(wikiGraph.getNodeID(wikiID), -1).toInt).toList
-  }
+    val bfs = new ParallelBreadthFirstVisit(wikiGraph.graph, 0, false, null)
+    for (i <- 0 until maxDistance) bfs.visit(srcNodeID)
 
-  /**
-    *
-    * @param bfs
-    * @return Hash of {nodeID -> distance}
-    */
-  def distanceMap(bfs: ParallelBreadthFirstVisit) : Int2IntOpenHashMap = {
-    val distances = new Int2IntOpenHashMap()
+    val dstNodeIDs = dstWikiIDs.map(wikiID => wikiGraph.getNodeID(wikiID))
+    val nodeID2index = dstNodeIDs.zipWithIndex.toMap
+    val distances = Array.fill(dstNodeIDs.size)(-1)
 
-    for(distance <- 1 until bfs.cutPoints.size()- 1) {
+    var i = 0
+    var n = 0
+    for(nodeID <- bfs.queue.toIntArray()) {
 
-      val cutIndex = bfs.cutPoints.getInt(distance)
-      val cutIndexPlusOne = bfs.cutPoints.getInt(distance + 1)
-
-      for(nodeID <- bfs.queue.subList(cutIndex, cutIndexPlusOne).toIntArray()) {
-        distances.putIfAbsent(nodeID, distance)
+      if (nodeID2index.contains(nodeID)) {
+        val dstIndex = nodeID2index(nodeID)
+        distances(dstIndex) = index2Distance(bfs.cutPoints, i)
+        n += 1
       }
+
+      if (n == distances.size) return distances
+
+      i += 1
     }
 
     distances
   }
+
+
+  protected def index2Distance(cutPoints: IntArrayList, index: Int) : Int = {
+    for(distance <- 1 until cutPoints.size() - 1) {
+      val lower = cutPoints.getInt(distance)
+      val greater = cutPoints.getInt(distance + 1)
+
+      if(lower <= index && index < greater) return distance
+    }
+
+    -1
+  }
+
 }

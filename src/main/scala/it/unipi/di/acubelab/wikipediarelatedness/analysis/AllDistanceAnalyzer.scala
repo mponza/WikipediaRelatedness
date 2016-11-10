@@ -13,20 +13,20 @@ class AllDistanceAnalyzer(val dataset: RelatednessDataset, val wikiGraph: WikiGr
   def computeDistances(path: String) = {
     val writer = new PrintWriter(new File(path))
 
-    val sortedDataset = dataset.toList.sortBy(_.dst.wikiID).groupBy(_.src.wikiID)
+    val sortedDataset = dataset.toList.sortBy(_.dst.wikiID).groupBy(_.src.wikiID).toList.sortBy(_._2.size).reverse
     val distanceMeter = new MultipleDistanceMeter(wikiGraph)
 
-    logger.info("Computing distances...")
+    logger.info("Computing %d distances...".format(sortedDataset.map(_._2.size).sum))
     var i = 0
     sortedDataset.foreach {
       case (srcWikiID, wikiRelTasks) =>
         val dstWikiIDs = wikiRelTasks.map(_.dst.wikiID)
 
-        val distances = distanceMeter.computeDistances(srcWikiID, dstWikiIDs)
+        val distances =  distanceMeter.getDistances(srcWikiID, dstWikiIDs)
 
-        dstWikiIDs.foreach {
-          case wikiID =>
-            writer.write("%d %d\n".format(srcWikiID, wikiID))
+        dstWikiIDs.zipWithIndex.foreach {
+          case (wikiID, index) =>
+            writer.write("%d %d %d\n".format(srcWikiID, wikiID, distances(index)))
         }
 
         i += wikiRelTasks.size
