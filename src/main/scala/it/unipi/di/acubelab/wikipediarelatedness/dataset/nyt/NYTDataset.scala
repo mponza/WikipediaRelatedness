@@ -3,7 +3,6 @@ package it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt
 import java.io.File
 
 import com.github.tototoshi.csv.CSVReader
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiEntity, WikiRelateTask}
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -12,24 +11,20 @@ import scala.collection.mutable.ListBuffer
   * Warning: Alpha data. Use it only for statistics.
   * @param path
   */
-class NYTDataset(path: String) extends RelatednessDataset {
+class NYTDataset(path: String) extends Traversable[NYTTask] {
   val logger = LoggerFactory.getLogger(classOf[NYTDataset])
-  val wikiPairs = loadNYTPairs(path)
+  val nytPairs = loadNYTPairs(path)
 
 
-  def loadNYTPairs(path: String) : List[WikiRelateTask] = {
+  def loadNYTPairs(path: String) : List[NYTTask] = {
     logger.info("Loading NYT dataset %s...".format(path))
 
-    val pairs = ListBuffer.empty[WikiRelateTask]
+    val pairs = ListBuffer.empty[NYTTask]
     val csvReader = CSVReader.open(new File(path))
 
     csvReader.foreach {
       fields =>
-        val srcEntity = new WikiEntity(fields(0).toInt, fields(1).toString)
-        val dstEntity = new WikiEntity(fields(3).toInt, fields(4).toString)
-
-        val wikiPair = new WikiRelateTask(srcEntity, dstEntity, -1)
-        pairs += wikiPair
+        pairs += NYTTask.csv2NYTTask(fields)
     }
     csvReader.close()
 
@@ -39,8 +34,8 @@ class NYTDataset(path: String) extends RelatednessDataset {
   }
 
 
-  def foreach[U](f: (WikiRelateTask) => U) {
-    wikiPairs.foreach(wikiRelTask => f(wikiRelTask))
+  def foreach[U](f: (NYTTask) => U) {
+    nytPairs.foreach(nytTask => f(nytTask))
   }
 
 

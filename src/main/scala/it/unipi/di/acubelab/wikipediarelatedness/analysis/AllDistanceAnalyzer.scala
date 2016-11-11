@@ -3,12 +3,12 @@ package it.unipi.di.acubelab.wikipediarelatedness.analysis
 import java.io.{File, PrintWriter}
 
 import it.unimi.dsi.fastutil.ints.IntArrayList
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.RelatednessDataset
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.distance.MultipleDistanceMeter
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.LoggerFactory
 
-class AllDistanceAnalyzer(val dataset: RelatednessDataset, val wikiGraph: WikiGraph = WikiGraphFactory.outGraph)  {
+class AllDistanceAnalyzer(val dataset: NYTDataset, val wikiGraph: WikiGraph = WikiGraphFactory.outGraph)  {
   val logger = LoggerFactory.getLogger(classOf[AllDistanceAnalyzer])
 
   def computeDistances(path: String) = {
@@ -23,18 +23,21 @@ class AllDistanceAnalyzer(val dataset: RelatednessDataset, val wikiGraph: WikiGr
     val allDistances = new IntArrayList()
 
     sortedDataset.foreach {
-      case (srcWikiID, wikiRelTasks) =>
-        val dstWikiIDs = wikiRelTasks.map(_.dst.wikiID)
-
+      case (srcWikiID, nytTasks) =>
+        val dstWikiIDs = nytTasks.map(_.dst.wikiID)
         val distances =  distanceMeter.getDistances(srcWikiID, dstWikiIDs)
 
-        dstWikiIDs.zipWithIndex.foreach {
-          case (wikiID, index) =>
-            writer.write("%d %d %d\n".format(srcWikiID, wikiID, distances(index)))
-            allDistances.add(distances(index))
+        nytTasks.zipWithIndex.foreach {
+          case (nytTask, index) =>
+            val distance = distances(index)
+
+            nytTask.distance = distance
+            writer.write("%s".format(nytTask))
+
+            allDistances.add(distance)
         }
 
-        i += wikiRelTasks.size
+        i += nytTasks.size
         logger.info("%d distances computed.".format(i))
     }
 

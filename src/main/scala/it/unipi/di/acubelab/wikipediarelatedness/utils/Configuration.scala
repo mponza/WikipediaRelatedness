@@ -58,7 +58,9 @@ object Configuration {
 
     "localClustering" -> Paths.get(projDir, "/data/processing/wikipedia/localClustering").toString,
 
-    "esaCache" -> Paths.get(projDir, "/data/processing/wikipedia/ESACache").toString
+    "esaCache" -> Paths.get(projDir, "/data/processing/wikipedia/ESACache").toString,
+
+    "instance-types" -> getClass.getResource("/wikipedia/enwiki-20160305-instance-types-transitive.ttl.gz").getPath
 
   /*
     // Link Corpus and DeepWalk mixed.
