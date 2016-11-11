@@ -4,13 +4,14 @@ import java.io.PrintWriter
 import java.nio.file.Paths
 
 import it.unimi.dsi.webgraph.algo.StronglyConnectedComponents
-import it.unipi.di.acubelab.wikipediarelatedness.analysis.{AllDistanceAnalyzer, DistanceAnalyzer}
+import it.unipi.di.acubelab.wikipediarelatedness.analysis.{AllDistanceAnalyzer, DistanceAnalyzer, WikiEntityType}
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
 import it.unipi.di.acubelab.wikipediarelatedness.serialization.WikiMTX
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTypeMapping
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
@@ -294,23 +295,6 @@ object ESACacher {
 }
 
 
-
-object DistanceStats {
-  def main(args: Array[String]) = {
-    for(name <- List("ss", "ns", "nn")) {
-
-      for(graph <- List("outGraph", "symGraph")) {
-        val dataset = new NYTDataset(Configuration.nyt(name))
-        val distanceAnalyzer = new DistanceAnalyzer(dataset, WikiGraphFactory.makeWikiGraph(graph))
-
-        val path = Paths.get(Configuration.projDir, "/data/dataset/%s_%s_dist.csv".format(graph, name)).toString
-        distanceAnalyzer.computeDistances(path)
-      }
-    }
-  }
-}
-
-
 object AllDistances {
   def main(args: Array[String]) = {
 
@@ -355,8 +339,21 @@ object CC {
       case (ccsID, nodeIDs) => println("Component %d with size %d".format(ccsID, nodeIDs.length))
     }
   }
-
 }
+
+
+object Mapping  {
+  def main(args: Array[String]) = {
+
+    val b = WikiTypeMapping.types("Silvio_Berlusconi").toArray().map(_.toString).foreach(println(_))
+    println(WikiTypeMapping.types("New_York").toArray().map(_.toString).foreach(println(_)))
+  }
+}
+
+
+
+
+
 
 /*
 object WordBench {

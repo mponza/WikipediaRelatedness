@@ -1,6 +1,4 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping
-
-import java.io.FileInputStream
 import java.util.zip.GZIPInputStream
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
@@ -8,20 +6,27 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import scala.io.Source
 import java.io.{File, FileInputStream}
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
+import it.unimi.dsi.fastutil.io.BinIO
+import it.unimi.dsi.fastutil.objects.{Object2ObjectOpenHashMap, ObjectArrayList}
+import org.slf4j.LoggerFactory
 
-import scala.collection.mutable.ListBuffer
+
+class WikiTypeMapping {}
+
 
 object WikiTypeMapping {
+  val logger = LoggerFactory.getLogger(classOf[WikiTypeMapping])
+  protected val serializedPath = "/tmp/titleTypes.bin"
 
-  lazy val wikiTitle2Types = 3
-
-  def title2types() = {
-
-  }
+  protected lazy val wikiTitle2Types = loadMapping()
 
 
-  def loadMapping(path: String = Configuration.wikipedia("instance-types")) = {
+  protected def loadMapping(path: String = Configuration.wikipedia("instance-types"))
+      : Object2ObjectOpenHashMap[String, ObjectArrayList[String]] = {
+
+    if(new File(serializedPath).exists()) return BinIO.loadObject(serializedPath).asInstanceOf[Object2ObjectOpenHashMap[String, ObjectArrayList[String]]]
+
+    logger.info("Loading Wikipedia types...")
     val reader = Source.fromInputStream(
       new GZIPInputStream(
         new FileInputStream(
@@ -30,26 +35,35 @@ object WikiTypeMapping {
       )
     )
 
-    val wikiTitle2Types = new Object2ObjectOpenHashMap[String, ListBuffer[String]]()
+    val wikiTitle2Types = new Object2ObjectOpenHashMap[String, ObjectArrayList[String]]()
 
-    for(line <- reader.getLines().drop(1)) {
-      val fields = line.split(" ")
+    for(line <- reader.getLines().filter(!_.startsWith("#"))) {
+        val fields = line.split(" ")
 
-      val xmlTitle = getXMLFieldName(fields(0))
-      val xmlType = getXMLFieldName(fields(3))
+        val xmlTitle = getXMLFieldName(fields(0))
+        val xmlType = getXMLFieldName(fields(2))
 
-      wikiTitle2Types.putIfAbsent(xmlTitle, ListBuffer.empty[String])
-      wikiTitle2Types.get(xmlTitle) += xmlType
+        wikiTitle2Types.putIfAbsent(xmlTitle, new ObjectArrayList[String])
+        wikiTitle2Types.get(xmlTitle).add(xmlType)
+
     }
+    logger.info("Wikipedia types loaded.")
+
+    BinIO.storeObject(wikiTitle2Types, serializedPath)
+    wikiTitle2Types
   }
 
 
   /**
     * Example: input: <path/to/something/with/multiple/slashes/name> -> output: name
+    *
     * @param xmlString
     * @return
     */
   protected def getXMLFieldName(xmlString: String) = {
     xmlString.substring(xmlString.lastIndexOf("/") + 1, xmlString.indexOf(">"))
   }
+
+
+  def types(wikiTitle: String) = wikiTitle2Types.getOrDefault(wikiTitle, new ObjectArrayList[String])
 }
