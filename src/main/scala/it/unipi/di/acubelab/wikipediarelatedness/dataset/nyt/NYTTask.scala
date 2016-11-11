@@ -6,6 +6,8 @@ class NYTTask(val src: NYTEntity, val dst: NYTEntity, val cooccurrence: Int,
   override def toString() = "%s,%s,%d,%d".format(src, dst, cooccurrence)
 }
 
+
+
 object NYTTask {
 
   /**

@@ -10,6 +10,8 @@ import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.fastutil.objects.{Object2ObjectOpenHashMap, ObjectArrayList}
 import org.slf4j.LoggerFactory
 
+import scala.collection.immutable.HashSet
+
 
 class WikiTypeMapping {}
 
@@ -38,18 +40,22 @@ object WikiTypeMapping {
     val wikiTitle2Types = new Object2ObjectOpenHashMap[String, ObjectArrayList[String]]()
 
     for(line <- reader.getLines().filter(!_.startsWith("#"))) {
-        val fields = line.split(" ")
+      val fields = line.split(" ")
 
-        val xmlTitle = getXMLFieldName(fields(0))
-        val xmlType = getXMLFieldName(fields(2))
+      val xmlTitle = getXMLFieldName(fields(0))
+      val xmlOntology = getXMLFieldOntology(fields(2))
+      val xmlType = getXMLFieldName(fields(2))
 
+      if(xmlOntology.startsWith("dbpedia")) {
         wikiTitle2Types.putIfAbsent(xmlTitle, new ObjectArrayList[String])
         wikiTitle2Types.get(xmlTitle).add(xmlType)
+      }
 
     }
-    logger.info("Wikipedia types loaded.")
 
     BinIO.storeObject(wikiTitle2Types, serializedPath)
+    logger.info("Wikipedia types loaded and cached.")
+
     wikiTitle2Types
   }
 
@@ -64,6 +70,25 @@ object WikiTypeMapping {
     xmlString.substring(xmlString.lastIndexOf("/") + 1, xmlString.indexOf(">"))
   }
 
+  protected def getXMLFieldOntology(xmlString: String) = xmlString.split("/")(2)
+
 
   def types(wikiTitle: String) = wikiTitle2Types.getOrDefault(wikiTitle, new ObjectArrayList[String])
+
+
+  /**
+    *
+    * @param wikiTitle
+    * @return Wikipedia Type as {Person, Organization, Location, Object}
+    */
+  def typePerOrgLoc(wikiTitle: String) : String= {
+    val pol = HashSet("Person", "Organization", "Location")
+    val wikiTypes = types(wikiTitle)
+
+    for(i <- 0 until wikiTypes.size()) {
+      if (pol.contains(wikiTypes.get(i))) return wikiTypes.get(i)
+    }
+
+    "Object"
+  }
 }

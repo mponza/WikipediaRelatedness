@@ -1,10 +1,10 @@
 package it.unipi.di.acubelab.wikipediarelatedness
 
-import java.io.PrintWriter
+import java.io.{File, PrintWriter}
 import java.nio.file.Paths
 
 import it.unimi.dsi.webgraph.algo.StronglyConnectedComponents
-import it.unipi.di.acubelab.wikipediarelatedness.analysis.{AllDistanceAnalyzer, DistanceAnalyzer, WikiEntityType}
+import it.unipi.di.acubelab.wikipediarelatedness.analysis.{AllDistanceAnalyzer, DistanceAnalyzer, NYTMerger, WikiEntityType}
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
@@ -349,6 +349,28 @@ object Mapping  {
     println(WikiTypeMapping.types("New_York").toArray().map(_.toString).foreach(println(_)))
   }
 }
+
+
+
+
+object NYTMerging  {
+  def main(args: Array[String]) = {
+
+    for (name <- List("ss", "ns", "nn")) {
+
+
+      val dataset = new NYTDataset(Configuration.nyt(name))
+      val nytMerger = new NYTMerger(dataset, getDistanceFileName(name))
+      nytMerger.mergeNYTWithDistances(Configuration.nyt(name) + ".merged")
+    }
+  }
+
+
+  def getDistanceFileName(salience: String) = {
+    Paths.get(new File(salience).getParentFile.toString, "outGraph_%s_dist.csv".format(salience)).toString
+  }
+}
+
 
 
 

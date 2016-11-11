@@ -28,6 +28,7 @@ object WikiTitleID {
 
     if(new File(path).exists()) return BinIO.loadObject(serializedPath).asInstanceOf[Object2IntOpenHashMap[String]]
 
+
     logger.info("Loading Wikipedia title-ID mapping...")
     val wikiTitle2ID = new Object2IntOpenHashMap[String]
 
