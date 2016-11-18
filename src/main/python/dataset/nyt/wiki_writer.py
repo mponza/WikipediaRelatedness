@@ -32,10 +32,6 @@ class WikiPairWriter:
         # self.write_to_file(nn[0:100] + self.middle(nn) + nn[-100:], "nn.csv")
 
 
-    def middle(self, a):
-        return filter(lambda x: x.co_occurrence >= 10 and x.co_occurrence <= 100, a)[0:100]
-
-
     def write_to_file(self, pairs, filename):
         with open(os.path.join(self.dirpath, filename), "w") as f:
             for w in pairs:

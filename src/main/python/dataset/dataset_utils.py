@@ -13,3 +13,6 @@ NYT_DIR =  os.path.join(RESOURCES, 'nyt-salience') # directory with nyt-train an
 NYT_PAIRS_DIR = os.path.join(DATASET_DIR, 'nyt_wiki_pairs')  # directory which will contains ss.csv, ns.csv, nn.csv
 
 FB_WIKI =  os.path.join(RESOURCES, 'wikipedia/freebase-mapping.tsv')
+
+ENHANCED_NYT_DIR = os.path.join(NYT_PAIRS_DIR, 'enhanced')
+SAMPLE_NYT_DIR = os.path.join(DATASET_DIR, 'sample')

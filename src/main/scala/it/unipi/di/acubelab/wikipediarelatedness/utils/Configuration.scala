@@ -28,6 +28,12 @@ object Configuration {
     "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/nn.csv").toString
   )
 
+  lazy val nyt_enhanced = Map(
+    "ss" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/ss.csv").toString,
+    "ns" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/ns.csv").toString,
+    "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/nn.csv").toString
+  )
+
   lazy val ibmDir = getClass.getResource("/ibm").getPath
 
   lazy val wikipedia = Map(
