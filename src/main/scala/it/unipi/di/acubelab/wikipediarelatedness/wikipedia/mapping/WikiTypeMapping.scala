@@ -82,7 +82,7 @@ object WikiTypeMapping {
     * @return Wikipedia Type as {Person, Organization, Location, Object}
     */
   def typePerOrgLoc(wikiTitle: String) : String= {
-    val pol = HashSet("Person", "Organization", "Location")
+    val pol = HashSet("Person", "Organisation", "Location")
     val wikiTypes = types(wikiTitle)
 
     for(i <- 0 until wikiTypes.size()) {

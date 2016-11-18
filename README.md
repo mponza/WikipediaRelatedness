@@ -55,8 +55,9 @@ Enable virtualenv and install requirements:
 Warning: 'python' has to invoke the 2.7 interpreter.
 
 
-NYT Dataset
------------
+
+NYT Dataset Generation
+----------------------
 
 Download the Google's salience annotation of the NYT documents:
 
@@ -66,7 +67,28 @@ Generates pairs according with the NYT sampling:
 
     python src/python/dataset nyt_salience_dataset
     
-This will generate into `data/dataset/nyt-salience`
+This will generate into `data/dataset/nyt-salience` `ss.csv, ns.csv, nn.csv` files.
+
+
+
+Download Wikipedia types:
+
+    wget http://downloads.dbpedia.org/2015-10/core-i18n/en/instance_types_en.ttl.bz2 src/ src/main/resources/wikipedia
+
+And rename/compress it as `enwiki-20160305-instance-types-transitive-en.ttl.bz2`.
+
+
+Enhance the dataset with distance and type information using the utils you can find into the `wikipediarelatedness/mapping` package.
+
+After this step you have the `nyt-salience/*.csv` file with the following columns:
+
+    srcWikiID,srcWikiTitle,srcWikiType,srcNYTFreq,dstWikiID,dstWikiTitle,dstWikiType,dstNYTFreq,coocc,class,outDist,symDist
+        int        str         str         int       int       str          str         int      int   str   int     int
+
+where the label `class` is assigned accorded to the cooccurrence frequency (`head` >= 25, `middle` in [15, 25) and `tail` in (10, 15)).
+For balancing purpose, rows with cooccurrence <= 10 need to be removed.
+
+
 
 
 

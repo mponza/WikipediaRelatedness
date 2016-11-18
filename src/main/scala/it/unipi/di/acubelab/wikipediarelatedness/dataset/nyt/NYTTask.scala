@@ -1,9 +1,9 @@
 package it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt
 
 class NYTTask(val src: NYTEntity, val dst: NYTEntity, val cooccurrence: Int,
-               var distance: Int = Int.MinValue) {
+               var outDist: Int = Int.MinValue) {
 
-  override def toString() = "%s,%s,%d,%d".format(src, dst, cooccurrence)
+  override def toString() = "%s,%s,%d,%d".format(src, dst, cooccurrence, outDist)
 }
 
 

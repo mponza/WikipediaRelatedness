@@ -300,7 +300,7 @@ object AllDistances {
 
     for(name <- List("ss", "ns", "nn")) {
 
-      for(graph <- List("outGraph")) {
+      for(graph <- List("symGraph")) {
 
         val dataset = new NYTDataset(Configuration.nyt(name))
         val distanceAnalyzer = new AllDistanceAnalyzer(dataset, WikiGraphFactory.makeWikiGraph(graph))
@@ -357,17 +357,17 @@ object NYTMerging  {
   def main(args: Array[String]) = {
 
     for (name <- List("ss", "ns", "nn")) {
-
-
       val dataset = new NYTDataset(Configuration.nyt(name))
-      val nytMerger = new NYTMerger(dataset, getDistanceFileName(name))
+      val nytMerger = new NYTMerger(dataset, getDistanceFileName(Configuration.nyt(name)))
       nytMerger.mergeNYTWithDistances(Configuration.nyt(name) + ".merged")
     }
   }
 
 
+
   def getDistanceFileName(salience: String) = {
-    Paths.get(new File(salience).getParentFile.toString, "outGraph_%s_dist.csv".format(salience)).toString
+    val sal = salience.splitAt(salience.lastIndexOf("/") + 1)._2.split("\\.")(0)
+    Paths.get(new File(salience).getParentFile.toString, "/distances/sym/symGraph_%s_dist.csv".format(sal)).toString
   }
 }
 

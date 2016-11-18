@@ -9,9 +9,74 @@ import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-class NYTMerger(val dataset: NYTDataset, val pairDistanceFile: String) {
-  val logger = LoggerFactory.getLogger(classOf[AllDistanceAnalyzer])
+class GenerateNYTPreSampling(val dataset: NYTDataset, val outDistanceFile: String, val symDistanceFile: String) {
 
+  val logger = LoggerFactory.getLogger(classOf[GenerateNYTPreSampling])
+
+  val outDistances = loadMappingDistances(outDistances)
+  val symDistances = loadMappingDistances(symDistances)
+
+
+  def loadMappingDistances(path: String) = {
+    logger.info("Loading distances from %s...".format(path))
+
+    val distances = new Object2IntOpenHashMap[Tuple2[Int, Int]]()
+
+    for (line <- Source.fromFile(path).getLines()) {
+      val fields = line.split(" ")
+
+      distances.put(Tuple2(fields(0).toInt, fields(1).toInt), fields(2).toInt)
+    }
+
+    logger.info("Distances loaded.")
+
+    distances
+  }
+
+
+
+  def enhanceDataset(path: String) = {
+    val writer = new PrintWriter(new File(path))
+
+    writer.write("srcWikiID,srcWikiTitle,srcWikiType,srcNYTFreq,dstWikiID,dstWikiTitle,dstWikiType,dstNYTFreq,coocc,class,outDist,symDist\n")
+
+    dataset.foreach {
+      case nytTask =>
+
+        if (nytTask.cooccurrence > 10) {
+
+          writer.write("%d,\"%s\",\"%s\",%d,%d,\"%s\",\"%s\",%d,%d,%s,%d,%d\n".format(
+
+                  nytTask.src.wikiID, nytTask.src.wikiTitle, WikiTypeMapping.typePerOrgLoc(nytTask.src.wikiTitle), nytTask.src.frequency,
+                  nytTask.dst.wikiID, nytTask.dst.wikiTitle, WikiTypeMapping.typePerOrgLoc(nytTask.dst.wikiTitle), nytTask.dst.frequency,
+
+                  nytTask.cooccurrence, coocc2Label(nytTask.cooccurrence),
+
+                  outDistances.getInt((nytTask.src.wikiID, nytTask.dst.wikiID)),
+                  symDistances.getInt((nytTask.src.wikiID, nytTask.dst.wikiID))
+              )
+          )
+        }
+    }
+  }
+
+
+  def coocc2Label(cooccurrence: Int) : String = {
+    if (cooccurrence < 15) return "tail"
+    if (cooccurrence < 25) return "middle"
+    "head"
+  }
+
+
+}
+
+
+
+/*
+*
+*
+*
+*
 
   def mergeNYTWithDistances(outputPath: String) = {
     val distances = loadMappingDistances()
@@ -62,12 +127,6 @@ class NYTMerger(val dataset: NYTDataset, val pairDistanceFile: String) {
     logger.info("Distances loaded.")
 
     distances
-  }
-}
-
-
-
-/*
 *
 class AllDistanceAnalyzer(val dataset: NYTDataset, val wikiGraph: WikiGraph = WikiGraphFactory.outGraph)  {
   val logger = LoggerFactory.getLogger(classOf[AllDistanceAnalyzer])
@@ -92,7 +151,7 @@ class AllDistanceAnalyzer(val dataset: NYTDataset, val wikiGraph: WikiGraph = Wi
           case (nytTask, index) =>
             val distance = distances(index)
 
-            nytTask.distance = distance
+            nytTask.outDist = distance
             writer.write("%s".format(nytTask))
 
             allDistances.add(distance)
@@ -110,6 +169,26 @@ class AllDistanceAnalyzer(val dataset: NYTDataset, val wikiGraph: WikiGraph = Wi
     // Statistics
 
     val distances = allDistances.toIntArray().toList
-    logger.info("Nodes not too far %d".format(distances.count(_ < 0))
+    logger.info("Nodes not too far %d".format(distances.count(_ < 0)))
+
+    val reachedDistances = distances.filter(_ >= 0)
+    logger.info("Distance statistics")
+    logger.info("Min %d".format(reachedDistances.min))
+    logger.info("Max %d".format(reachedDistances.max))
+
+    logger.info("AVG %1.2f".format(reachedDistances.sum / reachedDistances.size.toFloat))
+    logger.info("StdDev %1.2f".format(standardDeviation(reachedDistances)))
+  }
+
+
+  protected def standardDeviation(ints: List[Int]) : Float = {
+    val avg = ints.sum / ints.size.toFloat
+
+    val powSum = ints.map(n => Math.pow(n - avg, 2.0)).sum.toFloat
+    powSum / ints.size.toFloat
+  }
+
+}
+*
 *
 * */
