@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory
 
 class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Relatedness) {
   val logger = LoggerFactory.getLogger(classOf[RelatednessBenchmark])
-  val relatednessDirectory = Paths.get(Configuration.benchmark, relatedness.toString).toString
+  val relatednessDirectory = Paths.get(Paths.get(Configuration.benchmark, dataset.toString()).toString,
+                                        relatedness.toString).toString
 
   /**
     * Computes relatedness measure on dataset.

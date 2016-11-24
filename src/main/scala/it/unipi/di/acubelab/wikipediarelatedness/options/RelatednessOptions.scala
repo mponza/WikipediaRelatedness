@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.options
 
 
 class RelatednessOptions(val json: Option[Any]) {
-  val relatedness = getString("relatedness")
+  //val relatedness = getString("relatedness")
 
   def getString(key: String, default: String = null) : String = {
     json match {

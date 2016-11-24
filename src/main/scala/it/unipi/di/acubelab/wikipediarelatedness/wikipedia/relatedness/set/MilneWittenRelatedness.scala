@@ -6,7 +6,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.g
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
-class MilneWittenRelatedness(options: MilneWittenOptions) extends Relatedness {
+class MilneWittenRelatedness(options: MilneWittenOptions = new MilneWittenOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[MilneWittenRelatedness])
 
   val wikiGraph = WikiGraphFactory.makeWikiGraph(options.graph)

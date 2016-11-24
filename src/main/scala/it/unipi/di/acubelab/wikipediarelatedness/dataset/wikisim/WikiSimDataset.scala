@@ -4,12 +4,13 @@ import java.io.File
 
 import com.github.tototoshi.csv.CSVReader
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiEntity, WikiRelateTask}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
 
 
-class WikiSimDataset(path: String) extends RelatednessDataset {
+class WikiSimDataset(path: String = Configuration.dataset("procWikiSim")) extends RelatednessDataset {
   val logger = LoggerFactory.getLogger(classOf[WikiSimDataset])
   val wikiPairs = loadWikiPairs(path)
 
