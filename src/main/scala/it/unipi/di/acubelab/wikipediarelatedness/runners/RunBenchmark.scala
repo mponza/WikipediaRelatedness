@@ -27,12 +27,16 @@ class RunBenchmark {
 
     for (relatedness <- methods()) {
 
-      logger.info("%s Benchmark".format(relatedness.toString()))
-      logger.info("Standard Relatedness Benchmarking...")
+      try {
+        logger.info("%s Benchmark".format(relatedness.toString()))
+        logger.info("Standard Relatedness Benchmarking...")
 
-      val bench = new RelatednessBenchmark(wire, relatedness)
-      bench.runBenchmark()
-      ranks += Tuple2(bench.getPerformance(), relatedness.toString())
+        val bench = new RelatednessBenchmark(wire, relatedness)
+        bench.runBenchmark()
+        ranks += Tuple2(bench.getPerformance(), relatedness.toString())
+      } catch {
+        case e : Exception => logger.error("Error while computing %s relatedness.".format(relatedness.toString()))
+      }
 
       //logger.info("Approximated Relatedness Benchmarking...")
       //new ApproxRelatednessBenchmark(wire, relatedness).runBenchmark()
@@ -41,10 +45,11 @@ class RunBenchmark {
     val sortedRanks = ranks.sortBy(corrsName => corrsName._1(2))
                           .map(corrsName => "[H: %1.2f, P: %1.2f, S: %1.2f] %s"
                               .format(corrsName._1(2), corrsName._1(0), corrsName._1(1),
-                                corrsName._2.toString)).reversed
+                                corrsName._2.toString)).reverse
 
+    logger.info("-------------------------")
     logger.info("Final Relatedness Ranking")
-    logger.info(sortedRanks mkString "\n")
+    logger.info("\n" + (sortedRanks mkString "\n"))
   }
 
 
@@ -54,30 +59,32 @@ class RunBenchmark {
       new MilneWittenRelatedness( new MilneWittenOptions(Some(Map("graph" -> "inGraph"))) ),
 
       new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "inGraph"))) ),
-      new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "outGraph"))) ),
+      new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "outGraph"))) )
 
-      new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "corpus"))) ),
-      new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "deepWalk"))) )
+      //new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "corpus"))) ),
+      //new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "deepWalk"))) )
+      //new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "sg"))) ),
+      //new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "dwsg"))) )
     )
-/*
+
     // ESA
     for {
       threshold <- List(625, 650, 1000, 2000, 3000)
     } {
-      relatednessMethods += new ESARelatedness( new ESAOptions(Some(Map("threshold" -> threshold))) )
+      relatednessMethods += new ESARelatedness( new ESAOptions(Some(Map("threshold" -> threshold.toDouble))) )
     }
 
     // PageRank based
     for (decay <- List(0.8, 0.9, 1.0)) {
-      val csrOptions = new CoSimRankOptions(Some(Map("iterations" -> 30, "pprDecay" -> decay, "csrDecay" -> decay)))
+      val csrOptions = new CoSimRankOptions(Some(Map("iterations" -> 30.toDouble, "pprDecay" -> decay, "csrDecay" -> decay)))
       relatednessMethods += new CoSimRankRelatedness()
 
-      val pprOptions = new PPRCosOptions(Some(Map("iterations" -> 30, "pprDecay" -> decay)))
+      val pprOptions = new PPRCosOptions(Some(Map("iterations" -> 30.toDouble, "pprDecay" -> decay)))
       relatednessMethods += new PPRCosRelatedness(pprOptions)
     }
 
-*/
-    relatednessMethods.toList
+
+    relatednessMethods
   }
 
 }

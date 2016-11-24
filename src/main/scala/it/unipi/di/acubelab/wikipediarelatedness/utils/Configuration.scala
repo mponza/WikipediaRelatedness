@@ -74,7 +74,10 @@ object Configuration {
     "esaCache" -> Paths.get(projDir, "/data/processing/wikipedia/ESACache").toString,
 
     "instance-types" -> getClass.getResource("/wikipedia/enwiki-20160305-instance-types-transitive.ttl.gz").getPath,
-    "title-id" -> getClass.getResource("/wikipedia/freebase-mapping.tsv").getPath
+    "title-id" -> getClass.getResource("/wikipedia/freebase-mapping.tsv").getPath,
+
+    "dwsg" -> getClass.getResource("/w2v/wikipedia-w2v-sg-el-deepWalk.w2v.bin").getPath,
+    "sg" -> getClass.getResource("/w2v/wikipedia-w2v-sg-et.w2v.bin").getPath
 
     /*
       // Link Corpus and DeepWalk mixed.
