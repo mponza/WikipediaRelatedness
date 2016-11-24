@@ -12,7 +12,7 @@ import java.nio.file.Paths
 object Configuration {
 
   val wat = "http://wat.mkapp.it/wikidocs?lang=en"
-  val cosimrank = "http://localhost:5555"
+  val cosimrank = "http://127.0.0.1:9080"
   val subgraphThreshold = 4000
 
   val projDir = System.getProperty("user.dir")
@@ -25,7 +25,16 @@ object Configuration {
   lazy val nyt = Map(
     "ss" -> Paths.get(projDir, "/data/dataset/nyt/ss.csv").toString,
     "ns" -> Paths.get(projDir, "/data/dataset/nyt/ns.csv").toString,
-    "nn" -> Paths.get(projDir, "/data/dataset/nyt/nn.csv").toString
+    "nn" -> Paths.get(projDir, "/data/dataset/nyt/nn.csv").toString,
+    "ss" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/ss.csv").toString,
+    "ns" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/ns.csv").toString,
+    "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/nn.csv").toString
+  )
+
+  lazy val nyt_enhanced = Map(
+    "ss" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/ss.csv").toString,
+    "ns" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/ns.csv").toString,
+    "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/nn.csv").toString
   )
 
   lazy val ibmDir = getClass.getResource("/ibm").getPath
@@ -33,6 +42,8 @@ object Configuration {
   lazy val wikipedia = Map(
     "wikiLinks" -> getClass.getResource("/wikipedia/wiki-links-sorted.gz").getPath,
     "linkCorpus" -> getClass.getResource("/wikipedia/wikipedia-w2v-linkCorpus.json.gz").getPath,
+
+    "distances" -> Paths.get(projDir, "/data/processing/wikipedia/distances").toString,
 
     "lucene" -> Paths.get(projDir, "/data/processing/wikipedia/lucene").toString,
 
@@ -56,28 +67,31 @@ object Configuration {
 
     "localClustering" -> Paths.get(projDir, "/data/processing/wikipedia/localClustering").toString,
 
-    "esaCache" -> Paths.get(projDir, "/data/processing/wikipedia/ESACache").toString
+    "esaCache" -> Paths.get(projDir, "/data/processing/wikipedia/ESACache").toString,
 
-  /*
-    // Link Corpus and DeepWalk mixed.
-    "deepCorpus" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin").getPath,
-    "coOccurrence" -> getClass.getResource("/w2v/wikipedia-w2v-coOccurrence.e0.100.tr.bin").getPath,
+    "instance-types" -> getClass.getResource("/wikipedia/enwiki-20160305-instance-types-transitive.ttl.gz").getPath,
+    "title-id" -> getClass.getResource("/wikipedia/freebase-mapping.tsv").getPath
 
-    "el-1st-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st-deepWalk.w2v.bin").getPath,
-    "el-1st" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st.w2v.bin").getPath,
-    "el-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk.w2v.bin").getPath,
+    /*
+      // Link Corpus and DeepWalk mixed.
+      "deepCorpus" -> getClass.getResource("/w2v/wikipedia-w2v-deepWalkMixed.e0.100.tr.bin").getPath,
+      "coOccurrence" -> getClass.getResource("/w2v/wikipedia-w2v-coOccurrence.e0.100.tr.bin").getPath,
 
-    "dw10" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.10.w2v.bin").getPath,
-    "dw30" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.30.w2v.bin").getPath,
-    "dw50" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.50.w2v.bin").getPath,
-    "dw70" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.70.w2v.bin").getPath,
-    "dw90" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.90.w2v.bin").getPath,
+      "el-1st-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st-deepWalk.w2v.bin").getPath,
+      "el-1st" -> getClass.getResource("/w2v/wikipedia-w2v-el-1st.w2v.bin").getPath,
+      "el-dw" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk.w2v.bin").getPath,
 
-    "dwsg" -> getClass.getResource("/w2v/wikipedia-w2v-sg-el-deepWalk.w2v.bin").getPath,
-    "sg" -> getClass.getResource("/w2v/wikipedia-w2v-sg-et.w2v.bin").getPath,
+      "dw10" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.10.w2v.bin").getPath,
+      "dw30" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.30.w2v.bin").getPath,
+      "dw50" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.50.w2v.bin").getPath,
+      "dw70" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.70.w2v.bin").getPath,
+      "dw90" -> getClass.getResource("/w2v/wikipedia-w2v-el-deepWalk-0.90.w2v.bin").getPath,
+
+      "dwsg" -> getClass.getResource("/w2v/wikipedia-w2v-sg-el-deepWalk.w2v.bin").getPath,
+      "sg" -> getClass.getResource("/w2v/wikipedia-w2v-sg-et.w2v.bin").getPath,
 
 
-    "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath*/
+      "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath*/
   )
 
   val benchmark =  Paths.get(projDir, "/data/benchmark").toString
