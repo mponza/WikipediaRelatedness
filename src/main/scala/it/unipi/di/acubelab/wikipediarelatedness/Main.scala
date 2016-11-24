@@ -6,7 +6,7 @@ import java.nio.file.Paths
 import it.unimi.dsi.webgraph.algo.StronglyConnectedComponents
 import it.unipi.di.acubelab.wikipediarelatedness.analysis._
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.WiReDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
 import it.unipi.di.acubelab.wikipediarelatedness.serialization.WikiMTX
@@ -302,7 +302,7 @@ object AllDistances {
 
       for(graph <- List("symGraph")) {
 
-        val dataset = new NYTDataset(Configuration.nyt(name))
+        val dataset = new WiReDataset(Configuration.nyt(name))
         val distanceAnalyzer = new AllDistanceAnalyzer(dataset, WikiGraphFactory.makeWikiGraph(graph))
 
         val path = "/tmp/%s_%s_dist.csv".format(graph, name)
@@ -357,7 +357,7 @@ object NYTMerging  {
   def main(args: Array[String]) = {
 
     for (name <- List("ss", "ns", "nn")) {
-      val dataset = new NYTDataset(Configuration.nyt(name))
+      val dataset = new WiReDataset(Configuration.nyt(name))
       val nytMerger = new NYTMerger(dataset, getDistanceFileName(Configuration.nyt(name)))
       nytMerger.mergeNYTWithDistances(Configuration.nyt(name) + ".merged")
     }
@@ -378,7 +378,7 @@ object PreSampling {
       //}, "ns", "nn")) {
       val salience = Configuration.nyt(name)
 
-      val dataset = new NYTDataset(Configuration.nyt(name))
+      val dataset = new WiReDataset(Configuration.nyt(name))
       val dists = getDistanceFileName(name)
       println(dists)
       val generator = new GenerateNYTPreSampling(dataset, dists._1, dists._2)

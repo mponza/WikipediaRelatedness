@@ -2,13 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.utils
 
 import java.nio.file.Paths
 
-/**
-  * TODO: create reference.conf file in /resources directory.
-  *       0. Create a conf file with not absolute paths.
-  *       1. Use ConfFactory and load conf file.
-  *       2. Parse it and extend specific file with projDir paths.
-  *
-  */
+
 object Configuration {
 
   val wat = "http://wat.mkapp.it/wikidocs?lang=en"
@@ -22,16 +16,10 @@ object Configuration {
     "procWikiSim" -> Paths.get(projDir, "/data/dataset/wikiSim411.csv").toString
   )
 
-  lazy val nyt = Map(
-    "ss" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/ss.csv").toString,
-    "ns" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/ns.csv").toString,
-    "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/nn.csv").toString
-  )
-
-  lazy val nyt_enhanced = Map(
-    "ss" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/ss.csv").toString,
-    "ns" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/ns.csv").toString,
-    "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/nn.csv").toString
+  lazy val wirePiPz = Map(
+    "ss" -> getClass.getResource("/wire/pipz.ss.csv").toString,
+    "ns" -> getClass.getResource("/wire/pipz.ss.csv").toString,
+    "nn" -> getClass.getResource("/wire/pipz.ss.csv").toString
   )
 
   lazy val ibmDir = getClass.getResource("/ibm").getPath

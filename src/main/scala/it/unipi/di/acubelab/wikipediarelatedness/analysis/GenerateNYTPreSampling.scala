@@ -3,13 +3,13 @@ package it.unipi.di.acubelab.wikipediarelatedness.analysis
 import java.io.{File, PrintWriter}
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.WiReDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTypeMapping
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-class GenerateNYTPreSampling(val dataset: NYTDataset, val outDistanceFile: String, val symDistanceFile: String) {
+class GenerateNYTPreSampling(val dataset: WiReDataset, val outDistanceFile: String, val symDistanceFile: String) {
 
   val logger = LoggerFactory.getLogger(classOf[GenerateNYTPreSampling])
 

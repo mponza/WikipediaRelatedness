@@ -3,13 +3,13 @@ package it.unipi.di.acubelab.wikipediarelatedness.analysis
 import java.io.{File, PrintWriter}
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.WiReDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTypeMapping
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-class NYTMerger(val dataset: NYTDataset, val pairDistanceFile: String) {
+class NYTMerger(val dataset: WiReDataset, val pairDistanceFile: String) {
   val logger = LoggerFactory.getLogger(classOf[AllDistanceAnalyzer])
 
 
