@@ -21,7 +21,7 @@ object NYTTask {
     val dstEntity = new NYTEntity(csvrow(3).toInt, csvrow(4).toString, csvrow(5).toInt)
 
     val cooccurrence = csvrow(6).toInt
-    val distance = if(csvrow.length < 8) Int.MinValue else csvrow(7).toInt
+    val distance = Int.MinValue // if(csvrow.length < 8) Int.MinValue else csvrow(7).toInt
 
     new NYTTask(srcEntity, dstEntity, cooccurrence, distance)
   }

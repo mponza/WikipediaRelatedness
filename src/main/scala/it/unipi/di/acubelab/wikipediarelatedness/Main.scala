@@ -4,7 +4,7 @@ import java.io.{File, PrintWriter}
 import java.nio.file.Paths
 
 import it.unimi.dsi.webgraph.algo.StronglyConnectedComponents
-import it.unipi.di.acubelab.wikipediarelatedness.analysis.{AllDistanceAnalyzer, DistanceAnalyzer, NYTMerger, WikiEntityType}
+import it.unipi.di.acubelab.wikipediarelatedness.analysis._
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
@@ -372,7 +372,30 @@ object NYTMerging  {
 }
 
 
+object PreSampling {
+  def main(args: Array[String]) = {
+    for (name <- List("ns")) {
+      //}, "ns", "nn")) {
+      val salience = Configuration.nyt(name)
 
+      val dataset = new NYTDataset(Configuration.nyt(name))
+      val dists = getDistanceFileName(name)
+      println(dists)
+      val generator = new GenerateNYTPreSampling(dataset, dists._1, dists._2)
+      generator.enhanceDataset(Configuration.nyt_enhanced(name))
+    }
+  }
+
+
+  def getDistanceFileName(salience: String) = {
+    val sal = salience.splitAt(salience.lastIndexOf("/") + 1)._2.split("\\.")(0)
+
+    val n = Paths.get(new File(Configuration.nyt(salience)).getParentFile.toString, "/distances/out/outGraph_%s_dist.csv".format(sal)).toString
+    val m = Paths.get(new File(Configuration.nyt(salience)).getParentFile.toString, "/distances/sym/symGraph_%s_dist.csv".format(sal)).toString
+
+    (n, m)
+  }
+}
 
 
 

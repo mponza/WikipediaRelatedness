@@ -13,8 +13,8 @@ class GenerateNYTPreSampling(val dataset: NYTDataset, val outDistanceFile: Strin
 
   val logger = LoggerFactory.getLogger(classOf[GenerateNYTPreSampling])
 
-  val outDistances = loadMappingDistances(outDistances)
-  val symDistances = loadMappingDistances(symDistances)
+  val outDistances = loadMappingDistances(outDistanceFile)
+  val symDistances = loadMappingDistances(symDistanceFile)
 
 
   def loadMappingDistances(path: String) = {
@@ -38,12 +38,13 @@ class GenerateNYTPreSampling(val dataset: NYTDataset, val outDistanceFile: Strin
   def enhanceDataset(path: String) = {
     val writer = new PrintWriter(new File(path))
 
-    writer.write("srcWikiID,srcWikiTitle,srcWikiType,srcNYTFreq,dstWikiID,dstWikiTitle,dstWikiType,dstNYTFreq,coocc,class,outDist,symDist\n")
+    writer.write("srcWikiID,srcWikiTitle,srcWikiType,srcNYTFreq,dstWikiID,dstWikiTitle,dstWikiType,dstNYTFreq,coocc,label,outDist,symDist\n")
 
     dataset.foreach {
       case nytTask =>
 
         if (nytTask.cooccurrence > 10) {
+
 
           writer.write("%d,\"%s\",\"%s\",%d,%d,\"%s\",\"%s\",%d,%d,%s,%d,%d\n".format(
 
@@ -56,8 +57,12 @@ class GenerateNYTPreSampling(val dataset: NYTDataset, val outDistanceFile: Strin
                   symDistances.getInt((nytTask.src.wikiID, nytTask.dst.wikiID))
               )
           )
+
+
         }
     }
+    writer.flush()
+    writer.close()
   }
 
 
