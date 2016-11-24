@@ -1,16 +1,22 @@
 package it.unipi.di.acubelab.wikipediarelatedness
 
-import java.io.PrintWriter
+import java.io.{File, PrintWriter}
+import java.nio.file.Paths
 
+import it.unimi.dsi.webgraph.algo.StronglyConnectedComponents
+import it.unipi.di.acubelab.wikipediarelatedness.analysis._
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.nyt.NYTDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
+import it.unipi.di.acubelab.wikipediarelatedness.serialization.WikiMTX
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTypeMapping
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.triangles.LocalClusteringProcessing
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WebGraphProcessor
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WebGraphProcessor, WikiGraphFactory}
 
 import scala.collection.mutable.ListBuffer
 
@@ -279,7 +285,7 @@ object ClustProcessing {
 }
 
 
-object ESACache {
+object ESACacher {
   def main(args: Array[String]) = {
     val esaCache = new ESACache()
     val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
@@ -287,6 +293,111 @@ object ESACache {
     esaCache.generateCache(dataset.toList)
   }
 }
+
+
+object AllDistances {
+  def main(args: Array[String]) = {
+
+    for(name <- List("ss", "ns", "nn")) {
+
+      for(graph <- List("symGraph")) {
+
+        val dataset = new NYTDataset(Configuration.nyt(name))
+        val distanceAnalyzer = new AllDistanceAnalyzer(dataset, WikiGraphFactory.makeWikiGraph(graph))
+
+        val path = "/tmp/%s_%s_dist.csv".format(graph, name)
+        distanceAnalyzer.computeDistances(path)
+      }
+    }
+  }
+
+}
+
+
+object MTX  {
+  def main(args: Array[String]) = {
+    val mtx = new WikiMTX("/data/ponza/graph")
+    mtx.serializeGraph()
+    mtx.serializeDictionary()
+  }
+}
+
+
+
+object CC {
+  def main(args: Array[String]) = {
+    val scc = StronglyConnectedComponents.compute(WikiGraphFactory.outGraph.graph, false, null)
+
+    println("Number of components: %d".format(scc.numberOfComponents))
+
+
+    val sccs = scc.component.zipWithIndex.groupBy {
+      case (ccID, nodeID) => ccID
+    }.toList.sortBy(_._2.length).reverse
+
+    sccs.slice(0, 1000).foreach {
+      case (ccsID, nodeIDs) => println("Component %d with size %d".format(ccsID, nodeIDs.length))
+    }
+  }
+}
+
+
+object Mapping  {
+  def main(args: Array[String]) = {
+
+    val b = WikiTypeMapping.types("Silvio_Berlusconi").toArray().map(_.toString).foreach(println(_))
+    println(WikiTypeMapping.types("New_York").toArray().map(_.toString).foreach(println(_)))
+  }
+}
+
+
+
+
+object NYTMerging  {
+  def main(args: Array[String]) = {
+
+    for (name <- List("ss", "ns", "nn")) {
+      val dataset = new NYTDataset(Configuration.nyt(name))
+      val nytMerger = new NYTMerger(dataset, getDistanceFileName(Configuration.nyt(name)))
+      nytMerger.mergeNYTWithDistances(Configuration.nyt(name) + ".merged")
+    }
+  }
+
+
+
+  def getDistanceFileName(salience: String) = {
+    val sal = salience.splitAt(salience.lastIndexOf("/") + 1)._2.split("\\.")(0)
+    Paths.get(new File(salience).getParentFile.toString, "/distances/sym/symGraph_%s_dist.csv".format(sal)).toString
+  }
+}
+
+
+object PreSampling {
+  def main(args: Array[String]) = {
+    for (name <- List("ns")) {
+      //}, "ns", "nn")) {
+      val salience = Configuration.nyt(name)
+
+      val dataset = new NYTDataset(Configuration.nyt(name))
+      val dists = getDistanceFileName(name)
+      println(dists)
+      val generator = new GenerateNYTPreSampling(dataset, dists._1, dists._2)
+      generator.enhanceDataset(Configuration.nyt_enhanced(name))
+    }
+  }
+
+
+  def getDistanceFileName(salience: String) = {
+    val sal = salience.splitAt(salience.lastIndexOf("/") + 1)._2.split("\\.")(0)
+
+    val n = Paths.get(new File(Configuration.nyt(salience)).getParentFile.toString, "/distances/out/outGraph_%s_dist.csv".format(sal)).toString
+    val m = Paths.get(new File(Configuration.nyt(salience)).getParentFile.toString, "/distances/sym/symGraph_%s_dist.csv".format(sal)).toString
+
+    (n, m)
+  }
+}
+
+
 
 
 /*

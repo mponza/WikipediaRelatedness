@@ -24,6 +24,10 @@ Resources files:
  * Language Model:
 
         languageModel/wiki.binary
+        
+ * Freebase-Wikipedia mapping:
+ 
+        src/main/resources/wikipedia/freebase-mapping.tsv
 
 
 Setting Up
@@ -34,10 +38,62 @@ Remove `webgraph`, `fastutil` and `sux4j` from  the `law-deps` directory.
 
 If you are planning to use `CoSimRank`, please download [CoSimRankServer](https://github.com/mponza/CoSimRankServer) in the `lib` directory.
    
+   
+   
+Python Configuration
+--------------------
+
 Some parts require Python processing, so I recommend to install some virtualization tool, like [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/), before installing the corresponding dependencies.
 
+Enable virtualenv and install requirements:
+    
+    virtualenv venv
+    source venv/bin/activate
+    
+    pip install -r src/main/python/latent/requirements.txt
+    
+Warning: 'python' has to invoke the 2.7 interpreter.
 
-   
+
+
+NYT Dataset Generation
+----------------------
+
+Download the Google's salience annotation of the NYT documents:
+
+    git clone https://github.com/dmorr-google/nyt-salience.git data/dataset/
+    
+Generates pairs according with the NYT sampling:
+
+    python src/python/dataset nyt_salience_dataset
+    
+This will generate into `data/dataset/nyt-salience` `ss.csv, ns.csv, nn.csv` files.
+
+
+
+Download Wikipedia types:
+
+    wget http://downloads.dbpedia.org/2015-10/core-i18n/en/instance_types_en.ttl.bz2 src/ src/main/resources/wikipedia
+
+And rename/compress it as `enwiki-20160305-instance-types-transitive-en.ttl.bz2`.
+
+
+Enhance the dataset with distance and type information using the utils you can find into the `wikipediarelatedness/mapping` package.
+
+After this step you have the `nyt-salience/*.csv` file with the following columns:
+
+    srcWikiID,srcWikiTitle,srcWikiType,srcNYTFreq,dstWikiID,dstWikiTitle,dstWikiType,dstNYTFreq,coocc,class,outDist,symDist
+        int        str         str         int       int       str          str         int      int   str   int     int
+
+where the label `class` is assigned accorded to the cooccurrence frequency (`head` >= 25, `middle` in [15, 25) and `tail` in (10, 15)).
+For balancing purpose, rows with cooccurrence <= 10 need to be removed.
+
+
+
+
+
+
+
 WebGraph Processing
 -------------------
 
@@ -50,11 +106,6 @@ LLP: tobedone
 Latent Semantic Processing
 --------------------------
 
-Enable virtualenv and install requirements:
-    
-    virtualenv venv
-    source venv/bin/activate
-    pip install -r src/main/python/latent/requirements.txt
 
 Generates statistical information from the Wikipedia corpus:
     
@@ -107,7 +158,7 @@ Explicit Semantic Processing
 Clustering Coefficient Processing
 ---------------------------------
 
-Download `triangles-1.1.jar` into `lib/triangle` folder.
+Download `triangles-1.1.jar` from `LAW` into `lib/triangle` folder.
 
     
 

@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.classifiers
 
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiClassTask
-import smile.classification.LogisticRegression
+// import smile.classification.LogisticRegression
 
 class LogisticRegressor(val lambda: Double) extends Classifier {
 
@@ -9,9 +9,11 @@ class LogisticRegressor(val lambda: Double) extends Classifier {
     val (trainFeatures, trainLables) = toFeatureLables(train)
     val (testFeatures, testLables) = toFeatureLables(test)
 
-    val lg = new LogisticRegression(trainFeatures, trainLables)
 
-    testFeatures.map(lg.predict(_)).toList
+    List(0)
+    //val lg = new LogisticRegression(trainFeatures, trainLables)
+
+    //testFeatures.map(fs => lg.predict(fs)).toList
   }
 
 
@@ -25,5 +27,5 @@ class LogisticRegressor(val lambda: Double) extends Classifier {
 
 
 object LogisticRegressor {
-  val gammas
+  //val gammas
 }

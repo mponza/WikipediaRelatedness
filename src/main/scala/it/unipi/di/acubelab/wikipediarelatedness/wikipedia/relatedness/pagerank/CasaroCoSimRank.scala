@@ -1,23 +1,51 @@
-package it.unipi.di.acubelab.wikipediarelatedness.utils
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
 
-import java.util.Locale
-
-import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap
+import it.unipi.di.acubelab.wikipediarelatedness.options.CasaroCoSimRankOptions
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
+import org.slf4j.LoggerFactory
 
 import scala.util.parsing.json.JSON
 import scalaj.http.Http
 
-class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
+class CasaroCoSimRank(options: CasaroCoSimRankOptions) extends Relatedness {
+  val logger = LoggerFactory.getLogger(classOf[CasaroCoSimRank])
 
-  def computeSimilarity(weightedEdges: List[(Int, Int, Double)], srcWikiID: Int, dstWikiID: Int)
-    : Double = {
-    computeSimilarity(weightedEdges, List((srcWikiID, dstWikiID))).getDouble((srcWikiID, dstWikiID))
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
+    val params = Seq("src" -> srcWikiID.toString, "dst" -> dstWikiID.toString)
+
+    // Send query to Casaro CoSimRank
+    try {
+      val response = Http(Configuration.cosimrank).postForm(params).timeout(1000000000, 1000000000).asString.body.toString
+
+      JSON.parseFull(response) match {
+        case Some(jsonMap: Map[String, Any]@unchecked) =>
+
+          jsonMap("CoSimRank").toString.toFloat
+      }
+    } catch {
+      case e: Exception =>
+        logger.error("Error while computing relatedness between %d and %d".format(srcWikiID, dstWikiID))
+        -1f
+    }
   }
 
-  def computeSimilarity(weightedEdges: List[(Int, Int, Double)], simPairs: List[(Int, Int)])
-    : Object2DoubleArrayMap[(Int, Int)] = {
 
-    // Parameter configuration.
+  override def toString() = "CasaroCoSimRank"
+}
+
+/*
+* class CoSimRankRelatedness(options: CoSimRankOptions) extends Relatedness {
+  val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
+
+  val csr = new CoSimRankParallelGaussSeidel(WikiGraphFactory.inGraph, options.iterations, options.pprDecay, options.csrDecay)
+
+
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
+    csr.similarity(srcWikiID, dstWikiID)
+  }
+
+   // Parameter configuration.
     val simParams = Seq("graph" -> edgesToString(weightedEdges),
                         "algorithm" -> algorithm.toString,
                         "iters" -> iters.toString,
@@ -28,6 +56,10 @@ class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
     // Server request.
     val strResponse = Http(Configuration.cosimrank).postForm(simParams)
       .timeout(1000000000, 10000000).asString.body.toString
+
+
+
+
 
     // JSON response parsing
     val jsonResponse = JSON.parseFull(strResponse)
@@ -71,37 +103,15 @@ class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
       case _ => ;
     }
 
-    throw new RuntimeException("General error while parsing JSON response: %s".format(jsonResponse))
-  }
 
-  def edgesToString(weightedEdges: List[(Int, Int, Double)]) : String = {
-    val jsonObjs = weightedEdges.map {
-      edge => """{"src": %d, "dst": %d, "weight": %1.3f}"""
-        .formatLocal(Locale.US, edge._1, edge._2, edge._3)
-    }.mkString(", ")
 
-    "[%s]".format(jsonObjs)
-  }
 
-  def simPairString(simPairs: List[(Int, Int)]) : String = {
-    val jsonObjs = simPairs.map {
-      pair => """{"src": %d, "dst": %d}""".format(pair._1, pair._2)
-    }.mkString(", ")
 
-    "[%s]".format(jsonObjs)
-  }
 
-  override def toString: String = {
-    "%s-iters_%d-decay_%1.3f".formatLocal(Locale.US, algorithm, iters, decay)
+  override def toString(): String = {
+    "CoSimRank_%s".format(options)
   }
 }
+*
+* */
 
-object CoSimRank {
-  def make(options: Map[String, Any]) : CoSimRank = {
-    val algorithm: String = options("relatedness").toString
-    val iters = if (options.contains("iters")) options("iters").asInstanceOf[Double].toInt else 5
-    val decay = if (options.contains("decay")) options("decay").asInstanceOf[Double] else 0.8
-
-    new CoSimRank(algorithm, iters, decay)
-  }
-}

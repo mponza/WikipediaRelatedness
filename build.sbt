@@ -43,7 +43,9 @@ libraryDependencies ++= Seq(
 
   "tw.edu.ntu.csie" % "libsvm" % "3.17",
 
-  "com.github.haifengl" % "smile-core" % "1.2.0"
+  "com.github.haifengl" % "smile-core" % "1.2.0",
+
+  "org.scalatest" % "scalatest_2.11" % "3.0.0"
 
 
 )

@@ -11,13 +11,13 @@ import scala.collection.mutable
 
 class WikiSimDataset(path: String) extends RelatednessDataset {
   val logger = LoggerFactory.getLogger(classOf[WikiSimDataset])
-  val wikiSimPairs = loadWikiSimPairs(path)
+  val wikiPairs = loadWikiPairs(path)
 
   /**
     *
     * @return List of WikiSimPair with the corresponding human relatedness.
     */
-  def loadWikiSimPairs(path: String) : List[WikiRelateTask]= {
+  def loadWikiPairs(path: String) : List[WikiRelateTask]= {
     logger.info("Loading WikiSimDataset... %s".format(path))
 
     val pairs = new mutable.MutableList[WikiRelateTask]
@@ -43,7 +43,7 @@ class WikiSimDataset(path: String) extends RelatednessDataset {
   }
 
   def foreach[U](f: (WikiRelateTask) => U) {
-    wikiSimPairs.foreach(wikiRelTask => f(wikiRelTask))
+    wikiPairs.foreach(wikiRelTask => f(wikiRelTask))
   }
 
   override def toString() : String = "WikiSim412"
