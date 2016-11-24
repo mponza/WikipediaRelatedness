@@ -19,7 +19,7 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
     * Computes relatedness measure on dataset.
     * Write pairs and relatedness to a CSV file under benchmark/.
     */
-  def runBenchmark() : Unit = {
+  def runBenchmark() = {
     runRelatedness()
     writeRelatednessScores()
     writeCorrelationScores()
@@ -53,7 +53,7 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
     logger.info("Writing %s Relatedness scores...".format(relatedness.toString))
 
     new File(relatednessDirectory).mkdirs
-    val path = Paths.get(relatednessDirectory, relatedness.toString() + ".data.csv").toString
+    val path = dataPath()
 
     val writer = new PrintWriter(new File(path))
     // Can be NaN becasue IBMESA removed some pairs not present in their ESA.
@@ -67,11 +67,13 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
 
     val pearson = Correlation.pearson(dataset)
     val spearman = Correlation.spearman(dataset)
+    val harmonic = 2 * pearson * spearman / (pearson  + spearman)
 
     logger.info("%s Pearson: %.2f".format(relatedness.toString, pearson))
     logger.info("%s Spearman: %.2f".format(relatedness.toString, spearman))
+    logger.info("%s Harmonic: %.2f".format(relatedness.toString, harmonic))
 
-    val path = Paths.get(relatednessDirectory, relatedness.toString + ".correlation.csv").toString
+    val path = correlationPath()
 
     val writer = new PrintWriter(path)
     writer.write("Pearson:%1.2f\nSpearman: %1.2f".formatLocal(java.util.Locale.US, pearson, spearman))
@@ -86,4 +88,10 @@ class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Rel
 
     List(pearson, spearman, harmonic)
   }
+
+
+
+  def dataPath(): String = Paths.get(relatednessDirectory, relatedness.toString() + ".data.csv").toString
+
+  def correlationPath(): String = Paths.get(relatednessDirectory, relatedness.toString + ".correlation.csv").toString
 }

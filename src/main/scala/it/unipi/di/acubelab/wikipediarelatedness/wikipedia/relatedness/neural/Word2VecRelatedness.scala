@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory
   *                   "model": corpus/deepWalk/deepCorpus/coOccurrence
   *                }
   */
-class Word2VecRelatedness(options: Word2VecOptions) extends Relatedness  {
+class Word2VecRelatedness(options: Word2VecOptions = new Word2VecOptions()) extends Relatedness  {
     val logger = LoggerFactory.getLogger(classOf[Word2VecRelatedness])
     val w2v = loadw2v(options.model)
 

@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
 import org.slf4j.LoggerFactory
 
 
-class LDARelatedness(options: LDAOptions) extends Relatedness  {
+class LDARelatedness(options: LDAOptions = new LDAOptions()) extends Relatedness  {
     val logger = LoggerFactory.getLogger(classOf[LDARelatedness])
     val lda = new LDA()
 

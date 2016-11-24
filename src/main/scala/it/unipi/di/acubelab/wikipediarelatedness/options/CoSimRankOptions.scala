@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.options
 
-class CoSimRankOptions(json: Option[Any]) extends RelatednessOptions(json) {
+class CoSimRankOptions(json: Option[Any] = None) extends RelatednessOptions(json) {
   val iterations = getInt("iterations", 30)
   val pprDecay = getFloat("pprDecay", 0.8f)
   val csrDecay = getFloat("csrDecay", 0.8f)

@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.a
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
 import org.slf4j.LoggerFactory
 
-class LocalClusteringRelatedness(val options: LocalClusteringOptions) extends Relatedness {
+class LocalClusteringRelatedness(val options: LocalClusteringOptions = new LocalClusteringOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[LocalClusteringRelatedness])
 
   val setOperations = new SetOperations(WikiGraphFactory.makeWikiGraph(options.graph))

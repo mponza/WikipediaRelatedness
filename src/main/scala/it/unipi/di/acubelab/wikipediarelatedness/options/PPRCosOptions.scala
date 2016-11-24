@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.options
 
-class PPRCosOptions (json: Option[Any]) extends RelatednessOptions(json) {
+class PPRCosOptions (json: Option[Any] = None) extends RelatednessOptions(json) {
   val iterations = getInt("iterations", 100)
   val pprDecay = getFloat("pprDecay", 0.8f)
 

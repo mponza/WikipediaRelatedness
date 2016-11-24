@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.options
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
 
-class CoSubSimRankOptions(json: Option[Any]) extends CoSimRankOptions(json) {
+class CoSubSimRankOptions(json: Option[Any] = None) extends CoSimRankOptions(json) {
   val subGraph = getString("subGraph", "neighborhood")
 
   val weighting = RelatednessFactory.make(getOptionAny("weighting"))

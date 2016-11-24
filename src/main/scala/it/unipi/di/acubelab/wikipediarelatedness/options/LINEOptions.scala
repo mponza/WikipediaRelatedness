@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.options
 
-class LINEOptions (json: Option[Any]) extends RelatednessOptions(json)  {
+class LINEOptions (json: Option[Any] = None) extends RelatednessOptions(json)  {
   val size = getInt("size", 100)
   val order = getInt("order", 2)
   val negative = getInt("negative", 5)

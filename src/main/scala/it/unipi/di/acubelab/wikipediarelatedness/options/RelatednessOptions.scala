@@ -1,10 +1,12 @@
 package it.unipi.di.acubelab.wikipediarelatedness.options
 
 
-class RelatednessOptions(val json: Option[Any]) {
+abstract class RelatednessOptions(val json: Option[Any] = None) {
   //val relatedness = getString("relatedness")
 
   def getString(key: String, default: String = null) : String = {
+    if (!json.isDefined) return default
+
     json match {
       case Some(options: Map[String, Any] @unchecked) =>
 
@@ -27,6 +29,8 @@ class RelatednessOptions(val json: Option[Any]) {
   }
 
   def getInt(key: String, default: Int) : Int = {
+    if (!json.isDefined) return default
+
     json match {
       case Some(options: Map[String, Any] @unchecked) =>
 
@@ -65,6 +69,8 @@ class RelatednessOptions(val json: Option[Any]) {
   }
 
   def getFloat(key: String, default: Float = Float.NaN) : Float = {
+    if (!json.isDefined) return default
+
     json match {
       case Some(options: Map[String, Any] @unchecked) =>
 

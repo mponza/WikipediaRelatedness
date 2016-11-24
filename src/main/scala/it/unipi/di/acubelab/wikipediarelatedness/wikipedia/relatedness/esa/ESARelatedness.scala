@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 
 
 
-class ESARelatedness(val options: ESAOptions)  extends  Relatedness {
+class ESARelatedness(val options: ESAOptions = new ESAOptions())  extends  Relatedness {
   val logger = LoggerFactory.getLogger(classOf[ESARelatedness])
 
 

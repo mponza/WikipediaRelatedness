@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.neural.LIN
 import org.slf4j.LoggerFactory
 
 
-class LINERelatedness(val options: LINEOptions) extends Relatedness {
+class LINERelatedness(val options: LINEOptions = new LINEOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[Word2VecRelatedness])
 
   val line = new LINE(options.size, options.order, options.negative)

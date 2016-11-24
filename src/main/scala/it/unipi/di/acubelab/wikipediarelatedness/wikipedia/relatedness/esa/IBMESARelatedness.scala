@@ -5,7 +5,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.options.IBMESAOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
-class IBMESARelatedness(options: IBMESAOptions) extends Relatedness {
+class IBMESARelatedness(options: IBMESAOptions = new IBMESAOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[IBMESARelatedness])
   val ibmESA = IBMFactory.make(options.threshold)
 

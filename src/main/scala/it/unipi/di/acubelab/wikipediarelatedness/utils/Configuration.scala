@@ -23,9 +23,9 @@ object Configuration {
   )
 
   lazy val wirePiPz = Map(
-    "ss" -> getClass.getResource("/wire/pipz.ss.csv").toString,
-    "ns" -> getClass.getResource("/wire/pipz.ss.csv").toString,
-    "nn" -> getClass.getResource("/wire/pipz.ss.csv").toString
+    "ss" -> getClass.getResource("/wire/pipz.ss.csv").getPath,
+    "ns" -> getClass.getResource("/wire/pipz.ss.csv").getPath,
+    "nn" -> getClass.getResource("/wire/pipz.ss.csv").getPath
   )
 
 

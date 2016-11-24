@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
 import org.slf4j.LoggerFactory
 
 
-class CoSubSimRankRelatedness(options: CoSubSimRankOptions) extends Relatedness {
+class CoSubSimRankRelatedness(options: CoSubSimRankOptions = new CoSubSimRankOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSubSimRankRelatedness])
 
 

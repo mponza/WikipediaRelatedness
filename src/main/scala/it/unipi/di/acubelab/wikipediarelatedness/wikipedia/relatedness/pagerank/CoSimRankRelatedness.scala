@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
   * CoSimRank Relatedness on the whole Wikipedia graph.
   * @param options
   */
-class CoSimRankRelatedness(options: CoSimRankOptions) extends Relatedness {
+class CoSimRankRelatedness(options: CoSimRankOptions = new CoSimRankOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
 
   val csr = new CoSimRankParallelGaussSeidel(WikiGraphFactory.inGraph, options.iterations, options.pprDecay, options.csrDecay)

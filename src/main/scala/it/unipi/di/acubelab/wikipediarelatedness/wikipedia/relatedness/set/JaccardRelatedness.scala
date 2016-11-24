@@ -12,7 +12,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
   *                   graph: inGraph/outGraph/symGraph
   *                }
   */
-class JaccardRelatedness(val options: JaccardOptions) extends Relatedness {
+class JaccardRelatedness(val options: JaccardOptions = new JaccardOptions()) extends Relatedness {
   val wikiGraph = WikiGraphFactory.makeWikiGraph(options.graph)
   val setOperations = new SetOperations(wikiGraph)
 

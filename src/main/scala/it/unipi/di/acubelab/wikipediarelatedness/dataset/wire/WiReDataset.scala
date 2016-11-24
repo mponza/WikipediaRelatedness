@@ -3,13 +3,14 @@ package it.unipi.di.acubelab.wikipediarelatedness.dataset.wire
 import java.io.File
 
 import com.github.tototoshi.csv.CSVReader
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateTask}
+import it.unimi.di.mg4j.query.nodes.False
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiEntity, WikiRelateTask}
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
 
-class WiReDataset(path: String) extends Traversable[WikiRelateTask] {
+class WiReDataset(path: String) extends RelatednessDataset {
   val logger = LoggerFactory.getLogger(classOf[WiReDataset])
   val nytPairs = loadNYTPairs(path)
 
@@ -19,7 +20,7 @@ class WiReDataset(path: String) extends Traversable[WikiRelateTask] {
     val pairs = ListBuffer.empty[WikiRelateTask]
     val csvReader = CSVReader.open(new File(path))
 
-    csvReader.foreach {
+    csvReader.toStream.drop(1).foreach {
       fields =>
         val src = new WikiEntity(fields(0).toInt, fields(1))
 

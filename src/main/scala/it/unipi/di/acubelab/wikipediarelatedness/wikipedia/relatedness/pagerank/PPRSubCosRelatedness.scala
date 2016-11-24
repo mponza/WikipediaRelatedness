@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.s
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
-class PPRSubCosRelatedness(options: PPRSubCosOptions) extends Relatedness {
+class PPRSubCosRelatedness(options: PPRSubCosOptions = new PPRSubCosOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
 
 

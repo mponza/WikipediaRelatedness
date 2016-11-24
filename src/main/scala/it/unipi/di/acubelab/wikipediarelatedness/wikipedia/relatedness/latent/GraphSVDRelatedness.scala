@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory
   *                   "length":
   *                }
   */
-class GraphSVDRelatedness(options: GraphSVDOptions) extends Relatedness  {
+class GraphSVDRelatedness(options: GraphSVDOptions = new GraphSVDOptions()) extends Relatedness  {
   val logger = LoggerFactory.getLogger(classOf[GraphSVDRelatedness])
 
   val svd = new GraphSVD(Configuration.graphSVD(options.eigen), options.length)  // eigenNames.map(name => new GraphSVD(Configuration.graphSVD(name))).toList

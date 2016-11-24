@@ -9,6 +9,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchm
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.WiReDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
+import it.unipi.di.acubelab.wikipediarelatedness.runners.RunBenchmark
 import it.unipi.di.acubelab.wikipediarelatedness.serialization.WikiMTX
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTypeMapping
@@ -399,7 +400,12 @@ object PreSampling {
 
 
 
-
+object Runner {
+  def main(args: Array[String]) = {
+    val r = new RunBenchmark
+    r.run()
+  }
+}
 /*
 object WordBench {
   def main(args: Array[String]) {
@@ -444,6 +450,9 @@ object GridLLP {
     }
   }
 }
+
+RunBenchmarkz
+
 
 
 object GridCoSimRank {
