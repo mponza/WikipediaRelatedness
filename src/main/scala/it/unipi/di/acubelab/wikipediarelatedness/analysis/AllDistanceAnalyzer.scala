@@ -31,7 +31,7 @@ class AllDistanceAnalyzer(val dataset: WiReDataset, val wikiGraph: WikiGraph = W
           case (nytTask, index) =>
             val distance = distances(index)
 
-            nytTask.outDist = distance
+            // Warning: nytTask.outDist = distance
             writer.write("%s".format(nytTask))
 
             allDistances.add(distance)

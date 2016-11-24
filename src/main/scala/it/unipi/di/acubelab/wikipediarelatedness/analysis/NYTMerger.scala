@@ -21,24 +21,27 @@ class NYTMerger(val dataset: WiReDataset, val pairDistanceFile: String) {
     val writer = new PrintWriter(new File(outputPath))
     writer.write("srcWikiID,srcWikiTitle,srcWikiType,srcNYTFreq,dstWikiID,dstWikiTitle,dstWikiType,dstNYTFreq,coocc,symDist\n")
 
-    dataset.foreach{
-      case nytTask =>
+    /* Fix it wihout cooccurrence
+dataset.foreach{
+  case nytTask =>
 
-        // x 2 == src and dst
-        // (wikiID, wikiTitle, wikiType, NYTFrequency) x 2 , cooccurrence, outDistance
-        writer.write(
-        "%d,\"%s\",\"%s\",%d,%d,\"%s\",\"%s\",%d,%d,%d\n".format(
+    // x 2 == src and dst
+    // (wikiID, wikiTitle, wikiType, NYTFrequency) x 2 , cooccurrence, outDistance
+    writer.write(
+    "%d,\"%s\",\"%s\",%d,%d,\"%s\",\"%s\",%d,%d,%d\n".format(
 
-          nytTask.src.wikiID, nytTask.src.wikiTitle, WikiTypeMapping.typePerOrgLoc(nytTask.src.wikiTitle), nytTask.src.frequency,
+      nytTask.src.wikiID, nytTask.src.wikiTitle, WikiTypeMapping.typePerOrgLoc(nytTask.src.wikiTitle), nytTask.src.frequency,
 
-          nytTask.dst.wikiID, nytTask.dst.wikiTitle, WikiTypeMapping.typePerOrgLoc(nytTask.dst.wikiTitle), nytTask.dst.frequency,
+      nytTask.dst.wikiID, nytTask.dst.wikiTitle, WikiTypeMapping.typePerOrgLoc(nytTask.dst.wikiTitle), nytTask.dst.frequency,
 
-          nytTask.cooccurrence,
-          distances.getInt((nytTask.src.wikiID, nytTask.dst.wikiID))
-        )
+      nytTask.cooccurrence,
+      distances.getInt((nytTask.src.wikiID, nytTask.dst.wikiID))
+
+
+    )
       )
     }
-
+*/
 
     writer.close()
 

@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.MilneWittenRelatedness
 
 
-class MethodsRunner {
+class RunBenchmark {
 
   val wikisim = new WikiSimDataset(Configuration.dataset("procWikiSim"))
   val wire = new WiReDataset(Configuration.wirePiPz("ss"))

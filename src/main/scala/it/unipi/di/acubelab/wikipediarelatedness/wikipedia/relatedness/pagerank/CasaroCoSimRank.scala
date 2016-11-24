@@ -16,12 +16,14 @@ class CasaroCoSimRank(options: CasaroCoSimRankOptions) extends Relatedness {
 
     // Send query to Casaro CoSimRank
     try {
-      val response = Http(Configuration.cosimrank).postForm(params).timeout(1000000000, 1000000000).asString.body.toString
+      val response = Http(Configuration.cosimrank).postForm(params).timeout(Int.MaxValue, Int.MaxValue).asString.body.toString
 
       JSON.parseFull(response) match {
-        case Some(jsonMap: Map[String, Any]@unchecked) =>
+        case Some(jsonMap: Map[String, Any] @unchecked) =>
 
           jsonMap("CoSimRank").toString.toFloat
+
+        case _ => throw new IllegalArgumentException("Error while parsing CasaroCoSimRank response.")
       }
     } catch {
       case e: Exception =>

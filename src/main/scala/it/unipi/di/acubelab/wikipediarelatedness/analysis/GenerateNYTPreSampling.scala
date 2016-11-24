@@ -42,7 +42,7 @@ class GenerateNYTPreSampling(val dataset: WiReDataset, val outDistanceFile: Stri
 
     dataset.foreach {
       case nytTask =>
-
+      /* Fix it without cooccurrence
         if (nytTask.cooccurrence > 10) {
 
 
@@ -60,6 +60,7 @@ class GenerateNYTPreSampling(val dataset: WiReDataset, val outDistanceFile: Stri
 
 
         }
+        */
     }
     writer.flush()
     writer.close()
