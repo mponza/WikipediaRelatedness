@@ -374,7 +374,7 @@ object NYTMerging  {
 
 object PreSampling {
   def main(args: Array[String]) = {
-    for (name <- List("ns")) {
+    for (name <- List("nn")) {
       //}, "ns", "nn")) {
       val salience = Configuration.nyt(name)
 
