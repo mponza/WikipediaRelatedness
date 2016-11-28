@@ -42,10 +42,8 @@ class GenerateNYTPreSampling(val dataset: WiReDataset, val outDistanceFile: Stri
 
     dataset.foreach {
       case nytTask =>
-      /* Fix it without cooccurrence
+      Fix it without cooccurrence
         if (nytTask.cooccurrence > 10) {
-
-
           writer.write("%d,\"%s\",\"%s\",%d,%d,\"%s\",\"%s\",%d,%d,%s,%d,%d\n".format(
 
                   nytTask.src.wikiID, nytTask.src.wikiTitle, WikiTypeMapping.typePerOrgLoc(nytTask.src.wikiTitle), nytTask.src.frequency,
@@ -60,7 +58,7 @@ class GenerateNYTPreSampling(val dataset: WiReDataset, val outDistanceFile: Stri
 
 
         }
-        */
+
     }
     writer.flush()
     writer.close()
