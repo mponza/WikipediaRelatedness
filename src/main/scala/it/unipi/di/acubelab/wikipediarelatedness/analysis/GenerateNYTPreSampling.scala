@@ -37,7 +37,7 @@ class GenerateNYTPreSampling(val dataset: WiReDataset, val outDistanceFile: Stri
 
   def enhanceDataset(path: String) = {
     val writer = new PrintWriter(new File(path))
-
+/*
     writer.write("srcWikiID,srcWikiTitle,srcWikiType,srcNYTFreq,dstWikiID,dstWikiTitle,dstWikiType,dstNYTFreq,coocc,label,outDist,symDist\n")
 
     dataset.foreach {
@@ -61,7 +61,7 @@ class GenerateNYTPreSampling(val dataset: WiReDataset, val outDistanceFile: Stri
 
     }
     writer.flush()
-    writer.close()
+    writer.close()*/
   }
 
 

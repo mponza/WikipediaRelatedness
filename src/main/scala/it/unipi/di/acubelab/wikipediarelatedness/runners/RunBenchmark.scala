@@ -59,15 +59,17 @@ class RunBenchmark {
       new MilneWittenRelatedness( new MilneWittenOptions(Some(Map("graph" -> "inGraph"))) ),
 
       new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "inGraph"))) ),
-      new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "outGraph"))) )
+      new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "outGraph"))) ),
+      new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "symGraph"))) ),
 
       //new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "corpus"))) ),
       //new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "deepWalk"))) )
-      //new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "sg"))) ),
-      //new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "dwsg"))) )
+      new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "sg"))) ),
+      new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "dwsg"))) )
     )
 
-    // ESA
+    relatednessMethods
+    /*// ESA
     for {
       threshold <- List(625, 650, 1000, 2000, 3000)
     } {
@@ -84,7 +86,7 @@ class RunBenchmark {
     }
 
 
-    relatednessMethods
+    relatednessMethods*/
   }
 
 }
