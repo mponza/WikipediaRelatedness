@@ -16,7 +16,10 @@ libraryDependencies ++= Seq(
   "com.github.tototoshi" %% "scala-csv" % "1.3.3",
   "org.scalaj" % "scalaj-http_2.11" % "2.3.0",
 
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
+  "me.tongfei" % "progressbar" % "0.5.1",
+
+
+"org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
   "com.google.guava" % "guava" % "19.0",
 
   "it.unimi.dsi" % "webgraph" % "3.5.2",

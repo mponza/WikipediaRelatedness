@@ -6,7 +6,7 @@ import java.nio.file.Paths
 import it.unimi.dsi.webgraph.algo.StronglyConnectedComponents
 import it.unipi.di.acubelab.wikipediarelatedness.analysis._
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.WiReDataset
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.{WiReDataset, WiReGT}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
 import it.unipi.di.acubelab.wikipediarelatedness.runners.RunBenchmark
@@ -289,13 +289,13 @@ object ClustProcessing {
 object ESACacher {
   def main(args: Array[String]) = {
     val esaCache = new ESACache()
-    val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
-
+    //val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+    val dataset = WiReGT.makeDatasets().flatten
     esaCache.generateCache(dataset.toList)
   }
 }
 
-
+/*
 object AllDistances {
   def main(args: Array[String]) = {
 
@@ -313,6 +313,8 @@ object AllDistances {
   }
 
 }
+
+*/
 
 
 object MTX  {
@@ -353,7 +355,7 @@ object Mapping  {
 
 
 
-
+/*
 object NYTMerging  {
   def main(args: Array[String]) = {
 
@@ -370,7 +372,7 @@ object NYTMerging  {
     val sal = salience.splitAt(salience.lastIndexOf("/") + 1)._2.split("\\.")(0)
     Paths.get(new File(salience).getParentFile.toString, "/distances/sym/symGraph_%s_dist.csv".format(sal)).toString
   }
-}
+
 
 
 object PreSampling {
@@ -397,7 +399,7 @@ object PreSampling {
     (n, m)
   }
 }
-
+*/
 
 
 object Runner {

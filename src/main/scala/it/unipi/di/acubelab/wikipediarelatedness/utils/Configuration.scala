@@ -22,23 +22,10 @@ object Configuration {
     "procWikiSim" -> Paths.get(projDir, "/data/dataset/wikiSim411.csv").toString
   )
 
-  lazy val wirePiPz = Map(
-    "ss" -> getClass.getResource("/wire/pipz.ss.csv").getPath,
-    "ns" -> getClass.getResource("/wire/pipz.ss.csv").getPath,
-    "nn" -> getClass.getResource("/wire/pipz.ss.csv").getPath
-  )
-
-
-  lazy val nyt = Map(
-    "ss" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/ss.csv").toString,
-    "ns" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/ns.csv").toString,
-    "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/nn.csv").toString
-  )
-
-  lazy val nyt_enhanced = Map(
-    "ss" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/ss.csv").toString,
-    "ns" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/ns.csv").toString,
-    "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/nn.csv").toString
+  val wiReGT = Map(
+    "ss" -> getClass.getResource("/dataset/WiRe/gt/ss.csv").getPath,
+    "ns" -> getClass.getResource("/dataset/WiRe/gt/ns.csv").getPath,
+    "nn" -> getClass.getResource("/dataset/WiRe/gt/nn.csv").getPath
   )
 
   lazy val ibmDir = getClass.getResource("/ibm").getPath
@@ -60,6 +47,8 @@ object Configuration {
       "/data/processing/wikipedia/no-loop-sym-bv-graph/no-loop-sym-wiki-links").toString,   // no self loops
 
     "symDistances" -> Paths.get(projDir, "/data/processing/wikipedia/distances/symDistance.bin").toString,
+
+    "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath,
 
     "llp" -> Paths.get(projDir, "/data/processing/wikipedia/llp").toString,
     "multiLLP" -> Paths.get(projDir, "/data/processing/wikipedia/multiLLP").toString,
@@ -119,4 +108,29 @@ object Configuration {
   )
 
   val intervals = Map("white" -> (0.0, 0.4), "gray" -> (0.4, 0.7), "black" -> (0.7, 1.0))
+
+
+  ////
+  // WiRe Paths, just for pre-processing
+
+  lazy val wirePiPz = Map(
+    "ss" -> getClass.getResource("/wire/pipz.ss.csv").getPath,
+    "ns" -> getClass.getResource("/wire/pipz.ss.csv").getPath,
+    "nn" -> getClass.getResource("/wire/pipz.ss.csv").getPath
+  )
+
+
+  lazy val nyt = Map(
+    "ss" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/ss.csv").toString,
+    "ns" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/ns.csv").toString,
+    "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/nn.csv").toString
+  )
+
+  lazy val nyt_enhanced = Map(
+    "ss" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/ss.csv").toString,
+    "ns" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/ns.csv").toString,
+    "nn" -> Paths.get(projDir, "/data/dataset/nyt_wiki_pairs/enhanced/nn.csv").toString
+  )
+
+  ////
 }

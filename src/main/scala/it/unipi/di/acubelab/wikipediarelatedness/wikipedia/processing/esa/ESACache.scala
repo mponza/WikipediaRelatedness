@@ -7,7 +7,10 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import me.tongfei.progressbar.ProgressBar
 import org.slf4j.LoggerFactory
+
+import scala.collection.mutable.ListBuffer
 
 
 /**
@@ -30,8 +33,9 @@ class ESACache(val dirPath: String = Configuration.wikipedia("esaCache"), val si
 
     logger.info("Retrieving bodies...")
     val bodies = wikiIDs.par.map(wikiID => ESA.lucene.wikipediaBody(wikiID))
+
     logger.info("Retrieving concepts...")
-    val concepts = bodies.par.map(body => ESA.wikipediaConcepts(body, size))
+    val concepts = bodies.map(body => ESA.wikipediaConcepts(body, size))
 
     logger.info("Building wikiID concepts mapping...")
     val wikiID2Concepts = new Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]()

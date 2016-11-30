@@ -5,16 +5,17 @@ import java.io.File
 import com.github.tototoshi.csv.CSVReader
 import it.unimi.di.mg4j.query.nodes.False
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiEntity, WikiRelateTask}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
 
-class WiReDataset(path: String) extends RelatednessDataset {
+abstract class WiReDataset(path: String) extends RelatednessDataset {
   val logger = LoggerFactory.getLogger(classOf[WiReDataset])
-  val nytPairs = loadNYTPairs(path)
+  val nytPairs : List[WikiRelateTask]
 
-  def loadNYTPairs(path: String) : List[WikiRelateTask]= {
+  def loadNYTPairs(path: String) : List[WikiRelateTask] = {
     logger.info("Loading WiRe Dataset... %s".format(path))
 
     val pairs = ListBuffer.empty[WikiRelateTask]
@@ -25,9 +26,9 @@ class WiReDataset(path: String) extends RelatednessDataset {
         val src = new WikiEntity(fields(0).toInt, fields(1))
 
         val dstWord = fields(3)
-        val dst = new WikiEntity(fields(2).toInt, fields(3))
+        val dst = new WikiEntity(fields(6).toInt, fields(7))
 
-        val humanRelatedness = fields(4).toFloat
+        val humanRelatedness = fields(20).toFloat
 
         pairs += new WikiRelateTask(src, dst, humanRelatedness)
     }
