@@ -1,5 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings
 
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 import it.unimi.dsi.fastutil.io.BinIO
@@ -21,7 +22,7 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
   val logger = LoggerFactory.getLogger(classOf[ProcessTopKEmbeddings])
 
 
-  def process(path: String, embeddings: EmbeddingsDataset) = {
+  def generate(path: String, embeddings: EmbeddingsDataset) = {
     // Entity to its most similar WORD entities
     val entity2entities = new Object2ObjectOpenHashMap[String, ObjectArrayList[String]]()
 
@@ -42,6 +43,7 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
     pl.done()
 
     logger.info("Serializing into file %s...".format(path))
+    new File(path).getParentFile.mkdirs
     BinIO.storeObject(entity2entities, path)
 
     logger.info("TopKSimilar Processing end.")

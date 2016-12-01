@@ -2,9 +2,11 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
 
 import java.io.File
 import java.nio.file.Paths
+import java.util.concurrent.TimeUnit
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
+import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
@@ -33,8 +35,17 @@ class ESACache(val dirPath: String = Configuration.wikipedia("esaCache"), val si
     logger.info("Retrieving bodies...")
     val bodies = wikiIDs.par.map(wikiID => ESA.lucene.wikipediaBody(wikiID))
 
-    logger.info("Retrieving concepts...")
-    val concepts = bodies.map(body => ESA.wikipediaConcepts(body, size))
+    val pl = new ProgressLogger(logger, 1, TimeUnit.MINUTES)
+    pl.start("Retrieving concepts...")
+
+    val concepts = ListBuffer.empty[List[Tuple2[Int, Float]]]
+    bodies.foreach {
+      case body =>
+        concepts += ESA.wikipediaConcepts(body, size)
+        pl.update()
+    }
+
+    pl.done()
 
     logger.info("Building wikiID concepts mapping...")
     val wikiID2Concepts = new Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]()

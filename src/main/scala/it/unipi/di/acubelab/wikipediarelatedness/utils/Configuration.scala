@@ -109,6 +109,10 @@ object Configuration {
 
   val intervals = Map("white" -> (0.0, 0.4), "gray" -> (0.4, 0.7), "black" -> (0.7, 1.0))
 
+  val topKEmbeddings = Map(
+    "sg" -> Paths.get(projDir, "/data/processing/wikipedia/topKembeddings/sg.bin").toString,
+    "dwsg" -> Paths.get(projDir, "/data/processing/wikipedia/topKembeddings/dwsg.bin").toString
+  )
 
   ////
   // WiRe Paths, just for pre-processing

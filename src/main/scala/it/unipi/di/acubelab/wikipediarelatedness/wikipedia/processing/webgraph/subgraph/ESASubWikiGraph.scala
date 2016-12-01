@@ -36,6 +36,7 @@ class ESASubWikiGraph(srcWikiID: Int, dstWikiID: Int, threshold: Int) extends Su
     //neighWikiIDs.map(wID => outGraph.getNodeID(wID)).toArray
   }
 
+
   /**
     * Compute the nodes used in the subgraph  by keeping top-threshold nodes from
     * the nodes specified in the function's parameters.
@@ -73,7 +74,17 @@ class ESASubWikiGraph(srcWikiID: Int, dstWikiID: Int, threshold: Int) extends Su
       j += 1
     }
 
+    while(i < srcSimNodeIDs.length && n < threshold) {
+      nodes.add(srcSimNodeIDs(i))
+      i += 1
+    }
+
+    while(j < dstSimNodeIDs.length && n < threshold) {
+      nodes.add(dstSimNodeIDs(j))
+      j += 1
+    }
+
     nodes.toIntArray
   }
-  
+
 }
