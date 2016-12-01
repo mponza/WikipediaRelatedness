@@ -1,13 +1,13 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.PPRSubCosOptions
+import it.unipi.di.acubelab.wikipediarelatedness.options.SubPPRCosOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.pprcos.WeightedPPRSubCos
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.subgraph.{SubWikiGraph, SubWikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.subgraph.SubWikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.CoSimRankRelatedness
 import org.slf4j.LoggerFactory
 
-class PPRSubCosRelatedness(options: PPRSubCosOptions = new PPRSubCosOptions()) extends Relatedness {
+class SubPPRCosRelatedness(options: SubPPRCosOptions = new SubPPRCosOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
 
 

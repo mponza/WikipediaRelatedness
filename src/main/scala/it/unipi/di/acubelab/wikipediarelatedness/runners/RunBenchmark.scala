@@ -12,6 +12,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, LocalClusteringRelatedness, MilneWittenRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{LMRelatedness, Relatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.latent.{GraphSVDRelatedness, LDARelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph.SubCoSimRankRelatedness
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -27,9 +28,9 @@ class RunBenchmark {
   def run() : Unit  = {
     run(wikisim)
 
-    for(dataset <- wiReGTList) {
-      run(dataset)
-    }
+    //for(dataset <- wiReGTList) {
+      //run(dataset)
+    //}
 
   }
 
@@ -41,7 +42,7 @@ class RunBenchmark {
 
     for (relatedness <- methods()) {
 
-      try {
+      //try {
         logger.info("%s Benchmark".format(relatedness.toString()))
         logger.info("Standard Relatedness Benchmarking...")
 
@@ -49,14 +50,14 @@ class RunBenchmark {
         bench.runBenchmark()
         ranks += Tuple2(bench.getPerformance(), relatedness.toString())
 
-      } catch {
-        case e : Exception => logger.error("Error while computing %s relatedness.".format(relatedness.toString()))
-      }
+      //} catch {
+      //  case e : Exception => logger.error("Error while computing %s relatedness: %s".format(relatedness.toString(), e.toString))
+      //}
     }
 
     val sortedRanks = ranks.sortBy(corrsName => corrsName._1(2))
-                          .map(corrsName => "[H: %1.2f, P: %1.2f, S: %1.2f] %s"
-                              .format(corrsName._1(2), corrsName._1(0), corrsName._1(1),
+                          .map(corrsName => "[P: %1.2f, S: %1.2f, H: %1.2f, ] %s"
+                              .format(corrsName._1(0), corrsName._1(1), corrsName._1(2),
                                 corrsName._2.toString)).reverse
 
     logger.info("-------------------------")
@@ -68,13 +69,24 @@ class RunBenchmark {
 
   def methods() = {
 
-    val relatednessMethods = ListBuffer(
-        new MilneWittenRelatedness( new MilneWittenOptions(Some(Map("graph" -> "inGraph"))) ),
+    val relatednessMethods = ListBuffer.empty[Relatedness]
+       // new MilneWittenRelatedness( new MilneWittenOptions(Some(Map("graph" -> "inGraph"))) ),
 
-        new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "inGraph"))) ),
-        new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "outGraph"))) ),
-        new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "symGraph"))) )
+        //new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "inGraph"))) ),
+       // new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "outGraph"))) ),
+       // new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "symGraph"))) )
+     // )
+
+    for {
+      threshold <- List(650)//, 1000, 2000)
+    } {
+      val subCSROpts = new SubCoSimRankOptions(
+        Some(
+          Map("weighting" -> "MilneWitten", "subGraph" -> "esa", "threshold" -> threshold)
+        )
       )
+      relatednessMethods += new SubCoSimRankRelatedness(subCSROpts)
+    }
 
     // Language Model
     //relatednessMethods += new LMRelatedness( new LMOptions() )
@@ -90,14 +102,14 @@ class RunBenchmark {
     //relatednessMethods += new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "dwsg"))) )
 
     // ESA
-    /*for {
-      threshold <- List(625, 650, 1000, 2000, 3000)
-    } {
-      relatednessMethods += new ESARelatedness( new ESAOptions(Some(Map("threshold" -> threshold.toDouble))) )
-    }
+    //for {
+      //threshold <- List(625, 650, 1000, 2000, 3000)
+    //} {
+      //relatednessMethods += new ESARelatedness( new ESAOptions(Some(Map("threshold" -> threshold.toDouble))) )
+    //}
 
     // PageRank based
-    for (decay <- List(0.8, 0.9, 1.0)) {
+    /*for (decay <- List(0.8, 0.9, 1.0)) {
       val csrOptions = new CoSimRankOptions(Some(Map("iterations" -> 30.toDouble, "pprDecay" -> decay, "csrDecay" -> decay)))
       relatednessMethods += new CoSimRankRelatedness()
 

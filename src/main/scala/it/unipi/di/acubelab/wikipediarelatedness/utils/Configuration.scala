@@ -48,7 +48,7 @@ object Configuration {
 
     "symDistances" -> Paths.get(projDir, "/data/processing/wikipedia/distances/symDistance.bin").toString,
 
-    "langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath,
+    //"langModel" -> getClass.getResource("/languageModel/wiki.binary").getPath,
 
     "llp" -> Paths.get(projDir, "/data/processing/wikipedia/llp").toString,
     "multiLLP" -> Paths.get(projDir, "/data/processing/wikipedia/multiLLP").toString,

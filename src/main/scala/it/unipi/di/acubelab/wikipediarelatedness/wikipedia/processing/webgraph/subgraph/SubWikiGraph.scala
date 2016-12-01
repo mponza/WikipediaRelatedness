@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory
 abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int)
     extends WikiGraph("") {
 
-  // Respect the WikiGraph class, here the field graph is an ImmutableSubGraph generated from superBVGraphs.
+  // Respect with the WikiGraph class, here the field graph is an ImmutableSubGraph generated from superBVGraphs.
   // Warning: Keep attention how you map wikiID to nodeID!
 
   protected val inGraph = WikiGraphFactory.inGraph
@@ -50,6 +50,7 @@ abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int)
 
     subGraph
   }
+
 
 
   /**

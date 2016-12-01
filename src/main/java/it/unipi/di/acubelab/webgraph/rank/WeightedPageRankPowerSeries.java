@@ -166,7 +166,7 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
             else {
                 int j = outdegree;
                 succ = nodeIterator.successorArray();
-                while (j -- != 0) newRank[ succ[ j ] ] += oldRank[ i ] * getWeight(i, j);
+                while (j -- != 0) newRank[ succ[ j ] ] += oldRank[ i ] * getWeight(i, j);  // no uniform distribution
                 // while ( j-- != 0 ) newRank[ succ[ j ] ] += oldRank[ i ] / outdegree;
             }
             progressLogger.update();

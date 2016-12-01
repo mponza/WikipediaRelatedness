@@ -7,7 +7,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import me.tongfei.progressbar.ProgressBar
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -71,7 +70,7 @@ class ESACache(val dirPath: String = Configuration.wikipedia("esaCache"), val si
     *
     * @param wikiID
     * @param threshold
-    * @return List of [wikiID, weight] of size threshold.
+    * @return List of [wikiID, weight] of size threshold, sorted by threshold.
     */
   def get(wikiID: Int, threshold: Int = size) : List[Tuple2[Int, Float]] = {
     if (!wikiID2Concepts.containsKey(wikiID)) return null

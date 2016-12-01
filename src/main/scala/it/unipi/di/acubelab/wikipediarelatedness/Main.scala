@@ -289,9 +289,9 @@ object ClustProcessing {
 object ESACacher {
   def main(args: Array[String]) = {
     val esaCache = new ESACache()
-    //val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
-    val dataset = WiReGT.makeDatasets().flatten
-    esaCache.generateCache(dataset.toList)
+    val wikiSim = new WikiSimDataset(Configuration.dataset("procWikiSim")).toList
+    val wiRe = WiReGT.makeDatasets().flatten
+    esaCache.generateCache(wikiSim ++ wiRe)
   }
 }
 

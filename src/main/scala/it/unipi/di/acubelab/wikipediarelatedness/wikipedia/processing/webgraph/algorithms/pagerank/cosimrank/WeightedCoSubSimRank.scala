@@ -6,7 +6,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
-class WeightedCoSubSimRank (wikiGraph: WikiGraph, iterations: Int = 100,
+class WeightedCoSubSimRank (wikiGraph: WikiGraph, iterations: Int = 30,
                             pprDecay: Float = 0.8f, csrDecay: Float = 0.8f,
                             relatedness: Relatedness)
 

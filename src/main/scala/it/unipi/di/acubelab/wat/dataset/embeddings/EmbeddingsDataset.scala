@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wat.dataset.embeddings
 
 import java.io.File
+import java.util
 
 import it.cnr.isti.hpc.{LinearAlgebra, Word2VecCompress}
 import it.unimi.dsi.fastutil.io.BinIO
@@ -21,6 +22,9 @@ trait EmbeddingsDataset extends Dataset {
   def contains(word: String): Boolean
   def embedding(word: String): EmbeddingVector
   def similarity(w1: String, w2: String): Float
+  def topKSimilar(word: String, k: Int = 10000) : util.Collection[String] = {
+    throw new IllegalArgumentException("TopKSimilar function not implemented.")
+  }
 }
 
 object EmbeddingsDataset {
@@ -34,6 +38,7 @@ object EmbeddingsDataset {
         null
     }
     override def contains(word: String): Boolean = model.hasWord(word)
+    override def topKSimilar(word: String, k: Int = 10000) = model.wordsNearest(word, k)
   }
 
   def apply(model: Word2VecCompress) = new EmbeddingsDataset {

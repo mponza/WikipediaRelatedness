@@ -40,7 +40,11 @@ abstract class RelatednessOptions(val json: Option[Any] = None) {
             return default
 
           } else {
-            options(key).asInstanceOf[Double].toInt
+            options(key) match {
+              case v: Double => v.toInt
+              case v: Int => v
+            }
+            //options(key).asInstanceOf[Double].toInt
           }
 
         } catch {

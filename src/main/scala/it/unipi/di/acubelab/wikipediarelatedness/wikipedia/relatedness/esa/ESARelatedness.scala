@@ -23,8 +23,8 @@ class ESARelatedness(val options: ESAOptions = new ESAOptions())  extends  Relat
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     if (srcWikiID == dstWikiID) return 1f
 
-    val srcConcepts = ESA.wikipediaConcepts(srcWikiID, options.threshold)
-    val dstConcepts = ESA.wikipediaConcepts(dstWikiID, options.threshold)
+    val srcConcepts = ESA.wikipediaConcepts(srcWikiID, options.threshold).sortBy(_._1)
+    val dstConcepts = ESA.wikipediaConcepts(dstWikiID, options.threshold).sortBy(_._1)
 
     Similarity.cosineSimilarity(srcConcepts, dstConcepts)
   }
