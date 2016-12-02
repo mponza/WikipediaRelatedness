@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory
 /**
   * Pre-process wikiID present in wikiRelTasks by saving the most top-k similar entities
   * (k = 10000) into path, parameter specified by process method.
+  *
   * @param wikiRelTasks
   */
 class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
@@ -23,8 +24,7 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
 
 
   def generate(path: String, embeddings: EmbeddingsDataset) = {
-    // Entity to its most similar WORD entities
-    val entity2entities = new Object2ObjectOpenHashMap[String, ObjectArrayList[String]]()
+    val entity2entities = new Object2ObjectOpenHashMap[Int, ObjectArrayList[Int]]()
 
     val pl = new ProgressLogger(logger, 1, TimeUnit.MINUTES)
     pl.start("TopKSimilar Embedding Entitites Processing...")
@@ -33,9 +33,11 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
     wordEntities.foreach {
       case wordEntity =>
 
-        val entities = new ObjectArrayList[String](embeddings.topKSimilar(wordEntity))
+        val entities = getTopKEntities(wordEntity, embeddings)
         minEnts = Math.min(entities.size(), minEnts)
-        entity2entities.put(wordEntity, entities)
+
+        val wikiID = wordEntity.substring(4, wordEntity.length).toInt
+        entity2entities.put(wikiID, entities)
 
         pl.update()
     }
@@ -47,6 +49,30 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
     BinIO.storeObject(entity2entities, path)
 
     logger.info("TopKSimilar Processing end.")
+  }
+
+
+  /**
+    * Returns WikiIDs of entities most smilar to wordEntity. Default threshold is 10000.
+    *
+    * @param wordEntity
+    * @param embeddings
+    * @return
+    */
+  def getTopKEntities(wordEntity: String, embeddings: EmbeddingsDataset) = {
+    val topKEntities = new ObjectArrayList[Int]
+
+    val it = embeddings.topKSimilar(wordEntity).iterator()
+    while(it.hasNext) {
+      val s = it.next()
+      try {
+        if (s.startsWith("ent_")) topKEntities.add(s.substring(4, s.length).toInt)
+      } catch {
+        case e: Exception => logger.info("Error with %s: %s".format(s.toString, e.toString))
+      }
+    }
+
+    topKEntities
   }
 
 }

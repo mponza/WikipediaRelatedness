@@ -10,22 +10,11 @@ class TopKEmbeddings(path: String) {
 
   val logger = LoggerFactory.getLogger(classOf[TopKEmbeddings])
   val entity2entity = BinIO.loadObject(path)
-                        .asInstanceOf[Object2ObjectOpenHashMap[String, ObjectArrayList[String]]]
+                        .asInstanceOf[Object2ObjectOpenHashMap[Int, ObjectArrayList[Int]]]
 
-  def getTopKWikiIDs(wikiID: Int) : List[Int] = {
-    val wordWikiIDs = entity2entity.getOrDefault("ent_%d".format(wikiID),
-                                              new ObjectArrayList[String]()).elements()
 
-    val wikiIDs = ListBuffer.empty[Int]
-    wordWikiIDs.foreach {
-      case word => wikiIDs += word2WikiID(word)
-    }
-
-    wikiIDs.toList
+  def getTopKWikiIDs(entityWikiID: Int) : List[Int] = {
+    entity2entity.getOrDefault(entityWikiID, new ObjectArrayList[Int]()).elements().toList
   }
-
-
-
-  def word2WikiID(word: String) = word.substring(4, word.length).toInt
 
 }

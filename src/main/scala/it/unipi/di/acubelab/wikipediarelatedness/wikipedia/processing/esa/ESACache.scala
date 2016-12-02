@@ -33,7 +33,7 @@ class ESACache(val dirPath: String = Configuration.wikipedia("esaCache"), val si
     val wikiIDs = tasks.foldLeft(List.empty[Int])((IDs, task) => IDs ++ List(task.src.wikiID, task.dst.wikiID)).distinct
 
     logger.info("Retrieving bodies...")
-    val bodies = wikiIDs.par.map(wikiID => ESA.lucene.wikipediaBody(wikiID))
+    val bodies = wikiIDs.map(wikiID => ESA.lucene.wikipediaBody(wikiID))
 
     val pl = new ProgressLogger(logger, 1, TimeUnit.MINUTES)
     pl.start("Retrieving concepts...")

@@ -12,6 +12,7 @@ object ESA {
   val cache = new ESACache()
 
   /**
+    * Returns ESA's concepts vector for a given text. This method DOES NOT use the cache.
     * @param text LEMMATIZED text
     * @return List of Wikipedia IDs where wikiID is mentioned and the corresponding score.
     *         The best resultThreshold concepts are returned by decreasing order by their score.
@@ -34,6 +35,12 @@ object ESA {
   def wikipediaConcepts(text: String): List[Tuple2[Int, Float]] = wikipediaConcepts(text, 650)
 
 
+  /**
+    * Returns ESA's concepts vector of wikiID. If available, it exploit the cache.
+    * @param wikiID
+    * @param resultThreshold
+    * @return
+    */
   def wikipediaConcepts(wikiID: Int, resultThreshold: Int): List[Tuple2[Int, Float]] = {
     val cachedConcepts = cache.get(wikiID, resultThreshold)
 
