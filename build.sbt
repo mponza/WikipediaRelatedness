@@ -9,8 +9,10 @@ scalacOptions += "-target:jvm-1.8"
 scalacOptions ++= Seq("-feature")
 
 fork in run := true
+fork in Test := true
 
-javaOptions in run += "-Xmx2G"
+javaOptions in run += "-Xmx60G"
+javaOptions in Test += "-Xmx60G"
 
 libraryDependencies ++= Seq(
   "com.github.tototoshi" %% "scala-csv" % "1.3.3",
@@ -46,10 +48,7 @@ libraryDependencies ++= Seq(
 
   "com.github.haifengl" % "smile-core" % "1.2.0",
 
-  "info.debatty" % "java-lsh" % "0.10",
-
-
-"org.scalatest" % "scalatest_2.11" % "3.0.0"
+  "org.scalatest" % "scalatest_2.11" % "3.0.0"
 
 
 )
