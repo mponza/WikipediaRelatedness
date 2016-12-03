@@ -12,6 +12,14 @@ class W2VSubWikiGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiGraph, thre
   override def getLogger() = LoggerFactory.getLogger(classOf[W2VSubWikiGraph])
 
 
-  override def neighborhood(wikiID: Int) : Array[Int] = TopKEmbeddings.corpusSG.getTopKWikiIDs(wikiID).toArray
+  override def neighborhood(wikiID: Int) : Array[Int] = {
+    val embeddings = TopKEmbeddings.corpusSG.getTopKWikiIDs(wikiID).toArray
+
+    val noDisEmbeddings = embeddings.filter(wikiGraph.contains)
+
+    logger.debug("Embedding with/without disambiguation %d vs %d".format(embeddings.length, noDisEmbeddings.length))
+
+    noDisEmbeddings
+  }
 
 }

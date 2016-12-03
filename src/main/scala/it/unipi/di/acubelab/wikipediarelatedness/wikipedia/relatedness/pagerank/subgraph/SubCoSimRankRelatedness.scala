@@ -12,7 +12,8 @@ class SubCoSimRankRelatedness(options: SubCoSimRankOptions = new SubCoSimRankOpt
 
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
-    val subGraph = SubWikiGraphFactory.make(options.subGraph, srcWikiID, dstWikiID, options.threshold)
+    val subGraph = SubWikiGraphFactory.make(options.subGraph, srcWikiID, dstWikiID,
+                                             options.wikiGraphName, options.threshold)
 
     val wcsr = new WeightedCoSubSimRank(subGraph, options.iterations, options.pprDecay,
                                          options.csrDecay, options.weighting)

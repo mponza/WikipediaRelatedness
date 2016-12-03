@@ -26,7 +26,7 @@ object WikiTitleID {
   protected def loadMapping(path: String = Configuration.wikipedia("title-id"))
         : Object2IntOpenHashMap[String] = {
 
-    if(new File(path).exists()) return BinIO.loadObject(serializedPath).asInstanceOf[Object2IntOpenHashMap[String]]
+    if(new File(serializedPath).exists()) return BinIO.loadObject(serializedPath).asInstanceOf[Object2IntOpenHashMap[String]]
 
 
     logger.info("Loading Wikipedia title-ID mapping...")

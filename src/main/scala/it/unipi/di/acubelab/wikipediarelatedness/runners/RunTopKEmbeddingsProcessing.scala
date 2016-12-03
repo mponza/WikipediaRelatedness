@@ -7,7 +7,10 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.ProcessTopKEmbeddings
 import org.slf4j.LoggerFactory
 
-
+/**
+  * Class for pre-processing top-k embedding for each Wikipedia entity.
+  * @param wikiRelTasks
+  */
 class RunTopKEmbeddingsProcessing(wikiRelTasks: List[WikiRelateTask]) extends Runner {
   val logger = LoggerFactory.getLogger(classOf[RunTopKEmbeddingsProcessing])
   val embProc = new ProcessTopKEmbeddings(wikiRelTasks)

@@ -42,7 +42,7 @@ class RunBenchmark {
 
     for (relatedness <- methods()) {
 
-      //try {
+      try {
         logger.info("%s Benchmark".format(relatedness.toString()))
         logger.info("Standard Relatedness Benchmarking...")
 
@@ -50,9 +50,9 @@ class RunBenchmark {
         bench.runBenchmark()
         ranks += Tuple2(bench.getPerformance(), relatedness.toString())
 
-      //} catch {
-      //  case e : Exception => logger.error("Error while computing %s relatedness: %s".format(relatedness.toString(), e.toString))
-      //}
+      } catch {
+        case e : Exception => logger.error("Error while computing %s relatedness: %s".format(relatedness.toString(), e.toString))
+      }
     }
 
     val sortedRanks = ranks.sortBy(corrsName => corrsName._1(2))
@@ -78,13 +78,17 @@ class RunBenchmark {
      // )
 
     for {
-      threshold <- List(650)//, 1000, 2000)
+      threshold <- List(10, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
+      sub <- List("w2v", "dw")
+      wikiGraphName <- List("outGraph", "symGraph", "noLoopSymGraph")
     } {
       val subCSROpts = new SubCoSimRankOptions(
         Some(
-          Map("weighting" -> "MilneWitten", "subGraph" -> "esa", "threshold" -> threshold)
+          Map("weighting" -> "MilneWitten", "subGraph" -> sub, "threshold" -> threshold, "wikiGraph" -> wikiGraphName)
         )
       )
+      logger.info("%s".format(subCSROpts))
+      logger.info("------")
       relatednessMethods += new SubCoSimRankRelatedness(subCSROpts)
     }
 

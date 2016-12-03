@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory
 class TopKEmbeddings(path: String) {
 
   val logger = LoggerFactory.getLogger(classOf[TopKEmbeddings])
+
+
+  logger.info("Loading %s TopKEmbedding cache...".format(path))
   val entity2entity = BinIO.loadObject(path)
                         .asInstanceOf[Object2ObjectOpenHashMap[Int, ObjectArrayList[Int]]]
-
 
   def getTopKWikiIDs(entityWikiID: Int) : List[Int] = {
     entity2entity.getOrDefault(entityWikiID, new ObjectArrayList[Int]()).elements().toList

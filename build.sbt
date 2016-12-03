@@ -46,7 +46,10 @@ libraryDependencies ++= Seq(
 
   "com.github.haifengl" % "smile-core" % "1.2.0",
 
-  "org.scalatest" % "scalatest_2.11" % "3.0.0"
+  "info.debatty" % "java-lsh" % "0.10",
+
+
+"org.scalatest" % "scalatest_2.11" % "3.0.0"
 
 
 )

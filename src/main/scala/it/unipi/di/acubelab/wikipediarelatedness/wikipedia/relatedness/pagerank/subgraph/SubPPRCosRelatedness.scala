@@ -12,7 +12,7 @@ class SubPPRCosRelatedness(options: SubPPRCosOptions = new SubPPRCosOptions()) e
 
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
-    val subGraph = SubWikiGraphFactory.make(options.subGraph, srcWikiID, dstWikiID)
+    val subGraph = SubWikiGraphFactory.make(options.subGraph, srcWikiID, dstWikiID, options.wikiGraphName, options.threshold)
 
     val wpprcos = new WeightedPPRSubCos(subGraph, options.iterations, options.pprDecay,
                                          options.weighting)
