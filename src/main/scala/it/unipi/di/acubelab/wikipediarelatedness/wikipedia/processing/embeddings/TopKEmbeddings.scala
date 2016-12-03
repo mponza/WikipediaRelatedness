@@ -1,10 +1,10 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings
 
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.fastutil.objects.{Object2ObjectArrayMap, Object2ObjectOpenHashMap, ObjectArrayList}
+import it.unimi.dsi.fastutil.objects.{Object2ObjectOpenHashMap, ObjectArrayList}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
 import org.slf4j.LoggerFactory
 
-import scala.collection.mutable.ListBuffer
 
 class TopKEmbeddings(path: String) {
 
@@ -16,5 +16,14 @@ class TopKEmbeddings(path: String) {
   def getTopKWikiIDs(entityWikiID: Int) : List[Int] = {
     entity2entity.getOrDefault(entityWikiID, new ObjectArrayList[Int]()).elements().toList
   }
+
+}
+
+
+
+object TopKEmbeddings {
+
+  lazy val corpusSG = new TopKEmbeddings(Configuration.topKEmbeddings("sg"))
+  lazy val deepWalkSG = new TopKEmbeddings(Configuration.topKEmbeddings("dwsg"))
 
 }

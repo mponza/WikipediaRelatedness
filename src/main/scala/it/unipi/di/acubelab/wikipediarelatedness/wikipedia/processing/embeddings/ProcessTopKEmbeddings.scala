@@ -46,6 +46,7 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
 
     logger.info("Serializing into file %s...".format(path))
     new File(path).getParentFile.mkdirs
+
     BinIO.storeObject(entity2entities, path)
 
     logger.info("TopKSimilar Processing end.")

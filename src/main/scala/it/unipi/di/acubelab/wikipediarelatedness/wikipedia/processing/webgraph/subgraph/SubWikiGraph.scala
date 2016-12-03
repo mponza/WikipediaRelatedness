@@ -10,21 +10,22 @@ import org.slf4j.LoggerFactory
   * Generates a subgraph built from several superGraphs (in, out).
   * Warning: all superBVgraph have to use the same wikiID-nodeID mapping.
   *
+  * Subclasses have usually just to override neighborhood method.
+  *
   * @param srcWikiID
   * @param dstWikiID
   */
-abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int)
+abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int, val wikiGraph: WikiGraph)
     extends WikiGraph("") {
 
   // Respect with the WikiGraph class, here the field graph is an ImmutableSubGraph generated from superBVGraphs.
   // Warning: Keep attention how you map wikiID to nodeID!
 
-  protected val inGraph = WikiGraphFactory.inGraph
-  protected val outGraph = WikiGraphFactory.outGraph
 
   override val logger = getLogger()
 
   def getLogger() = LoggerFactory.getLogger(classOf[SubWikiGraph])
+
 
   /**
     * @param path Ignored.
@@ -44,7 +45,7 @@ abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int)
     subgraphNodes.addAll(new IntArrayList(srcNodes))
     subgraphNodes.addAll(new IntArrayList(dstNodes))
 
-    val subGraph = new ImmutableSubgraph(WikiGraphFactory.outGraph.graph, subgraphNodes)
+    val subGraph = new ImmutableSubgraph(wikiGraph.graph, subgraphNodes)
 
     logger.info("Subgraph generated with %d nodes.".format(subGraph.numNodes))
 
@@ -52,9 +53,8 @@ abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int)
   }
 
 
-
   /**
-   * Generates the subgraph neighborhood of wikiID.
+   * Generates the "neighborhood" of wikiID.
    *
    * @return NodeIDs of outGraph.
    */
@@ -64,7 +64,7 @@ abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int)
   protected def subWikiGraph() : ImmutableSubgraph = graph.asInstanceOf[ImmutableSubgraph]
 
 
-  protected def superWikiGraph() : WikiGraph = outGraph
+  protected def superWikiGraph() : WikiGraph = wikiGraph
 
 
   /**
