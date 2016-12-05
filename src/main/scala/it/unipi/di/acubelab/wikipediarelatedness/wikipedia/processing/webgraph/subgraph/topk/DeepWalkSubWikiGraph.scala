@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.subgraph.topk
 
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddings
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddingsCache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph
 import org.slf4j.LoggerFactory
 
@@ -13,7 +13,7 @@ class DeepWalkSubWikiGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiGraph,
 
 
   override def neighborhood(wikiID: Int) : Array[Int] = {
-    val embeddings = TopKEmbeddings.deepWalkSG.getTopK(wikiID).map(_._1)
+    val embeddings = TopKEmbeddingsCache.deepWalkSG.getTopK(wikiID).map(_._1)
 
     val noDisEmbeddings = embeddings.filter(wikiGraph.contains)
     logger.debug("Embedding with/without disambiguation %d vs %d".format(embeddings.length, noDisEmbeddings.length))

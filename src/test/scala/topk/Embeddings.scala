@@ -5,7 +5,8 @@ import java.io.File
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddings
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddingsCache
+import org.nd4j.linalg.factory.Nd4j
 import org.scalatest.{FlatSpec, Matchers}
 
 
@@ -15,12 +16,12 @@ class Embeddings extends FlatSpec with Matchers {
   val obama = 534366
 
   "w2v top-k pre-processed embeddings " should "be sorted by their cosine" in {
-    TopKEmbeddings.deepWalkSG.getTopK(obama).slice(0, 100) should equal(topKSorted(obama).slice(0, 100))
+    TopKEmbeddingsCache.deepWalkSG.getTopK(obama).slice(0, 1000) should equal(topKSorted(obama).slice(0, 1000))
   }
 
 
   def topKSorted(wikiID: Int) = {
-    val it = dw.topKSimilar("ent_%d".format(wikiID)).iterator()
+    val it = dw.topKSimilarFromWord("ent_%d".format(wikiID)).iterator()
 
     val topKEntities = new IntArrayList()
     while(it.hasNext) {
@@ -33,6 +34,14 @@ class Embeddings extends FlatSpec with Matchers {
     }
 
     topKEntities.toArray().sortBy( wid => dw.similarity("ent_%d".format(wikiID), "ent_%d".format(wid)) ).reverse
+  }
+
+  // Test to see if I understand well what I am trying to do with ND4J.
+  "w2v top-k vector retrieved by word" should "be the same retrieved by vector" in {
+    val obamaEmbedding = Nd4j.create(dw.embedding("ent_" + obama))
+    val wegihtedEntities = dw.topKSimilarFromINDArray(obamaEmbedding)
+
+    dw.topKSimilarFromWord("ent_" + obama) should equal(wegihtedEntities)
   }
 
 }

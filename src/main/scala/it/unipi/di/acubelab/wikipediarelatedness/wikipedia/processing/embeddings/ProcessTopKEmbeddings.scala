@@ -36,13 +36,15 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
   /**
     * Main method which generates entity and entityPairs embedding and context emebddings, respectively.
     * @param dirPath
-    * @param embeddings
+    * @param modelName
     */
-  def generateTopK(dirPath: String, embeddings: EmbeddingsDataset) = {
+  def generateTopK(dirPath: String, modelName: String) = {
+    val topKEmbs = new TopKEmbeddings(modelName)
+
     logger.info("TopK Cache Embedding Generation...")
 
-    generateEntity2Entities(dirPath, embeddings)
-    generateEntityPairs2Entities(dirPath, embeddings)
+    generateEntity2Entities(dirPath, topKEmbs)
+    generateEntityPairs2Entities(dirPath, topKEmbs)
 
     logger.info("TopK Cache Embedding Generation ended.")
   }
@@ -54,10 +56,11 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
 
   /**
     * Generates srcEntity => [(dstEntity, weight)] of the context vector (average embedding of two entities).
+    *
     * @param dirPath
-    * @param embeddings
+    * @param topKEmbs
     */
-  protected def generateEntityPairs2Entities(dirPath: String, embeddings: EmbeddingsDataset) = {
+  protected def generateEntityPairs2Entities(dirPath: String, topKEmbs: TopKEmbeddings) = {
     val path = new File(dirPath, "pairs2ents.bin").getAbsolutePath
     val entityPairs2entities = new Object2ObjectOpenHashMap[Tuple2[Int, Int], List[Tuple2[Int, Float]]]()
 
@@ -66,16 +69,14 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
 
     wordEntityPairs.foreach {
       case pair: Tuple2[String, String] =>
-
-        val contextEntities = getTopKContextEntities(pair._1, pair._2, embeddings)
-        val weightedContextEntities = meanWeightEntities(pair._1, pair._2, contextEntities, embeddings)
-
-
         val srcWikiID = pair._1.substring(4, pair._1.length).toInt
         val dstWikiID = pair._2.substring(4, pair._2.length).toInt
 
-        entityPairs2entities.put(Tuple2(srcWikiID, dstWikiID), weightedContextEntities)
-        entityPairs2entities.put(Tuple2(dstWikiID, srcWikiID), weightedContextEntities)
+
+        val contextEntities = topKEmbs.getTopK(srcWikiID, dstWikiID)
+
+        entityPairs2entities.put(Tuple2(srcWikiID, dstWikiID), contextEntities)
+        entityPairs2entities.put(Tuple2(dstWikiID, srcWikiID), contextEntities)
 
         pl.update()
     }
@@ -86,43 +87,8 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
 
     logger.info("Serializing into file %s...".format(path))
     new File(path).getParentFile.mkdirs
-
     BinIO.storeObject(entityPairs2entities, path)
-
     logger.info("TopKSimilar Processing end.")
-  }
-
-
-  /**
-    * Returns a lis of weighted topKentities by cosine similarity with context vector between srcWordEntity and
-    * dstWordEntity.
-    * @param srcWordEntity
-    * @param dstWordEntity
-    * @param topKentities
-    * @param embeddings
-    * @return
-    */
-  protected def meanWeightEntities(srcWordEntity: String, dstWordEntity: String, topKentities: List[Int],
-                          embeddings: EmbeddingsDataset) = {
-    val contextVector = embeddings.contextVector(List(srcWordEntity, dstWordEntity))
-    topKentities.map {
-      case wikiID =>
-        val weight = embeddings.similarity(contextVector, "ent_%d".format(wikiID))
-        Tuple2(wikiID, weight)
-    }
-  }
-
-
-  /**
-    * Retrieve topK entities from the average embedding vector between srcWordEntity and dstWordEntity.
-    * @param srcWordEntity
-    * @param dstWordEntity
-    * @param embeddings
-    * @return
-    */
-  protected def getTopKContextEntities(srcWordEntity: String, dstWordEntity: String, embeddings: EmbeddingsDataset) = {
-    val it = embeddings.topKSimilarFromWords(List(srcWordEntity, dstWordEntity)).iterator()
-    wordIterator2entities(it)
   }
 
 
@@ -134,9 +100,9 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
     * Generates cache for srcEntity => [(dstEntity, weight)]
     *
     * @param dirPath
-    * @param embeddings
+    * @param topKembs
     */
-  protected def generateEntity2Entities(dirPath: String, embeddings: EmbeddingsDataset) = {
+  protected def generateEntity2Entities(dirPath: String, topKembs: TopKEmbeddings) = {
     val path = new File(dirPath, "ent2ents.bin").getAbsolutePath
     val entity2entities = new Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]()
 
@@ -146,14 +112,14 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
     var minEnts = Integer.MAX_VALUE
     wordEntities.foreach {
       case wordEntity =>
+
         val wikiID = wordEntity.substring(4, wordEntity.length).toInt
 
-        val entities = getTopKEntities(wordEntity, embeddings)
-        val weightedEntities = weightEntities(wikiID, entities, embeddings)
+        val entities = topKembs.getTopK(wikiID)
 
         minEnts = Math.min(entities.size, minEnts)
 
-        entity2entities.put(wikiID, weightedEntities)
+        entity2entities.put(wikiID, entities)
 
         pl.update()
     }
@@ -162,9 +128,7 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
 
     logger.info("Serializing into file %s...".format(path))
     new File(path).getParentFile.mkdirs
-
     BinIO.storeObject(entity2entities, path)
-
     logger.info("TopKSimilar Processing end.")
   }
 

@@ -21,25 +21,17 @@ class RunTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) extends Runner {
 
   def run() = {
 
-    models().foreach {
-      case (name, path) =>
+    List("sg", "dwsg").foreach {
+      case modelName: String =>
 
-        logger.info("Running TopKEmbeddingProcessing of model %s".format(name))
+        logger.info("Running TopKEmbeddingProcessing of model %s".format(modelName))
 
-        val w2v = EmbeddingsDataset.apply(new File(Configuration.wikipedia(name)))
-        val cacheDir = Configuration.topKEmbeddings(name)
+        val w2v = EmbeddingsDataset.apply(new File(Configuration.wikipedia(modelName)))
+        val cacheDir = Configuration.topKEmbeddings(modelName)
 
-        embProc.generateTopK(cacheDir, w2v)
+        embProc.generateTopK(cacheDir, modelName)
     }
 
-  }
-
-
-  def models() = {
-    Map(
-      "sg" -> Configuration.wikipedia("sg"),
-      "dwsg" -> Configuration.wikipedia("dwsg")
-    )
   }
 
 }

@@ -13,7 +13,9 @@ import it.unipi.di.acubelab.wikipediarelatedness.runners.RunBenchmark
 import it.unipi.di.acubelab.wikipediarelatedness.runners.processing.RunTopKEmbeddings
 import it.unipi.di.acubelab.wikipediarelatedness.serialization.WikiMTX
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTypeMapping
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.{WikiTitleID, WikiTypeMapping}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddingsCache
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddings
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
@@ -353,9 +355,39 @@ object CC {
 
 object Mapping  {
   def main(args: Array[String]) = {
-
     val b = WikiTypeMapping.types("Silvio_Berlusconi").toArray().map(_.toString).foreach(println(_))
     println(WikiTypeMapping.types("New_York").toArray().map(_.toString).foreach(println(_)))
+  }
+}
+
+
+object TestEmbMapping {
+  def main(args: Array[String]) {
+    val emb = new TopKEmbeddings("dwsg")
+
+    val src = 534366
+    val dst = 9282173
+
+    val srcEmb = emb.getTopK(src)
+    println("Src")
+    printEnts(srcEmb)
+
+    val dstEmb = emb.getTopK(dst)
+    println("Dst")
+    printEnts(dstEmb)
+
+    val cxtEmb = emb.getTopK(src, dst)
+    println("Cxt")
+    printEnts(cxtEmb)
+
+  }
+
+  def printEnts(vector: List[Tuple2[Int, Float]]) = {
+    val topK = vector.slice(0, 20).map(x => Tuple2(WikiTitleID.map(x._1), x._2))
+    println("Top20 Ents: %s".format(topK mkString " "))
+
+    val botK = vector.reverse.slice(0, 20).map(x => Tuple2(WikiTitleID.map(x._1), x._2))
+    println("Last20 Ents: %s".format(botK mkString " "))
   }
 }
 

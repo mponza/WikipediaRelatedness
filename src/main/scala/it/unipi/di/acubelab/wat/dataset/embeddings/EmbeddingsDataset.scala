@@ -34,15 +34,15 @@ trait EmbeddingsDataset extends Dataset {
   }
 
   //
-  def topKSimilarFromWord(word: String, k: Int = 10000): util.Collection[String] = {
+  def topKSimilarFromWord(word: String, k: Int = 20000): util.Collection[String] = {
     throw new IllegalArgumentException("TopKSimilar function not implemented.")
   }
 
-  def topKSimilarFromWords(words: List[String], k: Int = 10000): util.Collection[String] = {
+  def topKSimilarFromWords(words: List[String], k: Int = 20000): util.Collection[String] = {
     throw new IllegalArgumentException("TopKSimilar function with multiple words not implemented.")
   }
 
-  def topKSimilarFromINDArray(vector: INDArray, k: Int = 10000): util.Collection[String] = {
+  def topKSimilarFromINDArray(vector: INDArray, k: Int = 20000): util.Collection[String] = {
     throw new IllegalArgumentException("Similarity between vector and word not implemented.")
   }
 
@@ -70,7 +70,7 @@ object EmbeddingsDataset {
 
     override def topKSimilarFromWords(words: List[String], k: Int) = model.wordsNearest(contextVector(words), k)
 
-    override def topKSimilarFromINDArray(vector: INDArray, k: Int = 10000) = model.wordsNearest(vector, k)
+    override def topKSimilarFromINDArray(vector: INDArray, k: Int) = model.wordsNearest(vector, k)
 
     override def similarity(vector: INDArray, word: String): Float = {
       val wordVector = model.getWordVectorMatrix(word)

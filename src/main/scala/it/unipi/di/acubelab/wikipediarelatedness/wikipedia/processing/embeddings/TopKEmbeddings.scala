@@ -1,46 +1,98 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings
 
 import java.io.File
+import java.util
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
+import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
+import org.nd4j.linalg.api.ndarray.INDArray
+import org.nd4j.linalg.factory.Nd4j
 import org.slf4j.LoggerFactory
 
+import scala.collection.mutable.ListBuffer
 
-class TopKEmbeddings(dirPath: String) {
 
+/**
+  * TopK Embedding with cache.
+  *
+  * @param modelName
+  */
+class TopKEmbeddings(modelName: String) {
   val logger = LoggerFactory.getLogger(classOf[TopKEmbeddings])
 
 
-  logger.info("Loading %s TopKEmbedding caches...".format(dirPath))
-
-  // {wikiID -> [wikiID, weight]}
-  val entity2entities = BinIO.loadObject(new File(dirPath, "ent2ents.bin").getAbsolutePath)
-                              .asInstanceOf[Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]]
-
-  // {(wikiID, wikiID) -> [wikiID, weight]}
-  val entityPair2entities = BinIO.loadObject(new File(dirPath, "pairs2ents.bin").getAbsolutePath)
-                              .asInstanceOf[Object2ObjectOpenHashMap[Tuple2[Int, Int], List[Tuple2[Int, Float]]]]
+  lazy val embeddings = EmbeddingsDataset.apply( new File(Configuration.wikipedia(modelName)))
+  lazy val cache = new TopKEmbeddingsCache(Configuration.topKEmbeddings(modelName))
 
 
-  def getTopK(entityWikiID: Int) : List[Tuple2[Int, Float]] = {
-    entity2entities.getOrDefault(entityWikiID, List.empty[Tuple2[Int, Float]])
+  /**
+    * List of k entities [(wikiID, weight)] most similar to wikiID.
+    *
+    * @param wikiID
+    * @return
+    */
+  def getTopK(wikiID: Int): List[Tuple2[Int, Float]] = {
+    if (cache.getTopK(wikiID).nonEmpty) return cache.getTopK(wikiID)
+
+    val vector = Nd4j.create(embeddings.embedding("ent_" + wikiID))
+    val iter = embeddings.topKSimilarFromWord("ent_" + wikiID).iterator()
+    wordIterator2WeightedEntities(vector, iter)
   }
 
 
-  def getTopK(srcWikiID: Int, dstWikiID: Int) = {
-    entityPair2entities.getOrDefault(Tuple2(srcWikiID, dstWikiID), List.empty[Tuple2[Int, Float]])
+  /**
+    * List of k entities [(wikiID, weight)] most similar to average vector of srcWikiID and dstWikiID (context vector).
+    *
+    * @param srcWikiID
+    * @param dstWikiID
+    * @return
+    */
+  def getTopK(srcWikiID: Int, dstWikiID: Int): List[Tuple2[Int, Float]] = {
+    if (cache.getTopK(srcWikiID, dstWikiID).nonEmpty) return cache.getTopK(srcWikiID, dstWikiID)
+
+    val words = List("ent_" + srcWikiID, "ent_" + dstWikiID)
+    val vector = embeddings.contextVector(words)
+    val iter = embeddings.topKSimilarFromINDArray(vector).iterator()
+
+    wordIterator2WeightedEntities(vector, iter)
   }
 
-}
+
+  /**
+    * From an iterator of words to its list of weighted vector of Wikipedia IDs.
+    *
+    * @param vector
+    * @param it
+    * @return
+    */
+  protected def wordIterator2WeightedEntities(vector: INDArray, it: util.Iterator[String]): List[Tuple2[Int, Float]] = {
+    val topKEntities = ListBuffer.empty[Tuple2[Int, Float]]
+
+    while (it.hasNext) {
+      val s = it.next()
+      try {
+
+        if (s.startsWith("ent_")) {
+          val wikiID = s.substring(4, s.length).toInt
+
+          if (isWikiNode(wikiID)) {
+            val sim = embeddings.similarity(vector, s)
+            topKEntities += Tuple2(wikiID, sim.toFloat)
+
+          } else {
+            //logger.warn(wikiID + " is not a Wikipedia Node.")
+          }
+        }
+      } catch {
+        case e: Exception => logger.info("Error with %s: %s".format(s.toString, e.toString))
+      }
+    }
+
+    topKEntities.toList
+  }
 
 
-
-object TopKEmbeddings {
-
-  lazy val corpusSG = new TopKEmbeddings(Configuration.topKEmbeddings("sg"))
-  lazy val deepWalkSG = new TopKEmbeddings(Configuration.topKEmbeddings("dwsg"))
+  protected def isWikiNode(wikiID: Int) = WikiGraphFactory.outGraph.contains(wikiID)
 
 }
