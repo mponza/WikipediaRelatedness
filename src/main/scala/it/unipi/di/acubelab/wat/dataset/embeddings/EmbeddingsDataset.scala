@@ -29,23 +29,24 @@ trait EmbeddingsDataset extends Dataset {
 
   def similarity(vector1: INDArray, vector2: INDArray): Float =  Transforms.cosineSim(vector1, vector2).toFloat
 
-
-  def topKSimilar(word: String, k: Int = 10000): util.Collection[String] = {
-    throw new IllegalArgumentException("TopKSimilar function not implemented.")
-  }
-
-  def topKSimilar(words: List[String], k: Int = 10000): util.Collection[String] = {
-    throw new IllegalArgumentException("TopKSimilar function with multiple words not implemented.")
-  }
-
   def similarity(vector1: INDArray, word: String): Float = {
     throw new IllegalArgumentException("Similarity between vector and word not implemented.")
   }
 
-  def topKSimilar(vector: INDArray, k: Int = 10000) = {
+  //
+  def topKSimilarFromWord(word: String, k: Int = 10000): util.Collection[String] = {
+    throw new IllegalArgumentException("TopKSimilar function not implemented.")
+  }
+
+  def topKSimilarFromWords(words: List[String], k: Int = 10000): util.Collection[String] = {
+    throw new IllegalArgumentException("TopKSimilar function with multiple words not implemented.")
+  }
+
+  def topKSimilarFromINDArray(vector: INDArray, k: Int = 10000): util.Collection[String] = {
     throw new IllegalArgumentException("Similarity between vector and word not implemented.")
   }
 
+  //
   def contextVector(words: List[String]): INDArray = {
     throw new IllegalArgumentException("contextVector function not implemented")
   }
@@ -65,11 +66,11 @@ object EmbeddingsDataset {
 
     override def contains(word: String): Boolean = model.hasWord(word)
 
-    override def topKSimilar(word: String, k: Int = 10000) = model.wordsNearest(word, k)
+    override def topKSimilarFromWord(word: String, k: Int) = model.wordsNearest(word, k)
 
-    override def topKSimilar(words: List[String], k: Int = 10000) = model.wordsNearest(contextVector(words), k)
+    override def topKSimilarFromWords(words: List[String], k: Int) = model.wordsNearest(contextVector(words), k)
 
-    override def topKSimilar(vector: INDArray, k: Int = 10000) = model.wordsNearest(vector, k)
+    override def topKSimilarFromINDArray(vector: INDArray, k: Int = 10000) = model.wordsNearest(vector, k)
 
     override def similarity(vector: INDArray, word: String): Float = {
       val wordVector = model.getWordVectorMatrix(word)

@@ -59,7 +59,7 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
     */
   protected def generateEntityPairs2Entities(dirPath: String, embeddings: EmbeddingsDataset) = {
     val path = new File(dirPath, "pairs2ents.bin").getAbsolutePath
-    val entity2entities = new Object2ObjectOpenHashMap[Tuple2[Int, Int], List[Tuple2[Int, Float]]]()
+    val entityPairs2entities = new Object2ObjectOpenHashMap[Tuple2[Int, Int], List[Tuple2[Int, Float]]]()
 
     val pl = new ProgressLogger(logger, 1, TimeUnit.MINUTES)
     pl.start("TopKSimilar Embedding Pairs of Entitites Processing...")
@@ -74,8 +74,8 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
         val srcWikiID = pair._1.substring(4, pair._1.length).toInt
         val dstWikiID = pair._2.substring(4, pair._2.length).toInt
 
-        entity2entities.put(Tuple2(srcWikiID, dstWikiID), weightedContextEntities)
-        entity2entities.put(Tuple2(dstWikiID, srcWikiID), weightedContextEntities)
+        entityPairs2entities.put(Tuple2(srcWikiID, dstWikiID), weightedContextEntities)
+        entityPairs2entities.put(Tuple2(dstWikiID, srcWikiID), weightedContextEntities)
 
         pl.update()
     }
@@ -83,6 +83,13 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
     pl.done()
 
     logger.info("EntityPairs2Entities ended.")
+
+    logger.info("Serializing into file %s...".format(path))
+    new File(path).getParentFile.mkdirs
+
+    BinIO.storeObject(entityPairs2entities, path)
+
+    logger.info("TopKSimilar Processing end.")
   }
 
 
@@ -114,7 +121,7 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
     * @return
     */
   protected def getTopKContextEntities(srcWordEntity: String, dstWordEntity: String, embeddings: EmbeddingsDataset) = {
-    val it = embeddings.topKSimilar(List(srcWordEntity, dstWordEntity)).iterator()
+    val it = embeddings.topKSimilarFromWords(List(srcWordEntity, dstWordEntity)).iterator()
     wordIterator2entities(it)
   }
 
@@ -170,7 +177,7 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
     * @return
     */
   protected def getTopKEntities(wordEntity: String, embeddings: EmbeddingsDataset) = {
-    val it = embeddings.topKSimilar(wordEntity).iterator()
+    val it = embeddings.topKSimilarFromWord(wordEntity).iterator()
     wordIterator2entities(it)
   }
 

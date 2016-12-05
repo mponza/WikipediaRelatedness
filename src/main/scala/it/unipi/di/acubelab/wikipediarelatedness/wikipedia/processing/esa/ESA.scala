@@ -29,7 +29,6 @@ object ESA {
     }.toList.filter(_._1 > 0)
 
     concepts
-    //concepts.sortBy(_._1)
   }
 
   def wikipediaConcepts(text: String): List[Tuple2[Int, Float]] = wikipediaConcepts(text, 650)
@@ -52,4 +51,13 @@ object ESA {
   }
 
   def wikipediaConcepts(wikiID: Int): List[Tuple2[Int, Float]] = wikipediaConcepts(wikiID, 650)
+
+
+  // Not yet used... to be cached.
+  def wikipediaConcepts(srcWikiID: Int, dstWikiID: Int, resultThreshold: Int = 650) : List[Tuple2[Int, Float]] = {
+    val srcBody = lucene.wikipediaBody(srcWikiID)
+    val dstBody = lucene.wikipediaBody(dstWikiID)
+
+    wikipediaConcepts(srcBody + " " + dstBody, resultThreshold)
+  }
 }
