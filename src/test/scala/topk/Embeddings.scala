@@ -12,9 +12,10 @@ import org.scalatest.{FlatSpec, Matchers}
 class Embeddings extends FlatSpec with Matchers {
   val dw = EmbeddingsDataset(new File(Configuration.wikipedia("dwsg")))
 
+  val obama = 534366
+
   "w2v top-k pre-processed embeddings " should "be sorted by their cosine" in {
-    val silvio = 26909
-    TopKEmbeddings.deepWalkSG.getTopKWikiIDs(silvio) should equal(topKSorted(silvio))
+    TopKEmbeddings.deepWalkSG.getTopKWikiIDs(obama).slice(0, 100) should equal(topKSorted(obama).slice(0, 100))
   }
 
 

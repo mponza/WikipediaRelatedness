@@ -28,9 +28,9 @@ class RunBenchmark {
   def run() : Unit  = {
     run(wikisim)
 
-    //for(dataset <- wiReGTList) {
-      //run(dataset)
-    //}
+    for(dataset <- wiReGTList) {
+      run(dataset)
+    }
 
   }
 
@@ -64,6 +64,7 @@ class RunBenchmark {
     logger.info("Final Relatedness Ranking")
     logger.info("\n" + (sortedRanks mkString "\n"))
     logger.info("-------------------------")
+
   }
 
 
@@ -77,7 +78,7 @@ class RunBenchmark {
        // new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "symGraph"))) )
      // )
 
-    for {
+    /*for {
       threshold <- List(10, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
       sub <- List("w2v", "dw")
       wikiGraphName <- List("outGraph", "symGraph", "noLoopSymGraph")
@@ -90,7 +91,7 @@ class RunBenchmark {
       logger.info("%s".format(subCSROpts))
       logger.info("------")
       relatednessMethods += new SubCoSimRankRelatedness(subCSROpts)
-    }
+    }*/
 
     // Language Model
     //relatednessMethods += new LMRelatedness( new LMOptions() )
@@ -106,11 +107,11 @@ class RunBenchmark {
     //relatednessMethods += new Word2VecRelatedness( new Word2VecOptions(Some(Map("model" -> "dwsg"))) )
 
     // ESA
-    //for {
-      //threshold <- List(625, 650, 1000, 2000, 3000)
-    //} {
-      //relatednessMethods += new ESARelatedness( new ESAOptions(Some(Map("threshold" -> threshold.toDouble))) )
-    //}
+    for {
+      threshold <- List(625, 650, 1000, 2000, 3000)
+    } {
+      relatednessMethods += new ESARelatedness( new ESAOptions(Some(Map("threshold" -> threshold.toDouble))) )
+    }
 
     // PageRank based
     /*for (decay <- List(0.8, 0.9, 1.0)) {

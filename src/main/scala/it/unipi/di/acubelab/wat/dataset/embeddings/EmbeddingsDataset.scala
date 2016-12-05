@@ -25,6 +25,9 @@ trait EmbeddingsDataset extends Dataset {
   def topKSimilar(word: String, k: Int = 10000) : util.Collection[String] = {
     throw new IllegalArgumentException("TopKSimilar function not implemented.")
   }
+  def topKSimilar(words: List[String], k: Int = 10000) : util.Collection[String] = {
+    throw new IllegalArgumentException("TopKSimilar function with multiple words not implemented.")
+  }
 }
 
 object EmbeddingsDataset {
@@ -39,6 +42,11 @@ object EmbeddingsDataset {
     }
     override def contains(word: String): Boolean = model.hasWord(word)
     override def topKSimilar(word: String, k: Int = 10000) = model.wordsNearest(word, k)
+    override def topKSimilar(words: List[String], k: Int = 10000) = {
+      // Most k similar words nearest to the average of words
+      val vectors = words.map(embedding)
+      model.getWordVectorsMean()
+    }
   }
 
   def apply(model: Word2VecCompress) = new EmbeddingsDataset {

@@ -30,11 +30,11 @@ libraryDependencies ++= Seq(
 
   "org.apache.commons" % "commons-math3" % "3.6.1",
 
-  "org.deeplearning4j" % "deeplearning4j-core" % "0.4-rc3.10",
-  "org.deeplearning4j" % "deeplearning4j-nlp" % "0.4-rc3.10",
-  "org.deeplearning4j" % "deeplearning4j-graph" % "0.4-rc3.10",
-  "org.nd4j" % "nd4j-native" % "0.4-rc3.10" classifier "" classifier "macosx-x86_64",
-  "org.nd4j" % "nd4j-native" % "0.4-rc3.10" classifier "" classifier "linux-x86_64",
+  "org.deeplearning4j" % "deeplearning4j-core" % "0.7.1",
+  "org.deeplearning4j" % "deeplearning4j-nlp" % "0.7.1",
+  "org.deeplearning4j" % "deeplearning4j-graph" % "0.7.1",
+  "org.nd4j" % "nd4j-native" % "0.7.1" classifier "" classifier "macosx-x86_64",
+  "org.nd4j" % "nd4j-native" % "0.7.1" classifier "" classifier "linux-x86_64",
   "org.bytedeco" % "javacpp" % "1.2.3",
 
   "org.apache.lucene" % "lucene-core" % "6.1.0",

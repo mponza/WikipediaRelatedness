@@ -10,7 +10,4 @@ class WikiMapping extends FlatSpec with Matchers {
     WikiTitleID.map("United_States") should equal(3434750)
   }
 
-
-  "Wikipedia Type Mapping" should ""
-
 }

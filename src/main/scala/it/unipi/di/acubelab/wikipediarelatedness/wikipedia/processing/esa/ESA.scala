@@ -8,7 +8,7 @@ import org.apache.lucene.queryparser.classic.QueryParser
   * Concept vectors are always sorted by their SCORE (not wikiID!).
   */
 object ESA {
-  val lucene = new LemmaLuceneIndex()
+  lazy val lucene = new LemmaLuceneIndex()
   val cache = new ESACache()
 
   /**

@@ -81,7 +81,7 @@ class ESACache(val dirPath: String = Configuration.wikipedia("esaCache"), val si
     *
     * @param wikiID
     * @param threshold
-    * @return List of [wikiID, weight] of size threshold, sorted by threshold.
+    * @return List of [wikiID, weight] of size threshold, sorted by decreasing weight.
     */
   def get(wikiID: Int, threshold: Int = size) : List[Tuple2[Int, Float]] = {
     if (!wikiID2Concepts.containsKey(wikiID)) return null

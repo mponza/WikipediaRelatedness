@@ -12,11 +12,11 @@ class TopKEmbeddings(path: String) {
 
 
   logger.info("Loading %s TopKEmbedding cache...".format(path))
-  val entity2entity = BinIO.loadObject(path)
-                        .asInstanceOf[Object2ObjectOpenHashMap[Int, ObjectArrayList[Int]]]
+  val entity2entities = BinIO.loadObject(path).asInstanceOf[Object2ObjectOpenHashMap[Int, ObjectArrayList[Int]]]
+  val entityPair2entities = Bin.
 
   def getTopKWikiIDs(entityWikiID: Int) : List[Int] = {
-    entity2entity.getOrDefault(entityWikiID, new ObjectArrayList[Int]()).elements().toList
+    entity2entities.getOrDefault(entityWikiID, new ObjectArrayList[Int]()).elements().toList
   }
 
 }
