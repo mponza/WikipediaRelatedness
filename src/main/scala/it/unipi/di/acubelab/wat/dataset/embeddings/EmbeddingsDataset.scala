@@ -8,6 +8,8 @@ import it.unimi.dsi.fastutil.io.BinIO
 import it.unipi.di.acubelab.wat.dataset.Dataset
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors
+import org.nd4j.linalg.api.ndarray.INDArray
+import org.nd4j.linalg.ops.transforms.Transforms
 
 trait EmbeddingsDataset extends Dataset {
   def size: Int
@@ -22,12 +24,32 @@ trait EmbeddingsDataset extends Dataset {
   def contains(word: String): Boolean
   def embedding(word: String): EmbeddingVector
   def similarity(w1: String, w2: String): Float
-  def topKSimilar(word: String, k: Int = 10000) : util.Collection[String] = {
+
+  // New methods
+
+  def similarity(vector1: INDArray, vector2: INDArray): Float =  Transforms.cosineSim(vector1, vector2).toFloat
+
+
+  def topKSimilar(word: String, k: Int = 10000): util.Collection[String] = {
     throw new IllegalArgumentException("TopKSimilar function not implemented.")
   }
-  def topKSimilar(words: List[String], k: Int = 10000) : util.Collection[String] = {
+
+  def topKSimilar(words: List[String], k: Int = 10000): util.Collection[String] = {
     throw new IllegalArgumentException("TopKSimilar function with multiple words not implemented.")
   }
+
+  def similarity(vector1: INDArray, word: String): Float = {
+    throw new IllegalArgumentException("Similarity between vector and word not implemented.")
+  }
+
+  def topKSimilar(vector: INDArray, k: Int = 10000) = {
+    throw new IllegalArgumentException("Similarity between vector and word not implemented.")
+  }
+
+  def contextVector(words: List[String]): INDArray = {
+    throw new IllegalArgumentException("contextVector function not implemented")
+  }
+
 }
 
 object EmbeddingsDataset {
@@ -40,12 +62,23 @@ object EmbeddingsDataset {
       else
         null
     }
+
     override def contains(word: String): Boolean = model.hasWord(word)
+
     override def topKSimilar(word: String, k: Int = 10000) = model.wordsNearest(word, k)
-    override def topKSimilar(words: List[String], k: Int = 10000) = {
-      // Most k similar words nearest to the average of words
-      val vectors = words.map(embedding)
-      model.getWordVectorsMean()
+
+    override def topKSimilar(words: List[String], k: Int = 10000) = model.wordsNearest(contextVector(words), k)
+
+    override def topKSimilar(vector: INDArray, k: Int = 10000) = model.wordsNearest(vector, k)
+
+    override def similarity(vector: INDArray, word: String): Float = {
+      val wordVector = model.getWordVectorMatrix(word)
+      super.similarity(vector, wordVector)
+    }
+
+    override def contextVector(words: List[String]) = {
+      import scala.collection.JavaConversions._
+      model.getWordVectorsMean(words)
     }
   }
 

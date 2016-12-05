@@ -15,7 +15,7 @@ class Embeddings extends FlatSpec with Matchers {
   val obama = 534366
 
   "w2v top-k pre-processed embeddings " should "be sorted by their cosine" in {
-    TopKEmbeddings.deepWalkSG.getTopKWikiIDs(obama).slice(0, 100) should equal(topKSorted(obama).slice(0, 100))
+    TopKEmbeddings.deepWalkSG.getTopK(obama).slice(0, 100) should equal(topKSorted(obama).slice(0, 100))
   }
 
 

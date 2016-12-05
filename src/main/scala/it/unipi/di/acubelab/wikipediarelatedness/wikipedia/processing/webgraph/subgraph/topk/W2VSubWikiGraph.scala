@@ -13,7 +13,7 @@ class W2VSubWikiGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiGraph, thre
 
 
   override def neighborhood(wikiID: Int) : Array[Int] = {
-    val embeddings = TopKEmbeddings.corpusSG.getTopKWikiIDs(wikiID).toArray
+    val embeddings = TopKEmbeddings.corpusSG.getTopK(wikiID).toArray
 
     val noDisEmbeddings = embeddings.filter(wikiGraph.contains)
 

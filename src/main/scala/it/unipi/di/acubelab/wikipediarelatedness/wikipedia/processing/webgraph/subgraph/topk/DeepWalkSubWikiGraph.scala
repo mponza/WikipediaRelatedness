@@ -13,7 +13,7 @@ class DeepWalkSubWikiGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiGraph,
 
 
   override def neighborhood(wikiID: Int) : Array[Int] = {
-    val embeddings = TopKEmbeddings.deepWalkSG.getTopKWikiIDs(wikiID).toArray
+    val embeddings = TopKEmbeddings.deepWalkSG.getTopK(wikiID).toArray
 
     val noDisEmbeddings = embeddings.filter(wikiGraph.contains)
     logger.debug("Embedding with/without disambiguation %d vs %d".format(embeddings.length, noDisEmbeddings.length))

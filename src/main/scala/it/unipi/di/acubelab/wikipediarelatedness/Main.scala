@@ -9,7 +9,8 @@ import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchm
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.{WiReDataset, WiReGT}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
-import it.unipi.di.acubelab.wikipediarelatedness.runners.{RunBenchmark, RunTopKEmbeddingsProcessing}
+import it.unipi.di.acubelab.wikipediarelatedness.runners.RunBenchmark
+import it.unipi.di.acubelab.wikipediarelatedness.runners.processing.RunTopKEmbeddings
 import it.unipi.di.acubelab.wikipediarelatedness.serialization.WikiMTX
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTypeMapping
@@ -85,7 +86,7 @@ object TopKEmbProc {
     val wikiSim = new WikiSimDataset(Configuration.dataset("procWikiSim")).toList
     val wiRe = WiReGT.makeDatasets().flatten
 
-    val topK = new RunTopKEmbeddingsProcessing(wikiSim ++ wiRe)
+    val topK = new RunTopKEmbeddings(wikiSim ++ wiRe)
     topK.run()
   }
 }
