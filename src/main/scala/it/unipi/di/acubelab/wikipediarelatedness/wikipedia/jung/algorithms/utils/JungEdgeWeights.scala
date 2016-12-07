@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils
 
 import com.google.common.base.Function
+import org.apache.commons.collections15.Transformer
 import edu.uci.ics.jung.graph.Graph
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
@@ -12,7 +13,7 @@ import scala.collection.mutable.ListBuffer
   * @param relatedness
   * @param graph
   */
-class JungEdgeWeights(val relatedness: Relatedness, val graph: Graph[Int, String]) extends Function[String, java.lang.Double] {
+class JungEdgeWeights(val relatedness: Relatedness, val graph: Graph[Int, String]) extends Transformer[String, java.lang.Double] {
 
   protected val cache = new Object2DoubleOpenHashMap[String]()  // Normalized edge weights.
 
@@ -22,7 +23,7 @@ class JungEdgeWeights(val relatedness: Relatedness, val graph: Graph[Int, String
     * @param edge
     * @return
     */
-  override def apply(edge: String) : java.lang.Double = {
+  override def transform(edge: String) : java.lang.Double = {
     if (!cache.containsKey(edge)) {
       val src = edge.split("->")(0).toInt
       computeEdgeWeights(src)

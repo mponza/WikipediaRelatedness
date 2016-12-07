@@ -28,7 +28,7 @@ class JungCoSimRank(junkWikiGraph: JungWikiGraph, relatedness: Relatedness,
 
     val pprVectors = ListBuffer.empty[List[Tuple2[Int, Float]]]
 
-    val pl = new ProgressLogger(logger, 1, TimeUnit.MILLISECONDS)
+    val pl = new ProgressLogger(logger, 1, TimeUnit.SECONDS)
     pl.start("Computing PersonalizedPageRank...")
     for(i <- 0 until iterations) {
 
@@ -62,10 +62,10 @@ class JungCoSimRank(junkWikiGraph: JungWikiGraph, relatedness: Relatedness,
         case (s, d) => assert(s == d)
       }
 
-      sim += Math.pow(csrDecay, i) * Similarity.cosineSimilarity(srcVec, dstVec)
+      sim += Math.pow(csrDecay, i).toFloat * Similarity.cosineSimilarity(srcVec, dstVec)
     }
 
-    logger.info("Relatedness between %d and %d is %1.2f".format(srcWikiID, dstWikiID, (1 - csrDecay) * sim))
+    logger.info("Relatedness between %d and %d is %1.5f".format(srcWikiID, dstWikiID, (1 - csrDecay) * sim))
 
     (1 - csrDecay) * sim
   }

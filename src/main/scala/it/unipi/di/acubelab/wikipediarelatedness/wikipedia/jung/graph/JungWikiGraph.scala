@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph
 import edu.uci.ics.jung.graph.Graph
-import org.slf4j.LoggerFactory
+import org.slf4j.Logger
 
 
 /**
@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory
   */
 abstract class JungWikiGraph(val wikiGraph: WikiGraph) {
 
-  def logger = LoggerFactory.getLogger(classOf[JungWikiGraph])
+  val graph = generateJungGraph(wikiGraph)
 
-  def graph = generateJungGraph(wikiGraph)
+  def logger: Logger
 
   def generateJungGraph(wikiGraph: WikiGraph) : Graph[Int, String]
 

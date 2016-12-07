@@ -44,7 +44,7 @@ class WikiSimDataset(path: String = Configuration.dataset("procWikiSim")) extend
   }
 
   def foreach[U](f: (WikiRelateTask) => U) {
-    wikiPairs.foreach(wikiRelTask => f(wikiRelTask))
+    wikiPairs.slice(0, 1).foreach(wikiRelTask => f(wikiRelTask))
   }
 
   override def toString() : String = "WikiSim412"

@@ -5,7 +5,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
 class SubCoSimRankOptions(json: Option[Any] = None) extends CoSimRankOptions(json) {
   val subGraph = getString("subGraph", "neighborhood")      // technique for subgraph generation
   val threshold = getInt("threshold", 1000)                   // in case of sub-graph generation via ESA
-  val wikiGraphName = getString("wikiGraph", "noLoopSymGraph")    // super-WikipediaGraph
+  val wikiGraphName = getString("wikiGraph", "symGraph")     // super-WikipediaGraph
   val weighting = RelatednessFactory.make(getString("weighting"))
 
 

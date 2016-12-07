@@ -64,9 +64,9 @@ abstract class JungPPRSimilarity(val junkWikiGraph: JungWikiGraph, val relatedne
     * @param wikiID
     * @return
     */
-  abstract protected def pageRankVectors(wikiID: Int): List[List[Tuple2[Int, Float]]]
+  protected def pageRankVectors(wikiID: Int): List[List[Tuple2[Int, Float]]]
 
 
-  abstract def similarity(srcWikiID: Int, dstWikiID: Int): Float
+  def similarity(srcWikiID: Int, dstWikiID: Int): Float
 
 }

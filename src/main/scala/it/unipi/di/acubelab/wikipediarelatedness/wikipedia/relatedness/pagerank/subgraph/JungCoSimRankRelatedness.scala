@@ -5,16 +5,18 @@ import it.unipi.di.acubelab.wikipediarelatedness.options.SubCoSimRankOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungDirectedWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.subgraph.SubWikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.JungCoSimRank
+import org.slf4j.LoggerFactory
 
 
 class JungCoSimRankRelatedness(options: SubCoSimRankOptions = new SubCoSimRankOptions())  extends Relatedness {
+
+ val logger = LoggerFactory.getLogger(classOf[JungCoSimRankRelatedness])
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     // WebGraph subgraph
     val wgSubGraph = SubWikiGraphFactory.make(options.subGraph, srcWikiID, dstWikiID, options.wikiGraphName, options.threshold)
     // Jung subgraph
     val subGraph = new JungDirectedWikiGraph(wgSubGraph)
-
     //  Jung CoSimRank
     val jungCSR = new JungCoSimRank(subGraph, options.weighting, options.iterations, options.pprDecay, options.csrDecay)
 

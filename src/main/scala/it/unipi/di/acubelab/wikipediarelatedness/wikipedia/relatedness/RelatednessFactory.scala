@@ -4,7 +4,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.options._
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa.{ESARelatedness, IBMESARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.latent.{GraphSVDRelatedness, LDARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.{LINERelatedness, Word2VecRelatedness}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph.{SubCoSimRankRelatedness, SubPPRCosRelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph.{JungCoSimRankRelatedness, SubCoSimRankRelatedness, SubPPRCosRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.{CoSimRankRelatedness, PPRCosRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, JaccardTopRelatedness, LocalClusteringRelatedness, MilneWittenRelatedness}
 
@@ -54,8 +54,8 @@ object RelatednessFactory {
       case "PPRCos" => new PPRCosRelatedness(new PPRCosOptions(json))
 
 
-      case "SubCoSimRank" => new SubCoSimRankRelatedness(new SubCoSimRankOptions(json))
-      case "SubPPRCos" => new SubPPRCosRelatedness(new SubPPRCosOptions(json))
+      case "SubCoSimRank" => new JungCoSimRankRelatedness(new SubCoSimRankOptions(json))
+      //case "SubPPRCos" => new SubPPRCosRelatedness(new SubPPRCosOptions(json))
 
 
       // Latent
