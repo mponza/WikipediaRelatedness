@@ -88,7 +88,7 @@ object TopKEmbProc {
     val wikiSim = new WikiSimDataset(Configuration.dataset("procWikiSim")).toList
     val wiRe = WiReGT.makeDatasets().flatten
 
-    val topK = new RunTopKEmbeddings(wikiSim ++ wiRe)
+    val topK = new RunTopKEmbeddings(wikiSim.slice(0, 10) ++ wiRe.slice(0, 10))
     topK.run()
   }
 }

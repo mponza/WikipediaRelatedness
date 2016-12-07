@@ -26,6 +26,11 @@ libraryDependencies ++= Seq(
   "it.unimi.dsi" % "fastutil" % "7.0.12",
   "it.unimi.dsi" % "sux4j" % "4.0.0",
 
+  "net.sf.jung" % "jung2" % "2.0.1",
+  "net.sf.jung" % "jung-api" % "2.0.1",
+  "net.sf.jung" % "jung-graph-impl" % "2.0.1",
+  "net.sf.jung" % "jung-algorithms" % "2.0.1",
+
   "edu.berkeley.nlp" % "berkeleylm" % "1.1.2",
 
   "org.apache.commons" % "commons-math3" % "3.6.1",

@@ -86,5 +86,4 @@ abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int, val wikiGrap
   override def outdegree(wikiID: Int) : Int = {
     subWikiGraph().outdegree(getNodeID(wikiID))
   }
-
 }

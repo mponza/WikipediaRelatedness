@@ -18,6 +18,7 @@ class CoSimRankPowerSeries(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, ite
     logger.info("Initializing PageRankPowerSeries...")
 
     val pageRanker = new PageRankPowerSeries(wikiGraph.graph)
+
     pageRanker.alpha = pprDecay.toDouble
 
     pageRanker

@@ -126,6 +126,28 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
     logger.info("Minimum found: %d".format(minEnts))
     pl.done()
 
+    // Parallel Mapping to be tested...
+    //val ents = wordEntities.par.map {
+    //  case wordEntity =>
+
+    //    val wikiID = wordEntity.substring(4, wordEntity.length).toInt
+    //    val entities = topKembs.getTopK(wikiID)
+    //    pl.update()
+
+    //    entities
+    //}
+
+    //pl.done()
+
+    //var minEnts = Integer.MAX_VALUE
+    //wordEntities.zip(ents).foreach {
+    //  case (wordEntity, entities) =>
+
+    //    val wikiID = wordEntity.substring(4, wordEntity.length).toInt
+    //    minEnts = Math.min(entities.size, minEnts)
+    //    entity2entities.put(wikiID, entities)
+    //}
+
     logger.info("Serializing into file %s...".format(path))
     new File(path).getParentFile.mkdirs
     BinIO.storeObject(entity2entities, path)
