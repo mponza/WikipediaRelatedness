@@ -1,8 +1,12 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms
 
+import java.util.concurrent.TimeUnit
+
+import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
+import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
@@ -11,15 +15,29 @@ class JungCoSimRank(junkWikiGraph: JungWikiGraph, relatedness: Relatedness,
   extends JungPPRSimilarity(junkWikiGraph, relatedness, iterations, pprDecay)
 {
 
+  override def logger = LoggerFactory.getLogger(classOf[JungCoSimRank])
+
+
+  /**
+    * For each iteration
+    * @param wikiID
+    * @return
+    */
   override protected def pageRankVectors(wikiID: Int) = {
     def ranker = pageRanker(wikiID)
 
     val pprVectors = ListBuffer.empty[List[Tuple2[Int, Float]]]
 
+    val pl = new ProgressLogger(logger, 1, TimeUnit.MILLISECONDS)
+    pl.start("Computing PersonalizedPageRank...")
     for(i <- 0 until iterations) {
+
       ranker.step()
       pprVectors += getRankingVector(ranker)
+
+      pl.update()
     }
+    pl.done()
 
     pprVectors.toList
   }
@@ -47,6 +65,9 @@ class JungCoSimRank(junkWikiGraph: JungWikiGraph, relatedness: Relatedness,
       sim += Math.pow(csrDecay, i) * Similarity.cosineSimilarity(srcVec, dstVec)
     }
 
+    logger.info("Relatedness between %d and %d is %1.2f".format(srcWikiID, dstWikiID, (1 - csrDecay) * sim))
+
     (1 - csrDecay) * sim
   }
+
 }
