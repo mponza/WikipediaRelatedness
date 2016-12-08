@@ -5,6 +5,8 @@ import org.apache.commons.collections15.Transformer
 import edu.uci.ics.jung.graph.Graph
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungWikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.SetOperations
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
@@ -13,14 +15,15 @@ import scala.collection.mutable.ListBuffer
 /**
   * Edge weighter with relatedness on graph.
   * @param relatedness
-  * @param graph
+  * @param jungWikiGraph
   */
-class JungEdgeWeights(val relatedness: Relatedness, val graph: Graph[Int, String]) extends Transformer[String, java.lang.Double] {
+class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiGraph) extends Transformer[String, java.lang.Double] {
   protected val logger = LoggerFactory.getLogger(classOf[JungEdgeWeights])
   protected val cache = new Object2DoubleOpenHashMap[String]()  // Normalized edge weights.
 
-
-  def this(relatedness: Relatedness, jungWikiGraph: JungWikiGraph) = this(relatedness, jungWikiGraph.graph)
+  // Clean graph from edges with weight 0.0
+  val toRemoveEdges = computeCache()
+  jungWikiGraph.removeEdges(toRemoveEdges)
 
 
   /**
@@ -49,12 +52,14 @@ class JungEdgeWeights(val relatedness: Relatedness, val graph: Graph[Int, String
 
     // Computes relatednesses and norm1.
     import scala.collection.JavaConversions._
-    graph.getSuccessors(wikiID).foreach {
+    jungWikiGraph.graph.getSuccessors(wikiID).foreach {
       case nodeWikiID =>
         val rel = relatedness.computeRelatedness(wikiID, nodeWikiID)
 
         norm1 += rel
         rels += Tuple2(nodeWikiID, rel)
+
+        if(rel.isNaN) throw new IllegalArgumentException("NaN Relatedness while weighting graph")
     }
 
     // Updates cache with normalized realtedness between wikiID and its successors.
@@ -62,6 +67,7 @@ class JungEdgeWeights(val relatedness: Relatedness, val graph: Graph[Int, String
     rels.foreach {
       case (nodeWikiID, rel) => cache.putIfAbsent("%d->%d".format(wikiID, nodeWikiID), rel.toDouble / norm1)
     }
+
   }
 
 
@@ -72,6 +78,6 @@ class JungEdgeWeights(val relatedness: Relatedness, val graph: Graph[Int, String
   def computeCache() : List[String] = {
     import scala.collection.JavaConversions._
     logger.info("Computing Weight Cache...")
-    graph.getEdges.filter(transform(_) == 0.0).toList
+    jungWikiGraph.graph.getEdges.filter(transform(_) == 0.0).toList
   }
 }

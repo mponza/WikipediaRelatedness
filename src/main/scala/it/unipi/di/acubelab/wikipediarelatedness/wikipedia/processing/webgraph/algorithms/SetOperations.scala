@@ -25,7 +25,7 @@ class SetOperations(val wikiGraph: WikiGraph) {
     var b = iterB.nextInt
 
     do {
-      if (a == b) {
+      if (a == b && a != -1) {
         intersection += 1
         a = iterA.nextInt
         b = iterB.nextInt

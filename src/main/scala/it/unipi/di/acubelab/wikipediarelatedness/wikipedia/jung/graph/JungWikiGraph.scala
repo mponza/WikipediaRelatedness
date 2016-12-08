@@ -71,12 +71,8 @@ abstract class JungWikiGraph(val wikiGraph: WikiGraph) {
 
     logger.info("Removing vertices...")
     // Subsequently remove vertices.
-    graph.getVertices.foreach {
-      case v =>
-        if(graph.degree(v) == 0) {
-          graph.removeVertex(v)
-        }
-    }
+    val zeros = graph.getVertices.filter(graph.degree(_) == 0)
+    zeros.foreach(graph.removeVertex)
 
     logger.info("Cleaned graph: %d Vertices and %d Edges".format(graph.getVertexCount, graph.getEdgeCount))
   }

@@ -22,7 +22,7 @@ class ESASubWikiGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiGraph, thre
 
   override def neighborhood(wikiID: Int) : Array[Int] = {
     val neighWikiIDs = ESA.wikipediaConcepts(wikiID, threshold).map(_._1)
-    neighWikiIDs.toArray
+    neighWikiIDs.toArray.filter(wikiGraph.contains)
   }
 
 }

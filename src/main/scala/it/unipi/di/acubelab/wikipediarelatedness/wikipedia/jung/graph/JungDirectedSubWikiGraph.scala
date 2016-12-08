@@ -19,11 +19,13 @@ class JungDirectedSubWikiGraph(wikiGraph: WikiGraph) extends JungWikiGraph(wikiG
 
     val graph = new DirectedSparseGraph[Int, String]()
 
+
     // Add vertices
     for(wikiID <- wikiGraph.getWikiIDs()) {
       graph.addVertex(wikiID)
     }
     logger.info("Jung Graph with %d nodes.".format(graph.getVertexCount))
+
 
     // Add edges
     for(wikiID <- wikiGraph.getWikiIDs()) {

@@ -14,7 +14,6 @@ class JungCoSimRank(junkWikiGraph: JungWikiGraph, relatedness: Relatedness,
                     iterations: Int = 30, pprDecay: Float = 0.8f, val csrDecay: Float = 0.8f)
   extends JungPPRSimilarity(junkWikiGraph, relatedness, iterations, pprDecay)
 {
-
   override def logger = LoggerFactory.getLogger(classOf[JungCoSimRank])
 
 

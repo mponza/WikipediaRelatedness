@@ -26,6 +26,8 @@ abstract class JungPPRSimilarity(val junkWikiGraph: JungWikiGraph, val relatedne
                                  val iterations: Int = 30, val pprDecay: Float = 0.8f) {
   def logger: Logger
 
+  val weights = new JungEdgeWeights(relatedness, junkWikiGraph)
+
 
   /**
     * Returns PPR
@@ -34,12 +36,7 @@ abstract class JungPPRSimilarity(val junkWikiGraph: JungWikiGraph, val relatedne
     * @return
     */
   protected def pageRanker(wikiID: Int) = {
-    val weights = new JungEdgeWeights(relatedness, junkWikiGraph.graph)
-    val toRemoveEdges = weights.computeCache()
-    junkWikiGraph.removeEdges(toRemoveEdges)
-
     val prior = new JungPersonalizedPrior(wikiID)
-
     val pr = new PageRankWithPriors[Int, String](junkWikiGraph.graph, weights, prior, pprDecay)
     //pr.setTolerance(0.0)
     pr.setMaxIterations(iterations)

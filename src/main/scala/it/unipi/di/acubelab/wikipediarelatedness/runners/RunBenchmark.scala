@@ -28,11 +28,11 @@ class RunBenchmark {
   def run() : Unit  = {
     run(wikisim)
 
-    //for(dataset <- wiReGTList) {
-    //  run(dataset)
-    //
-
+    for(dataset <- wiReGTList) {
+      run(dataset)
+    }
   }
+
 
 
   def run(dataset: RelatednessDataset) = {
@@ -42,7 +42,7 @@ class RunBenchmark {
 
     for (relatedness <- methods()) {
 
-      //try {
+      try {
         logger.info("%s Benchmark".format(relatedness.toString()))
         logger.info("Standard Relatedness Benchmarking...")
 
@@ -50,9 +50,9 @@ class RunBenchmark {
         bench.runBenchmark()
         ranks += Tuple2(bench.getPerformance(), relatedness.toString())
 
-      //} catch {
-      //  case e : Exception => logger.error("Error while computing %s relatedness: %s".format(relatedness.toString(), e.toString))
-      //}
+      } catch {
+        case e : Exception => logger.error("Error while computing %s relatedness: %s".format(relatedness.toString(), e.toString))
+      }
     }
 
     val sortedRanks = ranks.sortBy(corrsName => corrsName._1(2))
@@ -60,10 +60,10 @@ class RunBenchmark {
                               .format(corrsName._1(0), corrsName._1(1), corrsName._1(2),
                                 corrsName._2.toString)).reverse
 
-    logger.info("-------------------------")
-    logger.info("Final Relatedness Ranking")
-    logger.info("\n" + (sortedRanks mkString "\n"))
-    logger.info("-------------------------")
+    logger.error("------------ %s -------------".format(dataset.toString()))
+    logger.error("Final Relatedness Ranking")
+    logger.error("\n" + (sortedRanks mkString "\n"))
+    logger.error("-------------------------")
 
   }
 
@@ -71,21 +71,25 @@ class RunBenchmark {
   def methods() = {
 
     val relatednessMethods = ListBuffer.empty[Relatedness]
-       // new MilneWittenRelatedness( new MilneWittenOptions(Some(Map("graph" -> "inGraph"))) ),
+    //relatednessMethods +=   new MilneWittenRelatedness( new MilneWittenOptions(Some(Map("graph" -> "inGraph"))) )
 
         //new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "inGraph"))) ),
        // new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "outGraph"))) ),
        // new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "symGraph"))) )
-     // )
+     //)
 
     for {
-      threshold <- List(1000) //, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
-      sub <- List("w2v")
+      threshold <- List(5, 10, 20, 50, 100, 200).sorted //, 50, 100, 500)//, 50, 100, 1000, 2000).sorted //, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
+      sub <- List("esa", "dw", "w2v")
       wikiGraphName <- List("outGraph")
+      pprDecay <- List(0.1, 0.2, 0.3)
+      csrDecay <- List(0.9, 0.8, 0.7)
+      iters <- List(10, 30, 80)
     } {
       val subCSROpts = new SubCoSimRankOptions(
         Some(
-          Map("weighting" -> "MilneWitten", "subGraph" -> sub, "threshold" -> threshold, "wikiGraph" -> wikiGraphName)
+          Map("weighting" -> "MilneWitten", "subGraph" -> sub, "threshold" -> threshold,
+              "wikiGraph" -> wikiGraphName, "pprDecay" -> pprDecay, "csrDecay" -> csrDecay, "iterations" -> iters)
         )
       )
       logger.info("%s".format(subCSROpts))
