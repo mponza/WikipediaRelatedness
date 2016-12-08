@@ -4,6 +4,7 @@ import com.google.common.base.Function
 import org.apache.commons.collections15.Transformer
 import edu.uci.ics.jung.graph.Graph
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
 import scala.collection.mutable.ListBuffer
@@ -16,6 +17,9 @@ import scala.collection.mutable.ListBuffer
 class JungEdgeWeights(val relatedness: Relatedness, val graph: Graph[Int, String]) extends Transformer[String, java.lang.Double] {
 
   protected val cache = new Object2DoubleOpenHashMap[String]()  // Normalized edge weights.
+
+
+  def this(relatedness: Relatedness, jungWikiGraph: JungWikiGraph) = this(relatedness, jungWikiGraph.graph)
 
 
   /**

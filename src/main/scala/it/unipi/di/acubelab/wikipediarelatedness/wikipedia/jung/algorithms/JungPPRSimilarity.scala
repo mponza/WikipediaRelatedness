@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms
 
-import edu.uci.ics.jung.algorithms.scoring.PageRankWithPriors
+import edu.uci.ics.jung.algorithms.scoring.util.ScoringUtils
+import edu.uci.ics.jung.algorithms.scoring.{PageRank, PageRankWithPriors}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.{JungEdgeWeights, JungPersonalizedPrior}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
@@ -35,7 +36,12 @@ abstract class JungPPRSimilarity(val junkWikiGraph: JungWikiGraph, val relatedne
     val weights = new JungEdgeWeights(relatedness, junkWikiGraph.graph)
     val prior = new JungPersonalizedPrior(wikiID)
 
-    new PageRankWithPriors[Int, String](junkWikiGraph.graph, prior, pprDecay.toDouble)
+    val pr = new PageRankWithPriors[Int, String](junkWikiGraph.graph, weights, prior, pprDecay)
+    //pr.setTolerance(0.0)
+    pr.setMaxIterations(iterations)
+    pr.setTolerance(0.0)
+
+    pr
   }
 
 
@@ -59,7 +65,7 @@ abstract class JungPPRSimilarity(val junkWikiGraph: JungWikiGraph, val relatedne
 
 
   /**
-    * Compute PPR Vectors of wikiID
+    * Compute PPR Vectors of wikiID.
     *
     * @param wikiID
     * @return

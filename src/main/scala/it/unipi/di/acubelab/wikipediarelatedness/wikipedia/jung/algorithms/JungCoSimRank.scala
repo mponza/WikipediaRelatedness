@@ -24,14 +24,13 @@ class JungCoSimRank(junkWikiGraph: JungWikiGraph, relatedness: Relatedness,
     * @return
     */
   override protected def pageRankVectors(wikiID: Int) = {
-    def ranker = pageRanker(wikiID)
+    val ranker = pageRanker(wikiID)
 
     val pprVectors = ListBuffer.empty[List[Tuple2[Int, Float]]]
 
     val pl = new ProgressLogger(logger, 1, TimeUnit.SECONDS)
     pl.start("Computing PersonalizedPageRank...")
     for(i <- 0 until iterations) {
-
       ranker.step()
       pprVectors += getRankingVector(ranker)
 
@@ -53,19 +52,17 @@ class JungCoSimRank(junkWikiGraph: JungWikiGraph, relatedness: Relatedness,
     val srcPPRVectors = pageRankVectors(srcWikiID)
     val dstPPRVectors = pageRankVectors(dstWikiID)
 
+    logger.info("Cosine...")
     var sim = 0f
-    for(i <- 0 until iterations) {
+    for(i <- 0 until srcPPRVectors.size) {
       val srcVec = srcPPRVectors(i)
       val dstVec = dstPPRVectors(i)
-
-      srcVec.map(_._1).zip(dstVec.map(_._1)).foreach {
-        case (s, d) => assert(s == d)
-      }
 
       sim += Math.pow(csrDecay, i).toFloat * Similarity.cosineSimilarity(srcVec, dstVec)
     }
 
     logger.info("Relatedness between %d and %d is %1.5f".format(srcWikiID, dstWikiID, (1 - csrDecay) * sim))
+
 
     (1 - csrDecay) * sim
   }
