@@ -18,11 +18,6 @@ class JungCoSimRank(junkWikiGraph: JungWikiGraph, relatedness: Relatedness,
   override def logger = LoggerFactory.getLogger(classOf[JungCoSimRank])
 
 
-  /**
-    * For each iteration
-    * @param wikiID
-    * @return
-    */
   override protected def pageRankVectors(wikiID: Int) = {
     val ranker = pageRanker(wikiID)
 

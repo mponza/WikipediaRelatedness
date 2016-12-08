@@ -6,6 +6,7 @@ import edu.uci.ics.jung.graph.Graph
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
+import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
@@ -15,7 +16,7 @@ import scala.collection.mutable.ListBuffer
   * @param graph
   */
 class JungEdgeWeights(val relatedness: Relatedness, val graph: Graph[Int, String]) extends Transformer[String, java.lang.Double] {
-
+  protected val logger = LoggerFactory.getLogger(classOf[JungEdgeWeights])
   protected val cache = new Object2DoubleOpenHashMap[String]()  // Normalized edge weights.
 
 
@@ -61,5 +62,16 @@ class JungEdgeWeights(val relatedness: Relatedness, val graph: Graph[Int, String
     rels.foreach {
       case (nodeWikiID, rel) => cache.putIfAbsent("%d->%d".format(wikiID, nodeWikiID), rel.toDouble / norm1)
     }
+  }
+
+
+  /**
+    * Fill cache with edge weights. It returns edges with 0 weight.
+    * @return
+    */
+  def computeCache() : List[String] = {
+    import scala.collection.JavaConversions._
+    logger.info("Computing Weight Cache...")
+    graph.getEdges.filter(transform(_) == 0.0).toList
   }
 }

@@ -12,7 +12,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, LocalClusteringRelatedness, MilneWittenRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{LMRelatedness, Relatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.latent.{GraphSVDRelatedness, LDARelatedness}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph.{JungCoSimRankRelatedness, SubCoSimRankRelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph.{JungCliqueCoSimRankRelatedness, JungCoSimRankRelatedness, SubCoSimRankRelatedness}
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -79,9 +79,9 @@ class RunBenchmark {
      // )
 
     for {
-      threshold <- List(100) //, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
-      sub <- List("w2v") //, "dw")
-      wikiGraphName <- List("outGraph") //, "symGraph", "noLoopSymGraph")
+      threshold <- List(1000) //, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
+      sub <- List("w2v")
+      wikiGraphName <- List("outGraph")
     } {
       val subCSROpts = new SubCoSimRankOptions(
         Some(
@@ -90,7 +90,7 @@ class RunBenchmark {
       )
       logger.info("%s".format(subCSROpts))
       logger.info("------")
-      relatednessMethods += new JungCoSimRankRelatedness(subCSROpts)
+      relatednessMethods += new JungCliqueCoSimRankRelatedness(subCSROpts)
     }
 
     // Language Model

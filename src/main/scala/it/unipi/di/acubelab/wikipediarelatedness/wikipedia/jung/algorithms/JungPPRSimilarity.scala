@@ -15,6 +15,8 @@ import scala.collection.mutable.ListBuffer
   * An effective class has to implement PageRankVectors (function which compute the PPR vectors by running PPR) and
   * the similarity function.
   *
+  * WARNING PPR Side effect: junkWikiGraph is cleaned from edges with relatedenss 0.
+  *
   * @param junkWikiGraph
   * @param relatedness
   * @param iterations
@@ -22,7 +24,6 @@ import scala.collection.mutable.ListBuffer
   */
 abstract class JungPPRSimilarity(val junkWikiGraph: JungWikiGraph, val relatedness: Relatedness,
                                  val iterations: Int = 30, val pprDecay: Float = 0.8f) {
-
   def logger: Logger
 
 
@@ -34,6 +35,9 @@ abstract class JungPPRSimilarity(val junkWikiGraph: JungWikiGraph, val relatedne
     */
   protected def pageRanker(wikiID: Int) = {
     val weights = new JungEdgeWeights(relatedness, junkWikiGraph.graph)
+    val toRemoveEdges = weights.computeCache()
+    junkWikiGraph.removeEdges(toRemoveEdges)
+
     val prior = new JungPersonalizedPrior(wikiID)
 
     val pr = new PageRankWithPriors[Int, String](junkWikiGraph.graph, weights, prior, pprDecay)
@@ -57,7 +61,13 @@ abstract class JungPPRSimilarity(val junkWikiGraph: JungWikiGraph, val relatedne
     val vector = ListBuffer.empty[Tuple2[Int, Float]]
 
     for (wikiID <- junkWikiGraph.graph.getVertices) {
-      vector += Tuple2(wikiID, ranker.getVertexScore(wikiID).toFloat)
+      val pprScore = ranker.getVertexScore(wikiID).toFloat
+
+      if (pprScore.isNaN) {
+        vector += Tuple2(wikiID, 0f)
+      } else {
+        vector += Tuple2(wikiID, pprScore)
+      }
     }
 
     vector.toList
