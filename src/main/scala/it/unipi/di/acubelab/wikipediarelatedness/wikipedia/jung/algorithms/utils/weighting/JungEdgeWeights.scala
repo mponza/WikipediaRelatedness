@@ -14,7 +14,7 @@ import scala.collection.mutable.ListBuffer
   * @param jungWikiGraph
   */
 class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiGraph) extends Transformer[String, java.lang.Double] {
-  protected val logger = LoggerFactory.getLogger(classOf[JungEdgeWeights])
+  val logger = getLogger()
   protected val cache = new Object2DoubleOpenHashMap[String]()  // Normalized edge weights.
 
   // Clean graph from edges with weight 0.0
@@ -22,8 +22,11 @@ class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiG
   jungWikiGraph.removeEdges(toRemoveEdges)
 
 
+  def getLogger() = LoggerFactory.getLogger(classOf[JungEdgeWeights])
+
   /**
     * Compute edge weight between two Wikipedia IDs, normalized upon 1-norm.
+    *
     * @param edge
     * @return
     */
@@ -40,6 +43,7 @@ class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiG
   /**
     * Computes all weights between wikiID and its successors in graph. Weights are 1-norm normalized.
     * Cache is updated.
+    *
     * @param wikiID
     */
   protected def computeEdgeWeights(wikiID: Int) = {
@@ -69,6 +73,7 @@ class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiG
 
   /**
     * Fill cache with edge weights. It returns edges with 0 weight.
+    *
     * @return
     */
   def computeCache() : List[String] = {

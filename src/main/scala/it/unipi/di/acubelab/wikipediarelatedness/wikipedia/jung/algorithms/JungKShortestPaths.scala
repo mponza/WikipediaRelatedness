@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms
 
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.weighting.{JungEdgeWeights, JungInvertedEdgeWeights}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.weighting.JungInvertedEdgeWeights
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory

@@ -29,9 +29,9 @@ class RunBenchmark {
   def run() : Unit  = {
     run(wikisim)
 
-    for(dataset <- wiReGTList) {
-      run(dataset)
-    }
+    //for(dataset <- wiReGTList) {
+    //  run(dataset)
+    //}
   }
 
 
@@ -43,7 +43,7 @@ class RunBenchmark {
 
     for (relatedness <- methods()) {
 
-      try {
+      //try {
         logger.info("%s Benchmark".format(relatedness.toString()))
         logger.info("Standard Relatedness Benchmarking...")
 
@@ -51,9 +51,9 @@ class RunBenchmark {
         bench.runBenchmark()
         ranks += Tuple2(bench.getPerformance(), relatedness.toString())
 
-      } catch {
-        case e : Exception => logger.error("Error while computing %s relatedness: %s".format(relatedness.toString(), e.toString))
-      }
+      //} catch {
+        //  case e : Exception => logger.error("Error while computing %s relatedness: %s".format(relatedness.toString(), e.toString))
+        //}
     }
 
     val sortedRanks = ranks.sortBy(corrsName => corrsName._1(2))

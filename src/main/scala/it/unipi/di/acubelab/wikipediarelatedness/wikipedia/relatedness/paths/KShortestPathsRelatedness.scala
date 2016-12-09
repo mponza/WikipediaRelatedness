@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.paths
 
 import it.unipi.di.acubelab.wikipediarelatedness.options.KShortestPathsOptions
+import it.unipi.di.acubelab.wikipediarelatedness.utils.ArithmeticFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.JungKShortestPaths
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungCliqueWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTitleID
@@ -9,8 +10,15 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
 import org.slf4j.LoggerFactory
 
 class KShortestPathsRelatedness(options: KShortestPathsOptions = new KShortestPathsOptions()) extends Relatedness {
-
   val logger = LoggerFactory.getLogger(classOf[KShortestPathsRelatedness])
+
+  // function to map path weights upon a number
+  val pathFun = ArithmeticFactory.make(options.pathFun)
+  // function to map the number of each path to a unique one
+  val kFun = ArithmeticFactory.make(options.kFun)
+  // function to combine two k-shortest path from src to dst
+  val combFun = ArithmeticFactory.make(options.combFun)
+
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     val wgSubGraph = SubWikiGraphFactory.make(options.subGraph, srcWikiID, dstWikiID, "outGraph", options.threshold)
@@ -24,16 +32,16 @@ class KShortestPathsRelatedness(options: KShortestPathsOptions = new KShortestPa
     printPaths(srcWikiID, dstWikiID, srcPaths)
     printPaths(dstWikiID, srcWikiID, dstPaths)
 
-    options.combFun(List(weightedPaths2Score(srcPaths), weightedPaths2Score(dstPaths)))
+    combFun(List(weightedPaths2Score(srcPaths), weightedPaths2Score(dstPaths)))
   }
 
 
   def weightedPaths2Score(paths: List[List[Tuple2[Int, Float]]]) = {
     val pathsWeights = paths.map(_.map(_._2))
     // one score for each path
-    val pathScores = pathsWeights.map(options.pathFun)
+    val pathScores = pathsWeights.map(pathFun)
     // one score from the k paths
-   options.kFun(pathScores)
+   kFun(pathScores)
   }
 
 

@@ -17,10 +17,10 @@ import scala.collection.mutable.ListBuffer
   */
 class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiGraph)
   extends JungEdgeWeights(relatedness, jungWikiGraph) {
+  val removedNodes = new IntOpenHashSet()  // nodes of which edges (-> and <-) have Double.MaxValue value
+  val removedEdges = new ObjectOpenHashSet[String]()
 
-  override val logger  = LoggerFactory.getLogger(classOf[JungInvertedEdgeWeights])
-  val removedNodes = new IntOpenHashSet  // nodes of which edges (-> and <-) have Double.MaxValue value
-  val removedEdges = new ObjectOpenHashSet[String]
+  override def getLogger() = LoggerFactory.getLogger(classOf[JungInvertedEdgeWeights])
 
 
   /**
@@ -31,14 +31,15 @@ class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiG
     * @return
     */
   override def transform(edge: String) : java.lang.Double = {
-    if(removedEdges.contains(edge)) return Double.MaxValue
+    // != null because superclass constructor is called first
+    if(removedEdges != null && removedEdges.contains(edge)) return Double.MaxValue
 
     // Nodes has already been removed
     val (src, dst) = nodesFromEdge(edge)
-    if(removedNodes.contains(src) || removedNodes.contains(dst)) return Double.MaxValue
+    if(removedNodes != null && (removedNodes.contains(src) || removedNodes.contains(dst))) return Double.MaxValue
 
 
-    cache.getDouble(edge)
+    super.transform(edge)
   }
 
 
@@ -63,8 +64,7 @@ class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiG
         if (rel.isNaN) throw new IllegalArgumentException("NaN Relatedness while weighting graph")
 
         if (rel != 0f) {
-
-          val invRel = 1 / rel
+          val invRel = 1f / rel
           norm1 += invRel
           rels += Tuple2(nodeWikiID, invRel)
 
