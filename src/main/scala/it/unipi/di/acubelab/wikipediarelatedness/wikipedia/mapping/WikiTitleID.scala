@@ -62,6 +62,6 @@ object WikiTitleID {
 
   def map(wikiTitle: String) = wikiTitle2ID.getInt(wikiTitle)
 
-  def map(wikiID: Int) = wikiID2Title.get(wikiID)
+  def map(wikiID: Int) = wikiID2Title.getOrDefault(wikiID, wikiID.toString)
 
 }

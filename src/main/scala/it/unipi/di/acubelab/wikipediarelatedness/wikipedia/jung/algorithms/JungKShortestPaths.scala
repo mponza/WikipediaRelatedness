@@ -50,8 +50,9 @@ class JungKShortestPaths(jungWikiGraph: JungWikiGraph, relatedness: Relatedness,
       // Removes (marks) edges and nodes
       weights.removeNodes4ShortestPath(pathEdges.toList, srcWikiID, dstWikiID)
     }
+    weights.cleanRemoved()
 
-    weightedPaths
+    weightedPaths.toList
   }
 
 }

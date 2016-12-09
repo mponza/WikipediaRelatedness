@@ -13,6 +13,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{Jacc
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{LMRelatedness, Relatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.latent.{GraphSVDRelatedness, LDARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph.{JungCliqueCoSimRankRelatedness, JungCoSimRankRelatedness, SubCoSimRankRelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.paths.KShortestPathsRelatedness
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -78,7 +79,7 @@ class RunBenchmark {
        // new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "symGraph"))) )
      //)
 
-    for {
+    /*for {
       threshold <- List(5, 10, 20, 50, 100, 200).sorted //, 50, 100, 500)//, 50, 100, 1000, 2000).sorted //, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
       sub <- List("esa") //, "dw", "w2v")
       wikiGraphName <- List("outGraph")
@@ -93,8 +94,29 @@ class RunBenchmark {
         )
       )
       logger.info("%s".format(subCSROpts))
-      logger.info("------")
       relatednessMethods += new JungCliqueCoSimRankRelatedness(subCSROpts)
+    }*/
+
+
+    for {
+      threshold <- List(10, 50).sorted //, 50, 100, 500)//, 50, 100, 1000, 2000).sorted //, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
+      sub <- List("esa") //, "dw", "w2v")
+      wikiGraphName <- List("outGraph")
+      k <- List(3, 5, 10, 50).sorted
+      pathFun <- List("avg")//, "min", "max", "hmean")
+      kFun <- List("avg")//, "min", "max", "hmean")
+      combFun <- List("avg")//, "min", "max", "hmean")
+    } {
+      val kSPOptions = new KShortestPathsOptions(
+        Some(
+          Map("weighting" -> "MilneWitten", "subGraph" -> sub, "threshold" -> threshold,
+              "k" -> k, "pathFun" -> pathFun, "kFun" -> kFun, combFun -> "combFun"
+          )
+        )
+      )
+
+      logger.info("%s".format(kSPOptions))
+      relatednessMethods += new KShortestPathsRelatedness(kSPOptions)
     }
 
     // Language Model

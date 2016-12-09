@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.weighting
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
@@ -9,6 +10,7 @@ import scala.collection.mutable.ListBuffer
 
 /**
   * Similar to JungEdgeWeights, but here weights are 1 / relatedness (useful for shortest path computation).
+  * It also allows to mark edges and nodes as removed (by assigning to the corresponding edge the highest double value).
   *
   * @param relatedness
   * @param jungWikiGraph
@@ -18,19 +20,23 @@ class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiG
 
   override val logger  = LoggerFactory.getLogger(classOf[JungInvertedEdgeWeights])
   val removedNodes = new IntOpenHashSet  // nodes of which edges (-> and <-) have Double.MaxValue value
+  val removedEdges = new ObjectOpenHashSet[String]
+
 
   /**
-    * First, it checks if src or dst had been removed (and eventually it returns Double.MaxValue).
+    * If the edge or one of the two nodes have been removed it returns Double.MaxValue.
     * Otherwise it returns the edge weight.
     *
     * @param edge
     * @return
     */
   override def transform(edge: String) : java.lang.Double = {
-    val (src, dst) = nodesFromEdge(edge)
+    if(removedEdges.contains(edge)) return Double.MaxValue
 
-    // Nodes had already removed
+    // Nodes has already been removed
+    val (src, dst) = nodesFromEdge(edge)
     if(removedNodes.contains(src) || removedNodes.contains(dst)) return Double.MaxValue
+
 
     cache.getDouble(edge)
   }
@@ -81,10 +87,9 @@ class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiG
   def removeNodes4ShortestPath(edges: List[String], srcWikiID: Int, dstWikiID: Int) = {
     edges.foreach {
       case edge =>
-        cache.put(edge, Double.MaxValue)
+        removedEdges.add(edge)
 
         val (src, dst) = nodesFromEdge(edge)
-
         if (src != srcWikiID) removedNodes.add(src)
         if (dst != dstWikiID) removedNodes.add(dst)
     }
@@ -96,6 +101,14 @@ class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiG
     val dst = edge.split("->")(1).toInt
 
     (src, dst)
+  }
+
+  /**
+    * Unmark removed edges and nodes. Useful for multiple computation upon the same graph.
+    */
+  def cleanRemoved() = {
+    removedEdges.clear()
+    removedNodes.clear()
   }
 
 }
