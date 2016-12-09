@@ -80,10 +80,10 @@ class RunBenchmark {
 
     for {
       threshold <- List(5, 10, 20, 50, 100, 200).sorted //, 50, 100, 500)//, 50, 100, 1000, 2000).sorted //, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
-      sub <- List("esa", "dw", "w2v")
+      sub <- List("esa") //, "dw", "w2v")
       wikiGraphName <- List("outGraph")
-      pprDecay <- List(0.1, 0.2, 0.3)
-      csrDecay <- List(0.9, 0.8, 0.7)
+      pprDecay <- List(0.1)//, 0.2, 0.3)
+      csrDecay <- List(0.9)//, 0.8, 0.7)
       iters <- List(10, 30, 80)
     } {
       val subCSROpts = new SubCoSimRankOptions(

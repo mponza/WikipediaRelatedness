@@ -1,13 +1,9 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.weighting
 
-import com.google.common.base.Function
-import org.apache.commons.collections15.Transformer
-import edu.uci.ics.jung.graph.Graph
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungWikiGraph
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.SetOperations
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
+import org.apache.commons.collections15.Transformer
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -55,11 +51,11 @@ class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiG
     jungWikiGraph.graph.getSuccessors(wikiID).foreach {
       case nodeWikiID =>
         val rel = relatedness.computeRelatedness(wikiID, nodeWikiID)
+        if(rel.isNaN) throw new IllegalArgumentException("NaN Relatedness while weighting graph")
 
         norm1 += rel
         rels += Tuple2(nodeWikiID, rel)
 
-        if(rel.isNaN) throw new IllegalArgumentException("NaN Relatedness while weighting graph")
     }
 
     // Updates cache with normalized realtedness between wikiID and its successors.

@@ -2,7 +2,8 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms
 
 import edu.uci.ics.jung.algorithms.scoring.util.ScoringUtils
 import edu.uci.ics.jung.algorithms.scoring.{PageRank, PageRankWithPriors}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.{JungEdgeWeights, JungPersonalizedPrior}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.JungPersonalizedPrior
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.weighting.JungEdgeWeights
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.Logger
