@@ -21,6 +21,8 @@ class KShortestPathsRelatedness(options: KShortestPathsOptions = new KShortestPa
 
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
+    if (srcWikiID == dstWikiID) return 1f
+
     val wgSubGraph = SubWikiGraphFactory.make(options.subGraph, srcWikiID, dstWikiID, "outGraph", options.threshold)
     val subGraph = new JungCliqueWikiGraph(wgSubGraph)
     val kSP = new JungKShortestPaths(subGraph, options.weighting, options.k)
@@ -32,7 +34,12 @@ class KShortestPathsRelatedness(options: KShortestPathsOptions = new KShortestPa
     printPaths(srcWikiID, dstWikiID, srcPaths)
     printPaths(dstWikiID, srcWikiID, dstPaths)
 
-    combFun(List(weightedPaths2Score(srcPaths), weightedPaths2Score(dstPaths)))
+    val rel = combFun(List(weightedPaths2Score(srcPaths), weightedPaths2Score(dstPaths)))
+
+    logger.debug("Relatedenss between %d and %d is %1.2f".format(srcWikiID, dstWikiID, rel))
+
+    if (rel.isNaN) throw new IllegalArgumentException("Spaccato tutto!")
+    rel
   }
 
 

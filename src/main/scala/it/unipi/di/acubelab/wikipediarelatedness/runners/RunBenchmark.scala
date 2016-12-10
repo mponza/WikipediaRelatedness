@@ -102,10 +102,10 @@ class RunBenchmark {
       threshold <- List(10, 50).sorted //, 50, 100, 500)//, 50, 100, 1000, 2000).sorted //, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
       sub <- List("esa") //, "dw", "w2v")
       wikiGraphName <- List("outGraph")
-      k <- List(3, 5, 10, 50).sorted
-      pathFun <- List("avg")//, "min", "max", "hmean")
-      kFun <- List("avg")//, "min", "max", "hmean")
-      combFun <- List("avg")//, "min", "max", "hmean")
+      k <- List(5, 10, 50).sorted
+      pathFun <- List("avg", "min", "max", "hmean")
+      kFun <- List("avg", "min", "max", "hmean")
+      combFun <- List("avg", "min", "max", "hmean")
     } {
       val kSPOptions = new KShortestPathsOptions(
         Some(

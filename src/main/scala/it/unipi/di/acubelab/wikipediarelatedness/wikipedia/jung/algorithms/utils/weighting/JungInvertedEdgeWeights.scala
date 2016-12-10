@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.weighting
 
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet
+import it.unimi.dsi.fastutil.ints.{Int2DoubleOpenHashMap, IntOpenHashSet}
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 import scala.collection.mutable.ListBuffer
 
 /**
-  * Similar to JungEdgeWeights, but here weights are 1 / relatedness (useful for shortest path computation).
+  * Similar to JungEdgeWeights, but here weights are 1 - relatedness (useful for shortest path computation).
   * It also allows to mark edges and nodes as removed (by assigning to the corresponding edge the highest double value).
   *
   * @param relatedness
@@ -17,6 +17,8 @@ import scala.collection.mutable.ListBuffer
   */
 class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiGraph)
   extends JungEdgeWeights(relatedness, jungWikiGraph) {
+  //val outSums = new Int2DoubleOpenHashMap()
+
   val removedNodes = new IntOpenHashSet()  // nodes of which edges (-> and <-) have Double.MaxValue value
   val removedEdges = new ObjectOpenHashSet[String]()
 
@@ -37,7 +39,6 @@ class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiG
     // Nodes has already been removed
     val (src, dst) = nodesFromEdge(edge)
     if(removedNodes != null && (removedNodes.contains(src) || removedNodes.contains(dst))) return Double.MaxValue
-
 
     super.transform(edge)
   }
@@ -62,22 +63,38 @@ class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiG
         val rel = relatedness.computeRelatedness(wikiID, nodeWikiID)
 
         if (rel.isNaN) throw new IllegalArgumentException("NaN Relatedness while weighting graph")
+        if (rel < 0 || rel > 1) throw new IllegalArgumentException("Relatedness out of range %1.10f".format(rel))
 
         if (rel != 0f) {
-          val invRel = 1f / rel
+          val invRel = 1 - rel
           norm1 += invRel
           rels += Tuple2(nodeWikiID, invRel)
 
         } else {
-          rels += Tuple2(nodeWikiID, 0f)
+          rels += Tuple2(nodeWikiID, -1f)
         }
     }
 
     // Updates cache with normalized realtedness between wikiID and its successors.
-    if (norm1 == 0f) norm1 = 1f
+    //if (norm1 == 0f) norm1 = 1f
+    //outSums.put(wikiID, norm1)
     rels.foreach {
       case (nodeWikiID, rel) => cache.putIfAbsent("%d->%d".format(wikiID, nodeWikiID), rel.toDouble / norm1)
     }
+  }
+
+
+
+  /**
+    * Fill cache with edge weights. It returns edges to be removed.
+    * Here < 0 because 0.0 now represents two equal nodes
+    *
+    * @return
+    */
+  override def computeCache() : List[String] = {
+    import scala.collection.JavaConversions._
+    logger.info("Computing Weight Cache...")
+    jungWikiGraph.graph.getEdges.filter(transform(_) < 0).toList
   }
 
 
@@ -102,6 +119,7 @@ class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiG
 
     (src, dst)
   }
+
 
   /**
     * Unmark removed edges and nodes. Useful for multiple computation upon the same graph.

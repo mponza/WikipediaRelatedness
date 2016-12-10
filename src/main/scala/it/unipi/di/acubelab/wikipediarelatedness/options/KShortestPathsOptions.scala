@@ -22,8 +22,7 @@ class KShortestPathsOptions(json: Option[Any] = None) extends RelatednessOptions
 
 
   override def toString(): String = {
-    "%s,subGraph:%s,weighting:%s,threshold:%d,k:%d,p:%s,kf:%s,c:%s".formatLocal(java.util.Locale.US,
-      super.toString(),
+    "subGraph:%s,weighting:%s,threshold:%d,k:%d,p:%s,kf:%s,c:%s".formatLocal(java.util.Locale.US,
       subGraph,
       weighting,
       threshold,

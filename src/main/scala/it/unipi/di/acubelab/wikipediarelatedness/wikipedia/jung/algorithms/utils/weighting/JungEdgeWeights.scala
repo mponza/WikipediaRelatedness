@@ -24,6 +24,7 @@ class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiG
 
   def getLogger() = LoggerFactory.getLogger(classOf[JungEdgeWeights])
 
+
   /**
     * Compute edge weight between two Wikipedia IDs, normalized upon 1-norm.
     *
@@ -72,7 +73,7 @@ class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiG
 
 
   /**
-    * Fill cache with edge weights. It returns edges with 0 weight.
+    * Fill cache with edge weights. It returns edges to be removed (default with wegiht equals to 0.0).
     *
     * @return
     */
@@ -81,4 +82,5 @@ class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiG
     logger.info("Computing Weight Cache...")
     jungWikiGraph.graph.getEdges.filter(transform(_) == 0.0).toList
   }
+
 }

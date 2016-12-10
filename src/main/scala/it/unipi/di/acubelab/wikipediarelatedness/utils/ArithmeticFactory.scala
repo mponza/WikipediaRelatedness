@@ -12,8 +12,8 @@ object ArithmeticFactory {
 
   }
 
-  def avg(fs: List[Float]) = fs.sum / fs.length
-  def min(fs: List[Float]) = fs.min
-  def max(fs: List[Float]) = fs.max
-  def hmean(fs: List[Float]) : Float = fs.length / fs.map(1 / _).sum
+  def avg(fs: List[Float]) = if(fs.nonEmpty)  fs.sum / fs.length else 0f
+  def min(fs: List[Float]) = if(fs.nonEmpty) fs.min else 0f
+  def max(fs: List[Float]) = if(fs.nonEmpty) fs.max else 0f
+  def hmean(fs: List[Float]) : Float = if(fs.nonEmpty) fs.length / fs.map(1 / _).sum else 0f
 }
