@@ -17,7 +17,7 @@ class DeepWalkCxtSubWikiGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiGra
     logger.debug("Embedding with/without disambiguation %d vs %d".format(embeddings.length, noDisEmbeddings.length))
     noDisEmbeddings.toArray
   }
-  
+
   def contextNodes(srcWikiID: Int, dstWikiID: Int): Array[Int] = {
     val embeddings = TopKEmbeddingsCache.corpusSG.getTopK(srcWikiID, dstWikiID).map(_._1)
     val noDisEmbeddings = embeddings.filter(wikiGraph.contains)

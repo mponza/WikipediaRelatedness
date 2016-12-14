@@ -102,14 +102,16 @@ class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiG
    * Marks with Double.MaxValue edges and add to removedNodes nodes which belong to edges.
    */
   def removeNodes4ShortestPath(edges: List[String], srcWikiID: Int, dstWikiID: Int) = {
-    edges.foreach {
+    if (edges.nonEmpty)
+      removedEdges.add(edges.last)
+    /*edges.foreach {
       case edge =>
         removedEdges.add(edge)
 
         val (src, dst) = nodesFromEdge(edge)
-        if (src != srcWikiID) removedNodes.add(src)
-        if (dst != dstWikiID) removedNodes.add(dst)
-    }
+        //if (src != srcWikiID) removedNodes.add(src)
+        //if (dst != dstWikiID) removedNodes.add(dst)
+    }*/
   }
 
 
