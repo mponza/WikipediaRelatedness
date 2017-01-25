@@ -4,7 +4,7 @@ import java.io.File
 
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
@@ -61,7 +61,7 @@ class IBMESA(filename: File) {
 
 
 object IBMESA {
-  protected val wikiSimDataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+  protected val wikiSimDataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
 
   def wikiTitle2wikiID(wikiTitle: String) : Int = {

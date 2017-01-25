@@ -26,7 +26,7 @@ class CoSimRank(val algorithm: String, val iters: Int, val decay: Double) {
                        )
 
     // Server request.
-    val strResponse = Http(Configuration.cosimrank).postForm(simParams)
+    val strResponse = Http(OldConfiguration.cosimrank).postForm(simParams)
       .timeout(1000000000, 10000000).asString.body.toString
 
     // JSON response parsing

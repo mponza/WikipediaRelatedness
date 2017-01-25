@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.utils
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESA
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraphFactory}
 
 /**
   * Maps a wikiID into an array of wikiIDs by using the specified heuristics (i.e. graph neighbors or ESA).

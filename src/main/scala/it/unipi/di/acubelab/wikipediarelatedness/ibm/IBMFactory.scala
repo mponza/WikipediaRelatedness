@@ -3,11 +3,11 @@ package it.unipi.di.acubelab.wikipediarelatedness.ibm
 import java.io.File
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 
 
 object IBMFactory {
-  lazy val threshold2ESA = loadESAComputations(Configuration.ibmDir)
+  lazy val threshold2ESA = loadESAComputations(OldConfiguration.ibmDir)
 
 
   def make(threshold: Int) = threshold2ESA.get(threshold)

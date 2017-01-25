@@ -4,8 +4,8 @@ import java.io.File
 import java.util
 
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.factory.Nd4j
 import org.slf4j.LoggerFactory
@@ -22,8 +22,8 @@ class TopKEmbeddings(modelName: String) {
   val logger = LoggerFactory.getLogger(classOf[TopKEmbeddings])
 
 
-  lazy val embeddings = EmbeddingsDataset.apply( new File(Configuration.wikipedia(modelName)))
-  lazy val cache = new TopKEmbeddingsCache(Configuration.topKEmbeddings(modelName))
+  lazy val embeddings = EmbeddingsDataset.apply( new File(OldConfiguration.wikipedia(modelName)))
+  lazy val cache = new TopKEmbeddingsCache(OldConfiguration.topKEmbeddings(modelName))
 
 
   /**

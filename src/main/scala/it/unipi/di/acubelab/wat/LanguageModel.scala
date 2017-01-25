@@ -4,16 +4,16 @@ import java.io.File
 
 import edu.berkeley.nlp.lm.NgramLanguageModel
 import edu.berkeley.nlp.lm.io.LmReaders
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import org.slf4j.LoggerFactory
 
 object LanguageModel {
   protected val models = collection.mutable.Map.empty[File, NgramLanguageModel[String]]
   protected val logger = LoggerFactory.getLogger(getClass)
-  lazy val model = LmReaders.readLmBinary[String](Configuration.wikipedia("langModel"))
+  lazy val model = LmReaders.readLmBinary[String](OldConfiguration.wikipedia("langModel"))
 
   def loadModel(): NgramLanguageModel[String] = {
-    val modelFile = new File(Configuration.wikipedia("langModel"))
+    val modelFile = new File(OldConfiguration.wikipedia("langModel"))
 
     synchronized {
       models.getOrElseUpdate(modelFile, {

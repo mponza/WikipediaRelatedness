@@ -5,12 +5,12 @@ import java.util.zip.GZIPInputStream
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-class LDA(path : String = Configuration.lda("wiki_lda"), embeddingSize: Int = 100) {
+class LDA(path : String = OldConfiguration.lda("wiki_lda"), embeddingSize: Int = 100) {
   val logger = LoggerFactory.getLogger(classOf[LDA])
   lazy val embeddings = loadWikiLDAEmbedding(path, embeddingSize)
 

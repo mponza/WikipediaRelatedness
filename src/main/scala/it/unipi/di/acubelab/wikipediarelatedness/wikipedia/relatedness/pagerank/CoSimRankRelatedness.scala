@@ -1,13 +1,14 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
 
 import it.unipi.di.acubelab.wikipediarelatedness.options.CoSimRankOptions
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.cosimrank.{CoSimRankParallelGaussSeidel, CoSimRankPowerSeries}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.pagerank.cosimrank.{CoSimRankParallelGaussSeidel, CoSimRankPowerSeries}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
 /**
   * CoSimRank Relatedness on the whole Wikipedia graph.
+ *
   * @param options
   */
 class CoSimRankRelatedness(options: CoSimRankOptions = new CoSimRankOptions()) extends Relatedness {

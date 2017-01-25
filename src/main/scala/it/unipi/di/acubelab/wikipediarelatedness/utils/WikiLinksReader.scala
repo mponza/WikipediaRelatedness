@@ -11,7 +11,7 @@ import scala.io.Source
 class WikiLinksReader extends Traversable[(Int, Int)] {
   // Warning: The Wikipedia file MUST to be sorted on edges.
 
-  val path = Configuration.wikipedia("wikiLinks")
+  val path = OldConfiguration.wikipedia("wikiLinks")
 
   val fileStream = Source.fromInputStream(
     new GZIPInputStream(

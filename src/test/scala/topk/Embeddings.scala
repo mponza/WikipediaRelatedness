@@ -4,14 +4,14 @@ import java.io.File
 
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddingsCache
 import org.nd4j.linalg.factory.Nd4j
 import org.scalatest.{FlatSpec, Matchers}
 
 
 class Embeddings extends FlatSpec with Matchers {
-  val dw = EmbeddingsDataset(new File(Configuration.wikipedia("dwsg")))
+  val dw = EmbeddingsDataset(new File(OldConfiguration.wikipedia("dwsg")))
 
   val obama = 534366
 

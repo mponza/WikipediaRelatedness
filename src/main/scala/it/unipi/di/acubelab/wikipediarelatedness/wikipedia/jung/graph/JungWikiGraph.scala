@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph
 import java.io.{BufferedWriter, FileWriter, PrintWriter}
 
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraph
 import edu.uci.ics.jung.graph.Graph
 import edu.uci.ics.jung.io
 import org.apache.commons.collections15.Transformer

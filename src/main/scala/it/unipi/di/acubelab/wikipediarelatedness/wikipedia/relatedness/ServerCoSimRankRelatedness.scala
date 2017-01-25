@@ -2,9 +2,9 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 import it.unimi.dsi.fastutil.ints.Int2DoubleOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.options.CoSimRankOptions
-import it.unipi.di.acubelab.wikipediarelatedness.utils.{CoSimRank, Configuration}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph$, WikiGraphFactory}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.subgraph.SubWikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.utils.{CoSimRank, OldConfiguration}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph$, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.SubWikiGraph
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer

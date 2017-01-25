@@ -5,7 +5,7 @@ import java.io.File
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
@@ -23,7 +23,7 @@ object WikiTitleID {
   protected lazy val wikiID2Title = reverseTitle2ID()
 
 
-  protected def loadMapping(path: String = Configuration.wikipedia("title-id"))
+  protected def loadMapping(path: String = OldConfiguration.wikipedia("title-id"))
         : Object2IntOpenHashMap[String] = {
 
     if(new File(serializedPath).exists()) return BinIO.loadObject(serializedPath).asInstanceOf[Object2IntOpenHashMap[String]]

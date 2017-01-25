@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
 
 import it.unipi.di.acubelab.wikipediarelatedness.options.WikiWalkOptions
 import org.slf4j.LoggerFactory
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.pagerank.wikiwalk.WikiWalk
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.pagerank.wikiwalk.WikiWalk
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
 

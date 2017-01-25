@@ -6,7 +6,7 @@ import java.nio.file.Paths
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
 import it.unimi.dsi.webgraph.BVGraph
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import org.slf4j.LoggerFactory
 
 import scala.util.Random
@@ -47,7 +47,7 @@ class LLPProcessor(graph: BVGraph, llpTask : LLPTask = new LLPTask) {
   }
 
   def dirPath() : String = {
-    Paths.get(Configuration.wikipedia("llp"), llpTask.toString).toString
+    Paths.get(OldConfiguration.wikipedia("llp"), llpTask.toString).toString
   }
 
   /**

@@ -3,16 +3,16 @@ package it.unipi.di.acubelab.wikipediarelatedness.benchmark
 import java.io.{File, PrintWriter}
 import java.nio.file.Paths
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiRelateTask}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiRelateDataset, WikiRelateTask}
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Correlation
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
 
-class RelatednessBenchmark(val dataset: RelatednessDataset, val relatedness: Relatedness) {
+class RelatednessBenchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
   val logger = LoggerFactory.getLogger(classOf[RelatednessBenchmark])
-  val relatednessDirectory = Paths.get(Paths.get(Configuration.benchmark, dataset.toString()).toString,
+  val relatednessDirectory = Paths.get(Paths.get(OldConfiguration.benchmark, dataset.toString()).toString,
                                         relatedness.toString).toString
 
   /**

@@ -6,7 +6,7 @@ import java.io.{File, FileInputStream}
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import it.unipi.di.acubelab.wikipediarelatedness.utils.{Configuration, Similarity}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.{OldConfiguration, Similarity}
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
@@ -45,7 +45,7 @@ class LINE(val size: Int, val order: Int, val negative: Int) {
 
 
   def getLINEPath() = {
-    val directory =  Configuration.wikipedia("line")
+    val directory =  OldConfiguration.wikipedia("line")
     val filename = "line_size%d_order%d_negative%d.gz".format(size, order, negative)
 
     Paths.get(directory, filename).toString

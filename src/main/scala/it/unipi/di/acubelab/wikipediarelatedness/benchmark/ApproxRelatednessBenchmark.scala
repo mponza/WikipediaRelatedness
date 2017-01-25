@@ -4,13 +4,13 @@ package it.unipi.di.acubelab.wikipediarelatedness.benchmark
 import java.io.PrintWriter
 import java.nio.file.Paths
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.RelatednessDataset
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Correlation
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
-class ApproxRelatednessBenchmark(dataset: RelatednessDataset, relatedness: Relatedness)
-  extends RelatednessBenchmark(dataset: RelatednessDataset, relatedness: Relatedness) {
+class ApproxRelatednessBenchmark(dataset: WikiRelateDataset, relatedness: Relatedness)
+  extends RelatednessBenchmark(dataset: WikiRelateDataset, relatedness: Relatedness) {
 
   override val logger = LoggerFactory.getLogger(classOf[ApproxRelatednessBenchmark])
 

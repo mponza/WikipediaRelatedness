@@ -5,7 +5,7 @@ import java.io.File
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.runners.Runner
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.ProcessTopKEmbeddings
 import org.slf4j.LoggerFactory
 
@@ -26,8 +26,8 @@ class RunTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) extends Runner {
 
         logger.info("Running TopKEmbeddingProcessing of model %s".format(modelName))
 
-        val w2v = EmbeddingsDataset.apply(new File(Configuration.wikipedia(modelName)))
-        val cacheDir = Configuration.topKEmbeddings(modelName)
+        val w2v = EmbeddingsDataset.apply(new File(OldConfiguration.wikipedia(modelName)))
+        val cacheDir = OldConfiguration.topKEmbeddings(modelName)
 
         embProc.generateTopK(cacheDir, modelName)
     }

@@ -3,28 +3,22 @@ package it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim
 import java.io.File
 
 import com.github.tototoshi.csv.CSVReader
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiEntity, WikiRelateTask}
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import org.slf4j.LoggerFactory
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateDataset, WikiRelateTask}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 
 import scala.collection.mutable
 
 
-class WikiSimDataset(path: String = Configuration.dataset("procWikiSim")) extends RelatednessDataset {
-  val logger = LoggerFactory.getLogger(classOf[WikiSimDataset])
-  val wikiPairs = loadWikiPairs(path)
+class WikiSimDataset() extends WikiRelateDataset {
 
-  /**
-    *
-    * @return List of WikiSimPair with the corresponding human relatedness.
-    */
-  def loadWikiPairs(path: String) : List[WikiRelateTask]= {
-    logger.info("Loading WikiSimDataset... %s".format(path))
+  override def loadDataset(): Seq[WikiRelateTask] = {
+    val path = Config.getString("dataset.wikisim")
+    logger.info("Loading WikiSimDataset from %s".format(path))
 
     val pairs = new mutable.MutableList[WikiRelateTask]
     val csvReader = CSVReader.open(new File(path))
 
-    csvReader.foreach {
+    csvReader .foreach {
       fields =>
         val srcWord = fields(0).toString
         val src = new WikiEntity(fields(1).toInt, fields(2).replaceAll(" ", "_"))
@@ -36,16 +30,11 @@ class WikiSimDataset(path: String = Configuration.dataset("procWikiSim")) extend
 
         pairs += new WikiRelateTask(src, dst, humanRelatedness)
     }
-
     csvReader.close()
 
     logger.info("WikiSimDataset loaded!")
-    pairs.toList
+    pairs
   }
 
-  def foreach[U](f: (WikiRelateTask) => U) {
-    wikiPairs.foreach(wikiRelTask => f(wikiRelTask))
-  }
-
-  override def toString() : String = "WikiSim412"
+  override def toString() : String = "WikiSim"
 }

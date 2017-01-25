@@ -8,7 +8,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -16,10 +16,11 @@ import scala.collection.mutable.ListBuffer
 
 /**
   * Cache between a wikiID to its vector of concepts.
+ *
   * @param dirPath
   * @param size
   */
-class ESACache(val dirPath: String = Configuration.wikipedia("esaCache"), val size: Int = 10000) {
+class ESACache(val dirPath: String = OldConfiguration.wikipedia("esaCache"), val size: Int = 10000) {
   val logger = LoggerFactory.getLogger(classOf[ESACache])
   protected lazy val wikiID2Concepts = loadCache()
 

@@ -6,8 +6,8 @@ import java.util.Locale
 
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
 import org.slf4j.LoggerFactory
 
 /**
@@ -46,7 +46,7 @@ class WikiMTX(val dir: String) {
 
 
   def serializeDictionary() = {
-    val wiki2node =  BinIO.loadObject(Configuration.wikipedia("wiki2node")).asInstanceOf[Int2IntOpenHashMap]
+    val wiki2node =  BinIO.loadObject(OldConfiguration.wikipedia("wiki2node")).asInstanceOf[Int2IntOpenHashMap]
 
     logger.info("Serializing dictionary...")
 

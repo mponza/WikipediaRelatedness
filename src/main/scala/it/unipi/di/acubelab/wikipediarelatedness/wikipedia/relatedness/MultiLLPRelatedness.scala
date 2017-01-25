@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 import java.nio.file.Paths
 
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.LLPTask
 import org.slf4j.LoggerFactory
 

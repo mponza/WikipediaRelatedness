@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
 
 import it.unipi.di.acubelab.wikipediarelatedness.options.CasaroCoSimRankOptions
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
@@ -16,7 +16,7 @@ class CasaroCoSimRank(options: CasaroCoSimRankOptions) extends Relatedness {
 
     // Send query to Casaro CoSimRank
     try {
-      val response = Http(Configuration.cosimrank).postForm(params).timeout(Int.MaxValue, Int.MaxValue).asString.body.toString
+      val response = Http(OldConfiguration.cosimrank).postForm(params).timeout(Int.MaxValue, Int.MaxValue).asString.body.toString
 
       JSON.parseFull(response) match {
         case Some(jsonMap: Map[String, Any] @unchecked) =>

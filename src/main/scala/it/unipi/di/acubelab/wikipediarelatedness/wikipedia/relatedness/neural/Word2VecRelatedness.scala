@@ -4,7 +4,7 @@ import java.io.File
 
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.options.Word2VecOptions
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
@@ -21,7 +21,7 @@ class Word2VecRelatedness(options: Word2VecOptions = new Word2VecOptions()) exte
 
     def loadw2v(modelName : String) : EmbeddingsDataset  = {
       logger.info("Loading w2v %s model...".format(modelName))
-      val w2vPath = Configuration.wikipedia(modelName)
+      val w2vPath = OldConfiguration.wikipedia(modelName)
 
       EmbeddingsDataset.apply(new File(w2vPath))
     }

@@ -5,7 +5,7 @@ import java.nio.file.Paths
 import java.util.zip.GZIPInputStream
 
 import it.unipi.di.acubelab.lucene.VecTextField
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import org.apache.lucene.document._
 import org.apache.lucene.index.{IndexWriter, IndexWriterConfig}
 import org.apache.lucene.store.FSDirectory
@@ -24,7 +24,7 @@ class LuceneProcessing {
 
   def process() = {
     logger.info("Indexing Wikipedia documents...")
-    val directory = FSDirectory.open(Paths.get(Configuration.wikipedia("lucene")))
+    val directory = FSDirectory.open(Paths.get(OldConfiguration.wikipedia("lucene")))
 
     val analyzer = LuceneIndex.analyzer
     val config = new IndexWriterConfig(analyzer)
@@ -53,7 +53,7 @@ class LuceneProcessing {
     val fileStream = Source.fromInputStream(
       new GZIPInputStream(
         new FileInputStream(
-          new File(Configuration.wikipedia("linkCorpus"))
+          new File(OldConfiguration.wikipedia("linkCorpus"))
         )
       )
     )

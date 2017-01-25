@@ -4,8 +4,8 @@ import java.io.{File, PrintWriter}
 
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.WiReDataset
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.distance.MultipleDistanceMeter
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.distance.MultipleDistanceMeter
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.LoggerFactory
 
 class AllDistanceAnalyzer(val dataset: WiReDataset, val wikiGraph: WikiGraph = WikiGraphFactory.outGraph)  {

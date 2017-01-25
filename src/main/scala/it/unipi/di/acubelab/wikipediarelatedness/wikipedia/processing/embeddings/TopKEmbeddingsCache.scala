@@ -5,7 +5,7 @@ import java.io.File
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import org.slf4j.LoggerFactory
 
 /**
@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory
   *
   *   <ul/>
   * </p>
+ *
   * @param dirPath
   */
 class TopKEmbeddingsCache(dirPath: String) {
@@ -61,6 +62,6 @@ class TopKEmbeddingsCache(dirPath: String) {
 
 object TopKEmbeddingsCache {
 
-  lazy val corpusSG = new TopKEmbeddingsCache(Configuration.topKEmbeddings("sg"))
-  lazy val deepWalkSG = new TopKEmbeddingsCache(Configuration.topKEmbeddings("dwsg"))
+  lazy val corpusSG = new TopKEmbeddingsCache(OldConfiguration.topKEmbeddings("sg"))
+  lazy val deepWalkSG = new TopKEmbeddingsCache(OldConfiguration.topKEmbeddings("dwsg"))
 }

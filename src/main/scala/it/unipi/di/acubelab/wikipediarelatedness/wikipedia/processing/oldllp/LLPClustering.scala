@@ -5,8 +5,8 @@ import java.nio.file.Paths
 
 import it.unimi.dsi.fastutil.ints.{Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
@@ -78,7 +78,7 @@ class LLPClustering(llpTask: LLPTask = new LLPTask, dirPath: String = null) {
     if(dirPath != null) {
       dirPath
     } else {
-      val llpDir = Configuration.wikipedia("llp")
+      val llpDir = OldConfiguration.wikipedia("llp")
       Paths.get(llpDir, llpTask.toString).toString
     }
   }

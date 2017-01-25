@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
 
 import java.nio.file.Paths
 
-import it.unipi.di.acubelab.wikipediarelatedness.utils.{Configuration, CoreNLP}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.{OldConfiguration, CoreNLP}
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.core.KeywordAnalyzer
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper
@@ -30,7 +30,7 @@ class LuceneIndex {
   def loadIndexInMemory(): DirectoryReader = {
     logger.info("Loading Lucene index in memory...")
 
-    val fsDir = Paths.get(Configuration.wikipedia("lucene"))
+    val fsDir = Paths.get(OldConfiguration.wikipedia("lucene"))
     val directory = new MMapDirectory(fsDir)
 
     DirectoryReader.open(directory)

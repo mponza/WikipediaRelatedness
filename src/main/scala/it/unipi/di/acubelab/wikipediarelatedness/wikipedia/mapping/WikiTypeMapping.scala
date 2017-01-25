@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping
 import java.util.zip.GZIPInputStream
 
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 
 import scala.io.Source
 import java.io.{File, FileInputStream}
@@ -23,7 +23,7 @@ object WikiTypeMapping {
   protected lazy val wikiTitle2Types = loadMapping()
 
 
-  protected def loadMapping(path: String = Configuration.wikipedia("instance-types"))
+  protected def loadMapping(path: String = OldConfiguration.wikipedia("instance-types"))
       : Object2ObjectOpenHashMap[String, ObjectArrayList[String]] = {
 
     if(new File(serializedPath).exists()) return BinIO.loadObject(serializedPath).asInstanceOf[Object2ObjectOpenHashMap[String, ObjectArrayList[String]]]

@@ -2,12 +2,12 @@ package it.unipi.di.acubelab.wikipediarelatedness.analysis
 
 import java.io.{File, PrintWriter}
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.RelatednessDataset
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.distance.DistanceMeter
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateDataset
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.distance.DistanceMeter
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.LoggerFactory
 
-class DistanceAnalyzer(val dataset: RelatednessDataset, val wikiGraph: WikiGraph = WikiGraphFactory.outGraph) {
+class DistanceAnalyzer(val dataset: WikiRelateDataset, val wikiGraph: WikiGraph = WikiGraphFactory.outGraph) {
   val logger = LoggerFactory.getLogger(classOf[DistanceAnalyzer])
 
 

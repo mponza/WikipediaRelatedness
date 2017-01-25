@@ -3,19 +3,25 @@ package it.unipi.di.acubelab.wikipediarelatedness.dataset.wire
 import java.io.File
 
 import com.github.tototoshi.csv.CSVReader
-import it.unimi.di.mg4j.query.nodes.False
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{RelatednessDataset, WikiEntity, WikiRelateTask}
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import org.slf4j.LoggerFactory
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiRelateDataset, WikiEntity, WikiRelateTask}
 
 import scala.collection.mutable.ListBuffer
 
 
-abstract class WiReDataset(path: String) extends RelatednessDataset {
-  val logger = LoggerFactory.getLogger(classOf[WiReDataset])
-  val nytPairs : List[WikiRelateTask]
+/**
+  * Trait of the WiRe Dataset.
+  */
+trait WiReDataset extends WikiRelateDataset {
 
-  def loadNYTPairs(path: String) : List[WikiRelateTask] = {
+  /**
+    * Path to salient-salient, non-salient-salient or non-salient-non-salient file.
+    * @return
+    */
+  protected def wirePath(): String
+
+
+  override def loadDataset() : List[WikiRelateTask] = {
+    val path = wirePath()
     logger.info("Loading WiRe Dataset... %s".format(path))
 
     val pairs = ListBuffer.empty[WikiRelateTask]
@@ -39,9 +45,6 @@ abstract class WiReDataset(path: String) extends RelatednessDataset {
     pairs.toList
   }
 
-  def foreach[U](f: (WikiRelateTask) => U) {
-    nytPairs.foreach(nytTask => f(nytTask))
-  }
 
   override def toString() : String = "WiRe"
 }

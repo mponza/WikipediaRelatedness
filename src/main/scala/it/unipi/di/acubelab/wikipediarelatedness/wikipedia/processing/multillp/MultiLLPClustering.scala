@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.multillp
 import java.nio.file.Paths
 
 import it.unimi.dsi.fastutil.ints.IntArrayList
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.LLPTask
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.LLPClustering
 import org.slf4j.LoggerFactory
@@ -36,7 +36,7 @@ class MultiLLPClustering(nLLP: Int, llpTask: LLPTask = new LLPTask) {
   }
 
   def multiClusterDir() : String = {
-    Paths.get(Configuration.wikipedia("multiLLP"), "multiLLP-nLLP_%d-%s".format(nLLP, llpTask.toString)).toString
+    Paths.get(OldConfiguration.wikipedia("multiLLP"), "multiLLP-nLLP_%d-%s".format(nLLP, llpTask.toString)).toString
   }
 
 }

@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.benchmark
 
 
 import it.unipi.di.acubelab.wikipediarelatedness.classifiers.LinearSVM
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.RelatednessDataset
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiClassTask
 import org.slf4j.LoggerFactory
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
 import scala.collection.mutable.ListBuffer
 
 
-class ClassificationBenchmark(dataset: RelatednessDataset, relatedness: Relatedness)
+class ClassificationBenchmark(dataset: WikiRelateDataset, relatedness: Relatedness)
   extends RelatednessBenchmark(dataset, relatedness) {
   override val logger = LoggerFactory.getLogger(classOf[ClassificationBenchmark])
 

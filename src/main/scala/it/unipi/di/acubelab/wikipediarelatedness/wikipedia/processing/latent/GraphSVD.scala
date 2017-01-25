@@ -5,13 +5,13 @@ import java.util.zip.GZIPInputStream
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraph$, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraph$, WikiGraphFactory}
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-class GraphSVD(path : String = Configuration.graphSVD("left"), embeddingSize: Int = 100) {
+class GraphSVD(path : String = OldConfiguration.graphSVD("left"), embeddingSize: Int = 100) {
   val logger = LoggerFactory.getLogger(classOf[GraphSVD])
 
   protected lazy val eigenVectors = loadEigenVectors(path)

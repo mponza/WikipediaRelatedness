@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph
 
 import org.slf4j.LoggerFactory
 import edu.uci.ics.jung.graph.{DirectedSparseGraph, Graph}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraph
 
 /**
   * Clique Jung Graph from a Wikipedia subgraph.

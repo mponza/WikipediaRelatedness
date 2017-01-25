@@ -4,8 +4,8 @@ import java.nio.file.Paths
 
 import it.unimi.dsi.fastutil.io.TextIO
 import it.unimi.dsi.law.graph.LayeredLabelPropagation
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraphFactory}
 import org.slf4j.LoggerFactory
 
 class LLPProcessor(val wikiGraph: WikiGraph = WikiGraphFactory.noLoopSymGraph,

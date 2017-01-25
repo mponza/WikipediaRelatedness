@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph
 
 import edu.uci.ics.jung.graph.{DirectedSparseGraph, DirectedSparseMultigraph, Graph}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraph
 import org.slf4j.LoggerFactory
 
 

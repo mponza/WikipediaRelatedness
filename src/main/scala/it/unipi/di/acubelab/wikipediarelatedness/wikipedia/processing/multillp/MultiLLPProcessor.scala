@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.multillp
 import java.nio.file.Paths
 
 import it.unimi.dsi.webgraph.BVGraph
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.{LLPProcessor, LLPTask}
 import org.slf4j.LoggerFactory
 
@@ -30,6 +30,6 @@ class MultiLLPProcessor(graph: BVGraph, nLLP: Int = 10, llpTask: LLPTask = new L
   }
 
   def dirPath() : String = {
-    Paths.get(Configuration.wikipedia("multiLLP"), "multi-nLLP_%d-%s".format(nLLP, llpTask.toString)).toString
+    Paths.get(OldConfiguration.wikipedia("multiLLP"), "multi-nLLP_%d-%s".format(nLLP, llpTask.toString)).toString
   }
 }

@@ -1,11 +1,11 @@
 package it.unipi.di.acubelab.wikipediarelatedness.runners
 
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ApproxRelatednessBenchmark, RelatednessBenchmark}
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.RelatednessDataset
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.{WiReDataset, WiReGT}
 import it.unipi.di.acubelab.wikipediarelatedness.options._
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa.ESARelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.Word2VecRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.{CoSimRankRelatedness, PPRCosRelatedness}
@@ -24,7 +24,7 @@ import scala.collection.mutable.ListBuffer
 class RunBenchmark {
   val logger = LoggerFactory.getLogger(classOf[RunBenchmark])
 
-  val wikisim = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+  val wikisim = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
   val wiReGTList = WiReGT.makeDatasets()
 
   def run() : Unit  = {
@@ -37,7 +37,7 @@ class RunBenchmark {
 
 
 
-  def run(dataset: RelatednessDataset) = {
+  def run(dataset: WikiRelateDataset) = {
     logger.info("Benchmarking upon %s".format(dataset.toString()))
 
     val ranks = ListBuffer.empty[Tuple2[List[Float], String]]  // [ ( [Pearson, Spearman, Harmonic], RelName ) ]

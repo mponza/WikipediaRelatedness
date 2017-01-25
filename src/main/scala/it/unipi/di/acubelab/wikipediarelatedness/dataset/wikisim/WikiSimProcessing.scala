@@ -5,8 +5,8 @@ import java.util.Locale
 
 import com.github.tototoshi.csv.CSVWriter
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateTask}
-import it.unipi.di.acubelab.wikipediarelatedness.utils.{Configuration, WAT}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.utils.{OldConfiguration, WAT}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
 import org.slf4j.LoggerFactory
 
 class WikiSimProcessing(wikiSim: WikiSimDataset) {
@@ -21,7 +21,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
     val filterWikiSimPairs = wikiFilter(redirWikiSimPairs)
 
     checkDuplicated(filterWikiSimPairs)
-    store(filterWikiSimPairs, Configuration.dataset("procWikiSim"))
+    store(filterWikiSimPairs, OldConfiguration.dataset("procWikiSim"))
 
     logger.info("Dataset has been processed!")
   }

@@ -19,13 +19,13 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.algorithms.triangles.LocalClusteringProcessing
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.webgraph.graph.{WebGraphProcessor, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.triangles.LocalClusteringProcessing
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WebGraphProcessor, WikiGraphFactory}
 
 import scala.collection.mutable.ListBuffer
 
 //import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Configuration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
 
 import scala.util.parsing.json.JSON
@@ -85,7 +85,7 @@ object WikiSimProcess {
 
 object TopKEmbProc {
   def main(args: Array[String]) {
-    val wikiSim = new WikiSimDataset(Configuration.dataset("procWikiSim")).toList
+    val wikiSim = new WikiSimDataset(OldConfiguration.dataset("procWikiSim")).toList
     val wiRe = WiReGT.makeDatasets().flatten
 
     val topK = new RunTopKEmbeddings(wikiSim.slice(0, 10) ++ wiRe.slice(0, 10))
@@ -100,7 +100,7 @@ object Bench {
     val relatednessOptions = JSON.parseFull(args(0))
     val relatdness = RelatednessFactory.make(relatednessOptions)
 
-    val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+    val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
     val benchmark = new RelatednessBenchmark(dataset, relatdness)
     benchmark.runBenchmark()
@@ -114,7 +114,7 @@ object ClassBench {
     val relatednessOptions = JSON.parseFull(args(0))
     val relatdness = RelatednessFactory.make(relatednessOptions)
 
-    val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+    val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
     val benchmark = new ClassificationBenchmark(dataset, relatdness)
     benchmark.runBenchmark()
@@ -148,7 +148,7 @@ object BenchCoSimRank {
         val relatednessOptions = JSON.parseFull(s)
         val relatdness = RelatednessFactory.make(relatednessOptions)
 
-        val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+        val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
         val benchmark = new RelatednessBenchmark(dataset, relatdness)
         benchmark.runBenchmark()
@@ -176,7 +176,7 @@ object BenchPPRCos {
         val relatednessOptions = JSON.parseFull(s)
         val relatdness = RelatednessFactory.make(relatednessOptions)
 
-        val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+        val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
         val benchmark = new RelatednessBenchmark(dataset, relatdness)
         benchmark.runBenchmark()
@@ -200,7 +200,7 @@ object BenchIBMESA {
       val relatednessOptions = JSON.parseFull(s)
       val relatdness = RelatednessFactory.make(relatednessOptions)
 
-      val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+      val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
       val benchmark = new RelatednessBenchmark(dataset, relatdness)
       benchmark.runBenchmark()
@@ -219,7 +219,7 @@ object ESABench {
       val relatednessOptions = JSON.parseFull(s)
       val relatdness = RelatednessFactory.make(relatednessOptions)
 
-      val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+      val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
       val benchmark = new RelatednessBenchmark(dataset, relatdness)
       benchmark.runBenchmark()
@@ -245,7 +245,7 @@ object JaccardTopBench {
       val relatednessOptions = JSON.parseFull(s)
       val relatdness = RelatednessFactory.make(relatednessOptions)
 
-      val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+      val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
       val benchmark = new RelatednessBenchmark(dataset, relatdness)
       benchmark.runBenchmark()
@@ -273,7 +273,7 @@ object LINEBench {
         val relatednessOptions = JSON.parseFull(s)
         val relatdness = RelatednessFactory.make(relatednessOptions)
 
-        val dataset = new WikiSimDataset(Configuration.dataset("procWikiSim"))
+        val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
         val benchmark = new RelatednessBenchmark(dataset, relatdness)
         benchmark.runBenchmark()
@@ -297,7 +297,7 @@ object ClustProcessing {
 object ESACacher {
   def main(args: Array[String]) = {
     val esaCache = new ESACache()
-    val wikiSim = new WikiSimDataset(Configuration.dataset("procWikiSim")).toList
+    val wikiSim = new WikiSimDataset(OldConfiguration.dataset("procWikiSim")).toList
     val wiRe = WiReGT.makeDatasets().flatten
     esaCache.generateCache(wikiSim ++ wiRe)
   }
