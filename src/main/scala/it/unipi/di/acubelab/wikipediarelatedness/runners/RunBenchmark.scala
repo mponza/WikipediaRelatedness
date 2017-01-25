@@ -79,7 +79,7 @@ class RunBenchmark {
        // new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "outGraph"))) ),
        // new JaccardRelatedness( new JaccardOptions(Some(Map("graph" -> "symGraph"))) )
      //)
-
+/*
     for {
       threshold <- List(10, 50, 100).sorted //, 50, 100, 500)//, 50, 100, 1000, 2000).sorted //, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
       sub <- List("esa", "dw", "w2v")
@@ -116,7 +116,7 @@ class RunBenchmark {
       logger.info("%s".format(subCSROpts))
       relatednessMethods += new ContextCliqueCoSimRankRelatedness(subCSROpts)
     }
-
+*/
 /*
     for {
       threshold <- List(5, 10).sorted ///, 50).sorted //, 50, 100, 500)//, 50, 100, 1000, 2000).sorted //, 30, 50, 100, 200, 500, 1000)//, 1000, 2000)
