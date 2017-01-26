@@ -8,7 +8,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, OldConfiguration}
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -16,16 +16,17 @@ import scala.collection.mutable.ListBuffer
 
 /**
   * Cache between a wikiID to its vector of concepts.
- *
-  * @param dirPath
+  *
   * @param size
   */
-class ESACache(val dirPath: String = OldConfiguration.wikipedia("esaCache"), val size: Int = 10000) {
+class ESACache(val size: Int = 10000) {
   val logger = LoggerFactory.getLogger(classOf[ESACache])
+  protected val luceneDir = Config.getString("wikipedia.lucene")
+
   protected lazy val wikiID2Concepts = loadCache()
 
 
-  /***
+  /**
     * Method used to generate the cache from a dataset.
     *
     * @param tasks
@@ -58,12 +59,12 @@ class ESACache(val dirPath: String = OldConfiguration.wikipedia("esaCache"), val
     }
 
     logger.info("Serializing wikiIDs-concepts mapping...")
-    new File(dirPath).mkdirs
+    new File(luceneDir).mkdirs
     BinIO.storeObject(wikiID2Concepts, getPath())
   }
 
 
-  protected def getPath() = Paths.get(dirPath, "cache_%d.bin".format(size)).toString
+  protected def getPath() = Paths.get(luceneDir, "cache_%d.bin".format(size)).toString
 
 
   protected def loadCache() = {

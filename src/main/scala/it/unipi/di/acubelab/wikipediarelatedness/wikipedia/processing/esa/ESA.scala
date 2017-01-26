@@ -3,6 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.LemmaLuceneIndex
 import org.apache.lucene.queryparser.classic.QueryParser
 
+
 /**
   * Static class which implements ESA upon the Wikipedia Corpus.
   * Concept vectors are always sorted by their SCORE (not wikiID!).
@@ -10,6 +11,7 @@ import org.apache.lucene.queryparser.classic.QueryParser
 object ESA {
   lazy val lucene = new LemmaLuceneIndex()
   val cache = new ESACache()
+
 
   /**
     * Returns ESA's concepts vector for a given text. This method DOES NOT use the cache.

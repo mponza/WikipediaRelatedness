@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
 
 import java.nio.file.Paths
 
-import it.unipi.di.acubelab.wikipediarelatedness.utils.{OldConfiguration, CoreNLP}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.core.KeywordAnalyzer
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper
@@ -10,32 +10,45 @@ import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.queryparser.classic.QueryParser
 import org.apache.lucene.search.{BooleanQuery, IndexSearcher}
 import org.apache.lucene.search.similarities.BM25Similarity
-import org.apache.lucene.store.{FSDirectory, IOContext, MMapDirectory, RAMDirectory}
+import org.apache.lucene.store.MMapDirectory
 import org.slf4j.LoggerFactory
 
 
+/**
+  * Class which manages an index built with Lucene.
+  *
+  */
 class LuceneIndex {
-  val logger = getLogger()
+  protected val logger = LoggerFactory.getLogger(getClass)
 
   val reader = loadIndexInMemory()
   val searcher = new IndexSearcher(reader)
-  searcher.setSimilarity(new BM25Similarity())
 
+  searcher.setSimilarity(new BM25Similarity())
   BooleanQuery.setMaxClauseCount(Integer.MAX_VALUE)
 
 
-  def getLogger() = LoggerFactory.getLogger(classOf[LuceneIndex])
-
-
-  def loadIndexInMemory(): DirectoryReader = {
+  /**
+    * Loads the index from disk.
+    *
+    * @return
+    */
+  protected def loadIndexInMemory(): DirectoryReader = {
     logger.info("Loading Lucene index in memory...")
 
-    val fsDir = Paths.get(OldConfiguration.wikipedia("lucene"))
+    val fsDir = Paths.get(Config.getString("wikipedia.lucene"))
     val directory = new MMapDirectory(fsDir)
 
     DirectoryReader.open(directory)
   }
 
+
+  /**
+    * Retrieves the Wikipedia document from its wikiID.
+    *
+    * @param wikiID
+    * @return
+    */
   def wikipediaBody(wikiID: Int) : String = {
     val parser = new QueryParser("id", LuceneIndex.analyzer)
     val query = parser.createBooleanQuery("id", wikiID.toString)
@@ -45,6 +58,16 @@ class LuceneIndex {
   }
 
 
+
+  //
+  // Not currently used.
+
+  /**
+    * To be checked. Maybe useful for vector space model.
+    *
+    * @param wikiID
+    * @return
+    */
   def vectorSpaceProjection(wikiID: Int) : String = {
     //val text = wikipediaBody(wikiID)
     val parser = new QueryParser("id", LuceneIndex.analyzer)
@@ -65,6 +88,7 @@ class LuceneIndex {
     ""
   }
 }
+
 
 object LuceneIndex {
   lazy val analyzer = luceneEntityAnalyzer()

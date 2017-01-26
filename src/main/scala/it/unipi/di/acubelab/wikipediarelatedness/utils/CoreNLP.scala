@@ -6,10 +6,19 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.JavaConversions._
 
+
+/**
+  * Object for simply using CoreNLP.
+  *
+  */
 object CoreNLP {
   lazy val coreNLP = coreNLPPipeline()
 
-  def coreNLPPipeline() = {
+  /**
+    * Creates a CoreNLP pipeline.
+    * @return
+    */
+  protected def coreNLPPipeline() = {
     val props = new java.util.Properties()
     props.put("annotators", "tokenize, ssplit, pos, lemma")
     props.put("tokenize.whitespace", "true")
@@ -18,7 +27,14 @@ object CoreNLP {
     new StanfordCoreNLP(props)
   }
 
-  def lemmatize(text: String) : List[String] = {
+
+  /**
+    * Transforms text into a sequence of lemmatized tokens.
+    *
+    * @param text
+    * @return
+    */
+  def lemmatize(text: String) : Seq[String] = {
     // Scala adaptation of: http://stackoverflow.com/questions/1578062/lemmatization-java
 
     val lemmas = ArrayBuffer.empty[String]
