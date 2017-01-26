@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping
 import java.util.zip.GZIPInputStream
 
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, OldConfiguration}
 
 import scala.io.Source
 import java.io.{File, FileInputStream}
@@ -16,16 +16,26 @@ import scala.collection.immutable.HashSet
 class WikiTypeMapping {}
 
 
+/**
+  * Mapping between WikiTitle and their instance types.
+  *
+  */
 object WikiTypeMapping {
-  val logger = LoggerFactory.getLogger(classOf[WikiTypeMapping])
-  protected val serializedPath = "/tmp/titleTypes.bin"
+  protected val logger = LoggerFactory.getLogger(getClass)
+  protected val serializedPath = "/tmp/titleTypes.bin"  // fix me
 
   protected lazy val wikiTitle2Types = loadMapping()
 
 
-  protected def loadMapping(path: String = OldConfiguration.wikipedia("instance-types"))
+  /**
+    * Loads Wikipedia instance type mapping.
+    *
+    * @return
+    */
+  protected def loadMapping()
       : Object2ObjectOpenHashMap[String, ObjectArrayList[String]] = {
 
+    val path = Config.getString("wikipedia.mapping.instance_types")
     if(new File(serializedPath).exists()) return BinIO.loadObject(serializedPath).asInstanceOf[Object2ObjectOpenHashMap[String, ObjectArrayList[String]]]
 
     logger.info("Loading Wikipedia types...")
@@ -70,16 +80,30 @@ object WikiTypeMapping {
     xmlString.substring(xmlString.lastIndexOf("/") + 1, xmlString.indexOf(">"))
   }
 
+
+  /**
+    * Get second field of an xml string.
+    *
+    * @param xmlString
+    * @return
+    */
   protected def getXMLFieldOntology(xmlString: String) = xmlString.split("/")(2)
 
 
+  /**
+    * Instance type of wikiTitle.
+    *
+    * @param wikiTitle
+    * @return
+    */
   def types(wikiTitle: String) = wikiTitle2Types.getOrDefault(wikiTitle, new ObjectArrayList[String])
 
 
   /**
+    * Wikipedia Type as {Person, Organization, Location, Object}
     *
     * @param wikiTitle
-    * @return Wikipedia Type as {Person, Organization, Location, Object}
+    * @return
     */
   def typePerOrgLoc(wikiTitle: String) : String= {
     val pol = HashSet("Person", "Organisation", "Location")

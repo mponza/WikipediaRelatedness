@@ -1,34 +1,45 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.triangles
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.clustering
 
 import java.io.File
-import java.nio.file.Paths
 
 import es.yrbcn.graph.triangles.MainmemBitbasedTrianglesAlgorithm
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.ImmutableGraph
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
+
 
 /**
   * Local Clustering Computation via Approximated Triangle Counting.
   * For more info see "Efficient Semi-streaming Algorithms for Local
   * Triangle Counting in Massive Graphs" (Becchetti, Boldi, Castillo, Gionis; KDD'08)
+  *
   */
 class LocalClusteringProcessing {
-  val logger = LoggerFactory.getLogger(classOf[LocalClusteringProcessing])
+  protected val logger = LoggerFactory.getLogger(getClass)
 
 
-  def generateClusteringCoefficients(path: String = OldConfiguration.wikipedia("localClustering")) = {
-    val wikiGraph = WikiBVGraphFactory.symNoLoopWikiBVGraph
+  /**
+    * Generated approximated local clustering coefficients and save them into file.
+    *
+    */
+  def generateClusteringCoefficients() = {
+    val wikiGraph = WikiBVGraphFactory.makeWikiBVGraph("sym_no_loop")
 
     val triangles = generateTriangles(wikiGraph.graph)
     val lcc = generateLocalClusteringCoefficients(wikiGraph.graph, triangles)
-    saveCoefficients(lcc, path)
+    saveCoefficients(lcc, Config.getString("wikipedia.cache.local_clustering"))
   }
 
 
-  def generateTriangles(graph: ImmutableGraph) : Array[Float]= {
+  /**
+    *
+    *
+    * @param graph
+    * @return
+    */
+  protected def generateTriangles(graph: ImmutableGraph) : Array[Float]= {
 
     // maxDistance seems not to be used by the algorithm
     val algorithm = new MainmemBitbasedTrianglesAlgorithm(graph, 0, 1)
@@ -47,7 +58,14 @@ class LocalClusteringProcessing {
   }
 
 
-  def generateLocalClusteringCoefficients(graph: ImmutableGraph, triangles: Array[Float]) : Array[Float] = {
+  /**
+    *
+    *
+    * @param graph
+    * @param triangles
+    * @return
+    */
+  protected def generateLocalClusteringCoefficients(graph: ImmutableGraph, triangles: Array[Float]) : Array[Float] = {
     logger.info("Normalizing triangle counts...")
 
     val lcc = Array.fill[Float](graph.numNodes())(0f)
@@ -61,11 +79,17 @@ class LocalClusteringProcessing {
   }
 
 
-  def saveCoefficients(coefficients: Array[Float], pathDir: String) = {
-    new File(pathDir).mkdirs
-    val llcPath = Paths.get(pathDir, "coefficients.bin").toString
+  /**
+    * Store coefficients into path
+    *
+    * @param coefficients
+    * @param path
+    */
+  protected def saveCoefficients(coefficients: Array[Float], path: String) = {
+    new File(new File(path).getParent).mkdirs
 
-    logger.info("Saving Local Clustring Coefficients into %s...".format(llcPath))
-    BinIO.storeFloats(coefficients, llcPath)
+    logger.info("Saving Local Clustring Coefficients into %s...".format(path))
+    BinIO.storeFloats(coefficients, path)
+    logger.info("Local Clustring Coefficients correctly stored!")
   }
 }

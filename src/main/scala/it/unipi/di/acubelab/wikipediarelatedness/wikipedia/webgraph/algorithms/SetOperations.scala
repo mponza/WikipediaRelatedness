@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.operations
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms
 
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph
@@ -10,11 +10,13 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBV
   */
 class SetOperations(val wikiGraph: WikiBVGraph) {
 
+
   /**
+    * Computes the size of the intersection between the neighborhood of srcWikiID and dstWikiID in wikiGraph
     *
     * @param srcWikiID
     * @param dstWikiID
-    * @return Number of intersected nodes between srcWikiID and dstWikiID.
+    * @return
     */
   def intersectionSize(srcWikiID: Int, dstWikiID: Int) : Int = {
     val iterA =  wikiGraph.successors(srcWikiID)
@@ -31,7 +33,6 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
         b = iterB.nextInt
       }
 
-      // Aligns iterators to their minimum common element (if any).
       while (a < b && a != -1) a = iterA.nextInt
       while (b < a && b != -1) b = iterB.nextInt
 
@@ -40,11 +41,13 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
     intersection
   }
 
+
   /**
+    *  Computes the union between the neighborhood of srcWikiID and dstWikiID in wikiGraph
     *
     * @param srcWikiID
     * @param dstWikiID
-    * @return wikiIDs which belong to the union between srcWikiID and dstWikiID.
+    * @return
     */
   def wikiUnion(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
     val srcArray = wikiGraph.successorArray(srcWikiID)
@@ -55,10 +58,11 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
 
 
   /**
+    * Returns the intersected nodeIDs between srcWikiId and dstWikiId in wikiGraph.
     *
     * @param srcWikiID
     * @param dstWikiID
-    * @return wikiIDs which belong to the intersection between srcWikiID and dstWikiID.
+    * @return
     */
   def wikiIntersection(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
 
@@ -76,7 +80,7 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
         b = iterB.nextInt
       }
 
-      // Aligns iterators to their minimum common element (if any).
+
       while (a < b && a != -1) a = iterA.nextInt
       while (b < a && b != -1) b = iterB.nextInt
 
@@ -84,6 +88,5 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
 
     intersection
   }
-
 
 }

@@ -1,6 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.options
-
-import it.unipi.di.acubelab.wikipediarelatedness.options.Set.SetOptions
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 
 /**
@@ -73,7 +71,7 @@ object RelatednessOptions {
 
     }
 
-    parser.parse(args, SetOptions()) match {
+    parser.parse(args, RelatednessOptions()) match {
       case Some(config) => config
       case None => throw new IllegalArgumentException("RelatednessOptions: Error while parsing %s"
         .format(args.toString))

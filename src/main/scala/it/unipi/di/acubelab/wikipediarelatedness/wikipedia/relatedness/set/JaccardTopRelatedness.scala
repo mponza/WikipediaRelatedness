@@ -3,8 +3,8 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import it.unipi.di.acubelab.wikipediarelatedness.options.JaccardTopOptions
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.operations.SetOperations
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.triangles.LocalClustering
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.clustering.LocalClustering
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.SetOperations
 import org.slf4j.LoggerFactory
 
 /**
