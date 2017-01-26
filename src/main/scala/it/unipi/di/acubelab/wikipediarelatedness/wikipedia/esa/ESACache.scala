@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa
 
 import java.io.File
 import java.nio.file.Paths
@@ -8,7 +8,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
-import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, OldConfiguration}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -60,18 +60,22 @@ class ESACache(val size: Int = 10000) {
 
     logger.info("Serializing wikiIDs-concepts mapping...")
     new File(luceneDir).mkdirs
-    BinIO.storeObject(wikiID2Concepts, getPath())
+    BinIO.storeObject(wikiID2Concepts, getCachePath())
   }
 
 
-  protected def getPath() = Paths.get(luceneDir, "cache_%d.bin".format(size)).toString
+  protected def getCachePath() = Paths.get(luceneDir, "cache_%d.bin".format(size)).toString
 
 
   protected def loadCache() = {
-    logger.info("Loading ESA cache %s...".format(getPath()))
+    logger.info("Loading ESA cache from %s...".format(getCachePath()))
+
     try {
-      BinIO.loadObject(getPath()).asInstanceOf[Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]]
+
+      BinIO.loadObject(getCachePath()).asInstanceOf[Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]]
+
     } catch {
+
       case e: Exception =>
         logger.warn("Cache not found, no cache will be used.")
         new Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]()  // empty cache

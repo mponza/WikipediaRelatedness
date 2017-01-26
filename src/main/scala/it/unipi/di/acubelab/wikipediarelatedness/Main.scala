@@ -14,9 +14,9 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.clustering.LocalClust
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.{WikiTitleID, WikiTypeMapping}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddingsCache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddings
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.LuceneProcessing
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESACache
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WebGraphProcessor, WikiBVGraphFactory}
 
 import scala.collection.mutable.ListBuffer

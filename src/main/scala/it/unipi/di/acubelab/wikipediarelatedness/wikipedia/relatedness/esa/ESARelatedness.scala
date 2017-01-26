@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.options.ESAOptions
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESA
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESA
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 

@@ -1,7 +1,7 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.lemma
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.LuceneProcessing
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.LuceneProcessing
 import org.slf4j.LoggerFactory
 
 import scala.util.parsing.json.JSON

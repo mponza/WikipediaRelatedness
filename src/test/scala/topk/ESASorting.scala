@@ -1,7 +1,7 @@
 package topk
 
 import org.scalatest.{FlatSpec, Matchers}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESA
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESA
 
 /**
   * ESA Cache UnitTests.

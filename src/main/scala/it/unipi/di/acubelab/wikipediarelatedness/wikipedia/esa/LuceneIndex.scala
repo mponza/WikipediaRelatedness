@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa
 
 import java.nio.file.Paths
 
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory
 
 
 /**
-  * Class which manages an index built with Lucene.
+  * Manager of an index built with Lucene.
   *
   */
 class LuceneIndex {

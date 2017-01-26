@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa
 
 import java.io.Reader
 

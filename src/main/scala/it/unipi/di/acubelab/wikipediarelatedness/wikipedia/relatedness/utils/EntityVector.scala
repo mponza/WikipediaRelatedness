@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.utils
 
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESA
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESA
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiBVGraph, WikiBVGraphFactory}
 
 /**

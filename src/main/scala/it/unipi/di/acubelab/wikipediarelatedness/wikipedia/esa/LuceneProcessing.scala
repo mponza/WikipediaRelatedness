@@ -1,11 +1,11 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa
 
 import java.io.{File, FileInputStream}
 import java.nio.file.Paths
 import java.util.zip.GZIPInputStream
 
 import it.unipi.di.acubelab.lucene.VecTextField
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import org.apache.lucene.document._
 import org.apache.lucene.index.{IndexWriter, IndexWriterConfig}
 import org.apache.lucene.store.FSDirectory
@@ -22,9 +22,14 @@ class LuceneProcessing {
 
   def getLogger() = LoggerFactory.getLogger(classOf[LuceneProcessing])
 
+
+  /**
+    * Builds Lucene Index.
+    *
+    */
   def process() = {
     logger.info("Indexing Wikipedia documents...")
-    val directory = FSDirectory.open(Paths.get(OldConfiguration.wikipedia("lucene")))
+    val directory = FSDirectory.open(Paths.get(Config.getString("wikipedia.lucene")))
 
     val analyzer = LuceneIndex.analyzer
     val config = new IndexWriterConfig(analyzer)
@@ -42,6 +47,7 @@ class LuceneProcessing {
     directory.close()
   }
 
+
   /**
     * Iterator over Wikipedia documents.
     *
@@ -53,7 +59,7 @@ class LuceneProcessing {
     val fileStream = Source.fromInputStream(
       new GZIPInputStream(
         new FileInputStream(
-          new File(OldConfiguration.wikipedia("linkCorpus"))
+          new File(Config.getString("wikipedia.corpus"))
         )
       )
     )
@@ -84,6 +90,13 @@ class LuceneProcessing {
       }
   }
 
+
+  /**
+    * Convert a json line into a Tuple of (WikiTitle, WikiID, Splitted Sentences).
+    *
+    * @param line
+    * @return
+    */
   def line2WikiTitleIDBody(line: String): Tuple3[String, Int, String] = {
     val jsonLine = JSON.parseFull(line)
 

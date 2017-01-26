@@ -1,6 +1,6 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa
 
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.LemmaLuceneIndex
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.lemma.LemmaLuceneIndex
 import org.apache.lucene.queryparser.classic.QueryParser
 
 
@@ -15,6 +15,7 @@ object ESA {
 
   /**
     * Returns ESA's concepts vector for a given text. This method DOES NOT use the cache.
+    *
     * @param text LEMMATIZED text
     * @return List of Wikipedia IDs where wikiID is mentioned and the corresponding score.
     *         The best resultThreshold concepts are returned by decreasing order by their score.
@@ -38,6 +39,7 @@ object ESA {
 
   /**
     * Returns ESA's concepts vector of wikiID. If available, it exploit the cache.
+    *
     * @param wikiID
     * @param resultThreshold
     * @return
