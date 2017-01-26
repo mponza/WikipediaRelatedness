@@ -4,10 +4,10 @@ import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.law.rank.{PageRank, PageRankPowerSeries}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiBVGraph, WikiBVGraphFactory}
 import org.slf4j.LoggerFactory
 
-class CoSimRankPowerSeries(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, iterations: Int = 30,
+class CoSimRankPowerSeries(wikiGraph: WikiBVGraph = WikiBVGraphFactory.outWikiBVGraph, iterations: Int = 30,
                            pprDecay: Float = 0.8f, csrDecay: Float = 0.8f)
 
   extends CoSimRank(wikiGraph, iterations, pprDecay, csrDecay) {

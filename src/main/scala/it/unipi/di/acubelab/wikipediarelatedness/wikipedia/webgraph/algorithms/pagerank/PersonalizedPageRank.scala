@@ -2,11 +2,11 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.
 
 import it.unimi.dsi.fastutil.doubles.{DoubleArrayList, DoubleList}
 import it.unimi.dsi.law.rank.PageRank
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiBVGraph, WikiBVGraphFactory}
 import org.slf4j.Logger
 
-abstract class PersonalizedPageRank(val wikiGraph: WikiGraph = WikiGraphFactory.outGraph,
-                                      val iterations: Int = 30, val pprDecay: Float = 0.8f) {
+abstract class PersonalizedPageRank(val wikiGraph: WikiBVGraph = WikiBVGraphFactory.outWikiBVGraph,
+                                    val iterations: Int = 30, val pprDecay: Float = 0.8f) {
     protected val logger = getLogger()
     protected val pageRanker = getPageRanker()
 

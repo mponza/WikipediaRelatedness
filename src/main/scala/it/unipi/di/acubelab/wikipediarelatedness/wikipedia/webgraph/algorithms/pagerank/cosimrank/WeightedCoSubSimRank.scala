@@ -3,10 +3,10 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.
 import it.unimi.dsi.law.rank.PageRank
 import it.unipi.di.acubelab.webgraph.rank.WeightedPageRankPowerSeries
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
-class WeightedCoSubSimRank (wikiGraph: WikiGraph, iterations: Int = 30,
+class WeightedCoSubSimRank (wikiGraph: WikiBVGraph, iterations: Int = 30,
                             pprDecay: Float = 0.8f, csrDecay: Float = 0.8f,
                             relatedness: Relatedness)
 

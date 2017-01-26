@@ -8,8 +8,7 @@ class Correlation {}
 
 
 object Correlation {
-
-  val logger = LoggerFactory.getLogger(classOf[Correlation])
+  protected val logger = LoggerFactory.getLogger(getClass)
 
   def pearson(dataset: WikiRelateDataset) = {
     humanAndMachineScores(dataset) match {

@@ -3,8 +3,8 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.to
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.webgraph.ImmutableGraph
 import it.unimi.dsi.webgraph.ImmutableSubgraph
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraph
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.topk.TopKSubWikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.topk.TopKSubWikiBVGraph
 
 /**
   * Top-K from src and dst + their context. A subClass has to implement neighborhood and contextNodes methods.
@@ -14,9 +14,9 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.top
   * @param wikiGraph
   * @param threshold
   */
-abstract class CxtTopKSubWikiGraph(srcWikiID: Int, dstWikiID: Int,
-                                   wikiGraph: WikiGraph, threshold: Int = 1000)
-          extends TopKSubWikiGraph(srcWikiID, dstWikiID, wikiGraph, threshold) {
+abstract class CxtTopKSubWikiBVGraph(srcWikiID: Int, dstWikiID: Int,
+                                     wikiGraph: WikiBVGraph, threshold: Int = 1000)
+          extends TopKSubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph, threshold) {
 
   override def loadImmutableGraph(path: String) : ImmutableGraph = {
     logger.info("Generating context-subgraph starting from %d and %d...".format(srcWikiID, dstWikiID))

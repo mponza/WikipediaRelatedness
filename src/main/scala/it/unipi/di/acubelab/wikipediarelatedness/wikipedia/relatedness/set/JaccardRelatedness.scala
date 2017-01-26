@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set
 
 import it.unipi.di.acubelab.wikipediarelatedness.options.JaccardOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.SetOperations
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
 /**
@@ -13,7 +13,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
   *                }
   */
 class JaccardRelatedness(val options: JaccardOptions = new JaccardOptions()) extends Relatedness {
-  val wikiGraph = WikiGraphFactory.makeWikiGraph(options.graph)
+  val wikiGraph = WikiBVGraphFactory.makeWikiGraph(options.graph)
   val setOperations = new SetOperations(wikiGraph)
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {

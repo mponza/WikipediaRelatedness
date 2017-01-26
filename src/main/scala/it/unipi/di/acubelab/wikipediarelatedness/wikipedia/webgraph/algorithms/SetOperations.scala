@@ -1,14 +1,14 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms
 
 import it.unimi.dsi.fastutil.ints.IntArrayList
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph
 
 /**
   * Class which implements set-based operations over node neighborhoods of a wikiBVGraph.
   *
   * @param wikiGraph
   */
-class SetOperations(val wikiGraph: WikiGraph) {
+class SetOperations(val wikiGraph: WikiBVGraph) {
 
   /**
     *

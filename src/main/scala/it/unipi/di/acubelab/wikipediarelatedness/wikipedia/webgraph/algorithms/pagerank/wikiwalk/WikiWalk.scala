@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.doubles.{DoubleArrayList, DoubleList}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESA
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.LemmaLuceneIndex
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.pagerank.pprcos.PPRCos
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiBVGraph, WikiBVGraphFactory}
 import org.slf4j.LoggerFactory
 
 /**
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory
   * @param iterations
   * @param pprDecay
   */
-class WikiWalk(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, iterations: Int = 30, pprDecay: Float = 0.8f)
+class WikiWalk(wikiGraph: WikiBVGraph = WikiBVGraphFactory.outWikiBVGraph, iterations: Int = 30, pprDecay: Float = 0.8f)
   extends PPRCos(wikiGraph, iterations, pprDecay) {
 
   protected val esa = new LemmaLuceneIndex()

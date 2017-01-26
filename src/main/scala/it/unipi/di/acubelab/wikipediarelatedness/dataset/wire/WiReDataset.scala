@@ -10,17 +10,18 @@ import scala.collection.mutable.ListBuffer
 
 /**
   * Trait of the WiRe Dataset.
+  *
   */
 trait WiReDataset extends WikiRelateDataset {
 
   /**
     * Path to salient-salient, non-salient-salient or non-salient-non-salient file.
+    *
     * @return
     */
   protected def wirePath(): String
 
-
-  override def loadDataset() : List[WikiRelateTask] = {
+  override def loadDataset() : Seq[WikiRelateTask] = {
     val path = wirePath()
     logger.info("Loading WiRe Dataset... %s".format(path))
 

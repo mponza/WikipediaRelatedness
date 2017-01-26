@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.dataset
 
 /**
   * Wikipedia Entity.
+  *
   * @param wikiID
   * @param wikiTitle
   */

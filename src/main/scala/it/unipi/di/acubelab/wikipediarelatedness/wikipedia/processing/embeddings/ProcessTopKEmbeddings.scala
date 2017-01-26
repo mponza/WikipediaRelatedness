@@ -35,6 +35,7 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
 
   /**
     * Main method which generates entity and entityPairs embedding and context emebddings, respectively.
+    *
     * @param dirPath
     * @param modelName
     */
@@ -170,6 +171,7 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
 
   /**
     * Returns list of WikiIDs from an iterator of words.
+    *
     * @param it
     */
   protected def wordIterator2entities(it: util.Iterator[String]) = {

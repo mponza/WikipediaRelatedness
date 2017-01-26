@@ -7,7 +7,7 @@ import java.util.Locale
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
 /**
@@ -17,7 +17,7 @@ class WikiMTX(val dir: String) {
    val logger = LoggerFactory.getLogger(classOf[WikiMTX])
 
    new File(dir).mkdirs
-   val wikiGraph = WikiGraphFactory.outGraph
+   val wikiGraph = WikiBVGraphFactory.outWikiBVGraph
 
 
   def serializeGraph() = {

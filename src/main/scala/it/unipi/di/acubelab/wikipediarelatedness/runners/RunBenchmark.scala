@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.runners
 
-import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ApproxRelatednessBenchmark, RelatednessBenchmark}
+import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ApproxRelatednessBenchmark, Benchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.{WiReDataset, WiReGT}
@@ -48,7 +48,7 @@ class RunBenchmark {
         logger.info("%s Benchmark".format(relatedness.toString()))
         logger.info("Standard Relatedness Benchmarking...")
 
-        val bench = new RelatednessBenchmark(dataset, relatedness)
+        val bench = new Benchmark(dataset, relatedness)
         bench.runBenchmark()
         ranks += Tuple2(bench.getPerformance(), relatedness.toString())
 

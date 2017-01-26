@@ -2,15 +2,23 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 
+
 trait Relatedness {
 
-  def computeRelatedness(tasks: List[WikiRelateTask]) : Unit = {
-    tasks.foreach{
+  /**
+    * Computes IN PARALLEL the relatedness for each WikiRelateTask by updating the machineRelatedness field.
+    *
+    * @param tasks
+    */
+  def computeRelatedness(tasks: Seq[WikiRelateTask]) : Unit = {
+    tasks.par.foreach {
       case task => task.machineRelatedness = computeRelatedness(task)
     }
   }
 
+
   /**
+    * Computes the relatedness of a WikiRelateTask.
     *
     * @param task
     * @return The relatedness between src and dst of the WikiRelTask at hand.
@@ -23,7 +31,20 @@ trait Relatedness {
   }
 
 
+  /**
+    * Computes the relatedness between two Wikipedia entities uniquely identified by their ID.
+    *
+    * @param srcWikiID
+    * @param dstWikiID
+    * @return
+    */
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float
 
+
+  /**
+    * Relatedness name.
+    *
+    * @return
+    */
   override def toString() : String
 }

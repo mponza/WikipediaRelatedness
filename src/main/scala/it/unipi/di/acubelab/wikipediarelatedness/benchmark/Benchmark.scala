@@ -10,8 +10,9 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
 import org.slf4j.LoggerFactory
 
 
-class RelatednessBenchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
-  val logger = LoggerFactory.getLogger(classOf[RelatednessBenchmark])
+class Benchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
+  protected val logger = LoggerFactory.getLogger(getClass)
+
   val relatednessDirectory = Paths.get(Paths.get(OldConfiguration.benchmark, dataset.toString()).toString,
                                         relatedness.toString).toString
 
@@ -30,24 +31,12 @@ class RelatednessBenchmark(val dataset: WikiRelateDataset, val relatedness: Rela
    */
   def runRelatedness() : Unit = {
     logger.info("Running Relatedness %s on dataset %s...".format(relatedness.toString, dataset))
-
-    // Computes relatedness for each pair.
     relatedness.computeRelatedness(dataset.toList)
-    /*
-    dataset.foreach {
-      case task: WikiRelateTask =>
-        try {
-          task.machineRelatedness = relatedness.computeRelatedness(task)
-        } catch {
-          case e: NoSuchElementException =>
-            logger.warn(e.toString)
-            task.machineRelatedness = Float.NaN
-        }
-    }*/
   }
 
   /**
     * Writes scores to scoresPath CSV file.
+    *
     */
   def writeRelatednessScores() : Unit = {
     logger.info("Writing %s Relatedness scores...".format(relatedness.toString))
@@ -81,7 +70,7 @@ class RelatednessBenchmark(val dataset: WikiRelateDataset, val relatedness: Rela
   }
 
 
-  def getPerformance() : List[Float] = {
+  def getPerformance() : Seq[Float] = {
     val pearson = Correlation.pearson(dataset).toFloat
     val spearman = Correlation.spearman(dataset).toFloat
     val harmonic = 2 * pearson * spearman / (pearson  + spearman)

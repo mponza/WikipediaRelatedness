@@ -2,10 +2,10 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.law.rank.{PageRank, PageRankParallelGaussSeidel, SpectralRanking}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiBVGraph, WikiBVGraphFactory}
 import org.slf4j.LoggerFactory
 
-class PPRCosParallelGaussSeidel(wikiGraph: WikiGraph = WikiGraphFactory.inGraph, iterations: Int = 100,
+class PPRCosParallelGaussSeidel(wikiGraph: WikiBVGraph = WikiBVGraphFactory.inWikiBVGraph, iterations: Int = 100,
                                 pprDecay: Float = 0.8f)
   extends PPRCos(wikiGraph, iterations, pprDecay) {
 

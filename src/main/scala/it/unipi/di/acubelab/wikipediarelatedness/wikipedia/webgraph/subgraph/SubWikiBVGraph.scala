@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph
 
 import it.unimi.dsi.fastutil.ints.{IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.webgraph.{ImmutableGraph, ImmutableSubgraph}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiBVGraph, WikiBVGraphFactory}
 import org.slf4j.LoggerFactory
 
 
@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory
   * @param srcWikiID
   * @param dstWikiID
   */
-abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int, val wikiGraph: WikiGraph)
-    extends WikiGraph("") {
+abstract class SubWikiBVGraph(val srcWikiID: Int, val dstWikiID: Int, val wikiGraph: WikiBVGraph)
+    extends WikiBVGraph("") {
 
   // Respect with the WikiGraph class, here the field graph is an ImmutableSubGraph generated from superBVGraphs.
   // Warning: Keep attention how you map wikiID to nodeID!
@@ -24,7 +24,7 @@ abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int, val wikiGrap
 
   override val logger = getLogger()
 
-  def getLogger() = LoggerFactory.getLogger(classOf[SubWikiGraph])
+  def getLogger() = LoggerFactory.getLogger(classOf[SubWikiBVGraph])
 
 
   /**
@@ -64,7 +64,7 @@ abstract class SubWikiGraph(val srcWikiID: Int, val dstWikiID: Int, val wikiGrap
   protected def subWikiGraph() : ImmutableSubgraph = graph.asInstanceOf[ImmutableSubgraph]
 
 
-  protected def superWikiGraph() : WikiGraph = wikiGraph
+  protected def superWikiGraph() : WikiBVGraph = wikiGraph
 
 
   /**

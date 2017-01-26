@@ -6,7 +6,7 @@ import java.util.zip.GZIPInputStream
 import it.unimi.dsi.fastutil.floats.FloatArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraph$, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiBVGraph, WikiGraph$, WikiBVGraphFactory}
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
@@ -15,7 +15,7 @@ class GraphSVD(path : String = OldConfiguration.graphSVD("left"), embeddingSize:
   val logger = LoggerFactory.getLogger(classOf[GraphSVD])
 
   protected lazy val eigenVectors = loadEigenVectors(path)
-  val wikiGraph = WikiGraphFactory.outGraph
+  val wikiGraph = WikiBVGraphFactory.outWikiBVGraph
 
   /**
     * Loads eigenvectors from path where each row is a eigenvector of ~4M of doubles.

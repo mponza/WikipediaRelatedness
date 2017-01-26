@@ -5,7 +5,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.law.rank.PageRank
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.pagerank.PersonalizedPageRank
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiGraph, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiBVGraph, WikiBVGraphFactory}
 import org.slf4j.Logger
 
 /**
@@ -17,8 +17,8 @@ import org.slf4j.Logger
   * @param csrDecay    CoSimRank weight decay (c in the paper)
   *
   */
-abstract class CoSimRank(wikiGraph: WikiGraph = WikiGraphFactory.outGraph, iterations: Int = 30,
-                           pprDecay: Float = 0.8f, val csrDecay: Float = 0.8f)
+abstract class CoSimRank(wikiGraph: WikiBVGraph = WikiBVGraphFactory.outWikiBVGraph, iterations: Int = 30,
+                         pprDecay: Float = 0.8f, val csrDecay: Float = 0.8f)
 
            extends PersonalizedPageRank(wikiGraph, iterations, pprDecay) {
 

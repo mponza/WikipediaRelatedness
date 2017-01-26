@@ -1,15 +1,15 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.topk
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddingsCache
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph
 import org.slf4j.LoggerFactory
 
 
-class DeepWalkSubWikiGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiGraph, threshold: Int)
-  extends TopKSubWikiGraph(srcWikiID, dstWikiID, wikiGraph, threshold) {
+class DeepWalkSubWikiBVGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiBVGraph, threshold: Int)
+  extends TopKSubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph, threshold) {
 
 
-  override def getLogger() = LoggerFactory.getLogger(classOf[DeepWalkSubWikiGraph])
+  override def getLogger() = LoggerFactory.getLogger(classOf[DeepWalkSubWikiBVGraph])
 
 
   override def neighborhood(wikiID: Int) : Array[Int] = {

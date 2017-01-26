@@ -7,7 +7,7 @@ import es.yrbcn.graph.triangles.MainmemBitbasedTrianglesAlgorithm
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.ImmutableGraph
 import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
 /**
@@ -20,7 +20,7 @@ class LocalClusteringProcessing {
 
 
   def generateClusteringCoefficients(path: String = OldConfiguration.wikipedia("localClustering")) = {
-    val wikiGraph = WikiGraphFactory.noLoopSymGraph
+    val wikiGraph = WikiBVGraphFactory.symNoLoopWikiBVGraph
 
     val triangles = generateTriangles(wikiGraph.graph)
     val lcc = generateLocalClusteringCoefficients(wikiGraph.graph, triangles)

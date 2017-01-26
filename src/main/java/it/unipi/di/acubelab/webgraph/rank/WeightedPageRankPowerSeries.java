@@ -10,7 +10,7 @@ import it.unimi.dsi.logging.ProgressLogger;
 import it.unimi.dsi.webgraph.ImmutableGraph;
 import it.unimi.dsi.webgraph.LazyIntIterator;
 import it.unimi.dsi.webgraph.NodeIterator;
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraph;
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph;
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,16 +31,16 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
     private final ProgressLogger progressLogger;
     private final ProgressLogger iterationLogger;
 
-    public WikiGraph wikiGraph;
+    public WikiBVGraph wikiBVGraph;
     public Relatedness relatedness;
 
     public Object2DoubleOpenHashMap weights;  // {(src, dst) -> (normalized) relatedness}
 
 
-    public WeightedPageRankPowerSeries(WikiGraph wikiGraph, Relatedness relatedness) {
-        this(wikiGraph.graph(), LOGGER);
+    public WeightedPageRankPowerSeries(WikiBVGraph wikiBVGraph, Relatedness relatedness) {
+        this(wikiBVGraph.graph(), LOGGER);
 
-        this.wikiGraph = wikiGraph;
+        this.wikiBVGraph = wikiBVGraph;
         this.relatedness = relatedness;
         this.weights = new Object2DoubleOpenHashMap<Tuple2<Integer, Integer>>();
     }
@@ -59,8 +59,8 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
         if(!weights.containsKey(key)) {
 
             // Updates weights entry (relatedness are symmetric).
-            int srcWikiID = wikiGraph.getWikiID(srcNodeID);
-            int dstWikiID = wikiGraph.getWikiID(dstNodeID);
+            int srcWikiID = wikiBVGraph.getWikiID(srcNodeID);
+            int dstWikiID = wikiBVGraph.getWikiID(dstNodeID);
 
             weights.put(key, relatedness.computeRelatedness(srcWikiID, dstWikiID));
 
@@ -80,7 +80,7 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
         logger.info("Graph weighting...");
 
         for(int i = 0; i < n; i++) {
-            LazyIntIterator nodeIterator = wikiGraph.nodeSuccessors(i);
+            LazyIntIterator nodeIterator = wikiBVGraph.nodeSuccessors(i);
             int successor = nodeIterator.nextInt();
 
             while(successor != -1) {
@@ -97,7 +97,7 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
         logger.info("Graph weight normalization...");
 
         for(int i = 0; i < n; i++) {
-            LazyIntIterator nodeIterator = wikiGraph.nodeSuccessors(i);
+            LazyIntIterator nodeIterator = wikiBVGraph.nodeSuccessors(i);
 
             // Gets sum of the relatedness (weights) between i and its successors.
             int successor = nodeIterator.nextInt();
@@ -111,7 +111,7 @@ public class WeightedPageRankPowerSeries extends PageRankPowerSeries {
             sumWeights = sumWeights == 0.0 ? 1.0 : sumWeights;
 
             // Normalize weights
-            nodeIterator = wikiGraph.nodeSuccessors(i);
+            nodeIterator = wikiBVGraph.nodeSuccessors(i);
             successor = nodeIterator.nextInt();
 
             while(successor != -1) {

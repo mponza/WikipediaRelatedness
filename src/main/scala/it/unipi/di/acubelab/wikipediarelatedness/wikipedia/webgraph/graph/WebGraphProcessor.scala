@@ -11,11 +11,17 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.multillp.M
 import org.slf4j.LoggerFactory
 
 
+/**
+  * Main class used to process the Wikipedia graph with WebGraph.
+  *
+  */
 class WebGraphProcessor {
-  val logger = LoggerFactory.getLogger(classOf[WebGraphProcessor])
+  val logger = LoggerFactory.getLogger(getClass)
+
 
   /**
     * Builds and stores a BVGraph from the raw Wikipedia Graph.
+    *
     */
   def generateBVGraph = {
     logger.info("Building Wikipedia ImmutableGraph...")
@@ -41,8 +47,9 @@ class WebGraphProcessor {
     logger.info("Wikipedia has been processed as BVGraph!")
   }
 
+
   /**
-    * Save graph to path as BVGraph.
+    * Saves graph to path as BVGraph.
     *
     * @param graph
     * @param path
@@ -53,6 +60,12 @@ class WebGraphProcessor {
     logger.info("BVGraph stored in %s!".format(path))
   }
 
+
+  /**
+    * Serializes the mapping between Wikipedia ID and its nodeID into path.
+    * @param wiki2node
+    * @param path
+    */
   def storeMapping(wiki2node: Int2IntOpenHashMap, path: String) = {
     new File(path).getParentFile.mkdirs
     BinIO.storeObject(wiki2node, path)
@@ -60,61 +73,4 @@ class WebGraphProcessor {
     val m = BinIO.loadObject(path).asInstanceOf[Int2IntOpenHashMap]
   }
 
-  def processLLP(llpOptions: Option[Any]) : Unit = {
-    logger.info("Loading Sym & loopless Wikipedia graph...")
-    val graph = BVGraph.load(OldConfiguration.wikipedia("noLoopSymBVGraph"))
-
-    llpOptions match {
-      case Some(options: Map[String, Int] @unchecked) =>
-        val llpTask = LLPTask.makeFromOption(options)
-
-        new LLPProcessor(graph, llpTask).process()
-
-      case _ => new LLPProcessor(graph).process()
-    }
-  }
-
-  def processMultiLLP(llpOptions: Option[Any]) : Unit = {
-    logger.info("Loading Sym & loopless Wikipedia graph...")
-    val graph = BVGraph.load(OldConfiguration.wikipedia("noLoopSymBVGraph"))
-
-    llpOptions match {
-      case Some(options: Map[String, Int]@unchecked) =>
-        val nLLP = options.getOrElse("nLLP", 10.0).asInstanceOf[Double].toInt
-        val llpTask = LLPTask.makeFromOption(options)
-
-        new MultiLLPProcessor(graph, nLLP, llpTask).process()
-
-      case _ => new LLPProcessor(graph).process()
-    }
-  }
-
-  /*def computeDistances(wikiSimDataset: WikiSimDataset) = {
-    logger.info("Computing Wikipedia Graph distances of WikiSimDataset...")
-
-    val symGraph = WikiGraphFactory.symGraph
-    val distances = scala.collection.mutable.HashMap.empty[Tuple2[Int, Int], Int]
-
-    var i = 1
-    wikiSimDataset.foreach {
-      case wikiRelTask =>
-        val srcWikiID = wikiRelTask.src.wikiID
-        val dstWikiID = wikiRelTask.dst.wikiID
-
-        if (!distances.contains((srcWikiID, dstWikiID))) {
-          val dist = symGraph.distance(srcWikiID, dstWikiID)
-          distances.put((srcWikiID, dstWikiID), dist)
-          distances.put((dstWikiID, srcWikiID), dist)
-        }
-
-        logger.info("%d distances computed.".format(i))
-        i += 1
-    }
-
-    logger.info("Serializing distances...")
-    val distFile = new File(Configuration.wikipedia("symDistances"))
-    distFile.getParentFile.mkdirs()
-
-    BinIO.storeObject(distances.toMap, distFile)
-  }*/
 }

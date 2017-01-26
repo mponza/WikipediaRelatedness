@@ -2,8 +2,8 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.to
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.webgraph.{ImmutableGraph, ImmutableSubgraph}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraph
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.SubWikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.SubWikiBVGraph
 
 /**
   * Class which groups common methods for subgraph generation via vector representation,
@@ -12,9 +12,9 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.Sub
   * Subclasses have just to override neighborhood method. Differently from the original
   * SubWikiGraph class, here the neighborhood MUST return WikipediaIDs (NOT nodeIDs).
   */
-abstract class TopKSubWikiGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiGraph,
-                                val threshold: Int = 1000)
-  extends SubWikiGraph(srcWikiID, dstWikiID, wikiGraph){
+abstract class TopKSubWikiBVGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiBVGraph,
+                                  val threshold: Int = 1000)
+  extends SubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph){
 
 
   /**

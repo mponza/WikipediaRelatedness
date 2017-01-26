@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.topk
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESA
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph
 import org.slf4j.LoggerFactory
 
 
@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory
   * @param dstWikiID
   * @param threshold
   */
-class ESASubWikiGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiGraph, threshold: Int)
-  extends TopKSubWikiGraph(srcWikiID, dstWikiID, wikiGraph, threshold) {
+class ESASubWikiBVGraph(srcWikiID: Int, dstWikiID: Int, wikiGraph: WikiBVGraph, threshold: Int)
+  extends TopKSubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph, threshold) {
 
 
-  override def getLogger() = LoggerFactory.getLogger(classOf[ESASubWikiGraph])
+  override def getLogger() = LoggerFactory.getLogger(classOf[ESASubWikiBVGraph])
 
 
   override def neighborhood(wikiID: Int) : Array[Int] = {

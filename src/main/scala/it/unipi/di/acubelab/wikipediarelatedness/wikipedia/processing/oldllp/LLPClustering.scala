@@ -6,7 +6,7 @@ import java.nio.file.Paths
 import it.unimi.dsi.fastutil.ints.{Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
@@ -43,7 +43,7 @@ class LLPClustering(llpTask: LLPTask = new LLPTask, dirPath: String = null) {
     * @return Map(wikiID) => [label at each iteration]?
     */
   def loadLabels() : Int2ObjectOpenHashMap[IntArrayList] = {
-    val wikiGraph = WikiGraphFactory.outGraph
+    val wikiGraph = WikiBVGraphFactory.outWikiBVGraph
 
     logger.info("LLPLabels loading...")
     val labels =  new Int2ObjectOpenHashMap[IntArrayList]

@@ -6,7 +6,7 @@ import java.util.Locale
 import com.github.tototoshi.csv.CSVWriter
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateTask}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.{OldConfiguration, WAT}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
 class WikiSimProcessing(wikiSim: WikiSimDataset) {
@@ -70,7 +70,7 @@ class WikiSimProcessing(wikiSim: WikiSimDataset) {
   def wikiFilter(wikiRelateTasks: List[WikiRelateTask]) : List[WikiRelateTask] = {
     logger.info("Filtering...")
 
-    val wikiGraph = WikiGraphFactory.outGraph
+    val wikiGraph = WikiBVGraphFactory.outWikiBVGraph
 
     val realWikiPairs = wikiRelateTasks.filter {
       case wikiRelTask: WikiRelateTask =>

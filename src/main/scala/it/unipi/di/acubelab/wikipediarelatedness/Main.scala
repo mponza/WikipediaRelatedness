@@ -5,7 +5,7 @@ import java.nio.file.Paths
 
 import it.unimi.dsi.webgraph.algo.StronglyConnectedComponents
 import it.unipi.di.acubelab.wikipediarelatedness.analysis._
-import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, RelatednessBenchmark}
+import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, Benchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.{WiReDataset, WiReGT}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
@@ -20,7 +20,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.Lucene
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.ESACache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.esa.lemma.{LemmaLuceneIndex, LemmaLuceneProcessing}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.triangles.LocalClusteringProcessing
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WebGraphProcessor, WikiGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WebGraphProcessor, WikiBVGraphFactory}
 
 import scala.collection.mutable.ListBuffer
 
@@ -102,7 +102,7 @@ object Bench {
 
     val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
-    val benchmark = new RelatednessBenchmark(dataset, relatdness)
+    val benchmark = new Benchmark(dataset, relatdness)
     benchmark.runBenchmark()
   }
 }
@@ -150,7 +150,7 @@ object BenchCoSimRank {
 
         val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
-        val benchmark = new RelatednessBenchmark(dataset, relatdness)
+        val benchmark = new Benchmark(dataset, relatdness)
         benchmark.runBenchmark()
       } catch {
         case e: Exception => println(e)
@@ -178,7 +178,7 @@ object BenchPPRCos {
 
         val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
-        val benchmark = new RelatednessBenchmark(dataset, relatdness)
+        val benchmark = new Benchmark(dataset, relatdness)
         benchmark.runBenchmark()
       } catch {
         case e: Exception => println(e)
@@ -202,7 +202,7 @@ object BenchIBMESA {
 
       val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
-      val benchmark = new RelatednessBenchmark(dataset, relatdness)
+      val benchmark = new Benchmark(dataset, relatdness)
       benchmark.runBenchmark()
     }
   }
@@ -221,7 +221,7 @@ object ESABench {
 
       val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
-      val benchmark = new RelatednessBenchmark(dataset, relatdness)
+      val benchmark = new Benchmark(dataset, relatdness)
       benchmark.runBenchmark()
 
       performance += Tuple2(threshold, benchmark.getPerformance())
@@ -247,7 +247,7 @@ object JaccardTopBench {
 
       val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
-      val benchmark = new RelatednessBenchmark(dataset, relatdness)
+      val benchmark = new Benchmark(dataset, relatdness)
       benchmark.runBenchmark()
 
       performance += Tuple2(threshold, benchmark.getPerformance())
@@ -275,7 +275,7 @@ object LINEBench {
 
         val dataset = new WikiSimDataset(OldConfiguration.dataset("procWikiSim"))
 
-        val benchmark = new RelatednessBenchmark(dataset, relatdness)
+        val benchmark = new Benchmark(dataset, relatdness)
         benchmark.runBenchmark()
       } catch {
         case e: Exception => println(e)
@@ -337,7 +337,7 @@ object MTX  {
 
 object CC {
   def main(args: Array[String]) = {
-    val scc = StronglyConnectedComponents.compute(WikiGraphFactory.outGraph.graph, false, null)
+    val scc = StronglyConnectedComponents.compute(WikiBVGraphFactory.outWikiBVGraph.graph, false, null)
 
     println("Number of components: %d".format(scc.numberOfComponents))
 

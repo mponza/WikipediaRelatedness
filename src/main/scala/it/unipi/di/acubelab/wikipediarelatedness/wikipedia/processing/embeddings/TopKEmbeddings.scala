@@ -5,7 +5,7 @@ import java.util
 
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.factory.Nd4j
 import org.slf4j.LoggerFactory
@@ -93,6 +93,6 @@ class TopKEmbeddings(modelName: String) {
   }
 
 
-  protected def isWikiNode(wikiID: Int) = WikiGraphFactory.outGraph.contains(wikiID)
+  protected def isWikiNode(wikiID: Int) = WikiBVGraphFactory.outWikiBVGraph.contains(wikiID)
 
 }

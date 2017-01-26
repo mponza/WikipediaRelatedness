@@ -1,8 +1,8 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph
 
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiGraphFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.topk.context._
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.topk.{DeepWalkSubWikiGraph, ESASubWikiGraph, W2VSubWikiGraph}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.topk.{DeepWalkSubWikiBVGraph, ESASubWikiBVGraph, W2VSubWikiBVGraph}
 
 
 object SubWikiGraphFactory {
@@ -10,21 +10,21 @@ object SubWikiGraphFactory {
   def make(subGraph: String, srcWikiID: Int, dstWikiID: Int,
            wikiGraphName: String = "outGraph", threshold : Int = 1000) = {
 
-    val wikiGraph = WikiGraphFactory.makeWikiGraph(wikiGraphName)
+    val wikiGraph = WikiBVGraphFactory.makeWikiGraph(wikiGraphName)
 
     subGraph match {
 
-      case "neigh" | "neighborhood" => new NeighSubWikiGraph(srcWikiID, dstWikiID, wikiGraph)
+      case "neigh" | "neighborhood" => new NeighSubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph)
 
-      case "esa" => new ESASubWikiGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
-      case "w2v" => new W2VSubWikiGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
-      case "dw" => new DeepWalkSubWikiGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
+      case "esa" => new ESASubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
+      case "w2v" => new W2VSubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
+      case "dw" => new DeepWalkSubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
 
-      case "cxt-w2v" => new W2VCxtSubWikiGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
-      case "cxt-dw" => new DeepWalkCxtSubWikiGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
+      case "cxt-w2v" => new W2VCxtSubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
+      case "cxt-dw" => new DeepWalkCxtSubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
 
-      case "pure-cxt-w2v" => new PureCxtW2VSubWikiGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
-      case "pure-cxt-dw" => new PureCxtDeepWalkSubWikiGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
+      case "pure-cxt-w2v" => new PureCxtW2VSubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
+      case "pure-cxt-dw" => new PureCxtDeepWalkSubWikiBVGraph(srcWikiID, dstWikiID, wikiGraph, threshold)
 
       case _ => throw new IllegalArgumentException("%s is not a valid subGraph generation techinque.".format(subGraph))
     }
