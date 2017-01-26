@@ -1,44 +1,56 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
+import it.unipi.di.acubelab.wikipediarelatedness.options.Set.SetOptions
 import it.unipi.di.acubelab.wikipediarelatedness.options._
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa.{ESARelatedness, IBMESARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.latent.{GraphSVDRelatedness, LDARelatedness}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.{LINERelatedness, Word2VecRelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.{LINERelatedness, NeuralRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph.{JungCoSimRankRelatedness, SubCoSimRankRelatedness, SubPPRCosRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.{CoSimRankRelatedness, PPRCosRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, JaccardTopRelatedness, LocalClusteringRelatedness, MilneWittenRelatedness}
 
 
 object RelatednessFactory {
-  /**
-    * @param json Json string:
-    *                      {
-    *                          // Relatedness measure
-    *                         "relatedness": MilneWitten/Jaccard/LLP/MultiLLP/w2v
-    *
-    *                         // Wikipedia graph to be used
-    *                         "graph": "in", "out", "sym", "noloopsym"
-    *                      }
-    * @return Relatedness object, instatiated with the specified parameters.
-    */
+
+
+  def make(options: RelatednessOptions) : Relatedness = options.name.toLowerCase match {
+
+    //
+    // Set-based
+    case "mw" | "milnewitten" => new MilneWittenRelatedness(options)
+    case "jacc" | "jaccard" =>   new JaccardRelatedness(options)
+    case "lc" | "localclustering" => new LocalClusteringRelatedness(options)
+
+
+    //
+    // Neural
+    case "neural" => new NeuralRelatedness(options)
+
+
+    //
+    // ESA
+    case "esa" => new ESARelatedness(options)
+  }
+
+  def make(name: String, options: RelatednessOptions) : Relatedness =  (name, options) match {
+
+    case ("mw" | "MilneWitten", setOpts: SetOptions) => new MilneWittenRelatedness(setOpts)
+    case ("jacc" | "Jaccard", setOpts: SetOptions) => new JaccardRelatedness(setOpts)
+  }
+
   def make(json: Option[Any]) : Relatedness = {
     val relatednessName = getRelatednessName(json)
 
     relatednessName match {
       // Set
-      case "MilneWitten" => new MilneWittenRelatedness(new MilneWittenOptions(json))
-      case "Jaccard" => new JaccardRelatedness(new JaccardOptions(json))
-      case "LC" | "localClustering" => new LocalClusteringRelatedness(new LocalClusteringOptions(json))
-      case "JaccardTop" => new JaccardTopRelatedness(new JaccardTopOptions(json))
+      //case "JaccardTop" => new JaccardTopRelatedness(new JaccardTopOptions(json))
       // case "LocalClustering" => new LocalClusteringRelatedness(new LocalClusteringOptions(json))
 
       // Embeddings
-      case "w2v" => new Word2VecRelatedness(new Word2VecOptions(json))
+      case "w2v" => new NeuralRelatedness(new Word2VecOptions(json))
       case "LINE" => new LINERelatedness(new LINEOptions(json))
 
       // ESA
-      case "IBMESA" => new IBMESARelatedness(new IBMESAOptions(json))
-      case "ESA" => new ESARelatedness(new ESAOptions(json))
 
       //
 
@@ -65,6 +77,31 @@ object RelatednessFactory {
       case _ => throw new IllegalArgumentException("The specified relatedness does not exist %s.".format(relatednessName))
     }
   }
+
+
+  protected def getRelatednessName(args: Array[String]) : String = {
+    case class NameConfig(name: String = null)
+
+    val parser = new scopt.OptionParser[NameConfig]("") {}
+
+
+    def parseString(args: Array[String]) = {
+      val parser = new scopt.OptionParser[SetOptions]("setoptions") {
+
+        opt[String]('g', "graph").action( (x, conf) =>
+          conf.copy(graph = x) ).text("graph is the graph to be used (in, out, sym). Default: in.")
+
+      }
+
+      parser.parse(args, SetOptions()) match {
+        case Some(config) => config
+        case None => throw new IllegalArgumentException("MilneWittenOptions: Error while parsing %s"
+          .format(args.toString))
+      }
+    }
+  }
+
+}
 
 
   def getRelatednessName(json: Option[Any]) : String = {

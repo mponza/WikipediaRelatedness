@@ -2,8 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph
 
 import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList}
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.webgraph.{BVGraph, LazyIntIterator}
-import it.unimi.dsi.webgraph.ImmutableGraph
+import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, LazyIntIterator}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import org.slf4j.LoggerFactory
 
@@ -13,28 +12,11 @@ import org.slf4j.LoggerFactory
   * This class transparently manages the mapping between wikiID and nodeID.
   *
   */
-class WikiBVGraph(val path: String) {
+class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) {
   val logger = LoggerFactory.getLogger(getClass)
 
-  lazy val graph = loadImmutableGraph()
-
   // WikiID -> NodeID mapping.
-  protected lazy val wiki2node = BinIO.loadObject(Config.getString("wikipedia.webgraph.mapping"))
-                                    .asInstanceOf[Int2IntOpenHashMap]
   protected lazy val node2wiki = reverseWiki2Node()
-
-
-  /**
-    * Loads a graph previously stored as a BVGraph in path.
-    * @return
-    */
-  def loadImmutableGraph(): ImmutableGraph = {
-    logger.info("Loading BVGraph from %s".format(path))
-    val graph = BVGraph.load(path)
-    logger.info("BVGraph loaded. |Nodes| = %d and |Edges| = %d".format(graph.numNodes, graph.numArcs))
-
-    graph
-  }
 
 
 

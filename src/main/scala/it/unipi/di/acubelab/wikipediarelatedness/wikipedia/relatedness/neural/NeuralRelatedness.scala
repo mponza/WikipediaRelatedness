@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory
   *                   "model": corpus/deepWalk/deepCorpus/coOccurrence
   *                }
   */
-class Word2VecRelatedness(options: Word2VecOptions = new Word2VecOptions()) extends Relatedness  {
-    val logger = LoggerFactory.getLogger(classOf[Word2VecRelatedness])
+class NeuralRelatedness(options: Word2VecOptions = new Word2VecOptions()) extends Relatedness  {
+    val logger = LoggerFactory.getLogger(classOf[NeuralRelatedness])
     val w2v = loadw2v(options.model)
 
     def loadw2v(modelName : String) : EmbeddingsDataset  = {

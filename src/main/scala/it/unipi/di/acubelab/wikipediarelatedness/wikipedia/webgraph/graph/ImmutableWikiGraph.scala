@@ -4,14 +4,18 @@ import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, Int2ObjectOpenHashMap, In
 import it.unimi.dsi.webgraph.{ImmutableGraph, LazyIntIterator}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.WikiLinksReader
 
+
 /**
   * Wikipedia Immutable Graph used to create a BVGraph.
+  *
   */
 class ImmutableWikiGraph extends ImmutableGraph {
   val (outGraph, wiki2node) = loadWikipediaGraph
 
   /**
-    * @return Wikipedia Immutable graph and the mapping between wikiID and nodeID.
+    *  Loads tyhe Wikipedia ImmutableGraph and the mapping between wikiID and nodeID.
+    *
+    * @return
     */
   def loadWikipediaGraph : (Int2ObjectOpenHashMap[IntArrayList], Int2IntOpenHashMap) = {
     val directedEdges = new Int2ObjectOpenHashMap[IntArrayList]
@@ -50,21 +54,26 @@ class ImmutableWikiGraph extends ImmutableGraph {
     nodeID
   }
 
+
   override def outdegree(i: Int): Int = {
     outGraph.get(i).size()
   }
+
 
   override def copy: ImmutableGraph = {
     this
   }
 
+
   override def numNodes: Int = {
     wiki2node.size
   }
 
+
   override def randomAccess: Boolean = {
     true
   }
+
 
   class LazyNodesIterator(nodes: IntArrayList) extends LazyIntIterator {
     val nodesIterator = if (nodes != null) nodes.listIterator(0) else null
@@ -77,7 +86,9 @@ class ImmutableWikiGraph extends ImmutableGraph {
     }
   }
 
+
   override def successors(x: Int) : LazyIntIterator = {
     new LazyNodesIterator(outGraph.get(x))
   }
+
 }

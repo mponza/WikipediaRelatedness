@@ -10,7 +10,7 @@ object SubWikiGraphFactory {
   def make(subGraph: String, srcWikiID: Int, dstWikiID: Int,
            wikiGraphName: String = "outGraph", threshold : Int = 1000) = {
 
-    val wikiGraph = WikiBVGraphFactory.makeWikiGraph(wikiGraphName)
+    val wikiGraph = WikiBVGraphFactory.makeWikiBVGraph(wikiGraphName)
 
     subGraph match {
 

@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.{WiReDataset, WiRe
 import it.unipi.di.acubelab.wikipediarelatedness.options._
 import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa.ESARelatedness
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.Word2VecRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.NeuralRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.{CoSimRankRelatedness, PPRCosRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, LocalClusteringRelatedness, MilneWittenRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{LMRelatedness, Relatedness}

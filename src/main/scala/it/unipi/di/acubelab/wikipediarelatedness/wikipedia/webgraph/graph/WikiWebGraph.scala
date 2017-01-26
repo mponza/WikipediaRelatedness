@@ -5,7 +5,6 @@ import java.io.File
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import org.slf4j.LoggerFactory
 
 /**

@@ -6,12 +6,12 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 trait Relatedness {
 
   /**
-    * Computes IN PARALLEL the relatedness for each WikiRelateTask by updating the machineRelatedness field.
+    * Computes the relatedness for each WikiRelateTask by updating the machineRelatedness field.
     *
     * @param tasks
     */
   def computeRelatedness(tasks: Seq[WikiRelateTask]) : Unit = {
-    tasks.par.foreach {
+    tasks.foreach {
       case task => task.machineRelatedness = computeRelatedness(task)
     }
   }

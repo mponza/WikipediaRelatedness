@@ -4,14 +4,11 @@ import java.io.{File, PrintWriter}
 import java.nio.file.Paths
 
 import it.unimi.dsi.webgraph.algo.StronglyConnectedComponents
-import it.unipi.di.acubelab.wikipediarelatedness.analysis._
-import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ClassificationBenchmark, Benchmark}
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.{WiReDataset, WiReGT}
+import it.unipi.di.acubelab.wikipediarelatedness.benchmark.Benchmark
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.WiReDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
-import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Classification
 import it.unipi.di.acubelab.wikipediarelatedness.runners.RunBenchmark
 import it.unipi.di.acubelab.wikipediarelatedness.runners.processing.RunTopKEmbeddings
-import it.unipi.di.acubelab.wikipediarelatedness.serialization.WikiMTX
 import it.unipi.di.acubelab.wikipediarelatedness.utils.CoreNLP
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.{WikiTitleID, WikiTypeMapping}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddingsCache
@@ -25,10 +22,24 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WebGr
 import scala.collection.mutable.ListBuffer
 
 //import it.unipi.di.acubelab.wikipediarelatedness.analysis.WikiSimAnalysis
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
 
 import scala.util.parsing.json.JSON
+
+
+/**
+  * Experiment MilneWitten
+  *
+  */
+object MilneWitten {
+  def main(args: Array[String]) = {
+
+    val mwOptions =
+
+  }
+}
+
+
 
 /*
 object BVGraph {

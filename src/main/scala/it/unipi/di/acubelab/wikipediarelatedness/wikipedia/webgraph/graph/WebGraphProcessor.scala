@@ -5,7 +5,7 @@ import java.io.File
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, OldConfiguration}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.{LLPProcessor, LLPTask}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.multillp.MultiLLPProcessor
 import org.slf4j.LoggerFactory
@@ -23,26 +23,26 @@ class WebGraphProcessor {
     * Builds and stores a BVGraph from the raw Wikipedia Graph.
     *
     */
-  def generateBVGraph = {
+  def generateBVGraph() = {
     logger.info("Building Wikipedia ImmutableGraph...")
     val outGraph = new ImmutableWikiGraph
 
     logger.info("Storing Wikipedia2BVGraph mapping...")
-    storeMapping(outGraph.wiki2node, OldConfiguration.wikipedia("wiki2node"))
+    storeMapping(outGraph.wiki2node, Config.getString("webgraph.mapping"))
 
     logger.info("Storing Out Wikipedia BVGraph...")
-    storeBVGraph(outGraph, OldConfiguration.wikipedia("outBVGraph"))
+    storeBVGraph(outGraph, Config.getString("webgraph.out"))
 
     logger.info("Storing In Wikipedia BVGraph...")
-    storeBVGraph(Transform.transpose(outGraph), OldConfiguration.wikipedia("inBVGraph"))
+    storeBVGraph(Transform.transpose(outGraph), Config.getString("webgraph.in"))
 
     logger.info("Storing Sym Wikipedia BVGraph...")
-    storeBVGraph(Transform.symmetrize(outGraph), OldConfiguration.wikipedia("symBVGraph"))
+    storeBVGraph(Transform.symmetrize(outGraph), Config.getString("webgraph.sym"))
 
     // See http://law.di.unimi.it/software/law-docs/it/unimi/dsi/law/graph/LayeredLabelPropagation.html
     logger.info("Storing Sym and Self-loopless Wikipedia BVGraph...")
     val noLoopGraph = Transform.filterArcs(outGraph, Transform.NO_LOOPS)
-    storeBVGraph(Transform.symmetrizeOffline(noLoopGraph, 20000000), OldConfiguration.wikipedia("noLoopSymBVGraph"))
+    storeBVGraph(Transform.symmetrizeOffline(noLoopGraph, 20000000), Config.getString("webgraph.sym_no_loop"))
 
     logger.info("Wikipedia has been processed as BVGraph!")
   }
@@ -63,6 +63,7 @@ class WebGraphProcessor {
 
   /**
     * Serializes the mapping between Wikipedia ID and its nodeID into path.
+    *
     * @param wiki2node
     * @param path
     */

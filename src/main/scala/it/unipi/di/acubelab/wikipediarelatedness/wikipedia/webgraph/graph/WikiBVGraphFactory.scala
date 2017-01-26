@@ -1,6 +1,10 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph
 
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
+import it.unimi.dsi.fastutil.io.BinIO
+import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
+import org.slf4j.LoggerFactory
 
 
 /**
@@ -8,23 +12,50 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
   *
   */
 object WikiBVGraphFactory {
-  lazy val outWikiBVGraph = new WikiBVGraph(Config.getString("wikipedia.webgraph.out"))
-  lazy val inWikiBVGraph = new WikiBVGraph(Config.getString("wikipedia.webgraph.in"))
-  lazy val symWikiBVGraph = new WikiBVGraph(Config.getString("wikipedia.webgraph.sym"))
-  lazy val symNoLoopWikiBVGraph = new WikiBVGraph(Config.getString("wikipedia.webgraph.sym_no_loop"))
+  val logger = LoggerFactory.getLogger("WikiBVGraphFactory")
+
+  lazy val immOutGraph = loadImmutableGraph(Config.getString("webgraph.out"))
+  lazy val immInGraph = loadImmutableGraph(Config.getString("webgraph.in"))
+  lazy val immSymGraph = loadImmutableGraph(Config.getString("webgraph.sym"))
+  lazy val immSymNoLoopGraph = loadImmutableGraph(Config.getString("webgraph.sym_no_loop"))
+
+  // WikiID -> NodeID mapping
+  lazy val wiki2node = BinIO.loadObject(Config.getString("webgraph.mapping")).asInstanceOf[Int2IntOpenHashMap]
 
 
   /**
-    * Returns WikiBVGraph from its name.
+    * Loads an immutable graph from path.
+    *
+    * @param path
+    */
+  protected def loadImmutableGraph(path: String): ImmutableGraph = {
+      logger.info("Loading BVGraph from %s".format(path))
+      val graph = BVGraph.load(path)
+      logger.info("BVGraph loaded. |Nodes| = %d and |Edges| = %d".format(graph.numNodes, graph.numArcs))
+
+      graph
+  }
+
+
+  /**
+    * Returns a lightweight copy WikiBVGraph from its name.
+    * If threadSafe is true it returns a lightweight copy of the graph which can be parallel processed.
     *
     * @param graphName
     * @return
     */
-  def makeWikiGraph(graphName: String) : WikiBVGraph = graphName match {
-    case "out" => outWikiBVGraph
-    case "in" => inWikiBVGraph
-    case "sym" => symWikiBVGraph
-    case "sym_no_loop" => symNoLoopWikiBVGraph
+  def makeWikiBVGraph(graphName: String, threadSafe: Boolean = false) : WikiBVGraph = {
+
+      val immGraph = graphName match {
+        case "out" => immOutGraph
+        case "in" => immInGraph
+        case "sym" => immSymGraph
+        case "sym_no_loop" =>  immSymNoLoopGraph
+      }
+
+      val threadedImmGraph = if (threadSafe) immOutGraph.copy() else immOutGraph
+
+      new WikiBVGraph(threadedImmGraph, wiki2node)
   }
 
 }

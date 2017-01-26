@@ -5,7 +5,7 @@ import java.io.File
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, OldConfiguration}
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
@@ -17,13 +17,13 @@ class WikiTitleID {}
 object WikiTitleID {
   val logger = LoggerFactory.getLogger(classOf[WikiTitleID])
 
-  protected val serializedPath = "/tmp/title-id.bin"
+  protected val serializedPath = "/tmp/title-id.bin" // FIX THIS
 
   protected lazy val wikiTitle2ID = loadMapping()
   protected lazy val wikiID2Title = reverseTitle2ID()
 
 
-  protected def loadMapping(path: String = OldConfiguration.wikipedia("title-id"))
+  protected def loadMapping(path: String = Config.getString("wikipedia.SOMETHING").wikipedia("title-id"))
         : Object2IntOpenHashMap[String] = {
 
     if(new File(serializedPath).exists()) return BinIO.loadObject(serializedPath).asInstanceOf[Object2IntOpenHashMap[String]]

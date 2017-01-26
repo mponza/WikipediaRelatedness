@@ -17,6 +17,7 @@ javaOptions in Test += "-Xmx60G"
 libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.3.1",
   "com.github.tototoshi" %% "scala-csv" % "1.3.3",
+  "com.github.scopt" %% "scopt" % "3.5.0",
   "org.scalaj" % "scalaj-http_2.11" % "2.3.0",
 
 

@@ -1,22 +1,27 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.MilneWittenOptions
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.SetOperations
+import it.unipi.di.acubelab.wikipediarelatedness.options.{MilneWittenOptions, RelatednessOptions}
+import it.unipi.di.acubelab.wikipediarelatedness.options.Set.SetOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.operations.SetOperations
 import org.slf4j.LoggerFactory
 
-class MilneWittenRelatedness(options: MilneWittenOptions = new MilneWittenOptions()) extends Relatedness {
-  val logger = LoggerFactory.getLogger(classOf[MilneWittenRelatedness])
 
-  val wikiGraph = WikiBVGraphFactory.makeWikiGraph(options.graph)
+/**
+  * Class that implements the MilneWitten relatedness algorithm as described in
+  * https://www.aaai.org/Papers/Workshops/2008/WS-08-15/WS08-15-005.pdf
+  *
+  * @param options
+  */
+class MilneWittenRelatedness(options: RelatednessOptions) extends Relatedness {
+  val logger = LoggerFactory.getLogger(getClass)
+
+  val wikiGraph = WikiBVGraphFactory.makeWikiBVGraph(options.graph)
   val setOperations = new SetOperations(wikiGraph)
   val W = setOperations.wikiGraph.graph.numNodes
 
 
-  /**
-    * Paper: https://www.aaai.org/Papers/Workshops/2008/WS-08-15/WS08-15-005.pdf
-    */
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     val sizeA = wikiGraph.outdegree(srcWikiID)
     val sizeB = wikiGraph.outdegree(dstWikiID)
@@ -32,6 +37,7 @@ class MilneWittenRelatedness(options: MilneWittenOptions = new MilneWittenOption
 
     normRel
   }
+
 
   override def toString () : String = { "MilneWitten" }
 }

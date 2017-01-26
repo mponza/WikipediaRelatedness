@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.operations
 
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph

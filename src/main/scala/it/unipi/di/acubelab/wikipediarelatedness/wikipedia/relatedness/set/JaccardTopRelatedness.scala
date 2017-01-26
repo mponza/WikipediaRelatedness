@@ -1,9 +1,9 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set
 
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.SetOperations
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import it.unipi.di.acubelab.wikipediarelatedness.options.JaccardTopOptions
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.operations.SetOperations
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.triangles.LocalClustering
 import org.slf4j.LoggerFactory
 
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory
 class JaccardTopRelatedness(val options: JaccardTopOptions) extends Relatedness  {
   val logger = LoggerFactory.getLogger(classOf[JaccardTopRelatedness])
 
-  val wikiGraph = WikiBVGraphFactory.makeWikiGraph(options.graph)
+  val wikiGraph = WikiBVGraphFactory.makeWikiBVGraph(options.graph)
   val setOperations = new SetOperations(wikiGraph)
   val lc = new LocalClustering()
 

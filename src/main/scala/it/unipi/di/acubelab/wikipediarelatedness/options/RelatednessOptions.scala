@@ -1,117 +1,82 @@
 package it.unipi.di.acubelab.wikipediarelatedness.options
 
+import it.unipi.di.acubelab.wikipediarelatedness.options.Set.SetOptions
 
-abstract class RelatednessOptions(val json: Option[Any] = None) {
-  //val relatedness = getString("relatedness")
 
-  def getString(key: String, default: String = null) : String = {
-    if (!json.isDefined) return default
+/**
+  * Container of the configuration parameters of the available Relatedness algorithms.
+  *
+  * @param name         Name of the relatedness algorithm
+  * @param graph        Underlying Wikipedia Graph
+  * @param subGraph     Technique used to generate a subgraph between two nodes
+  * @param weights      Relatedness algorithm used to weight the subgraph
+  * @param threshold    General threshold
+  * @param iterations   PageRank iterations
+  * @param pprDecay     PageRank decay
+  * @param csrDecay     CoSimRank decay
+  * @param model        Embedding model
+  */
+case class RelatednessOptions(
+  name: String = null,
 
-    json match {
-      case Some(options: Map[String, Any] @unchecked) =>
+  graph: String = "in",
+  subGraph: String = "esa",
+  weights: String = "milnewitten",
 
-        try {
+  threshold: Int = 100,
 
-          if (!options.contains(key)) {
-            if (default != null) return default
-            throw new IllegalArgumentException("Key not present, default value is null.")
+  iterations: Int = 30,
+  pprDecay: Float = 0.8f,
+  csrDecay: Float = 0.8f,
 
-          } else {
-            options(key).toString
-          }
+  model: String = "corpus"
+)
 
-        } catch {
-          case e : Exception => throw new IllegalArgumentException("Error while getting %s value: %s".format(key, e))
-        }
 
-      case _ => throw new IllegalArgumentException("Error in matching json string.")
+
+/**
+  * Factory class for building RelatednessOptions from console arguments.
+  *
+  */
+object RelatednessOptions {
+
+  def make(args: Array[String]) {
+    val parser = new scopt.OptionParser[RelatednessOptions]("relatednessoptions") {
+
+      opt[String]("name").action((x, conf) => conf.copy(name = x)).text("Name of the relatedness algorithm")
+
+      //
+      // Graph Parameters
+      opt[String]("graph").action((x, conf) => conf.copy(graph = x)).text("Underlying Wikipedia Graph")
+
+      opt[String]("subGraph").action((x, conf) =>
+        conf.copy(subGraph = x)).text("Technique used to generate a subgraph between two nodes")
+
+      opt[String]("weights").action((x, conf) =>
+        conf.copy(weights = x)).text("Relatedness algorithm used to weight the subgraph")
+
+      //
+      // Threshold
+      opt[Int]("threshold").action((x, conf) => conf.copy(threshold = x)).text("PageRank iterations")
+
+      //
+      // Random Walk Parameters
+      opt[Int]("iterations").action((x, conf) => conf.copy(iterations = x)).text("PageRank iterations")
+
+      opt[Float]("pprDecay").action((x, conf) => conf.copy(pprDecay = x)).text("PageRank decay")
+
+      opt[Float]("csrDecay").action((x, conf) => conf.copy(csrDecay = x)).text("CoSimRank decay")
+
+      //
+      // Embeddings
+      opt[String]("model").action((x, conf) => conf.copy(model = x)).text("Embedding model")
+
     }
-  }
 
-  def getInt(key: String, default: Int) : Int = {
-    if (!json.isDefined) return default
-
-    json match {
-      case Some(options: Map[String, Any] @unchecked) =>
-
-        try {
-
-          if (!options.contains(key)) {
-            return default
-
-          } else {
-            options(key) match {
-              case v: Double => v.toInt
-              case v: Int => v
-            }
-            //options(key).asInstanceOf[Double].toInt
-          }
-
-        } catch {
-          case e : Exception => throw new IllegalArgumentException("Error while getting %s value: %s".format(key, e))
-        }
-
-      case _ => throw new IllegalArgumentException("Error in matching json string.")
-    }
-  }
-
-  def getInt(key: String) : Int = {
-    json match {
-      case Some(options: Map[String, Any] @unchecked) =>
-
-        try {
-
-          options(key).asInstanceOf[Double].toInt
-
-        } catch {
-          case e : Exception =>
-            throw new IllegalArgumentException("Error while getting %s value (no default): %s".format(key, e))
-        }
-
-      case _ => throw new IllegalArgumentException("Error in matching json string.")
-    }
-  }
-
-  def getFloat(key: String, default: Float = Float.NaN) : Float = {
-    if (!json.isDefined) return default
-
-    json match {
-      case Some(options: Map[String, Any] @unchecked) =>
-
-        try {
-
-          if (!options.contains(key)) {
-            if (default != Float.NaN) return default
-            throw new IllegalArgumentException("Key not present, default value is NaN.")
-
-          } else {
-            options(key).asInstanceOf[Double].toFloat
-          }
-
-        } catch {
-          case e : Exception => throw new IllegalArgumentException("Error while getting %s value: %s".format(key, e))
-        }
-
-      case _ => throw new IllegalArgumentException("Error in matching json string.")
-    }
-  }
-
-  def getOptionAny(key: String) : Option[Map[String, Any]] = {
-    json match {
-      case Some(options: Map[String, Any] @unchecked) =>
-
-        try {
-
-          val o = options.get(key)//.asInstanceOf[Option[Any]]
-          println(o)
-
-          o.asInstanceOf[Option[Map[String, Any]]]
-
-        } catch {
-          case e : Exception => throw new IllegalArgumentException("Error while getting %s value: %s".format(key, e))
-        }
-
-      case _ => throw new IllegalArgumentException("Error in matching json string.")
+    parser.parse(args, SetOptions()) match {
+      case Some(config) => config
+      case None => throw new IllegalArgumentException("RelatednessOptions: Error while parsing %s"
+        .format(args.toString))
     }
   }
 }
