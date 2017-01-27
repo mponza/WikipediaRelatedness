@@ -5,21 +5,22 @@ import java.util.zip.GZIPInputStream
 
 import scala.io.Source
 
+
 /**
   * Reads wiki-links-sorted.gz file and allows to iterate over the pair of edges.
+  *
   */
 class WikiLinksReader extends Traversable[(Int, Int)] {
   // Warning: The Wikipedia file MUST to be sorted on edges.
 
-  val path = OldConfiguration.wikipedia("wikiLinks")
-
   val fileStream = Source.fromInputStream(
     new GZIPInputStream(
       new FileInputStream(
-        new File(path)
+        new File(Config.getString("wikipedia.links"))
       )
     )
   )
+
 
   /**
     * Warning: Applies f only on the unique edges of the Wikipedia graph.

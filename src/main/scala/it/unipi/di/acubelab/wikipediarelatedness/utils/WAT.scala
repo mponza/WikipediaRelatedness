@@ -10,7 +10,7 @@ object WAT {
   val logger = LoggerFactory.getLogger("WAT")
 
   def redirect(title: String) : (String, Int) = {
-    val strResponse = Http(OldConfiguration.wat).param("title", title).timeout(1000000000, 10000000).asString.body.toString
+    val strResponse = Http(Config.getString("service.wat")).param("title", title).timeout(1000000000, 10000000).asString.body.toString
 
     val jsonResponse = JSON.parseFull(strResponse)
 

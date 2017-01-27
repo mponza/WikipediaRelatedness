@@ -17,8 +17,7 @@ import scala.io.Source
   */
 object WikiTitleID {
   protected val logger = LoggerFactory.getLogger("WikiTitleIDMapping")
-
-  protected val serializedPath = "/tmp/title-id.bin" // fix me
+  protected val serializedPath = Config.getString("wikipedia.cache.mapping.title_id")
 
   protected lazy val wikiTitle2ID = loadMapping()
   protected lazy val wikiID2Title = reverseTitle2ID()
@@ -31,12 +30,11 @@ object WikiTitleID {
     */
   protected def loadMapping()
         : Object2IntOpenHashMap[String] = {
-
-    val path = Config.getString("wikipedia.mapping.title2id")
     if(new File(serializedPath).exists()) return BinIO.loadObject(serializedPath).asInstanceOf[Object2IntOpenHashMap[String]]
 
-
     logger.info("Loading Wikipedia title-ID mapping...")
+
+    val path = Config.getString("wikipedia.mapping.title_id")
     val wikiTitle2ID = new Object2IntOpenHashMap[String]
 
     for(line <-  Source.fromFile(path).getLines()) {

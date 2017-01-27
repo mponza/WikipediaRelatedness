@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.utils
 
 import com.typesafe.config.ConfigFactory
 
+
 /**
   * Wrapper to the global configuration parameters.
   * Settings are loaded from src/main/resources/reference.conf file.

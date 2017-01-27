@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.cache
 
 import java.io.File
 import java.nio.file.Paths
@@ -9,6 +9,7 @@ import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESA
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -20,7 +21,7 @@ import scala.collection.mutable.ListBuffer
   * @param size
   */
 class ESACache(val size: Int = 10000) {
-  val logger = LoggerFactory.getLogger(classOf[ESACache])
+  val logger = LoggerFactory.getLogger(getClass)
   protected val luceneDir = Config.getString("wikipedia.lucene")
 
   protected lazy val wikiID2Concepts = loadCache()

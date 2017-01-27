@@ -7,6 +7,13 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 object  Similarity {
 
+  /**
+    * Computes cosine similarity between two floating point arraylist.
+    *
+    * @param src
+    * @param dst
+    * @return
+    */
   def cosineSimilarity(src: FloatArrayList,
                        dst: FloatArrayList) : Float = {
 
@@ -49,7 +56,7 @@ object  Similarity {
   }
 
 
-  def cosineSimilarity(src: List[Tuple2[Int, Float]], dst: List[Tuple2[Int, Float]]) : Float = {
+  def cosineSimilarity(src: Seq[Tuple2[Int, Float]], dst: Seq[Tuple2[Int, Float]]) : Float = {
     val srcMagnitude = vectorMagnitude(src)
     val dstMagnitude = vectorMagnitude(dst)
     if (srcMagnitude == 0f || dstMagnitude == 0f) return 0f
@@ -85,7 +92,7 @@ object  Similarity {
 
   }
 
-  def vectorMagnitude(vec: List[Tuple2[Int, Float]]) : Float = {
+  def vectorMagnitude(vec: Seq[Tuple2[Int, Float]]) : Float = {
     val powMagnitude = vec.foldLeft(0.0)((magnitude, elemTuple) => magnitude + math.pow(elemTuple._2, 2.0))
     math.sqrt(powMagnitude).toFloat
   }

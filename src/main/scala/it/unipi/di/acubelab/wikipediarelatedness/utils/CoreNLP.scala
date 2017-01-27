@@ -8,7 +8,7 @@ import scala.collection.JavaConversions._
 
 
 /**
-  * Object for simply using CoreNLP.
+  * Text processing via CoreNLP.
   *
   */
 object CoreNLP {

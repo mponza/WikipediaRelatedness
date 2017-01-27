@@ -22,7 +22,7 @@ class WikiTypeMapping {}
   */
 object WikiTypeMapping {
   protected val logger = LoggerFactory.getLogger(getClass)
-  protected val serializedPath = "/tmp/titleTypes.bin"  // fix me
+  protected val serializedPath = Config.getString("wikipedia.cache.mapping.title_type")
 
   protected lazy val wikiTitle2Types = loadMapping()
 
