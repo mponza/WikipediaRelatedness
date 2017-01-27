@@ -1,9 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph.context
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.ContextSubCoSimRankOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.JungCoSimRank
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungCliqueWikiGraph
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.SubWikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 import org.slf4j.LoggerFactory
 

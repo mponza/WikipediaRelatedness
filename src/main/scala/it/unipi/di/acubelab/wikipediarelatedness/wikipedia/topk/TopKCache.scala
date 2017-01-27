@@ -41,6 +41,6 @@ trait TopKCache {
     * @param srcWikiID
     * @param k
     */
-  def topKentities(srcWikiID: Int, k: Int) = Seq[Tuple2[Int, Float]] = topKWegihtedEntities(srcWikiID, k).map(_._1)
+  def topKentities(srcWikiID: Int, k: Int): Seq[Int] = topKWegihtedEntities(srcWikiID, k).map(_._1)
 
 }

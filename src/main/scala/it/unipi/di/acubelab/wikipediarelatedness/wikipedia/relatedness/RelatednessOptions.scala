@@ -15,20 +15,20 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
   * @param model        Embedding model
   */
 case class RelatednessOptions(
-                               name: String = null,
+     name: String = null,
 
-                               graph: String = "in",
-                               subGraph: String = "esa",
-                               weights: String = "milnewitten",
+     graph: String = "in",
+     subGraph: String = "esa",
+     weights: String = "milnewitten",
 
-                               threshold: Int = 100,
+     threshold: Int = 100,
 
-                               iterations: Int = 30,
-                               pprDecay: Float = 0.8f,
-                               csrDecay: Float = 0.8f,
+     iterations: Int = 30,
+     pprDecay: Float = 0.8f,
+     csrDecay: Float = 0.8f,
 
-                               model: String = "corpus"
-                             )
+     model: String = "corpus"
+)
 
 
 
@@ -38,7 +38,7 @@ case class RelatednessOptions(
   */
 object RelatednessOptions {
 
-  def make(args: Array[String]) {
+  def make(args: Array[String]) : RelatednessOptions = {
     val parser = new scopt.OptionParser[RelatednessOptions]("relatednessoptions") {
 
       opt[String]("name").action((x, conf) => conf.copy(name = x)).text("Name of the relatedness algorithm")
@@ -61,9 +61,9 @@ object RelatednessOptions {
       // Random Walk Parameters
       opt[Int]("iterations").action((x, conf) => conf.copy(iterations = x)).text("PageRank iterations")
 
-      opt[Float]("pprDecay").action((x, conf) => conf.copy(pprDecay = x)).text("PageRank decay")
+      opt[Double]("pprDecay").action((x, conf) => conf.copy(pprDecay = x.toFloat)).text("PageRank decay")
 
-      opt[Float]("csrDecay").action((x, conf) => conf.copy(csrDecay = x)).text("CoSimRank decay")
+      opt[Double]("csrDecay").action((x, conf) => conf.copy(csrDecay = x.toFloat)).text("CoSimRank decay")
 
       //
       // Embeddings

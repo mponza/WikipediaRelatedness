@@ -1,10 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.SubPPRCosOptions
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.pagerank.pprcos.WeightedPPRSubCos
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.SubWikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.CoSimRankRelatedness
 import org.slf4j.LoggerFactory
 
 /*

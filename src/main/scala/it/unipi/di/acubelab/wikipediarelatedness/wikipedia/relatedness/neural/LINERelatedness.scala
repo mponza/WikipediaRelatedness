@@ -1,7 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
-import it.unipi.di.acubelab.wikipediarelatedness.options.LINEOptions
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.neural.LINE
 import org.slf4j.LoggerFactory

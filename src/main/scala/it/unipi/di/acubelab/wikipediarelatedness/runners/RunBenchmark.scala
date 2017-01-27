@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.runners
 
-import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ApproxRelatednessBenchmark, Benchmark}
+/*import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{ApproxRelatednessBenchmark, Benchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.{WiReDataset, WiReGT}
@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
-
-
+*/
+/*
 class RunBenchmark {
   val logger = LoggerFactory.getLogger(classOf[RunBenchmark])
 
@@ -49,7 +49,7 @@ class RunBenchmark {
         logger.info("Standard Relatedness Benchmarking...")
 
         val bench = new Benchmark(dataset, relatedness)
-        bench.runBenchmark()
+        bench.run()
         ranks += Tuple2(bench.getPerformance(), relatedness.toString())
 
       } catch {
@@ -173,3 +173,4 @@ class RunBenchmark {
   }
 
 }
+*/

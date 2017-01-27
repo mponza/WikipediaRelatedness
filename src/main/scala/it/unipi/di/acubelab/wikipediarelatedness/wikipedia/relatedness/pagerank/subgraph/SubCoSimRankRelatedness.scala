@@ -1,8 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.SubCoSimRankOptions
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.pagerank.cosimrank.WeightedCoSubSimRank
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.SubWikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 

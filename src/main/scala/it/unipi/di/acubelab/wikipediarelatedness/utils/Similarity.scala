@@ -2,7 +2,6 @@ package it.unipi.di.acubelab.wikipediarelatedness.utils
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.floats.FloatArrayList
-import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 
 object  Similarity {

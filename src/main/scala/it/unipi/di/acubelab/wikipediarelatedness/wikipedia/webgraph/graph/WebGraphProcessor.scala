@@ -5,9 +5,7 @@ import java.io.File
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
-import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, OldConfiguration}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.oldllp.{LLPProcessor, LLPTask}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.multillp.MultiLLPProcessor
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import org.slf4j.LoggerFactory
 
 

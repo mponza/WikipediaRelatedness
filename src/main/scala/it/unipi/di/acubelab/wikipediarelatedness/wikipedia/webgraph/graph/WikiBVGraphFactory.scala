@@ -14,13 +14,14 @@ import org.slf4j.LoggerFactory
 object WikiBVGraphFactory {
   val logger = LoggerFactory.getLogger("WikiBVGraphFactory")
 
-  lazy val immOutGraph = loadImmutableGraph(Config.getString("webgraph.out"))
-  lazy val immInGraph = loadImmutableGraph(Config.getString("webgraph.in"))
-  lazy val immSymGraph = loadImmutableGraph(Config.getString("webgraph.sym"))
-  lazy val immSymNoLoopGraph = loadImmutableGraph(Config.getString("webgraph.sym_no_loop"))
+  lazy val immOutGraph = loadImmutableGraph(Config.getString("wikipedia.webgraph.out"))
+  lazy val immInGraph = loadImmutableGraph(Config.getString("wikipedia.webgraph.in"))
+  lazy val immSymGraph = loadImmutableGraph(Config.getString("wikipedia.webgraph.sym"))
+  lazy val immSymNoLoopGraph = loadImmutableGraph(Config.getString("wikipedia.webgraph.sym_no_loop"))
 
   // WikiID -> NodeID mapping
-  lazy val wiki2node = BinIO.loadObject(Config.getString("webgraph.mapping")).asInstanceOf[Int2IntOpenHashMap]
+  lazy val wiki2node = BinIO.loadObject(Config.getString("wikipedia.webgraph.mapping"))
+                        .asInstanceOf[Int2IntOpenHashMap]
 
 
   /**
@@ -52,8 +53,7 @@ object WikiBVGraphFactory {
         case "sym" => immSymGraph
         case "sym_no_loop" =>  immSymNoLoopGraph
       }
-
-      val threadedImmGraph = if (threadSafe) immOutGraph.copy() else immOutGraph
+      val threadedImmGraph = if (threadSafe) immGraph.copy() else immGraph
 
       new WikiBVGraph(threadedImmGraph, wiki2node)
   }

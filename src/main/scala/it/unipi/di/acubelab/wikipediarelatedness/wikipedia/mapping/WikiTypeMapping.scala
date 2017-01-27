@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping
 import java.util.zip.GZIPInputStream
 
-import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, OldConfiguration}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 
 import scala.io.Source
 import java.io.{File, FileInputStream}

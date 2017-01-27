@@ -21,7 +21,7 @@ object ESA {
     * @return List of Wikipedia IDs where wikiID is mentioned and the corresponding score.
     *         The best resultThreshold concepts are returned by decreasing order by their score.
     */
-  def wikipediaConcepts(text: String, resultThreshold: Int): List[Tuple2[Int, Float]] = {
+  def wikipediaConcepts(text: String, resultThreshold: Int): Seq[Tuple2[Int, Float]] = {
     val parser = new QueryParser("body", LuceneIndex.analyzer)
     val query = parser.createBooleanQuery("body", text)
 
@@ -35,7 +35,7 @@ object ESA {
     concepts
   }
 
-  def wikipediaConcepts(text: String): List[Tuple2[Int, Float]] = wikipediaConcepts(text, 650)
+  def wikipediaConcepts(text: String): Seq[Tuple2[Int, Float]] = wikipediaConcepts(text, 650)
 
 
   /**
@@ -45,8 +45,8 @@ object ESA {
     * @param resultThreshold
     * @return
     */
-  def wikipediaConcepts(wikiID: Int, resultThreshold: Int): List[Tuple2[Int, Float]] = {
-    val cachedConcepts = cache.get(wikiID, resultThreshold)
+  def wikipediaConcepts(wikiID: Int, resultThreshold: Int): Seq[Tuple2[Int, Float]] = {
+    val cachedConcepts = cache.topKWegihtedEntities(wikiID, resultThreshold)
 
     if (cachedConcepts != null) return cachedConcepts
 
@@ -55,11 +55,11 @@ object ESA {
 
   }
 
-  def wikipediaConcepts(wikiID: Int): List[Tuple2[Int, Float]] = wikipediaConcepts(wikiID, 650)
+  def wikipediaConcepts(wikiID: Int): Seq[Tuple2[Int, Float]] = wikipediaConcepts(wikiID, 650)
 
 
   // Not yet used... to be cached.
-  def wikipediaConcepts(srcWikiID: Int, dstWikiID: Int, resultThreshold: Int = 650) : List[Tuple2[Int, Float]] = {
+  def wikipediaConcepts(srcWikiID: Int, dstWikiID: Int, resultThreshold: Int = 650) : Seq[Tuple2[Int, Float]] = {
     val srcBody = lucene.wikipediaBody(srcWikiID)
     val dstBody = lucene.wikipediaBody(dstWikiID)
 

@@ -1,5 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
-
+/*
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import it.unipi.di.acubelab.wikipediarelatedness.options.PPRCosOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.pagerank.pprcos.PPRCosParallelGaussSeidel
@@ -21,3 +21,4 @@ class PPRCosRelatedness(options: PPRCosOptions) extends Relatedness {
     "PPRCos_%s".format(options)
   }
 }
+*/

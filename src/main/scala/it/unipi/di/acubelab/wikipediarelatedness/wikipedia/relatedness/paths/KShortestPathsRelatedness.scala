@@ -1,11 +1,9 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.paths
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.KShortestPathsOptions
 import it.unipi.di.acubelab.wikipediarelatedness.utils.ArithmeticFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.JungKShortestPaths
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungCliqueWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTitleID
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.SubWikiGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 

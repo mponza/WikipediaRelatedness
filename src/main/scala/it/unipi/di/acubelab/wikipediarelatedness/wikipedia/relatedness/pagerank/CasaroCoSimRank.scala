@@ -1,7 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.CasaroCoSimRankOptions
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 

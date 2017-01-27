@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-class GraphSVD(path : String = OldConfiguration.graphSVD("left"), embeddingSize: Int = 100) {
+class GraphSVD(path : String, embeddingSize: Int = 100) {
   val logger = LoggerFactory.getLogger(classOf[GraphSVD])
 
   protected lazy val eigenVectors = loadEigenVectors(path)
-  val wikiGraph = WikiBVGraphFactory.outWikiBVGraph
+  val wikiGraph = WikiBVGraphFactory.makeWikiBVGraph("out")
 
   /**
     * Loads eigenvectors from path where each row is a eigenvector of ~4M of doubles.

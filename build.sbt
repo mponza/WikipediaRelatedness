@@ -6,7 +6,7 @@ scalaVersion := "2.11.8"
 
 scalacOptions += "-target:jvm-1.8"
 
-scalacOptions ++= Seq("-feature")
+scalacOptions ++= Seq("-feature", "-deprecation")
 
 fork in run := true
 fork in Test := true
@@ -26,7 +26,6 @@ libraryDependencies ++= Seq(
 
   "it.unimi.dsi" % "webgraph" % "3.5.2",
   "it.unimi.dsi" % "fastutil" % "7.0.12",
-  "it.unimi.dsi" % "sux4j" % "4.0.0",
 
   "net.sf.jung" % "jung2" % "2.0.1",
   "net.sf.jung" % "jung-api" % "2.0.1",
@@ -50,10 +49,6 @@ libraryDependencies ++= Seq(
 
   "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0",
   "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models",
-
-  "tw.edu.ntu.csie" % "libsvm" % "3.17",
-
-  "com.github.haifengl" % "smile-core" % "1.2.0",
 
   "org.scalatest" % "scalatest_2.11" % "3.0.0"
 

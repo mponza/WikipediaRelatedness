@@ -1,8 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
-import edu.berkeley.nlp.lm.io.LmReaders
-import it.unipi.di.acubelab.wikipediarelatedness.options.LMOptions
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 
 
 /*

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-class LDA(path : String = OldConfiguration.lda("wiki_lda"), embeddingSize: Int = 100) {
+class LDA(path : String, embeddingSize: Int = 100) {
   val logger = LoggerFactory.getLogger(classOf[LDA])
   lazy val embeddings = loadWikiLDAEmbedding(path, embeddingSize)
 

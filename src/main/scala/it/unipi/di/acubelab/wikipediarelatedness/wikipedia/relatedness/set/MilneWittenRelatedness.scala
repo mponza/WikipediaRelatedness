@@ -38,5 +38,5 @@ class MilneWittenRelatedness(options: RelatednessOptions) extends Relatedness {
   }
 
 
-  override def toString () : String = { "MilneWitten" }
+  override def toString () : String = { "MilneWitten_graph:%s".format(options.graph) }
 }

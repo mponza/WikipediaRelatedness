@@ -3,9 +3,9 @@ package it.unipi.di.acubelab.wikipediarelatedness.benchmark
 import java.io.{File, PrintWriter}
 import java.nio.file.Paths
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiRelateDataset, WikiRelateTask}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateDataset
 import it.unipi.di.acubelab.wikipediarelatedness.evaluation.Correlation
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
@@ -13,14 +13,14 @@ import org.slf4j.LoggerFactory
 class Benchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
   protected val logger = LoggerFactory.getLogger(getClass)
 
-  val relatednessDirectory = Paths.get(Paths.get(OldConfiguration.benchmark, dataset.toString()).toString,
+  val relatednessDirectory = Paths.get(Paths.get(Config.getString("benchmark"), dataset.toString()).toString,
                                         relatedness.toString).toString
 
   /**
     * Computes relatedness measure on dataset.
     * Write pairs and relatedness to a CSV file under benchmark/.
     */
-  def runBenchmark() = {
+  def run() = {
     runRelatedness()
     writeRelatednessScores()
     writeCorrelationScores()

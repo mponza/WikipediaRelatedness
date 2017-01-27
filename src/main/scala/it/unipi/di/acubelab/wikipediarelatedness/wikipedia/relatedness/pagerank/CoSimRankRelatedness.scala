@@ -1,7 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.CoSimRankOptions
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.pagerank.cosimrank.{CoSimRankParallelGaussSeidel, CoSimRankPowerSeries}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
