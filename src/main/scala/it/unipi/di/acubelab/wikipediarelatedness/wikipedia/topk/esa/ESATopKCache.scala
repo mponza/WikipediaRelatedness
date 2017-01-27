@@ -1,7 +1,6 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.cache
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.esa
 
 import java.io.File
-import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
@@ -10,6 +9,7 @@ import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESA
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKCache
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -20,11 +20,10 @@ import scala.collection.mutable.ListBuffer
   *
   * @param size
   */
-class ESACache(val size: Int = 10000) {
+class ESATopKCache(val size: Int = 10000) extends TopKCache {
   val logger = LoggerFactory.getLogger(getClass)
-  protected val luceneDir = Config.getString("wikipedia.lucene")
 
-  protected lazy val wikiID2Concepts = loadCache()
+  override val e2esPath = Config.getString("wikipedia.cache.esa")
 
 
   /**
@@ -32,7 +31,7 @@ class ESACache(val size: Int = 10000) {
     *
     * @param tasks
     */
-  def generateCache(tasks: List[WikiRelateTask]) = {
+  def generate(tasks: Seq[WikiRelateTask]) = {
     val wikiIDs = tasks.foldLeft(List.empty[Int])((IDs, task) => IDs ++ List(task.src.wikiID, task.dst.wikiID)).distinct
 
     logger.info("Retrieving bodies...")
@@ -60,20 +59,22 @@ class ESACache(val size: Int = 10000) {
     }
 
     logger.info("Serializing wikiIDs-concepts mapping...")
-    new File(luceneDir).mkdirs
-    BinIO.storeObject(wikiID2Concepts, getCachePath())
+    new File(cache).getParentFile.mkdirs
+    BinIO.storeObject(wikiID2Concepts, cache)
   }
 
 
-  protected def getCachePath() = Paths.get(luceneDir, "cache_%d.bin".format(size)).toString
-
-
-  protected def loadCache() = {
-    logger.info("Loading ESA cache from %s...".format(getCachePath()))
+  /**
+    * Loads cache in memory.
+    *
+    * @return
+    */
+  protected def load() = {
+    logger.info("Loading ESA cache from %s...".format(cache))
 
     try {
 
-      BinIO.loadObject(getCachePath()).asInstanceOf[Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]]
+      BinIO.loadObject(cache).asInstanceOf[Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]]
 
     } catch {
 

@@ -1,10 +1,9 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk
 
 import java.io.File
 import java.util
 
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.factory.Nd4j
@@ -18,6 +17,7 @@ import scala.collection.mutable.ListBuffer
   *
   * @param modelName
   */
+/*
 class TopKEmbeddings(modelName: String) {
   val logger = LoggerFactory.getLogger(classOf[TopKEmbeddings])
 
@@ -95,4 +95,4 @@ class TopKEmbeddings(modelName: String) {
 
   protected def isWikiNode(wikiID: Int) = WikiBVGraphFactory.outWikiBVGraph.contains(wikiID)
 
-}
+}*/

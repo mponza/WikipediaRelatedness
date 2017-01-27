@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.Sub
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.JungCoSimRank
 import org.slf4j.LoggerFactory
 
-
+/*
 class JungCoSimRankRelatedness(options: SubCoSimRankOptions = new SubCoSimRankOptions())  extends Relatedness {
 
  val logger = LoggerFactory.getLogger(classOf[JungCoSimRankRelatedness])
@@ -27,4 +27,4 @@ class JungCoSimRankRelatedness(options: SubCoSimRankOptions = new SubCoSimRankOp
   override def toString(): String = {
     "JungCoSimRank_%s".format(options)
   }
-}
+}*/

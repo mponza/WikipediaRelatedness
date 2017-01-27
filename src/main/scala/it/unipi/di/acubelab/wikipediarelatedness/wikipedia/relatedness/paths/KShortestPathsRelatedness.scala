@@ -9,6 +9,8 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.Sub
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
+
+/*
 class KShortestPathsRelatedness(options: KShortestPathsOptions = new KShortestPathsOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[KShortestPathsRelatedness])
 
@@ -73,4 +75,4 @@ class KShortestPathsRelatedness(options: KShortestPathsOptions = new KShortestPa
 
     logger.info("%s".format(strPath))
   }
-}
+}*/

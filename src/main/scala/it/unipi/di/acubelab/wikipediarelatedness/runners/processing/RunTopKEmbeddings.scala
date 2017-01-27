@@ -6,7 +6,7 @@ import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.runners.Runner
 import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.ProcessTopKEmbeddings
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.ProcessTopKEmbeddings
 import org.slf4j.LoggerFactory
 
 /**

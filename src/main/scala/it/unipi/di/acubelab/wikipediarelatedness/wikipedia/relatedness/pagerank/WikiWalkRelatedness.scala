@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.pagerank.wikiwalk.WikiWalk
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
-
+/*
 class WikiWalkRelatedness(options: WikiWalkOptions)  extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[WikiWalkRelatedness])
 
@@ -19,3 +19,4 @@ class WikiWalkRelatedness(options: WikiWalkOptions)  extends Relatedness {
   }
 
 }
+*/

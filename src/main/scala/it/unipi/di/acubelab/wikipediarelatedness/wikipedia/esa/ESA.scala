@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa
 
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.cache.ESACache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.lemma.LemmaLuceneIndex
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.esa.ESATopKCache
 import org.apache.lucene.queryparser.classic.QueryParser
 
 
@@ -11,7 +11,7 @@ import org.apache.lucene.queryparser.classic.QueryParser
   */
 object ESA {
   lazy val lucene = new LemmaLuceneIndex()
-  val cache = new ESACache()
+  val cache = new ESATopKCache()
 
 
   /**

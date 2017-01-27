@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.topk
 
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddingsCache
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKEmbeddingsCache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph
 import org.slf4j.LoggerFactory
 

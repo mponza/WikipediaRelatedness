@@ -1,7 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.MilneWittenOptions
-import it.unipi.di.acubelab.wikipediarelatedness.options.Set.SetOptions
+
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.SetOperations

@@ -1,12 +1,11 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.latent
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.latent
 
 import java.io.{File, FileInputStream}
 import java.util.zip.GZIPInputStream
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiBVGraph, WikiGraph$, WikiBVGraphFactory}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
 import scala.io.Source

@@ -4,20 +4,20 @@ import it.unipi.di.acubelab.wikipediarelatedness.options.ContextSubCoSimRankOpti
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.JungCoSimRank
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.JungCliqueWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.subgraph.SubWikiGraphFactory
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 import org.slf4j.LoggerFactory
 
-
-class ContextCliqueCoSimRankRelatedness(options: ContextSubCoSimRankOptions = new ContextSubCoSimRankOptions()) extends Relatedness {
+/*
+class ContextCliqueCoSimRankRelatedness(options: RelatednessOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[ContextCliqueCoSimRankRelatedness])
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     // WebGraph subgraph
-    val wgSubGraph = SubWikiGraphFactory.make(options.subGraph, srcWikiID, dstWikiID, options.wikiGraphName, options.threshold)
+    val wgSubGraph = SubWikiGraphFactory.make(options.subGraph, srcWikiID, dstWikiID, options.graph, options.threshold)
     // Jung subgraph
     val subGraph = new JungCliqueWikiGraph(wgSubGraph)
     //  Jung CoSimRank
-    val jungCSR = new JungCoSimRank(subGraph, options.weighting, options.iterations, options.pprDecay, options.csrDecay)
+    val jungCSR = new JungCoSimRank(subGraph, options.weights, options.iterations, options.pprDecay, options.csrDecay)
 
     jungCSR.similarity(srcWikiID, dstWikiID)
   }
@@ -27,7 +27,7 @@ class ContextCliqueCoSimRankRelatedness(options: ContextSubCoSimRankOptions = ne
     "ContextCliqueCoSimRankRelatedness_%s".format(options)
   }
 }
-
+*/
 
 /**
   *

@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.neural
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.neural
 
 import java.nio.file.Paths
 import java.util.zip.GZIPInputStream

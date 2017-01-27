@@ -5,6 +5,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
+
 /**
   * Class for accessing to local clustering coefficients stored to file from LocalClusteringProcessing class.
   *

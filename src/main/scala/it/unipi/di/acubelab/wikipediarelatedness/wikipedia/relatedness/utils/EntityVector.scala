@@ -6,6 +6,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiB
 /**
   * Maps a wikiID into an array of wikiIDs by using the specified heuristics (i.e. graph neighbors or ESA).
   */
+/*
 object EntityVector {
 
   def make(wikiID: Int, vectorizer: String) : Array[Int] = vectorizer match {
@@ -40,4 +41,4 @@ object EntityVector {
   protected def getESAWikiIDs(wikiID: Int) : Array[Int] = {
     ESA.wikipediaConcepts(wikiID).map(_._1).toArray
   }
-}
+}*/

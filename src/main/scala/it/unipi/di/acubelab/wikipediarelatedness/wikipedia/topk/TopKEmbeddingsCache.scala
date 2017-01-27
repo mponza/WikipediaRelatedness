@@ -1,27 +1,14 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk
 
 import java.io.File
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
-import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
 import org.slf4j.LoggerFactory
 
-/**
-  * TopK cache.
-  * <p>
-  *  <ul>
-  *
-  *   <li> entity2entities. Lists of entities which are most simlar to a specific set of entities.
-  *   <li> entityPair2entities. List of entities which are most similar to a specific set of context vectors (average vector
-  *   between two Wikipedia IDs.)
-  *
-  *   <ul/>
-  * </p>
- *
-  * @param dirPath
-  */
+
+/*
 class TopKEmbeddingsCache(dirPath: String) {
 
   val logger = LoggerFactory.getLogger(classOf[TopKEmbeddingsCache])
@@ -64,4 +51,4 @@ object TopKEmbeddingsCache {
 
   lazy val corpusSG = new TopKEmbeddingsCache(OldConfiguration.topKEmbeddings("sg"))
   lazy val deepWalkSG = new TopKEmbeddingsCache(OldConfiguration.topKEmbeddings("dwsg"))
-}
+}*/

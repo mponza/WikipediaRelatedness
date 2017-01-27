@@ -5,7 +5,7 @@ import java.io.File
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.utils.OldConfiguration
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings.TopKEmbeddingsCache
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKEmbeddingsCache
 import org.nd4j.linalg.factory.Nd4j
 import org.scalatest.{FlatSpec, Matchers}
 

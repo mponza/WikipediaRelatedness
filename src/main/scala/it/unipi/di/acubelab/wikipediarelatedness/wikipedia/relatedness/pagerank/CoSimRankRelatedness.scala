@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
  *
   * @param options
   */
+/*
 class CoSimRankRelatedness(options: CoSimRankOptions = new CoSimRankOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
 
@@ -26,3 +27,4 @@ class CoSimRankRelatedness(options: CoSimRankOptions = new CoSimRankOptions()) e
     "CoSimRank_%s".format(options)
   }
 }
+*/

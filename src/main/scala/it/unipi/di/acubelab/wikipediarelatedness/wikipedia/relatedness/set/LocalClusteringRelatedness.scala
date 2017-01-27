@@ -1,13 +1,12 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.LocalClusteringOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.clustering.LocalClustering
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.SetOperations
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
-class LocalClusteringRelatedness(val options: LocalClusteringOptions = new LocalClusteringOptions()) extends Relatedness {
+class LocalClusteringRelatedness(val options: RelatednessOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[LocalClusteringRelatedness])
 
   val setOperations = new SetOperations(WikiBVGraphFactory.makeWikiBVGraph(options.graph))

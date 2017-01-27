@@ -15,20 +15,20 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
   * @param model        Embedding model
   */
 case class RelatednessOptions(
-  name: String = null,
+                               name: String = null,
 
-  graph: String = "in",
-  subGraph: String = "esa",
-  weights: String = "milnewitten",
+                               graph: String = "in",
+                               subGraph: String = "esa",
+                               weights: String = "milnewitten",
 
-  threshold: Int = 100,
+                               threshold: Int = 100,
 
-  iterations: Int = 30,
-  pprDecay: Float = 0.8f,
-  csrDecay: Float = 0.8f,
+                               iterations: Int = 30,
+                               pprDecay: Float = 0.8f,
+                               csrDecay: Float = 0.8f,
 
-  model: String = "corpus"
-)
+                               model: String = "corpus"
+                             )
 
 
 

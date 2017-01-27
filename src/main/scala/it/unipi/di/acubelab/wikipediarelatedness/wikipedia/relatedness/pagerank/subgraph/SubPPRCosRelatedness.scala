@@ -7,6 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.CoSimRankRelatedness
 import org.slf4j.LoggerFactory
 
+/*
 class SubPPRCosRelatedness(options: SubPPRCosOptions = new SubPPRCosOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])
 
@@ -24,4 +25,4 @@ class SubPPRCosRelatedness(options: SubPPRCosOptions = new SubPPRCosOptions()) e
   override def toString(): String = {
     "PPRSubCos_%s".format(options)
   }
-}
+}*/

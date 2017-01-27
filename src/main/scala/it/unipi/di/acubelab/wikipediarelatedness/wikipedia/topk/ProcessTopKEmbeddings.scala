@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.processing.embeddings
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk
 
 import java.io.File
 import java.util
@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.fastutil.objects.{Object2ObjectOpenHashMap, ObjectArrayList}
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
@@ -20,6 +20,7 @@ import scala.collection.mutable.ListBuffer
   *
   * @param wikiRelTasks
   */
+/*
 class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
   val logger = LoggerFactory.getLogger(classOf[ProcessTopKEmbeddings])
 
@@ -207,3 +208,4 @@ class ProcessTopKEmbeddings(wikiRelTasks: List[WikiRelateTask]) {
   }
 
 }
+*/

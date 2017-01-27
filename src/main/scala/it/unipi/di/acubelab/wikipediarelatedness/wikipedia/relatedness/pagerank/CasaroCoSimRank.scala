@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 
 import scala.util.parsing.json.JSON
 import scalaj.http.Http
-
+/*
 class CasaroCoSimRank(options: CasaroCoSimRankOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CasaroCoSimRank])
 
@@ -35,7 +35,7 @@ class CasaroCoSimRank(options: CasaroCoSimRankOptions) extends Relatedness {
 
   override def toString() = "CasaroCoSimRank"
 }
-
+*/
 /*
 * class CoSimRankRelatedness(options: CoSimRankOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CoSimRankRelatedness])

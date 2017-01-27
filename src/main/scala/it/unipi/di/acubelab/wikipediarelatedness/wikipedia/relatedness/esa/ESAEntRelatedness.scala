@@ -1,8 +1,8 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa
 
-import it.unipi.di.acubelab.wikipediarelatedness.options.ESAOptions
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessOptions
 
-class ESAEntRelatedness(options: ESAOptions = new ESAOptions())  extends ESARelatedness(options) {
+class ESAEntRelatedness(options: RelatednessOptions)  extends ESARelatedness(options) {
 
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     if(srcWikiID == dstWikiID) 1f
