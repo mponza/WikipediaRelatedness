@@ -4,13 +4,8 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBV
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.SetOperations
 
-/**
-  *
-  * @param options
-  *                {
-  *                   graph: inGraph/outGraph/symGraph
-  *                }
-  */
+
+
 class JaccardRelatedness(val options: RelatednessOptions) extends Relatedness {
   val wikiGraph = WikiBVGraphFactory.makeWikiBVGraph(options.graph)
   val setOperations = new SetOperations(wikiGraph)

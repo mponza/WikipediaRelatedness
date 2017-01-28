@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory
 trait WikiRelateDataset extends Traversable[WikiRelateTask] {
   protected val logger = LoggerFactory.getLogger(getClass)
 
+
   /**
     * Pairs of Wikipedia Entities.
     *
