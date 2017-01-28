@@ -32,6 +32,7 @@ class Benchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
   /**
     * Computes relatedness measure on dataset.
     * Write pairs and relatedness to a CSV file under benchmark/.
+    *
     */
   def run() = {
     runRelatedness()
@@ -42,6 +43,7 @@ class Benchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
 
   /**
     * Computes machineRelatedness scores for each task in dataset.
+    *
     */
   protected def runRelatedness(): Unit = {
     logger.info("Running Relatedness %s on dataset %s...".format(relatedness.toString(), dataset))
@@ -71,6 +73,7 @@ class Benchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
 
   /**
     * Writes correlation performance into file.
+    *
     */
   protected def writeCorrelationScores(): Unit = {
     val pearson = Correlation.pearson(dataset)
@@ -84,7 +87,10 @@ class Benchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
     val path = Paths.get(outputDirectory, "correlation.csv").toString
 
     val writer = new PrintWriter(path)
-    writer.write("Pearson:%1.2f\nSpearman: %1.2f".formatLocal(java.util.Locale.US, pearson, spearman))
+
+    writer.write("Pearson: %1.2f\nSpearman: %1.2f\nHarmonic: %1.2f".formatLocal(
+      java.util.Locale.US, pearson, spearman, harmonic))
+
     writer.close()
   }
 
@@ -92,6 +98,7 @@ class Benchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
   /**
     * Returns correlation performance as triple (pearson, spearman, harmonic).
     * @return
+    *
     */
   protected def performance(): Seq[Float] = {
     val pearson = Correlation.pearson(dataset).toFloat

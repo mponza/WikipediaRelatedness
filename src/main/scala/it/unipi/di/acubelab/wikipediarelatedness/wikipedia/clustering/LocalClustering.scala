@@ -37,10 +37,17 @@ class LocalClustering {
     * @param wikiID
     * @return
     */
-  def getCoefficient(wikiID: Int) : Float = {
-    val nodeID = wikiGraph.getNodeID(wikiID)
-    val coeff = coefficients(nodeID)
+  def getCoefficient(wikiID: Int) : Float = getNodeCoefficient( wikiGraph.getNodeID(wikiID) )
 
+
+  /**
+    * Returns local clustering coefficient of a nodeID.
+    *
+    * @param nodeID
+    * @return
+    */
+  def getNodeCoefficient(nodeID: Int) : Float = {
+    val coeff = coefficients(nodeID)
     if (coeff.isNaN) return 0f
 
     coeff

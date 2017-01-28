@@ -6,6 +6,10 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedn
 import org.slf4j.LoggerFactory
 
 
+/**
+  * Experiments a relatedness algorithm over all available datasets.
+  *
+  */
 object Main {
   val logger = LoggerFactory.getLogger("Main")
 

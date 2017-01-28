@@ -20,5 +20,5 @@ class JaccardRelatedness(val options: RelatednessOptions) extends Relatedness {
     intersection / (sizeA + sizeB - intersection).toFloat
   }
 
-  override def toString () : String = { "Jaccard_%s".format(options.graph) }
+  override def toString () : String = { "Jaccard_graph:%s".format(options.graph) }
 }

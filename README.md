@@ -222,3 +222,10 @@ Generate charts:
     
 
 (Running Jupyter on Mac OS X type `export PATH=/Users/marco/anaconda/bin:$PATH`)
+
+
+
+Benchmark
+---------
+
+    bash src/main/bash/benchmark.sh
