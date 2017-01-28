@@ -12,5 +12,17 @@ abstract class LocalClusteringRelatedness(val options: RelatednessOptions) exten
   val graph = WikiBVGraphFactory.makeWikiBVGraph(options.graph)
   val lc = new LocalClustering()
 
+
+  /**
+    * Keeps the top-threshold elements of the vector with the highest weight.
+    * The returned vector is sorted by the first element.
+    *
+    * @param vector
+    * @param threshold
+    */
+  protected def thresholdVector(vector: Seq[Tuple2[Int, Float]], threshold: Int) = {
+    vector.sortBy(_._2).reverse.slice(0, threshold).sortBy(_._1)
+  }
+
   override def toString(): String
 }

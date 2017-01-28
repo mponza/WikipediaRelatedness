@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.latent
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.latent.LDA
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.latent.LDA
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 import org.slf4j.LoggerFactory
 /*

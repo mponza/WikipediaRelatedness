@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Bash script for benchmarking all relatedness mea
+#
+
+
 
 # ======================================================================================================================
 #
@@ -91,20 +95,44 @@ function run_jaccardlocalclustering {
 
 
 #
-# Experiments CosineLocalClustering relatedness with different type of graphs.
+# Experiments CosineLocalClustering relatedness with different types of graphs and thresholds.
 #
 function run_cosinelocalclustering {
+    thresholds=( 0 10 50 100 500 1000 2000 5000 )
+
     for graph in "${GRAPHS[@]}"
     do
+        for threshold in "${thresholds[@]}"
+        do
 
-        args="--name cosinelocalclustering --graph $graph"
-        logging_info "Experimenting CosineLocalClustering with paramters: $args\n"
+            args="--name cosinelocalclustering --graph $graph --threshold $threshold"
+            logging_info "Experimenting CosineLocalClustering with paramters: $args\n"
+
+            run_sbt "$args"
+
+        done
+    done
+}
+
+
+#
+# Experiments ESA relatedness with different thresholds.
+#
+
+function run_esa {
+    thresholds=( 100 200 500 1000 1500 2000 2500 3000 5000 10000 )
+
+    for threshold in "${thresholds[@]}"
+    do
+
+        args="--name esa --threshold $threshold"
+        logging_info "Experimenting ESA with paramters: $args\n"
 
         run_sbt "$args"
 
     done
-
 }
+
 
 # ======================================================================================================================
 #
@@ -112,8 +140,10 @@ function run_cosinelocalclustering {
 #
 # ======================================================================================================================
 
-# run_milnewitten
+#run_milnewitten
 #run_jaccard
 
-run_jaccardlocalclustering
-run_cosinelocalclustering
+#run_jaccardlocalclustering
+#run_cosinelocalclustering
+
+run_esa

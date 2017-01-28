@@ -5,7 +5,6 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedn
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.SetOperations
 
 
-
 class JaccardRelatedness(val options: RelatednessOptions) extends Relatedness {
   val wikiGraph = WikiBVGraphFactory.makeWikiBVGraph(options.graph)
   val setOperations = new SetOperations(wikiGraph)

@@ -21,7 +21,7 @@ case class RelatednessOptions(
      subGraph: String = "esa",
      weights: String = "milnewitten",
 
-     threshold: Int = 100,
+     threshold: Int = 0,
 
      iterations: Int = 30,
      pprDecay: Float = 0.8f,

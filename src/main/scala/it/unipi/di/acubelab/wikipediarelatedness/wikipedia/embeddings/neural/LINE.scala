@@ -1,8 +1,8 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.neural
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.neural
 
+import java.io.{File, FileInputStream}
 import java.nio.file.Paths
 import java.util.zip.GZIPInputStream
-import java.io.{File, FileInputStream}
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap

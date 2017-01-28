@@ -1,21 +1,26 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.latent
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.latent
 
 import java.io.{File, FileInputStream}
 import java.util.zip.GZIPInputStream
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.Embeddings
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-class LDA(path : String, embeddingSize: Int = 100) {
-  val logger = LoggerFactory.getLogger(classOf[LDA])
-  lazy val embeddings = loadWikiLDAEmbedding(path, embeddingSize)
 
-  def loadWikiLDAEmbedding(path: String, embeddingSize: Int): Int2ObjectOpenHashMap[FloatArrayList] = {
+class LDA extends Embeddings {
+  protected val logger = LoggerFactory.getLogger(getClass)
+
+
+  override def loadEmbeddings(): Int2ObjectOpenHashMap[Seq[Tuple2[Int, Float]]] = {
+    val path = Config.getString("wikipedia.latent.lda")
+
     // {wikiID -> [(index, value)}
-    val lda = new Int2ObjectOpenHashMap[FloatArrayList]
+    val lda = new Int2ObjectOpenHashMap[Seq[Tuple2[Int, Float]]]
 
     val reader = Source.fromInputStream(
       new GZIPInputStream(
@@ -30,20 +35,21 @@ class LDA(path : String, embeddingSize: Int = 100) {
       val row = line.split("\t")
 
       // Reads embedding of row
-      val embedding = Array.fill[Float](embeddingSize)(0f)
+      val embedding = Array.fill[Tuple2[Int, Float]](100)((0, 0f))
 
       row.slice(1, row.size).foreach {
         case indexValue =>
 
           val index = indexValue.split(":")(0).toInt
           val value = indexValue.split(":")(1).toFloat
-          embedding(index) = value
+          embedding(index) = (index, value)
       }
 
       // Update hash table with loaded embedding of wikiID
       val wikiID = Integer.parseInt(row(0))
-      lda.putIfAbsent(wikiID,  new FloatArrayList(embedding))
+      lda.putIfAbsent(wikiID, embedding)
     }
+    logger.info("LDA embedding loaded!")
 
     lda
   }

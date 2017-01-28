@@ -19,14 +19,26 @@ class CosineLocalClusteringRelatedness(options: RelatednessOptions) extends Loca
 
 
   /**
-    * Returns the neighorhood of wikiID as vector of nodeIDs weighted with their local clustering coefficients.
+    * Returns the neighborhood of wikiID as vector of nodeIDs weighted with their local clustering coefficients.
     *
     */
   def weightedNeighborhood(wikiID:Int) : Seq[Tuple2[Int, Float]]= {
     val nodeIDs = graph.successorArray(wikiID)
-    nodeIDs.map(nodeID => (nodeID, lc.getNodeCoefficient(nodeID))).toSeq
+
+    val weightedNodeIDs = nodeIDs.map(nodeID => (nodeID, lc.getNodeCoefficient(nodeID))).toSeq
+
+    if (options.threshold > 0)
+      thresholdVector(weightedNodeIDs, options.threshold)
+    else
+      weightedNodeIDs
   }
 
 
-  override def toString(): String = "CosineLocalClustering_graph:%s".format(options.graph)
+  override def toString(): String = {
+    if (options.threshold > 0) {
+      "CosineLocalClustering_graph:%s,threshold:%d".format(options.graph, options.threshold)
+    } else {
+      "CosineLocalClustering_graph:%s".format(options.graph)
+    }
+  }
 }
