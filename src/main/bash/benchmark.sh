@@ -134,6 +134,25 @@ function run_esa {
 }
 
 
+#
+# Experiments SVD relatedness with different thresholds.
+#
+
+function run_esa {
+    thresholds=( 10 50 100 150 200 )
+
+    for threshold in "${thresholds[@]}"
+    do
+
+        args="--name svd --threshold $threshold"
+        logging_info "Experimenting SVD with paramters: $args\n"
+
+        run_sbt "$args"
+
+    done
+}
+
+
 # ======================================================================================================================
 #
 # Main
@@ -146,4 +165,7 @@ function run_esa {
 #run_jaccardlocalclustering
 #run_cosinelocalclustering
 
-run_esa
+run_svd
+
+# run_esa
+

@@ -13,14 +13,14 @@ import scala.io.Source
 
 
 class LDA extends Embeddings {
-  protected val logger = LoggerFactory.getLogger(getClass)
+  protected override def logger = LoggerFactory.getLogger(getClass)
 
 
   override def loadEmbeddings(): Int2ObjectOpenHashMap[Seq[Tuple2[Int, Float]]] = {
     val path = Config.getString("wikipedia.latent.lda")
 
     // {wikiID -> [(index, value)}
-    val lda = new Int2ObjectOpenHashMap[Seq[Tuple2[Int, Float]]]
+    val lda = new Int2ObjectOpenHashMap[Seq[Tuple2[Int, Float]]](3219938)
 
     val reader = Source.fromInputStream(
       new GZIPInputStream(

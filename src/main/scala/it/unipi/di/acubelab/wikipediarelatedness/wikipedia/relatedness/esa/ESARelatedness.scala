@@ -6,7 +6,11 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedn
 import org.slf4j.LoggerFactory
 
 
-
+/**
+  * Explicit Semantic Analysis implementation via CoreNLP and BM25.
+  *
+  * @param options
+  */
 class ESARelatedness(val options: RelatednessOptions)  extends  Relatedness {
   val logger = LoggerFactory.getLogger(getClass)
 

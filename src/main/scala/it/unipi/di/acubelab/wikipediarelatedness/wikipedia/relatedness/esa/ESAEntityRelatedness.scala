@@ -8,6 +8,11 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedne
 import org.slf4j.LoggerFactory
 
 
+/**
+  * Explicit Semantic Analysis implementation via CoreNLP and BM25 by deploying only ent_wikiID as text.
+  *
+  * @param options
+  */
 class ESAEntityRelatedness(options: RelatednessOptions)  extends Relatedness {
 
   val logger = LoggerFactory.getLogger(getClass)
