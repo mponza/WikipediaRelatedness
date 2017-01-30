@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.oldgraph
 
 import java.io.{BufferedWriter, FileWriter, PrintWriter}
 

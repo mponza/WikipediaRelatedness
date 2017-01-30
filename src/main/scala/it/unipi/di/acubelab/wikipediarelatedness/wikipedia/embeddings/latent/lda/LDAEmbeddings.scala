@@ -2,11 +2,14 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.latent.ld
 
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.latent.LatentWikiEmbeddings
+import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.factory.Nd4j
 
+
 class LDAEmbeddings extends LatentWikiEmbeddings {
-  protected val matrix = Nd4j.zeros(5000000, 100)
+  protected val matrix = Nd4j.zeros(4730474, 100)
   protected val wiki2row = new Int2IntOpenHashMap
+
 
   /**
     * Inserts rowArray into matrix by keepin track of wikiID -> rowIndex mapping.
@@ -21,4 +24,7 @@ class LDAEmbeddings extends LatentWikiEmbeddings {
 
     matrix.putRow( rowIndex, Nd4j.create(rowArray) )
   }
+
+
+  override def apply(wikiID: Int) : INDArray = super.apply(wiki2row.get(wikiID))
 }

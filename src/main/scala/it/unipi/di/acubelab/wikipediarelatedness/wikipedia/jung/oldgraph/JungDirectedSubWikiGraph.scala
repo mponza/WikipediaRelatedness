@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.oldgraph
 
 import edu.uci.ics.jung.graph.{DirectedSparseGraph, DirectedSparseMultigraph, Graph}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph

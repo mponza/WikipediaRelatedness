@@ -1,13 +1,13 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lm
+
+import edu.berkeley.nlp.lm.io.LmReaders
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 
 
-
-/*
 class LMRelatedness(options: RelatednessOptions) extends Relatedness {
+  val nGramModel = LmReaders.readLmBinary[String](Config.getString("wikipedia.language_model"))
 
-
-  // Map the model
-  //lazy val nGramModel = LmReaders.readLmBinary[String](OldConfiguration.wikipedia("langModel"))
 
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = {
 
@@ -20,4 +20,4 @@ class LMRelatedness(options: RelatednessOptions) extends Relatedness {
   override def toString(): String = {
     "LMRelatedness"
   }
-}*/
+}

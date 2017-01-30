@@ -58,7 +58,7 @@ class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) 
 
 
   /**
-    *
+    * Successors of nodeIDs.
     *
     * @param nodeID
     * @return
@@ -147,7 +147,12 @@ class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) 
   }
 
 
-  def getWikiIDs() = {
+  /**
+    * Returns the list of indexed wikiIDs.
+    *
+    * @return
+    */
+  def getWikiIDs = {
     val nodeIterator = graph.nodeIterator()
 
     val wikiIDs = new IntArrayList()

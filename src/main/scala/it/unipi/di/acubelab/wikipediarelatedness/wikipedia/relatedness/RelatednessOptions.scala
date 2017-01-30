@@ -33,7 +33,7 @@ case class RelatednessOptions(
 
 
 /**
-  * Factory class for building RelatednessOptions from console arguments.
+  * Factory for building RelatednessOptions from console arguments.
   *
   */
 object RelatednessOptions {

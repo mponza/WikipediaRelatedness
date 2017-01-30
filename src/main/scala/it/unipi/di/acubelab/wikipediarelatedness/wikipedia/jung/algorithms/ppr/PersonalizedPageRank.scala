@@ -1,14 +1,60 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.ppr
 
-import edu.uci.ics.jung.algorithms.scoring.util.ScoringUtils
-import edu.uci.ics.jung.algorithms.scoring.{PageRank, PageRankWithPriors}
+import edu.uci.ics.jung.algorithms.scoring.PageRankWithPriors
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.JungPersonalizedPrior
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.weighting.JungEdgeWeights
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.oldgraph.JungWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
+import org.apache.commons.collections15.Transformer
 import org.slf4j.Logger
 
 import scala.collection.mutable.ListBuffer
+
+
+
+class PersonalizedPageRank(val wikiJungGraph: WikiJungGraph, val wikiID: Int,
+                            val pprDecay: Double, val iterations: Int)
+{
+
+  def computePPR(wikiJungGraph: WikiJungGraph, wikiID: Int) = {
+    // farlo con ndarray....
+
+
+    /*
+    *  Vedi:
+    *
+  override protected def pageRankVectors(wikiID: Int) = {
+    val ranker = pageRanker(wikiID)
+
+    val pprVectors = ListBuffer.empty[List[Tuple2[Int, Float]]]
+
+    val pl = new ProgressLogger(logger, 1, TimeUnit.SECONDS)
+    pl.start("Computing PersonalizedPageRank...")
+    for(i <- 0 until iterations) {
+      ranker.step()
+      pprVectors += getRankingVector(ranker)
+
+      pl.update()
+    }
+    pl.done()
+
+    pprVectors.toList
+  }
+
+    * */
+
+    val priorVector = new StandardBasisPrior(wikiID)
+
+    val ppr = new PageRankWithPriors[Int, String](wikiJungGraph.graph, wikiJungGraph.weights, priorVector, pprDecay)
+    ppr.setMaxIterations(iterations)
+    ppr.setTolerance(0.0)
+  }
+
+}
+
+
+
 
 /**
   * Computes PageRank-based similarity scores between two nodes in junkWikiGraph by weighting edges with relatedness.

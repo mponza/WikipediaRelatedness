@@ -174,7 +174,7 @@ function run_lda {
 #
 function run_w2v {
     models=(
-             # text-based (classical w2v)
+             # text-based (standard w2v)
              "w2v.corpus" "w2v.coocc" "w2v.sg"
 
              # ask to Francesco
@@ -182,9 +182,8 @@ function run_w2v {
 
              # random walk-based (DeepWalk)
              "deepwalk.dw" "deepwalk.deep_corpus"
-             "deepwalk.dw.10" "deepwalk.dw.30" "deepwalk.dw.50" "deepwalk.dw.70" "deepwalk.dw.90"\
-             "dwsg"
-
+             "deepwalk.dw10" "deepwalk.dw30" "deepwalk.dw50" "deepwalk.dw70" "deepwalk.dw90"\
+             "deepwalk.dwsg"
     )
 
     for model in "${models[@]}"
@@ -216,6 +215,6 @@ function run_w2v {
 #run_svd
 #run_lda
 
-run_w2v
+# run_w2v
 
 

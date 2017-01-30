@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
+
 class SVD extends Embeddings {
   protected override def logger = LoggerFactory.getLogger(getClass)
 
