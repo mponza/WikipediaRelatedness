@@ -118,7 +118,6 @@ function run_cosinelocalclustering {
 #
 # Experiments ESA relatedness with different thresholds.
 #
-
 function run_esa {
     thresholds=( 100 200 500 1000 1500 2000 2500 3000 5000 10000 )
 
@@ -137,8 +136,7 @@ function run_esa {
 #
 # Experiments SVD relatedness with different thresholds.
 #
-
-function run_esa {
+function run_svd {
     thresholds=( 10 50 100 150 200 )
 
     for threshold in "${thresholds[@]}"
@@ -146,6 +144,54 @@ function run_esa {
 
         args="--name svd --threshold $threshold"
         logging_info "Experimenting SVD with paramters: $args\n"
+
+        run_sbt "$args"
+
+    done
+}
+
+
+#
+# Experiments LDA relatedness with different thresholds.
+#
+function run_lda {
+    thresholds=( 10 50 80 100 )
+
+    for threshold in "${thresholds[@]}"
+    do
+
+        args="--name lda --threshold $threshold"
+        logging_info "Experimenting LDA with paramters: $args\n"
+
+        run_sbt "$args"
+
+    done
+}
+
+
+#
+# Experiments w2v-based relatedness with different embedding models.
+#
+function run_w2v {
+    models=(
+             # text-based (classical w2v)
+             "w2v.corpus" "w2v.coocc" "w2v.sg"
+
+             # ask to Francesco
+             "el.el_1st_dw" "el.el_1st" "el.el_dw"
+
+             # random walk-based (DeepWalk)
+             "deepwalk.dw" "deepwalk.deep_corpus"
+             "deepwalk.dw.10" "deepwalk.dw.30" "deepwalk.dw.50" "deepwalk.dw.70" "deepwalk.dw.90"\
+             "dwsg"
+
+    )
+
+    for model in "${models[@]}"
+    do
+
+        args="--name w2v --model $model"
+        logging_info "Experimenting Word2Vec Embedding with paramters: $args\n"
 
         run_sbt "$args"
 
@@ -165,7 +211,11 @@ function run_esa {
 #run_jaccardlocalclustering
 #run_cosinelocalclustering
 
-run_svd
-
 # run_esa
+
+#run_svd
+#run_lda
+
+run_w2v
+
 

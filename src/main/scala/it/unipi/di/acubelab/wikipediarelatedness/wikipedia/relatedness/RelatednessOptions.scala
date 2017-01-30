@@ -17,9 +17,9 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 case class RelatednessOptions(
      name: String = null,
 
-     graph: String = "in",
-     subGraph: String = "esa",
-     weights: String = "milnewitten",
+     graph: String = "",
+     subGraph: String = "",
+     weights: String = "",
 
      threshold: Int = 0,
 
@@ -27,7 +27,7 @@ case class RelatednessOptions(
      pprDecay: Float = 0.8f,
      csrDecay: Float = 0.8f,
 
-     model: String = "corpus"
+     model: String = ""
 )
 
 

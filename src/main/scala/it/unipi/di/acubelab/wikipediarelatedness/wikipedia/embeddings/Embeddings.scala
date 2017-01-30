@@ -1,10 +1,10 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.slf4j.Logger
 
+
 /**
-  * Manages differnt kind of embeddings, by only overriding loadEmbeddings function.
+  * Loader of embedding data.
   *
   */
 trait Embeddings {
@@ -12,22 +12,17 @@ trait Embeddings {
   protected def logger: Logger
 
   // mapping between a wikiID and its embedding
-  protected val embeddings: Int2ObjectOpenHashMap[Seq[Tuple2[Int, Float]]] = loadEmbeddings()
+  protected val embeddings: WikiEmbeddings = loadEmbeddings()
 
 
   /**
-    * Load entity embeddings from file and returns the corresponding hashmap.
+    * Loads entity embeddings from file and returns the corresponding 2-dimensional INDArray.
     *
     * @return
     */
-  protected def loadEmbeddings() : Int2ObjectOpenHashMap[Seq[Tuple2[Int, Float]]]
+  protected def loadEmbeddings() : WikiEmbeddings
 
 
-  /**
-    * Retrieves the embedding of wikiID.
-    *
-    * @param wikiID
-    * @return
-    */
-  def apply(wikiID: Int) = embeddings.get(wikiID)
+  def cosine(srcWikiID: Int, dstWikiID: Int) = embeddings.cosine(srcWikiID, dstWikiID)
+
 }

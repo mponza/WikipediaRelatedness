@@ -1,35 +1,32 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.latent
 
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.latent.LatentWikiEmbeddings
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.EmbeddingsRelatedness
 
+
+/**
+  * Abstract class for model based on latent decomposition.
+  *
+  * @param options
+  */
 abstract class LatentRelatedness(options: RelatednessOptions) extends EmbeddingsRelatedness(options) {
 
 
-  override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
-
-    val srcVector = thresholdedEmbedding(srcWikiID)
-    val dstVector = thresholdedEmbedding(dstWikiID)
-
-    Similarity.cosineSimilarity(srcVector, dstVector)
-  }
-
-
   /**
-    * Returns the embedding vector of WikiID of size options.threshold.
+    * If options.threshold is 0 then the relatedness is computed by deploying the whole embedding size, otheriwise
+    * only the FIRST threshold-values are used.
     *
-    * @param wikiID
+    * @param srcWikiID
+    * @param dstWikiID
     * @return
     */
-  protected def thresholdedEmbedding(wikiID: Int) = {
-    val vector = embeddings(wikiID)
+  override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     if (options.threshold == 0) {
-      vector
+      super.computeRelatedness(srcWikiID, dstWikiID)
     } else {
-      vector.slice(0, options.threshold)
+      embeddings.asInstanceOf[LatentWikiEmbeddings].cosine(srcWikiID, dstWikiID, options.threshold)
     }
-
   }
 
 }
