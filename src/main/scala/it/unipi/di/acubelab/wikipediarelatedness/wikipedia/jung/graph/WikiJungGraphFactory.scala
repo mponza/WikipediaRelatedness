@@ -1,5 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph
 
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessFactory
+
 
 object WikiJungGraphFactory {
 
@@ -15,4 +17,9 @@ object WikiJungGraphFactory {
   }
 
 
+  def make(op) = {
+
+    val relatendess = RelatednessFactory.make()
+
+  }
 }

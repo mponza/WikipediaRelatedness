@@ -48,4 +48,10 @@ object RelatednessFactory {
     case "ppr" => new PPRRelatedness(options)
   }
 
+
+  def makeDefault(name: String) = {
+    // per ogni
+
+  }
+
 }
