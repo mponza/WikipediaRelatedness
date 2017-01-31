@@ -1,10 +1,10 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph
-
+/*
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
 
-/*
+
 class SubCoSimRankRelatedness(options: SubCoSimRankOptions = new SubCoSimRankOptions()) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[SubCoSimRankRelatedness])
 

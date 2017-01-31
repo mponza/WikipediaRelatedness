@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory
 class MilneWittenRelatedness(options: RelatednessOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(getClass)
 
-  val wikiGraph = WikiBVGraphFactory.makeWikiBVGraph(options.graph)
+  val wikiGraph = WikiBVGraphFactory.make(options.graph)
   val setOperations = new SetOperations(wikiGraph)
   val W = setOperations.wikiGraph.graph.numNodes
 
@@ -26,6 +26,7 @@ class MilneWittenRelatedness(options: RelatednessOptions) extends Relatedness {
     val sizeB = wikiGraph.outdegree(dstWikiID)
 
     val intersection = setOperations.intersectionSize(srcWikiID, dstWikiID)
+    println(intersection)
 
     if (intersection == 0) return 0f
 

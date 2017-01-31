@@ -14,7 +14,7 @@ class LocalClustering {
   protected val logger = LoggerFactory.getLogger(classOf[LocalClustering])
 
   protected val coefficients = loadLocalClusteringCoefficients()
-  protected val wikiGraph = WikiBVGraphFactory.makeWikiBVGraph("sym_no_loop")
+  protected val wikiGraph = WikiBVGraphFactory.make("sym_no_loop")
 
 
   /**

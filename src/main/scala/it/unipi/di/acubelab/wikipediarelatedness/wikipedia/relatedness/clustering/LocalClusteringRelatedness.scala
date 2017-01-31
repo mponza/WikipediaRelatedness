@@ -9,7 +9,7 @@ import org.slf4j.{Logger, LoggerFactory}
 abstract class LocalClusteringRelatedness(val options: RelatednessOptions) extends Relatedness {
   def logger: Logger = LoggerFactory.getLogger(getClass)
 
-  val graph = WikiBVGraphFactory.makeWikiBVGraph(options.graph)
+  val graph = WikiBVGraphFactory.make(options.graph)
   val lc = new LocalClustering()
 
 

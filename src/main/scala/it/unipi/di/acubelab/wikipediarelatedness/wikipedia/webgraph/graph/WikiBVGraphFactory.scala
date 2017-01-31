@@ -45,7 +45,7 @@ object WikiBVGraphFactory {
     * @param graphName
     * @return
     */
-  def makeWikiBVGraph(graphName: String, threadSafe: Boolean = false) : WikiBVGraph = {
+  def make(graphName: String, threadSafe: Boolean = false) : WikiBVGraph = {
 
       val immGraph = graphName match {
         case "out" => immOutGraph

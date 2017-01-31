@@ -25,7 +25,7 @@ class LocalClusteringProcessing {
     *
     */
   def generateClusteringCoefficients() = {
-    val wikiGraph = WikiBVGraphFactory.makeWikiBVGraph("sym_no_loop")
+    val wikiGraph = WikiBVGraphFactory.make("sym_no_loop")
 
     val triangles = generateTriangles(wikiGraph.graph)
     val lcc = generateLocalClusteringCoefficients(wikiGraph.graph, triangles)

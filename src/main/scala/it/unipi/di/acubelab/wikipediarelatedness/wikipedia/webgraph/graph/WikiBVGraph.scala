@@ -1,9 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph
 
 import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList}
-import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, LazyIntIterator}
-import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
+import it.unimi.dsi.webgraph.{ImmutableGraph, LazyIntIterator, LazyIntIterators}
 import org.slf4j.LoggerFactory
 
 
@@ -12,35 +10,34 @@ import org.slf4j.LoggerFactory
   * This class transparently manages the mapping between wikiID and nodeID.
   *
   */
-class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) {
+class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) extends ImmutableGraph {
   val logger = LoggerFactory.getLogger(getClass)
+
 
   // WikiID -> NodeID mapping.
   protected lazy val node2wiki = reverseWiki2Node()
-
-
-
-  //
-  // Neighborhood Operations (wikiID -> nodeIDs).
+  protected val vertices = wiki2node.keySet().toIntArray()
 
 
   /**
-    * Returns the successors (nodeIDs) of wikiID.
+    * Returns the wikiIDs successor of wikiID.
     *
     * @param wikiID
     * @return
     */
-  def successors(wikiID: Int): LazyIntIterator = graph.successors(getNodeID(wikiID))
-
+  override def successors(wikiID: Int): LazyIntIterator = {
+    LazyIntIterators.wrap( successorArray(wikiID) )
+  }
 
 
   /**
-    * Returns the successors array (nodeIDs) of wikiID.
+    * Returns the successors array of wikiIDs from wikiID.
     *
     * @param wikiID
     * @return
     */
-  def successorArray(wikiID: Int): Array[Int] = graph.successorArray(getNodeID(wikiID))
+  override def successorArray(wikiID: Int): Array[Int] = graph.successorArray( getNodeID(wikiID) )
+                                                                .map( getWikiID(_) ).sorted
 
 
   /**
@@ -49,32 +46,7 @@ class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) 
     * @param wikiID
     * @return
     */
-  def outdegree(wikiID: Int): Int = graph.outdegree(getNodeID(wikiID))
-
-
-
-  //
-  // Neighborhood Operations (nodeID -> nodeIDs)
-
-
-  /**
-    * Successors of nodeIDs.
-    *
-    * @param nodeID
-    * @return
-    */
-  def nodeSuccessors(nodeID: Int): LazyIntIterator = graph.successors(nodeID)
-
-
-  def nodeSuccessorArray(nodeID: Int): Array[Int] = graph.successorArray(nodeID)
-
-
-  def nodeOutDegree(nodeID: Int): Int = graph.outdegree(nodeID)
-
-
-
-  //
-  // WikiID -> NodeID mapping operations
+  def outdegree(wikiID: Int): Int = graph.outdegree( getNodeID(wikiID) )
 
 
   /**
@@ -110,8 +82,6 @@ class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) 
     val nodeID = wiki2node.getOrDefault(wikiID, -1)
     if (nodeID < 0) throw new IllegalArgumentException("WikiID %d not present in the Wikipedia graph."
                                                           .format(wikiID))
-
-
     nodeID
   }
 
@@ -131,35 +101,31 @@ class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) 
   }
 
 
-
-  //
-  // WikiID -> WikiIDs operations
-
-
-  /**
-    * Returns the WikiIDs successors of wikiID.
-    *
-    * @param wikiID
-    * @return
-    */
-  def wikiSuccessors(wikiID: Int) : Array[Int] = {
-    successorArray(wikiID).map(getWikiID(_))
-  }
-
-
   /**
     * Returns the list of indexed wikiIDs.
     *
     * @return
     */
-  def getWikiIDs = {
-    val nodeIterator = graph.nodeIterator()
+  def getVertices = {
+    vertices
+    /*val nodeIterator = graph.nodeIterator()
 
     val wikiIDs = new IntArrayList()
     for(i <- 0 until graph.numNodes()) {
       wikiIDs.add(getWikiID(nodeIterator.nextInt()))
     }
 
-    wikiIDs.toIntArray()
+    wikiIDs.toIntArray()*/
   }
+
+
+  override def copy(): ImmutableGraph = new WikiBVGraph(graph.copy(), wiki2node)
+
+
+  override def numNodes(): Int = graph.numNodes()
+
+  override def numArcs(): Long = graph.numArcs()
+
+
+  override def randomAccess(): Boolean = graph.randomAccess()
 }

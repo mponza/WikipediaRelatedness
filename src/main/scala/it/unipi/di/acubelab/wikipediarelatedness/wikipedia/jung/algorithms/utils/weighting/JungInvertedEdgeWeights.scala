@@ -1,5 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.weighting
-
+/*
 import it.unimi.dsi.fastutil.ints.{Int2DoubleOpenHashMap, IntOpenHashSet}
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.oldgraph.JungWikiGraph
@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
-/**
+
   * Similar to JungEdgeWeights, but here weights are 1 - relatedness (useful for shortest path computation).
   * It also allows to mark edges and nodes as removed (by assigning to the corresponding edge the highest double value).
   *
   * @param relatedness
   * @param jungWikiGraph
-  */
+
 class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiGraph)
   extends JungEdgeWeights(relatedness, jungWikiGraph) {
   //val outSums = new Int2DoubleOpenHashMap()
@@ -131,4 +131,4 @@ class JungInvertedEdgeWeights(relatedness: Relatedness, jungWikiGraph: JungWikiG
     removedNodes.clear()
   }
 
-}
+}*/

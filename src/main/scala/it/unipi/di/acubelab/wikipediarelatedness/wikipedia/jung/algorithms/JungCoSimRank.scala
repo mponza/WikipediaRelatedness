@@ -1,5 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms
-
+/*
 import java.util.concurrent.TimeUnit
 
 import it.unimi.dsi.logging.ProgressLogger
@@ -62,4 +62,4 @@ class JungCoSimRank(junkWikiGraph: JungWikiGraph, relatedness: Relatedness,
     (1 - csrDecay) * sim
   }
 
-}
+}*/

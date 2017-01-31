@@ -1,5 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.weighting
 
+/*
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.oldgraph.JungWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
@@ -8,11 +9,6 @@ import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
-/**
-  * Edge weighter with relatedness on graph.
-  * @param relatedness
-  * @param jungWikiGraph
-  */
 class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiGraph) extends Transformer[String, java.lang.Double] {
   val logger = getLogger()
   protected val cache = new Object2DoubleOpenHashMap[String]()  // Normalized edge weights.
@@ -84,3 +80,4 @@ class JungEdgeWeights(val relatedness: Relatedness, val jungWikiGraph: JungWikiG
   }
 
 }
+*/

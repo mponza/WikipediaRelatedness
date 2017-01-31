@@ -1,11 +1,11 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
-
+/*
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
 import scala.util.parsing.json.JSON
 import scalaj.http.Http
-/*
+
 class CasaroCoSimRank(options: CasaroCoSimRankOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[CasaroCoSimRank])
 

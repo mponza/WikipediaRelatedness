@@ -11,34 +11,13 @@ import org.apache.commons.collections15.Transformer
   *
   * @param graph
   */
-class UniformWeights(graph: DirectedGraph[Int, String]) extends Transformer[String, java.lang.Double] {
-
-  protected val weights = weightGraph(graph)
+class UniformWeights(graph: DirectedGraph[java.lang.Integer, java.lang.Long]) extends Transformer[java.lang.Long, java.lang.Double] {
 
 
-  /**
-    * Returns an array where the i-th element represents the uniform probabilty between i TO (->) its neighbors.
-    *
-    *   weight(i) = 1 / outdegree(i)
-    *
-    * @param graph
-    * @return
-    */
-  protected def weightGraph(graph: DirectedGraph[Int, String]) = {
+  override def transform(edge: java.lang.Long): Double = {
+    val src = graph.getSource(edge)
 
-    val weights = Array.ofDim[Double](graph.getVertexCount)
-
-    for (wikiID <- graph.getVertices) {
-      if (graph.degree(wikiID) == 0) weights(wikiID) = 0.0
-      else weights(wikiID) = 1 / graph.degree(wikiID).toDouble
-    }
-
-    weights
-  }
-
-
-  override def transform(edge: String): Double = {
-    val src = edge.split("->")(0).toInt
-    weights(src)
+    if (graph.degree(src) == 0) 0.0
+    else 1.0/ graph.outDegree(src)
   }
 }

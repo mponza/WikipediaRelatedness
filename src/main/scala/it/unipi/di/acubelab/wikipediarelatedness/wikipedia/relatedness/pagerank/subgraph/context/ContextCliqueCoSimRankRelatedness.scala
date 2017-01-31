@@ -1,11 +1,11 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.subgraph.context
-
+/*
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.JungCoSimRank
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.oldgraph.JungCliqueWikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 import org.slf4j.LoggerFactory
 
-/*
+
 class ContextCliqueCoSimRankRelatedness(options: RelatednessOptions) extends Relatedness {
   val logger = LoggerFactory.getLogger(classOf[ContextCliqueCoSimRankRelatedness])
 
@@ -25,12 +25,8 @@ class ContextCliqueCoSimRankRelatedness(options: RelatednessOptions) extends Rel
     "ContextCliqueCoSimRankRelatedness_%s".format(options)
   }
 }
-*/
 
-/**
-  *
-  *
-  *
+
 
 class JungCliqueCoSimRankRelatedness(options: SubCoSimRankOptions = new SubCoSimRankOptions()) extends Relatedness {
 
@@ -51,5 +47,5 @@ class JungCliqueCoSimRankRelatedness(options: SubCoSimRankOptions = new SubCoSim
     "JungCliqueCoSimRank_%s".format(options)
   }
 }
-  *
+
   */

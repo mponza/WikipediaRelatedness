@@ -1,16 +1,16 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.oldgraph
-
+/*
 import edu.uci.ics.jung.graph.{DirectedSparseGraph, DirectedSparseMultigraph, Graph}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph
 import org.slf4j.LoggerFactory
 
 
-/**
+
   * Generate a directed JungGraph from the WikiGraph where edges are added twice.
   * Edges will have the same original weight (relatedness) but different normalization factor.
  *
   * @param wikiGraph
-  */
+
 class JungDirectedSubWikiGraph(wikiGraph: WikiBVGraph) extends JungWikiGraph(wikiGraph) {
   override def logger = LoggerFactory.getLogger(classOf[JungDirectedSubWikiGraph])
 
@@ -44,4 +44,4 @@ class JungDirectedSubWikiGraph(wikiGraph: WikiBVGraph) extends JungWikiGraph(wik
     graph
   }
 
-}
+}*/

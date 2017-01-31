@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 class JaccardLocalClusteringRelatedness(options: RelatednessOptions) extends LocalClusteringRelatedness(options) {
   override val logger = LoggerFactory.getLogger(getClass)
 
-  val setOperations = new SetOperations(WikiBVGraphFactory.makeWikiBVGraph(options.graph))
+  val setOperations = new SetOperations(WikiBVGraphFactory.make(options.graph))
 
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {

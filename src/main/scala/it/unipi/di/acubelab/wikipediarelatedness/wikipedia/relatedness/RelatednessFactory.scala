@@ -5,6 +5,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embedding
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa.{ESAEntityRelatedness, ESARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lm.LMRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.Word2VecRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank.PPRRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, MilneWittenRelatedness}
 
 
@@ -40,6 +41,11 @@ object RelatednessFactory {
     //
     // Language Model
     case "lm" => new LMRelatedness(options)
+
+
+    //
+    // PageRank
+    case "ppr" => new PPRRelatedness(options)
   }
 
 }

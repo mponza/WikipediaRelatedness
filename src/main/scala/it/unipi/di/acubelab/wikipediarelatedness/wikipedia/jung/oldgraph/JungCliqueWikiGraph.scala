@@ -1,15 +1,15 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.oldgraph
-
+/*
 import org.slf4j.LoggerFactory
 import edu.uci.ics.jung.graph.{DirectedSparseGraph, Graph}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraph
 
 
-/**
+
   * Clique Jung Graph from a Wikipedia subgraph.
  *
   * @param wikiGraph
-  */
+
 class JungCliqueWikiGraph(wikiGraph: WikiBVGraph) extends JungWikiGraph(wikiGraph) {
   override def logger = LoggerFactory.getLogger(classOf[JungCliqueWikiGraph])
 
@@ -38,3 +38,4 @@ class JungCliqueWikiGraph(wikiGraph: WikiBVGraph) extends JungWikiGraph(wikiGrap
     graph
   }
 }
+*/

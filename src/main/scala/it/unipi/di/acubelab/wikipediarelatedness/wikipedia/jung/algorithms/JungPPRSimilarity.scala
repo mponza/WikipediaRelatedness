@@ -1,5 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms
-
+/*
 import edu.uci.ics.jung.algorithms.scoring.util.ScoringUtils
 import edu.uci.ics.jung.algorithms.scoring.{PageRank, PageRankWithPriors}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.utils.JungPersonalizedPrior
@@ -84,3 +84,4 @@ abstract class JungPPRSimilarity(val junkWikiGraph: JungWikiGraph, val relatedne
   def similarity(srcWikiID: Int, dstWikiID: Int): Float
 
 }
+*/
