@@ -15,8 +15,10 @@ class SubGraphRelatedness(options: RelatednessOptions) extends Relatedness {
 
 
 
-    val graph = new WikiJungCiqueGraph()
+    val graph = new WikiJungCiqueGraph(nodes, relat4edness)
 
     val cosimranker =
+
+      computecosimrank
   }
 }
