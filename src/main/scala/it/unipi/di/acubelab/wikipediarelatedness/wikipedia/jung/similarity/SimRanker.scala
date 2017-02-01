@@ -5,7 +5,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungGr
 
 trait SimRanker {
 
-  def similarity(graph: WikiJungGraph, srcWikiID: Int, dstWikiID: Int) : Float
+  def similarity(srcWikiID: Int, dstWikiID: Int, graph: WikiJungGraph) : Float
 }
 
 

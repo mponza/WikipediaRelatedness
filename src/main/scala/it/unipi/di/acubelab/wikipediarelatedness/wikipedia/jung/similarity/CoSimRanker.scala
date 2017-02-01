@@ -12,6 +12,14 @@ import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
+
+/**
+  * Runs CoSimRank between two nodes of a graph with the specified parameters.
+  *
+  * @param iterations
+  * @param pprDecay
+  * @param csrDecay
+  */
 class CoSimRanker(val iterations: Int, val pprDecay: Double, val csrDecay: Double) extends SimRanker {
 
   protected val logger = LoggerFactory.getLogger(getClass)
@@ -28,7 +36,7 @@ class CoSimRanker(val iterations: Int, val pprDecay: Double, val csrDecay: Doubl
   def similarity(wikiJungGraph: WikiJungGraph, srcWikiID: Int, dstWikiID: Int) = {
 
 
-    
+
     val srcPPRVectors = pageRankVectors(srcWikiID, wikiJungGraph)
     val dstPPRVectors = pageRankVectors(dstWikiID, wikiJungGraph)
 
