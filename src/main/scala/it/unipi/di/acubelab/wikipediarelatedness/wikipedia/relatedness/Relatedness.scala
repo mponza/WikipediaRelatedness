@@ -46,5 +46,5 @@ trait Relatedness {
     *
     * @return
     */
-  override def toString() : String
+  override def toString : String = throw new IllegalArgumentException("Relatedness method without name.")
 }

@@ -1,5 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.pagerank
-
+/*
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.ppr.PersonalizedPageRank
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.{WikiJungGraph, WikiJungGraphFactory}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessOptions
@@ -28,3 +28,4 @@ class PPRRelatedness(options: RelatednessOptions) extends Relatedness {
     ppr.computePPRVectors().getColumn(options.iterations - 1)
   }
 }
+*/

@@ -48,7 +48,8 @@ class RelatednessWeights(graph: DirectedGraph[Int, Long], relatedness: Relatedne
       val weight = weights.get(edge)
 
       val src = getSource(edge)
-      val sum = sums.getOrDefault(src, 1.0)
+      // sum is 1 if src has no edges or it has only edges with weight 0
+      val sum = if (sums.getOrDefault(src, 0.0) == 0.0) 1.0 else sums.get(src)
 
       normalizedWeights.put(edge, weight / sum)
     }

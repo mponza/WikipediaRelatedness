@@ -1,5 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.ppr
-
+/*
 import java.util.concurrent.TimeUnit
 
 import edu.uci.ics.jung.algorithms.scoring.PageRankWithPriors
@@ -85,4 +85,4 @@ class PPWP[T, V](graph: DirectedGraph[T, V], w:  Transformer[V, java.lang.Double
     afterStep
   }
 
-}
+}*/

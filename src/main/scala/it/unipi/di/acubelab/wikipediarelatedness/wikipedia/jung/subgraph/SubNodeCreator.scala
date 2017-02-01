@@ -17,12 +17,5 @@ trait SubNodeCreator {
     * @return
     */
   def subNodes(srcWikiID: Int, dstWikiID: Int) : Seq[Int]
-}
 
-
-object SubNodeCreatorFactory {
-
-  def make(name: String, size: Int) = name match {
-    case "esa" => new ESASubNodeCreator(size)
-  }
 }

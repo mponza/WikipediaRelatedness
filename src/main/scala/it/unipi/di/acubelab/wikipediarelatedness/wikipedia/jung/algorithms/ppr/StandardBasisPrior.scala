@@ -8,9 +8,10 @@ import org.apache.commons.collections15.Transformer
   *
   * @param wikiID
   */
-class StandardBasisPrior(val wikiID: Int) extends Transformer[java.lang.Integer, java.lang.Double] {
+class StandardBasisPrior(val wikiID: Int) extends Transformer[Int, java.lang.Double] {
 
-  override def transform(wikiNodeID: java.lang.Integer) = {
+  override def transform(wikiNodeID: Int) = {
+
     if(wikiNodeID == wikiID) 1.0 else 0.0
   }
 }

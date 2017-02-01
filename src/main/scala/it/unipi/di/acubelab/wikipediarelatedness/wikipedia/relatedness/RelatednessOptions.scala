@@ -16,31 +16,35 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
   */
 case class RelatednessOptions(
 
-     //
-     // Main Relatedness Options
-     name: String = null,
+             //
+             // Main Relatedness Options
+             name: String = null,
 
-     graph: String = "",
+             graph: String = "",
 
-     threshold: Int = 0,
+             threshold: Int = 0,
 
-     iterations: Int = 30,
-     pprDecay: Float = 0.8f,
-     csrDecay: Float = 0.8f,
-
-     model: String = "",
+             model: String = "",
 
 
-     //
-     // SubGraph Weighting Options. Weights are compute by using another relatedness method.
-     // Used when method is subgraph.
-     subNodes: String = "",  // Method used to generate the subgraph nodes.\
-     subSize: Int = 50,      // Size of the subgraph (number of nodes)
-     weighter: String = "",
-     // Parameters of weightName relatedness.
-     weighterGraph: String = "",
-     weighterModel: String = "",
-     weighterThreshold: Int = 0
+             //
+             // SubGraph Weighting Options. Weights are compute by using another relatedness method.
+             // Used when method is subgraph.
+
+             subNodes: String = "",    // Method used to generate the subgraph nodes.\
+             subSize: Int = 50,        // Size of the subgraph (number of nodes)
+
+             // Weigher (relatedness method) and its parameters
+             weighter: String = "",
+
+             weighterGraph: String = "",
+             weighterModel: String = "",
+             weighterThreshold: Int = 0,
+
+             simRanker: String = "",
+             iterations: Int = 30,
+             pprDecay: Float = 0.1f,
+             csrDecay: Float = 0.8f
 )
 
 
