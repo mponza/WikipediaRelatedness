@@ -1,5 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clique.SubCliqueRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clustering.{CosineLocalClusteringRelatedness, JaccardLocalClusteringRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.latent.{LDARelatedness, SVDRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa.{ESAEntityRelatedness, ESARelatedness}
@@ -43,15 +44,11 @@ object RelatednessFactory {
     case "lm" => new LMRelatedness(options)
 
 
+    case "subgraph" => new SubCliqueRelatedness(options)
+
     //
     // PageRank
     case "ppr" => new PPRRelatedness(options)
-  }
-
-
-  def makeDefault(name: String) = {
-    // per ogni
-
   }
 
 }

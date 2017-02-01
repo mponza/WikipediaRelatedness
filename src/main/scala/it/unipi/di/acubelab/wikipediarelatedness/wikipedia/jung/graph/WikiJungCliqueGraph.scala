@@ -5,7 +5,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.weight.Relatedne
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
 
-class WikiJungCliqueGraph(nodes: Seq[Int], relatedness: Relatedness) extends WikiJungGraph{
+class WikiJungCliqueGraph(nodes: Seq[Int], relatedness: Relatedness) extends WikiJungGraph {
 
   override val graph = generateClique(nodes)
   override val weights = new RelatednessWeights(graph, relatedness)
