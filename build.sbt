@@ -8,6 +8,10 @@ scalacOptions += "-target:jvm-1.8"
 
 scalacOptions ++= Seq("-feature", "-deprecation")
 
+scalacOptions ++= Seq("-country", "us")
+scalacOptions ++= Seq("-language", "us")
+
+
 fork in run := true
 fork in Test := true
 

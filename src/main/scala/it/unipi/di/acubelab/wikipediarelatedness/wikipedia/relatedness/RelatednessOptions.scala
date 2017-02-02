@@ -75,14 +75,6 @@ object RelatednessOptions {
       opt[Int]("threshold").action((x, conf) => conf.copy(threshold = x)).text("PageRank iterations")
 
       //
-      // Random Walk Parameters
-      opt[Int]("iterations").action((x, conf) => conf.copy(iterations = x)).text("PageRank iterations")
-
-      opt[Double]("pprDecay").action((x, conf) => conf.copy(pprDecay = x.toFloat)).text("PageRank decay")
-
-      opt[Double]("csrDecay").action((x, conf) => conf.copy(csrDecay = x.toFloat)).text("CoSimRank decay")
-
-      //
       // Embeddings
       opt[String]("model").action((x, conf) => conf.copy(model = x)).text("Embedding model")
 
@@ -107,6 +99,18 @@ object RelatednessOptions {
 
       opt[Int]("weighterThreshold").action((x, conf) =>
         conf.copy(weighterThreshold = x)).text("Threshold used by weightName Relatedness algorithm.")
+
+
+      //
+      // Random Walk Parameters
+      opt[String]("simRanker").action((x, conf) => conf.copy(simRanker = x)).text("SimRank method.")
+
+
+      opt[Int]("iterations").action((x, conf) => conf.copy(iterations = x)).text("PageRank iterations")
+
+      opt[Double]("pprDecay").action((x, conf) => conf.copy(pprDecay = x.toFloat)).text("PageRank decay")
+
+      opt[Double]("csrDecay").action((x, conf) => conf.copy(csrDecay = x.toFloat)).text("CoSimRank decay")
 
     }
 

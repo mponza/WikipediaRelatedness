@@ -4,8 +4,6 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity
 import edu.uci.ics.jung.algorithms.scoring.PageRankWithPriors
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungGraph
 import org.apache.commons.collections15.Transformer
-import org.nd4j.linalg.api.ndarray.INDArray
-import org.nd4j.linalg.factory.Nd4j
 import org.slf4j.Logger
 
 import scala.collection.mutable.ListBuffer
@@ -20,7 +18,7 @@ import scala.collection.mutable.ListBuffer
 abstract class PriorRanker(val iterations: Int, val pprDecay: Double) extends SimRanker {
 
   protected def logger: Logger
-  protected var simScore: Double
+  protected var score: Double    // similarity score
 
 
   /**
@@ -42,6 +40,22 @@ abstract class PriorRanker(val iterations: Int, val pprDecay: Double) extends Si
 
 
   /**
+    * Returns PageRankWithPriors configurated over the directed and weighted wikiJungGraph biased with prior.
+    *
+    */
+  protected def pageRanker(wikiJungGraph: WikiJungGraph, prior: Transformer[Int, java.lang.Double]) :
+    PageRankWithPriors[Int, Long] = {
+
+    val ppr = new PageRankWithPriors[Int, Long](wikiJungGraph.graph, wikiJungGraph.weights, prior, pprDecay)
+
+    ppr.setMaxIterations(iterations)
+    ppr.setTolerance(0.0)
+
+    ppr
+  }
+
+
+  /**
     * Computes the similarity between two PageRankWithPriors.
     *
     * @param srcPPR
@@ -57,24 +71,8 @@ abstract class PriorRanker(val iterations: Int, val pprDecay: Double) extends Si
       val srcRanks = getRanks(wikiJungGraph, srcPPR)
       val dstRanks = getRanks(wikiJungGraph, dstPPR)
 
-      updateSimilarityScore(srcRanks, dstRanks)
+      updateSimilarityScore(srcRanks, dstRanks, i)
     }
-  }
-
-
-  /**
-    * Returns PageRankWithPriors configurated over the directed and weighted wikiJungGraph biased with prior.
-    *
-    */
-  protected def pageRanker(wikiJungGraph: WikiJungGraph, prior: Transformer[Int, java.lang.Double]) :
-    PageRankWithPriors[Int, Long] = {
-
-    val ppr = new PageRankWithPriors[Int, Long](wikiJungGraph.graph, wikiJungGraph.weights, pprDecay)
-
-    ppr.setMaxIterations(iterations)
-    ppr.setTolerance(0.0)
-
-    ppr
   }
 
 
@@ -85,6 +83,7 @@ abstract class PriorRanker(val iterations: Int, val pprDecay: Double) extends Si
     */
   protected def getRanks(wikiJungGraph: WikiJungGraph, pageRankWithPriors: PageRankWithPriors[Int, Long]) :
     Seq[(Int, Double)] = {
+    import scala.collection.JavaConversions._
 
       val ranks = ListBuffer.empty[Tuple2[Int, Double]]
 
@@ -103,17 +102,18 @@ abstract class PriorRanker(val iterations: Int, val pprDecay: Double) extends Si
 
 
   /**
-    * Initializes the similarity score before the similarity computation.
+    * Prior vector of WikiID.
+    *
+    * @param wikiID
+    * @return
     */
-  protected def initSimilarityScore() = simScore = 0.0
+  protected def getPrior(wikiID: Int): Transformer[Int, java.lang.Double]
 
 
   /**
-    * Returns the final similarity score after the similarity computation
-    *
-    * @return
+    * Initializes the similarity score before the similarity computation.
     */
-  protected def getSimilarityScore : Double = simScore
+  protected def initSimilarityScore()
 
 
   /**
@@ -121,16 +121,17 @@ abstract class PriorRanker(val iterations: Int, val pprDecay: Double) extends Si
     *
     * @param srcRanks
     * @param dstRanks
+    * @param iteration 0-based
     */
-  protected def updateSimilarityScore(srcRanks: Seq[(Int, Double)], dstRanks: Seq[(Int, Double)])
+  protected def updateSimilarityScore(srcRanks: Seq[(Int, Double)], dstRanks: Seq[(Int, Double)], iteration: Int) : Unit
+
 
 
   /**
-    * Prior vector of WikiID.
+    * Returns the final similarity score after the similarity computation
     *
-    * @param wikiID
     * @return
     */
-  protected def getPrior(wikiID: Int): Transformer[Int, java.lang.Double]
+  def getSimilarityScore : Double = score
 
 }
