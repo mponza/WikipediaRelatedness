@@ -88,8 +88,8 @@ class Benchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
 
     val writer = new PrintWriter(path)
 
-    writer.write("Pearson: %1.2f\nSpearman: %1.2f\nHarmonic: %1.2f".formatLocal(
-      java.util.Locale.US, pearson, spearman, harmonic))
+    writer.write("Pearson,Spearman,Harmonic\n")
+    writer.write("%1.2f,%1.2f,%1.2f".formatLocal(java.util.Locale.US, pearson, spearman, harmonic))
 
     writer.close()
   }
