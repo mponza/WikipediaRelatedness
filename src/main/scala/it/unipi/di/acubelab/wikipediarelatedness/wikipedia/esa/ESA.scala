@@ -11,7 +11,7 @@ import org.apache.lucene.queryparser.classic.QueryParser
   */
 object ESA {
   lazy val lucene = new LemmaLuceneIndex()
-  val cache = new ESATopKCache()
+  //val cache = new ESATopKCache()
 
 
   /**
@@ -35,7 +35,7 @@ object ESA {
     concepts
   }
 
-  def wikipediaConcepts(text: String): Seq[Tuple2[Int, Float]] = wikipediaConcepts(text, 650)
+  def wikipediaConcepts(text: String): Seq[Tuple2[Int, Float]] = wikipediaConcepts(text, 2000)
 
 
   /**
@@ -46,20 +46,21 @@ object ESA {
     * @return
     */
   def wikipediaConcepts(wikiID: Int, resultThreshold: Int): Seq[Tuple2[Int, Float]] = {
-    val cachedConcepts = cache.topKWegihtedEntities(wikiID, resultThreshold)
+    //val cachedConcepts = cache.topKScoredEntities(wikiID, resultThreshold)
 
-    if (cachedConcepts != null) return cachedConcepts
+    //if (cachedConcepts != null) return cachedConcepts
 
     val wikiBody = lucene.wikipediaBody(wikiID)
     ESA.wikipediaConcepts(wikiBody, resultThreshold)
 
   }
 
-  def wikipediaConcepts(wikiID: Int): Seq[Tuple2[Int, Float]] = wikipediaConcepts(wikiID, 650)
+  def wikipediaConcepts(wikiID: Int): Seq[Tuple2[Int, Float]] = wikipediaConcepts(wikiID, 2000)
 
 
   // Not yet used... to be cached.
-  def wikipediaConcepts(srcWikiID: Int, dstWikiID: Int, resultThreshold: Int = 650) : Seq[Tuple2[Int, Float]] = {
+
+  def wikipediaConcepts(srcWikiID: Int, dstWikiID: Int, resultThreshold: Int = 2000) : Seq[Tuple2[Int, Float]] = {
     val srcBody = lucene.wikipediaBody(srcWikiID)
     val dstBody = lucene.wikipediaBody(dstWikiID)
 

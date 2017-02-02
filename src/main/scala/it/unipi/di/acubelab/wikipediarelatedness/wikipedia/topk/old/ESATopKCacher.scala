@@ -1,5 +1,25 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.esa
 
+import java.io.File
+import java.util.concurrent.TimeUnit
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import it.unimi.dsi.fastutil.io.BinIO
+import it.unimi.dsi.logging.ProgressLogger
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESA
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKCache
+import org.slf4j.LoggerFactory
+
+import scala.collection.mutable.ListBuffer
+
+
+/*
+/**
+  * Class used to generated ESATopKCache.
+  *
+  */
 class ESATopKCacher {
 
   /**
@@ -7,7 +27,7 @@ class ESATopKCacher {
     *
     * @param size
     */
-  class ESATopKCacher(val size: Int = 10000) extends TopKCache {
+  class ESATopKCache(val size: Int = 10000) extends TopKCache {
     val logger = LoggerFactory.getLogger(getClass)
 
     override val e2esPath = Config.getString("wikipedia.cache.esa")
@@ -86,3 +106,4 @@ class ESATopKCacher {
 
 
 }
+*/

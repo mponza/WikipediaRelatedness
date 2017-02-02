@@ -13,7 +13,7 @@ import scala.collection.mutable.ListBuffer
   * @param size
   */
 class ESATopKCache(val size: Int = 10000) extends TopKCache {
-  val logger = LoggerFactory.getLogger(getClass)
+  protected val logger = LoggerFactory.getLogger(getClass)
 
   override def e2esPath = Config.getString("wikipedia.cache.esa")
 }
