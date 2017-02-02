@@ -10,41 +10,41 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
   * @param weighter      Relatedness algorithm used to weight the subgraph
   * @param threshold    General threshold
   * @param iterations   PageRank iterations
-  * @param pprDecay     PageRank decay
+  * @param pprDamping     PageRank decay
   * @param csrDecay     CoSimRank decay
   * @param model        Embedding model
   */
 case class RelatednessOptions(
 
-             //
-             // Main Relatedness Options
-             name: String = null,
+                               //
+                               // Main Relatedness Options
+                               name: String = null,
 
-             graph: String = "",
+                               graph: String = "",
 
-             threshold: Int = 0,
+                               threshold: Int = 0,
 
-             model: String = "",
+                               model: String = "",
 
 
-             //
-             // SubGraph Weighting Options. Weights are compute by using another relatedness method.
-             // Used when method is subgraph.
+                               //
+                               // SubGraph Weighting Options. Weights are compute by using another relatedness method.
+                               // Used when method is subgraph.
 
-             subNodes: String = "",    // Method used to generate the subgraph nodes.\
-             subSize: Int = 50,        // Size of the subgraph (number of nodes)
+                               subNodes: String = "", // Method used to generate the subgraph nodes.\
+                               subSize: Int = 50, // Size of the subgraph (number of nodes)
 
-             // Weigher (relatedness method) and its parameters
-             weighter: String = "",
+                               // Weigher (relatedness method) and its parameters
+                               weighter: String = "",
 
-             weighterGraph: String = "",
-             weighterModel: String = "",
-             weighterThreshold: Int = 0,
+                               weighterGraph: String = "",
+                               weighterModel: String = "",
+                               weighterThreshold: Int = 0,
 
-             simRanker: String = "",
-             iterations: Int = 30,
-             pprDecay: Float = 0.1f,
-             csrDecay: Float = 0.8f
+                               simRanker: String = "",
+                               iterations: Int = 30,
+                               pprDamping: Float = 0.1f,
+                               csrDecay: Float = 0.8f
 )
 
 
@@ -108,7 +108,7 @@ object RelatednessOptions {
 
       opt[Int]("iterations").action((x, conf) => conf.copy(iterations = x)).text("PageRank iterations")
 
-      opt[Double]("pprDecay").action((x, conf) => conf.copy(pprDecay = x.toFloat)).text("PageRank decay")
+      opt[Double]("pprDamping").action((x, conf) => conf.copy(pprDamping = x.toFloat)).text("PageRank decay")
 
       opt[Double]("csrDecay").action((x, conf) => conf.copy(csrDecay = x.toFloat)).text("CoSimRank decay")
 

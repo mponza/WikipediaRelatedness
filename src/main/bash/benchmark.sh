@@ -198,23 +198,98 @@ function run_w2v {
 }
 
 
+
+# language model?
+
+
+#
+# Experiments based on clique graph generation.
+#
+function run_clique {
+    #subNodes=( "esa" "w2v.skipgram" "deepwalk.dwsg" )
+    #subSizes=( 10 50 100 )
+
+    #weighters=( "milnewitten" "jaccard" "w2v" )
+    #weighterGraphs=("in" "sym")
+    #weighterModels=( "w2v.sg" "deepwalk.dwsg" )
+
+    #simRankers=( "ppr" "csr" )
+    #iterations=( 3 10 30 50 )
+    #pprDampings=( 0.1 0.2 )
+    #csrDecays=( 0.7 0.8 0.9 )
+
+    subNodes=( "esa" )
+    subSizes=( 10 50 100 )
+
+    weighters=( "milnewitten" )
+    weighterGraphs=( "in" )
+    weighterModels=( "w2v.sg" )
+
+    simRankers=( "csr" )
+    iterations=( 30 )
+    pprDampings=( 0.1 )
+    csrDecays=( 0.9 )
+
+    # WTF re-write it with recursion...
+    for nodes in "${subNodes[@]}"
+    do
+        for size in "${subSizes[@]}"
+        do
+            for weight in "${weighters[@]}"
+            do
+                for simRank in "${simRankers[@]}"
+                do
+                    for iters in "${iterations[@]}"
+                    do
+                        for graph in "${weighterGraphs[@]}"
+                        do
+                            for model in "${weighterModels[@]}"
+                            do
+                                for ppr in "${pprDampings[@]}"
+                                do
+                                    for csr in "${csrDecays[@]}"
+                                    do
+
+                                        args="--name clique --subNodes $nodes --subSize $size --weighter $weight "
+                                        args+="--weighterGraph $graph --weighterModel $model --simRanker $simRank "
+                                        args+="--iterations $iters --pprDamping $ppr --csrDecay $csr"
+
+                                        logging_info "Experimenting Clique Relatedness with parameters: $args\n"
+
+                                        run_sbt "$args"
+
+                                    done
+                                done
+                            done
+                        done
+                    done
+                done
+            done
+        done
+    done
+
+}
+
+
 # ======================================================================================================================
 #
 # Main
 #
 # ======================================================================================================================
 
-#run_milnewitten
-#run_jaccard
+run_milnewitten
+run_jaccard
 
-#run_jaccardlocalclustering
-#run_cosinelocalclustering
+run_jaccardlocalclustering
+run_cosinelocalclustering
 
-# run_esa
+run_esa
 
-#run_svd
-#run_lda
+run_svd
+run_lda
 
-# run_w2v
+run_w2v
+
+#run_clique
 
 

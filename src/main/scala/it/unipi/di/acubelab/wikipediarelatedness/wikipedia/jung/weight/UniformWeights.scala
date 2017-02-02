@@ -18,6 +18,6 @@ class UniformWeights(graph: DirectedGraph[java.lang.Integer, java.lang.Long]) ex
     val src = graph.getSource(edge)
 
     if (graph.degree(src) == 0) 0.0
-    else 1.0/ graph.outDegree(src)
+    else 1.0 / graph.outDegree(src)
   }
 }

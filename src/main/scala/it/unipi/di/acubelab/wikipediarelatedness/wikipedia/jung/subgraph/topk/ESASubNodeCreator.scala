@@ -15,6 +15,7 @@ class ESASubNodeCreator(size: Int) extends TopKSubNodeCreator(size) {
   override protected val logger = LoggerFactory.getLogger(getClass)
   protected val graph = WikiBVGraphFactory.make("out")
 
+
   override protected def topKNodes(wikiID: Int): Seq[Int] = {
     ESA.wikipediaConcepts(wikiID, 10000).map(_._1).filter(graph.contains)
   }

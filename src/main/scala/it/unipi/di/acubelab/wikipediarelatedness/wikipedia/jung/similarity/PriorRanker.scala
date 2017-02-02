@@ -13,9 +13,9 @@ import scala.collection.mutable.ListBuffer
   * Computes a similiarity score by performing several iterations on a graph.
   *
   * @param iterations
-  * @param pprDecay
+  * @param pprDamping
   */
-abstract class PriorRanker(val iterations: Int, val pprDecay: Double) extends SimRanker {
+abstract class PriorRanker(val iterations: Int, val pprDamping: Double) extends SimRanker {
 
   protected def logger: Logger
   protected var score: Double    // similarity score
@@ -46,7 +46,7 @@ abstract class PriorRanker(val iterations: Int, val pprDecay: Double) extends Si
   protected def pageRanker(wikiJungGraph: WikiJungGraph, prior: Transformer[Int, java.lang.Double]) :
     PageRankWithPriors[Int, Long] = {
 
-    val ppr = new PageRankWithPriors[Int, Long](wikiJungGraph.graph, wikiJungGraph.weights, prior, pprDecay)
+    val ppr = new PageRankWithPriors[Int, Long](wikiJungGraph.graph, wikiJungGraph.weights, prior, pprDamping)
 
     ppr.setMaxIterations(iterations)
     ppr.setTolerance(0.0)

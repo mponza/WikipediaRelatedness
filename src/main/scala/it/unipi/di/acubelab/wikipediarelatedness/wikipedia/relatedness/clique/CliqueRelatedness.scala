@@ -1,5 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clique
 
+import java.util.Locale
+
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungCliqueGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity.SimRanker
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.SubNodeCreatorFactory
@@ -31,9 +33,9 @@ class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
 
 
   override def toString = {
-    "Clique_subNodes:%s,subSize:%d,iterations:%d,pprDecay:%1.2f,csrDecay:%1.2f,weighter:[%s]"
-        .format(options.subNodes, options.subSize,options.iterations, options.pprDecay, options.csrDecay,
-        weighter.toString)
+    "Clique_subNodes:%s,subSize:%d,simRanker:%s,iterations:%d,pprDecay:%1.2f,csrDecay:%1.2f,weighter:[%s]"
+        .formatLocal(Locale.US, options.subNodes, options.subSize, options.simRanker,
+                     options.iterations, options.pprDamping, options.csrDecay, weighter.toString)
   }
 
 

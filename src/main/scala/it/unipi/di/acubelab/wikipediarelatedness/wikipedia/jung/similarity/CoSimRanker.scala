@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 
 
 
-class CoSimRanker(iterations: Int, pprDecay: Double, val csrDecay: Double) extends PPRRanker(iterations , pprDecay) {
+class CoSimRanker(iterations: Int, pprDamping: Double, val csrDecay: Double) extends PPRRanker(iterations , pprDamping) {
   override protected val logger = LoggerFactory.getLogger(getClass)
 
 

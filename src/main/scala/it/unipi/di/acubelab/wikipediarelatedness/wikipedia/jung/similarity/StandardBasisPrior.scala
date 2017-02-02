@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.ppr
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity
 
 import org.apache.commons.collections15.Transformer
 

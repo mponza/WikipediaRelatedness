@@ -1,12 +1,11 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.algorithms.ppr.StandardBasisPrior
 import org.apache.commons.collections15.Transformer
 import org.slf4j.{Logger, LoggerFactory}
 
 
-class PPRRanker(iterations: Int, pprDecay: Double) extends PriorRanker(iterations, pprDecay) {
+class PPRRanker(iterations: Int, pprDamping: Double) extends PriorRanker(iterations, pprDamping) {
   override protected def logger = LoggerFactory.getLogger(getClass)
   override protected var score = 0.0
 

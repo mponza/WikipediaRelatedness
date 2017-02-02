@@ -53,7 +53,7 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
     val srcArray = wikiGraph.successorArray(srcWikiID)
     val dstArray = wikiGraph.successorArray(dstWikiID)
 
-    new IntArrayList((srcArray ++ dstArray).distinct.map(nodeID => wikiGraph.getWikiID(nodeID)))
+    new IntArrayList((srcArray ++ dstArray).distinct)
   }
 
 
@@ -75,7 +75,7 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
 
     do {
       if (a == b) {
-        intersection.add(wikiGraph.getWikiID(a))
+        intersection.add(a)
         a = iterA.nextInt
         b = iterB.nextInt
       }
