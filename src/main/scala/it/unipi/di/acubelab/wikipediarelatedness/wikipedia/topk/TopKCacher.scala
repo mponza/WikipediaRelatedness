@@ -21,7 +21,7 @@ object TopKCacher {
 
 
   /**
-    *
+    * Generate the cache for a TopKCached method over tasks.
     *
     * @param tasks
     * @return

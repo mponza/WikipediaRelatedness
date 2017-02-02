@@ -23,9 +23,9 @@ class CosineLocalClusteringRelatedness(options: RelatednessOptions) extends Loca
     *
     */
   def weightedNeighborhood(wikiID:Int) : Seq[Tuple2[Int, Float]]= {
-    val nodeIDs = graph.successorArray(wikiID)
+    val wikiIDs = graph.successorArray(wikiID)
 
-    val weightedNodeIDs = nodeIDs.map(nodeID => (nodeID, lc.getNodeCoefficient(nodeID))).toSeq
+    val weightedNodeIDs = wikiIDs.map(wiki => ( wikiID, lc.getCoefficient( wikiID ) )).toSeq
 
     if (options.threshold > 0)
       thresholdVector(weightedNodeIDs, options.threshold)
