@@ -29,7 +29,6 @@ trait TopKCached extends TopK {
       return new Int2ObjectOpenHashMap[List[(Int, Float)]]()
     }
 
-    println(cachePath)
     logger.info("Loading cache from %s...".format(cachePath))
     val cache = BinIO.loadObject(cachePath).asInstanceOf[Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]]
     logger.info("Cache loaded!")
@@ -49,9 +48,9 @@ trait TopKCached extends TopK {
       cachedTopKScoredEntities(wikiID, k)
 
     } else {
+      logger.debug("%d not in cache.".format(wikiID))
       nonCachedTopKScoredEntities(wikiID, k)
     }
-
   }
 
 

@@ -206,7 +206,7 @@ function run_w2v {
 # Experiments based on clique graph generation.
 #
 function run_clique {
-    #subNodes=( "esa" "w2v.skipgram" "deepwalk.dwsg" )
+    #subNodes=( "esa" "sg" "dwsg" )
     #subSizes=( 10 50 100 )
 
     #weighters=( "milnewitten" "jaccard" "w2v" )

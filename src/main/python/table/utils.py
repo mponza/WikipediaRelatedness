@@ -1,4 +1,5 @@
 import os
+from pyhocon import ConfigFactory
 
 
 def absolute_path(path_from_latent_gensim):

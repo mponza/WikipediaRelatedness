@@ -1,17 +1,24 @@
-import os
+import pandas as pd
 
 from utils import dataset_paths
 from dataset import CorrelationDataset
 
 
-
 def generate_table(outfile):
+    datasets = {}  # dataset name -> pandas DataFrame
 
-    datasets = []
     for datapath in dataset_paths():
-        datasets.append( CorrelationDataset(datapath) )
+        corrdata = CorrelationDataset(datapath)
+        print(corrdata.dataset_name)
+        datasets[corrdata.dataset_name] = corrdata.to_df()
 
-    # merge via pandas
+    merged = merge_dataset(datasets)
+    merged.to_csv(outfile)
 
-    # save to output
 
+def merge_dataset(datasets):
+    merged=pd.merge( datasets['WikiSim'], datasets['WiRe-SS'], on="Method" )
+    merged=pd.merge( merged, datasets['WiRe-NS'], on="Method" )
+    merged=pd.merge( merged, datasets['WiRe-NN'], on="Method" )
+
+    return merged.sort_values(by=['Method'])

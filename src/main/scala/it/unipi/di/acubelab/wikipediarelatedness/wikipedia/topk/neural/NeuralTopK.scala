@@ -13,7 +13,6 @@ import scala.collection.mutable.ListBuffer
 abstract class NeuralTopK extends TopKCached {
   protected def modelPath: String  // path to embeddings file
   protected val embeddings: EmbeddingsDataset = EmbeddingsDataset.apply(new File(modelPath))
-
   protected val wikiBVGraph = WikiBVGraphFactory.make("out")
 
 
