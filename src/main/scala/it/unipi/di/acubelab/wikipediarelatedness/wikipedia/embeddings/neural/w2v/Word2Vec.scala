@@ -8,7 +8,7 @@ import org.slf4j.{Logger, LoggerFactory}
   *
   * @param model
   */
-class Word2Vec(val model: String) extends Embeddings{
+class Word2Vec(val model: String) extends Embeddings {
   override protected def logger: Logger = LoggerFactory.getLogger(getClass)
 
   /**

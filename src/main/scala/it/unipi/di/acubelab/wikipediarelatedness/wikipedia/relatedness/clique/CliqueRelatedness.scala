@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clique
 
 import java.util.Locale
 
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungCliqueGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity.SimRanker
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.SubNodeCreatorFactory
@@ -18,6 +19,14 @@ class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
   protected val subNodeCreator = SubNodeCreatorFactory.make(options.subNodes, options.subSize)
   protected val weighter = getWeighter
   protected val simRanker = SimRanker.make(options)
+
+
+  override def computeRelatedness(tasks: Seq[WikiRelateTask]) : Unit = {
+    tasks.par.foreach {
+      case task => task.machineRelatedness = computeRelatedness(task)
+    }
+  }
+
 
 
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = {

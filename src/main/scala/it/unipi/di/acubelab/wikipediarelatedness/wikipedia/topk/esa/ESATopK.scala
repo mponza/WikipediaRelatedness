@@ -5,9 +5,10 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESA
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKCached
 import org.slf4j.LoggerFactory
 
+
 class ESATopK extends TopKCached {
-  protected val logger = LoggerFactory.getLogger(getClass)
-  override protected def cachePath: String = Config.getString("wikipedia.cache.esa")
+  override protected def logger = LoggerFactory.getLogger(getClass)
+  override protected def cachePath = Config.getString("wikipedia.cache.esa")
 
 
   /**

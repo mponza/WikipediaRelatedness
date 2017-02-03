@@ -33,16 +33,15 @@ trait EmbeddingsDataset extends Dataset {
     throw new IllegalArgumentException("Similarity between vector and word not implemented.")
   }
 
-  //
-  def topKSimilarFromWord(word: String, k: Int = 20000): util.Collection[String] = {
+  def topKSimilarFromWord(word: String, k: Int = 2000): util.Collection[String] = {
     throw new IllegalArgumentException("TopKSimilar function not implemented.")
   }
 
-  def topKSimilarFromWords(words: List[String], k: Int = 20000): util.Collection[String] = {
+  def topKSimilarFromWords(words: List[String], k: Int = 2000): util.Collection[String] = {
     throw new IllegalArgumentException("TopKSimilar function with multiple words not implemented.")
   }
 
-  def topKSimilarFromINDArray(vector: INDArray, k: Int = 20000): util.Collection[String] = {
+  def topKSimilarFromINDArray(vector: INDArray, k: Int = 2000): util.Collection[String] = {
     throw new IllegalArgumentException("Similarity between vector and word not implemented.")
   }
 

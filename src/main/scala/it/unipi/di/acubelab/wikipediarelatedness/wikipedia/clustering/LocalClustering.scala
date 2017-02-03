@@ -48,7 +48,12 @@ class LocalClustering {
     */
   def getNodeCoefficient(nodeID: Int) : Float = {
     val coeff = coefficients(nodeID)
-    if (coeff.isNaN) return 0f
+    if (coeff.isNaN) {
+      //logger.warn("Local Clustering coefficient for node %d (wikiID %d) is NaN. Returning 0."
+      //              .format(nodeID, wikiGraph.getWikiID(nodeID))
+      //          )
+      return 0f
+    }
 
     coeff
   }

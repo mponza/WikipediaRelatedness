@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.topk
 
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESA
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.esa.ESATopK
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory
 class ESASubNodeCreator(size: Int) extends TopKSubNodeCreator(size) {
 
   override protected val logger = LoggerFactory.getLogger(getClass)
+
+  protected val topK = new ESATopK
   protected val graph = WikiBVGraphFactory.make("out")
 
 
-  override protected def topKNodes(wikiID: Int): Seq[Int] = {
-    ESA.wikipediaConcepts(wikiID, 10000).map(_._1).filter(graph.contains)
-  }
+  override protected def topKNodes(wikiID: Int): Seq[Int] = topK.topKEntities(wikiID, size).filter(graph.contains)
 }

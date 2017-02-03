@@ -2,7 +2,6 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk
 
 import java.io.File
 
-import com.sun.java.util.jar.pack.Package.File
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import org.slf4j.Logger
@@ -30,6 +29,7 @@ trait TopKCached extends TopK {
       return new Int2ObjectOpenHashMap[List[(Int, Float)]]()
     }
 
+    println(cachePath)
     logger.info("Loading cache from %s...".format(cachePath))
     val cache = BinIO.loadObject(cachePath).asInstanceOf[Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]]
     logger.info("Cache loaded!")

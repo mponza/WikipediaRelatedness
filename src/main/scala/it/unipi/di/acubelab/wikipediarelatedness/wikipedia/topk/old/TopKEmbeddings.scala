@@ -1,5 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk
-
+/*
 import java.io.File
 import java.util
 
@@ -12,12 +12,12 @@ import org.slf4j.LoggerFactory
 import scala.collection.mutable.ListBuffer
 
 
-/**
+/
   * TopK Embedding with cache.
   *
   * @param modelName
-  */
-/*
+
+
 class TopKEmbeddings(modelName: String) {
   val logger = LoggerFactory.getLogger(classOf[TopKEmbeddings])
 

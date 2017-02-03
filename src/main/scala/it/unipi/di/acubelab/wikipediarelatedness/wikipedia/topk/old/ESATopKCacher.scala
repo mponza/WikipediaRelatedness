@@ -1,5 +1,5 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.esa
-
+/*
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -15,11 +15,10 @@ import org.slf4j.LoggerFactory
 import scala.collection.mutable.ListBuffer
 
 
-/*
-/**
+/
   * Class used to generated ESATopKCache.
   *
-  */
+
 class ESATopKCacher {
 
   /**

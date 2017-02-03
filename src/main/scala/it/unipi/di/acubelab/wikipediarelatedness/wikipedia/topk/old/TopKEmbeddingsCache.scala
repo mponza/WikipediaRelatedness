@@ -1,5 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk
 
+/*
 import java.io.File
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
@@ -8,7 +9,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import org.slf4j.LoggerFactory
 
 
-/*
+
 class TopKEmbeddingsCache(dirPath: String) {
 
   val logger = LoggerFactory.getLogger(classOf[TopKEmbeddingsCache])

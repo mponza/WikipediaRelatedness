@@ -1,5 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.esa
 
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
+/*
 class ESATopKCacher {
 
   /**
@@ -85,4 +87,4 @@ class ESATopKCacher {
   }
 
 
-}
+}*/

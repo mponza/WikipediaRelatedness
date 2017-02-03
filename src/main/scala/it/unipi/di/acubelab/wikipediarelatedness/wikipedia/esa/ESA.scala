@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.lemma.LemmaLuceneIndex
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.esa.ESATopKCache
+//import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.esa.ESATopKCache
 import org.apache.lucene.queryparser.classic.QueryParser
 
 

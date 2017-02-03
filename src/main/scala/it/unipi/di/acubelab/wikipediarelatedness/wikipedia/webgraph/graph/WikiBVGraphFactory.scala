@@ -55,7 +55,7 @@ object WikiBVGraphFactory {
       }
       val threadedImmGraph = if (threadSafe) immGraph.copy() else immGraph
 
-      new WikiBVGraph(threadedImmGraph, wiki2node)
+      new WikiBVGraph(threadedImmGraph.copy(), wiki2node)
   }
 
 }

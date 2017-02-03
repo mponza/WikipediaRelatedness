@@ -3,11 +3,12 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.topk
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.SubNodeCreator
 import org.slf4j.Logger
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopK
 
 
 abstract class TopKSubNodeCreator(size: Int) extends SubNodeCreator {
   protected def logger: Logger
-
+  protected def topK: TopK
 
   /**
     * Returns Top-K most "similar" nodes to wikiID, sorted from the most to the lowest relevant.
