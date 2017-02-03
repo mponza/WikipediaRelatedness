@@ -1,17 +1,20 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.neural
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
+import org.slf4j.LoggerFactory
+
 
 class W2VTopK(w2vModelPath: String, w2vCachePath: String) extends NeuralTopK {
-  override protected def modelPath: String = w2vModelPath
+  override protected def logger = LoggerFactory.getLogger(getClass)
 
+  override protected def modelPath: String = w2vModelPath
   override protected def cachePath: String = w2vCachePath
 }
 
 
 object W2VTopK {
 
-  def make(name: String): W2VTopK = {
+  def make(name: String): W2VTopK = name match {
 
 
     case "sg" => new W2VTopK(

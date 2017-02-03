@@ -21,14 +21,6 @@ class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
   protected val simRanker = SimRanker.make(options)
 
 
-  override def computeRelatedness(tasks: Seq[WikiRelateTask]) : Unit = {
-    tasks.par.foreach {
-      case task => task.machineRelatedness = computeRelatedness(task)
-    }
-  }
-
-
-
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = {
 
     val nodes = subNodeCreator.subNodes(srcWikiID, dstWikiID)
@@ -42,7 +34,7 @@ class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
 
 
   override def toString = {
-    "Clique_subNodes:%s,subSize:%d,simRanker:%s,iterations:%d,pprDecay:%1.2f,csrDecay:%1.2f,weighter:[%s]"
+    "Clique_subNodes:%s,subSize:%d,simRanker:%s,iterations:%d,pprAlpha:%1.2f,csrDecay:%1.2f,weighter:[%s]"
         .formatLocal(Locale.US, options.subNodes, options.subSize, options.simRanker,
                      options.iterations, options.pprDamping, options.csrDecay, weighter.toString)
   }

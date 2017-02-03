@@ -16,7 +16,7 @@ abstract class TopKSubNodeCreator(size: Int) extends SubNodeCreator {
     * @param wikiID
     * @return
     */
-  protected def topKNodes(wikiID: Int): Seq[Int]
+  protected def topKNodes(wikiID: Int): Seq[Int] = topK.topKEntities(wikiID, size)
 
 
   /**

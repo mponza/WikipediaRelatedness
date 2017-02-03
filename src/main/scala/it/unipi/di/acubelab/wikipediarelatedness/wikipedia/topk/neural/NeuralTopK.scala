@@ -11,8 +11,6 @@ import scala.collection.mutable.ListBuffer
 
 
 abstract class NeuralTopK extends TopKCached {
-  override protected val logger: Logger = LoggerFactory.getLogger(getClass)
-
   protected def modelPath: String  // path to embeddings file
   protected val embeddings: EmbeddingsDataset = EmbeddingsDataset.apply(new File(modelPath))
 
