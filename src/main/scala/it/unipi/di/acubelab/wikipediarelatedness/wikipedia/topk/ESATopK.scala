@@ -1,8 +1,7 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.esa
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESA
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKCached
 import org.slf4j.LoggerFactory
 
 

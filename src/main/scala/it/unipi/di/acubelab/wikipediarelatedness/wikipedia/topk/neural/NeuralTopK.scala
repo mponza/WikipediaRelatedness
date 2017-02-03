@@ -1,7 +1,9 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.neural
+
 import java.io.File
 
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKCached
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.{Logger, LoggerFactory}
 
