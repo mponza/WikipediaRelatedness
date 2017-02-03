@@ -28,12 +28,4 @@ trait LatentWikiEmbeddings extends WikiEmbeddings {
     */
   override def apply(wikiID: Int) : INDArray = matrix.getRow(wikiID)
 
-
-  def cosine(srcWikiID: Int, dstWikiID: Int, threshold: Int) = {
-    val srcVec = this(srcWikiID).slice(threshold)
-    val dstVec = this(dstWikiID).slice(threshold)
-
-    Transforms.cosineSim(srcVec, dstVec).toFloat
-  }
-
 }

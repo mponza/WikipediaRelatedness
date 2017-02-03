@@ -14,7 +14,7 @@ class WikiJungCliqueGraph(nodes: Seq[Int], relatedness: Relatedness) extends Wik
 
 
   protected def generateClique(nodes: Seq[Int]) : DirectedGraph[Int, Long] = {
-    logger.debug("Generating graph clique...")
+    // logger.debug("Generating graph clique...")
 
     val graph = new DirectedSparseGraph[Int, Long]
 
@@ -35,8 +35,8 @@ class WikiJungCliqueGraph(nodes: Seq[Int], relatedness: Relatedness) extends Wik
 
     }
 
-    logger.debug("Clique generated with %d nodes".format(graph.getVertexCount))
-    logger.debug("Clique generated with %d edges".format(graph.getEdgeCount))
+    // logger.debug("Clique generated with %d nodes".format(graph.getVertexCount))
+    // logger.debug("Clique generated with %d edges".format(graph.getEdgeCount))
 
     graph
   }

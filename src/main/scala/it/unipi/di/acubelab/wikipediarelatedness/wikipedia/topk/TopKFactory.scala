@@ -8,6 +8,8 @@ object TopKFactory {
 
   def make(name: String) = name match {
     case "esa" => new ESATopK
+    case "esaentity" => new ESAEntityTopK
+
 
     case "sg" => new W2VTopK(
       Config.getString("wikipedia.neural.w2v.sg"),

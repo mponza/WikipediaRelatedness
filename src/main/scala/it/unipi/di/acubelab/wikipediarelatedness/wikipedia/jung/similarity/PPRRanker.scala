@@ -5,7 +5,7 @@ import org.apache.commons.collections15.Transformer
 import org.slf4j.{Logger, LoggerFactory}
 
 
-class PPRRanker(iterations: Int, pprDamping: Double) extends PriorRanker(iterations, pprDamping) {
+class PPRRanker(iterations: Int, pprAlpha: Double) extends PriorRanker(iterations, pprAlpha) {
   override protected def logger = LoggerFactory.getLogger(getClass)
   override protected var score = 0.0
 

@@ -10,7 +10,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
   * @param weighter      Relatedness algorithm used to weight the subgraph
   * @param threshold    General threshold
   * @param iterations   PageRank iterations
-  * @param pprDamping     PageRank decay
+  * @param pprAlpha     PageRank decay
   * @param csrDecay     CoSimRank decay
   * @param model        Embedding model
   */
@@ -43,7 +43,7 @@ case class RelatednessOptions(
 
                                simRanker: String = "",
                                iterations: Int = 30,
-                               pprDamping: Float = 0.1f,
+                               pprAlpha: Float = 0.1f,
                                csrDecay: Float = 0.8f
 )
 
@@ -108,7 +108,7 @@ object RelatednessOptions {
 
       opt[Int]("iterations").action((x, conf) => conf.copy(iterations = x)).text("PageRank iterations")
 
-      opt[Double]("pprDamping").action((x, conf) => conf.copy(pprDamping = x.toFloat)).text("PageRank decay")
+      opt[Double]("pprAlpha").action((x, conf) => conf.copy(pprAlpha = x.toFloat)).text("PageRank decay")
 
       opt[Double]("csrDecay").action((x, conf) => conf.copy(csrDecay = x.toFloat)).text("CoSimRank decay")
 

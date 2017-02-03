@@ -129,6 +129,12 @@ function run_esa {
 
         run_sbt "$args"
 
+
+        args="--name esaentity --threshold $threshold"
+        logging_info "Experimenting ESAEntity with paramters: $args\n"
+
+        run_sbt "$args"
+
     done
 }
 
@@ -206,29 +212,30 @@ function run_w2v {
 # Experiments based on clique graph generation.
 #
 function run_clique {
-    #subNodes=( "esa" "sg" "dwsg" )
-    #subSizes=( 10 50 100 )
-
-    #weighters=( "milnewitten" "jaccard" "w2v" )
-    #weighterGraphs=("in" "sym")
-    #weighterModels=( "w2v.sg" "deepwalk.dwsg" )
-
-    #simRankers=( "ppr" "csr" )
-    #iterations=( 3 10 30 50 )
-    #pprDampings=( 0.1 0.2 )
-    #csrDecays=( 0.7 0.8 0.9 )
-
-    subNodes=( "esa" )
+    subNodes=( "esa" "esaentity" "sg" "dwsg" )
     subSizes=( 10 50 100 )
 
-    weighters=( "milnewitten" )
-    weighterGraphs=( "in" )
-    weighterModels=( "w2v.sg" )
+    weighters=( "milnewitten" "jaccard" "w2v" )
+    weighterGraphs=("in" "sym")
+    weighterModels=( "w2v.sg" "deepwalk.dwsg" )
 
-    simRankers=( "csr" )
-    iterations=( 30 )
-    pprDampings=( 0.1 )
-    csrDecays=( 0.9 )
+    simRankers=( "ppr" "csr" )
+    iterations=( 3 10 30 50 )
+    pprAlphas=( 0.1 0.2 )
+    csrDecays=( 0.7 0.8 0.9 )
+
+
+    #subNodes=( "esa" )
+    #subSizes=( 10 50 100 )
+
+    #weighters=( "milnewitten" )
+    #weighterGraphs=( "in" )
+    #weighterModels=( "w2v.sg" )
+
+    #simRankers=( "csr" )
+    #iterations=( 30 )
+    #pprDampings=( 0.1 )
+    #csrDecays=( 0.9 )
 
     # WTF re-write it with recursion...
     for nodes in "${subNodes[@]}"
@@ -245,14 +252,14 @@ function run_clique {
                         do
                             for model in "${weighterModels[@]}"
                             do
-                                for ppr in "${pprDampings[@]}"
+                                for ppr in "${pprAlphas[@]}"
                                 do
                                     for csr in "${csrDecays[@]}"
                                     do
 
                                         args="--name clique --subNodes $nodes --subSize $size --weighter $weight "
                                         args+="--weighterGraph $graph --weighterModel $model --simRanker $simRank "
-                                        args+="--iterations $iters --pprDamping $ppr --csrDecay $csr"
+                                        args+="--iterations $iters --pprAlpha $ppr --csrDecay $csr"
 
                                         logging_info "Experimenting Clique Relatedness with parameters: $args\n"
 
@@ -277,6 +284,9 @@ function run_clique {
 #
 # ======================================================================================================================
 
+
+run_clique
+
 run_milnewitten
 run_jaccard
 
@@ -289,7 +299,3 @@ run_svd
 run_lda
 
 run_w2v
-
-#run_clique
-
-

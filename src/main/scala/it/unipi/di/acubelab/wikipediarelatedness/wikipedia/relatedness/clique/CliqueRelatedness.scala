@@ -26,17 +26,14 @@ class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
     val nodes = subNodeCreator.subNodes(srcWikiID, dstWikiID)
     val subGraph = new WikiJungCliqueGraph(nodes, weighter)
 
-    val w = simRanker.similarity(srcWikiID, dstWikiID, subGraph).toFloat
-
-    println(w)
-    w
+    simRanker.similarity(srcWikiID, dstWikiID, subGraph).toFloat
   }
 
 
   override def toString = {
     "Clique_subNodes:%s,subSize:%d,simRanker:%s,iterations:%d,pprAlpha:%1.2f,csrDecay:%1.2f,weighter:[%s]"
         .formatLocal(Locale.US, options.subNodes, options.subSize, options.simRanker,
-                     options.iterations, options.pprDamping, options.csrDecay, weighter.toString)
+                     options.iterations, options.pprAlpha, options.csrDecay, weighter.toString)
   }
 
 

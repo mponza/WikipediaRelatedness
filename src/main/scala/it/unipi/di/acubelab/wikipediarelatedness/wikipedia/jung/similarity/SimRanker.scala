@@ -14,8 +14,8 @@ object SimRanker {
 
   def make(options: RelatednessOptions) = options.simRanker match {
 
-   case "csr" => new CoSimRanker(options.iterations, options.pprDamping, options.csrDecay)
-   case "ppr" => new PPRRanker(options.iterations, options.pprDamping)
+   case "csr" => new CoSimRanker(options.iterations, options.pprAlpha, options.csrDecay)
+   case "ppr" => new PPRRanker(options.iterations, options.pprAlpha)
 
   }
 

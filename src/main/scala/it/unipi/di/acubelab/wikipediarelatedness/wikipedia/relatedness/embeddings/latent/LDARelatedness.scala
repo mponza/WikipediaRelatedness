@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddin
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.latent.lda.LDA
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessOptions
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.EmbeddingsRelatedness
 import org.slf4j.LoggerFactory
 
 
@@ -10,9 +11,9 @@ import org.slf4j.LoggerFactory
   *
   * @param options
   */
-class LDARelatedness(options: RelatednessOptions) extends LatentRelatedness(options)  {
+class LDARelatedness(options: RelatednessOptions) extends EmbeddingsRelatedness(options)  {
   protected val logger = LoggerFactory.getLogger(getClass)
-  protected val embeddings = new LDA
+  override protected val embeddings = new LDA
 
 
   override def toString(): String = {
