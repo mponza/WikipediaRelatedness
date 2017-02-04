@@ -6,12 +6,15 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.core.KeywordAnalyzer
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper
-import org.apache.lucene.index.DirectoryReader
+import org.apache.lucene.index.{DirectoryReader, Term}
 import org.apache.lucene.queryparser.classic.QueryParser
 import org.apache.lucene.search.{BooleanQuery, IndexSearcher}
-import org.apache.lucene.search.similarities.BM25Similarity
+import org.apache.lucene.search.similarities.{BM25Similarity, ClassicSimilarity}
 import org.apache.lucene.store.MMapDirectory
 import org.slf4j.LoggerFactory
+
+import scala.collection.mutable
+
 
 
 /**
@@ -58,34 +61,42 @@ class LuceneIndex {
   }
 
 
-
-  //
-  // Not currently used.
-
   /**
-    * To be checked. Maybe useful for vector space model.
+    * Vector Space Model, sorted by term.
     *
     * @param wikiID
     * @return
     */
-  def vectorSpaceProjection(wikiID: Int) : String = {
+  def vectorSpaceProjection(wikiID: Int) : Seq[(String, Float)] = {
+    val vector = mutable.HashMap.empty[String, Float]
+
     //val text = wikipediaBody(wikiID)
     val parser = new QueryParser("id", LuceneIndex.analyzer)
     val query = parser.createBooleanQuery("id", wikiID.toString)
 
     val wikiDoc = searcher.search(query, 1).scoreDocs(0).doc
 
+    val sim = new ClassicSimilarity
+    val docCount = reader.numDocs()
+
     val terms = reader.getTermVector(wikiDoc, "body")
     val termsEnum = terms.iterator()
     var bytesRef = termsEnum.next()
+
     while(bytesRef  != null){
-      System.out.println("BytesRef: " + bytesRef.utf8ToString())
-      System.out.println("docFreq: " + termsEnum.docFreq())
-      System.out.println("totalTermFreq: " + termsEnum.totalTermFreq())
+
+      val str = bytesRef.utf8ToString()
+
+      val tf = termsEnum.totalTermFreq()
+      val df = reader.docFreq( new Term("body", bytesRef.utf8ToString() ) )
+      val tfidf = sim.idf(df, docCount)
+
+      vector(str) = tfidf
+
       bytesRef = termsEnum.next()
     }
 
-    ""
+    vector.toSeq
   }
 }
 

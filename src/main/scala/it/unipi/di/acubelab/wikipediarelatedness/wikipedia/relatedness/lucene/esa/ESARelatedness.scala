@@ -1,7 +1,6 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.esa
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.ESA
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.ESATopK
 import org.slf4j.LoggerFactory

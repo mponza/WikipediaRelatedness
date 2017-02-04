@@ -4,6 +4,9 @@ import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.floats.FloatArrayList
 
 
+import Ordering.Implicits._
+
+
 object  Similarity {
 
   /**
@@ -54,8 +57,7 @@ object  Similarity {
     cosineSimilarity(srcFloats, dstFloats)
   }
 
-
-  def cosineSimilarity(src: Seq[Tuple2[Int, Float]], dst: Seq[Tuple2[Int, Float]]) : Float = {
+  def cosineSimilarity[T : Ordering](src: Seq[Tuple2[T, Float]], dst: Seq[Tuple2[T, Float]]) : Float = {
     val srcMagnitude = vectorMagnitude(src)
     val dstMagnitude = vectorMagnitude(dst)
     if (srcMagnitude == 0f || dstMagnitude == 0f) return 0f
@@ -91,7 +93,7 @@ object  Similarity {
 
   }
 
-  def vectorMagnitude(vec: Seq[Tuple2[Int, Float]]) : Float = {
+  def vectorMagnitude[T](vec: Seq[Tuple2[T, Float]]) : Float = {
     val powMagnitude = vec.foldLeft(0.0)((magnitude, elemTuple) => magnitude + math.pow(elemTuple._2, 2.0))
     math.sqrt(powMagnitude).toFloat
   }

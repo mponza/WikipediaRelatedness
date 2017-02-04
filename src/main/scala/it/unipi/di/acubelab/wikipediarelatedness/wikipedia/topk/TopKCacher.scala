@@ -26,7 +26,7 @@ object TopKCacher {
     * @param tasks
     * @return
     */
-  def generate(topK: TopKCached, tasks: Seq[WikiRelateTask]) = {
+  def generate(topK: TopKCached, tasks: Seq[WikiRelateTask], outpath: String) = {
     // get unique wikiIDs from tasks
     val wikiIDs = tasks.foldLeft(List.empty[Int])((IDs, task) => IDs ++ List(task.src.wikiID, task.dst.wikiID)).distinct
 
@@ -45,9 +45,14 @@ object TopKCacher {
     }
     pl.done()
 
-    logger.info("Serializing cache into %s".format(topK.getCachePath()))
-    new File(topK.getCachePath()).getParentFile.mkdirs
-    BinIO.storeObject(cache, topK.getCachePath())
+    //logger.info("Serializing cache into %s".format(topK.getCachePath()))
+    //new File(topK.getCachePath()).getParentFile.mkdirs
+
+    // ****************************************************************************************************************
+    // WARNING: THEN YOU NEED TO RELOAD AS SEQ
+    // ****************************************************************************************************************
+    new File(outpath).getParentFile.mkdirs
+    BinIO.storeObject(cache, outpath)
   }
 
 }

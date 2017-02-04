@@ -3,8 +3,9 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clique.CliqueRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clustering.{CosineLocalClusteringRelatedness, JaccardLocalClusteringRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.latent.{LDARelatedness, SVDRelatedness}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.esa.{ESAEntityRelatedness, ESARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lm.LMRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.esa.{ESAEntityRelatedness, ESARelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.vsm.VectorSpaceModelRelatedeness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.Word2VecRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, MilneWittenRelatedness}
 
@@ -25,9 +26,10 @@ object RelatednessFactory {
     case "cosinelocalclustering" => new CosineLocalClusteringRelatedness(options)
 
     //
-    // ESA
+    // Lucene-based
     case "esa" => new ESARelatedness(options)
     case "esaentity" => new ESAEntityRelatedness(options)
+    case "vsm" => new VectorSpaceModelRelatedeness(options)
 
     //
     // Latent

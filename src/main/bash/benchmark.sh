@@ -140,6 +140,15 @@ function run_esa {
 
 
 #
+# Experiments raw VectorSpaceModel relatedness.
+#
+function run_vsm {
+    args="--name vsm"
+    run_sbt "$args"
+}
+
+
+#
 # Experiments SVD relatedness with different thresholds.
 #
 function run_svd {
@@ -212,17 +221,15 @@ function run_w2v {
 # Experiments based on clique graph generation.
 #
 function run_clique {
-    subNodes=( "esa" "esaentity" "sg" "dwsg" )
-    subSizes=( 10 50 100 )
+    subNodes=( "esa" "sg" "dwsg" )
+    subSizes=( 10 30 50 )
 
-    weighters=( "milnewitten" "jaccard" "w2v" )
-    weighterGraphs=("in" "sym")
-    weighterModels=( "w2v.sg" "deepwalk.dwsg" )
+    weighters=( "milnewitten --weighterGraph in" "w2v --weighterModel w2v.sg", "w2v --weighterModel deepwalk.dwsg"  )
 
     simRankers=( "ppr" "csr" )
-    iterations=( 3 10 30 50 )
+    iterations=( 3 10 30 )
     pprAlphas=( 0.1 0.2 )
-    csrDecays=( 0.7 0.8 0.9 )
+    csrDecays=( 0.8 0.9 )
 
 
     #subNodes=( "esa" )
@@ -248,25 +255,17 @@ function run_clique {
                 do
                     for iters in "${iterations[@]}"
                     do
-                        for graph in "${weighterGraphs[@]}"
+                        for ppr in "${pprAlphas[@]}"
                         do
-                            for model in "${weighterModels[@]}"
+                            for csr in "${csrDecays[@]}"
                             do
-                                for ppr in "${pprAlphas[@]}"
-                                do
-                                    for csr in "${csrDecays[@]}"
-                                    do
 
-                                        args="--name clique --subNodes $nodes --subSize $size --weighter $weight "
-                                        args+="--weighterGraph $graph --weighterModel $model --simRanker $simRank "
-                                        args+="--iterations $iters --pprAlpha $ppr --csrDecay $csr"
+                                args="--name clique --subNodes $nodes --subSize $size --weighter $weight "
+                                args+="--simRanker $simRank --iterations $iters --pprAlpha $ppr --csrDecay $csr"
 
-                                        logging_info "Experimenting Clique Relatedness with parameters: $args\n"
+                                logging_info "Experimenting Clique Relatedness with parameters: $args\n"
 
-                                        run_sbt "$args"
-
-                                    done
-                                done
+                                run_sbt "$args"
                             done
                         done
                     done
@@ -284,9 +283,6 @@ function run_clique {
 #
 # ======================================================================================================================
 
-
-run_clique
-
 run_milnewitten
 run_jaccard
 
@@ -294,8 +290,11 @@ run_jaccardlocalclustering
 run_cosinelocalclustering
 
 run_esa
+run_vsm
 
 run_svd
 run_lda
 
 run_w2v
+
+run_clique

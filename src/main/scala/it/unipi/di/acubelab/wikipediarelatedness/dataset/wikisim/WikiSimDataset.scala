@@ -12,29 +12,38 @@ import scala.collection.mutable
 class WikiSimDataset() extends WikiRelateDataset {
 
   override def loadDataset(): Seq[WikiRelateTask] = {
-    val path = Config.getString("dataset.wikisim")
+    val path = Config.getString("dataset.wikisim.wat")
+
     logger.info("Loading WikiSimDataset from %s".format(path))
 
     val pairs = new mutable.MutableList[WikiRelateTask]
     val csvReader = CSVReader.open(new File(path))
 
-    csvReader .foreach {
+    csvReader.foreach {
       fields =>
+
         val srcWord = fields(0).toString
-        val src = new WikiEntity(fields(1).toInt, fields(2).replaceAll(" ", "_"))
+        if (srcWord != "") {
 
-        val dstWord = fields(3)
-        val dst = new WikiEntity(fields(4).toInt, fields(5).replaceAll(" ", "_"))
+          val src = new WikiEntity(fields(1).toInt, fields(2).replaceAll(" ", "_"))
 
-        val humanRelatedness = fields(6).toFloat
+          val dstWord = fields(3)
+          val dst = new WikiEntity(fields(4).toInt, fields(5).replaceAll(" ", "_"))
 
-        pairs += new WikiRelateTask(src, dst, humanRelatedness)
+          val humanRelatedness = fields(6).toFloat
+
+          pairs += new WikiRelateTask(src, dst, humanRelatedness)
+
+        }
     }
     csvReader.close()
 
     logger.info("WikiSimDataset loaded!")
+    logger.info("Size %d".format(pairs.size))
+
     pairs
   }
+
 
   override def toString() : String = "WikiSim"
 }
