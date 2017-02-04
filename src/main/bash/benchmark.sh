@@ -231,7 +231,6 @@ function run_clique {
     pprAlphas=( 0.1 0.2 )
     csrDecays=( 0.8 0.9 )
 
-
     #subNodes=( "esa" )
     #subSizes=( 10 50 100 )
 
@@ -283,6 +282,8 @@ function run_clique {
 #
 # ======================================================================================================================
 
+#run_clique
+
 run_milnewitten
 run_jaccard
 
@@ -297,4 +298,4 @@ run_lda
 
 run_w2v
 
-run_clique
+
