@@ -35,5 +35,9 @@ object CSR {
   def main(args: Array[String]) {
 
     CoSimRankCache.generateCache( DatasetFactory.datasets().flatten.toList, 5, 0.8f )
+    CoSimRankCache.generateCache( DatasetFactory.datasets().flatten.toList, 10, 0.8f )
+
+    CoSimRankCache.generateCache( DatasetFactory.datasets().flatten.toList, 5, 0.9f )
+    CoSimRankCache.generateCache( DatasetFactory.datasets().flatten.toList, 10, 0.9f )
   }
 }

@@ -90,19 +90,22 @@ object CoSimRankCache {
     for(task <- dataset) {
       val src = task.src.wikiID
       val dst = task.dst.wikiID
+      try {
+        CoSimRankServer.similarities(src, dst, iterations, decay) match {
+          case (csrSim, pprSim) =>
+            csr.put(Tuple2(src, dst), csrSim)
+            csr.put(Tuple2(dst, src), csrSim)
 
-      CoSimRankServer.similarities(src, dst, iterations, decay) match {
-        case (csrSim, pprSim) =>
-          csr.put( Tuple2(src, dst), csrSim)
-          csr.put( Tuple2(dst, src), csrSim)
+            ppr.put(Tuple2(src, dst), pprSim)
+            ppr.put(Tuple2(dst, src), pprSim)
 
-          ppr.put( Tuple2(src, dst), pprSim)
-          ppr.put( Tuple2(dst, src), pprSim)
+            logger.info("CoSimRank Similarity between %d and %d is %1.5f".format(src, dst, csrSim))
+            logger.info("PPR+Cos Similarity between %d and %d is %1.5f".format(src, dst, pprSim))
 
-          logger.info("CoSimRank Similarity between %d and %d is %1.5f".format(src, dst, csrSim))
-          logger.info("PPR+Cos Similarity between %d and %d is %1.5f".format(src, dst, pprSim))
-
-          pl.update()
+            pl.update()
+        }
+      } catch {
+        case e: Exception => logger.error("Error while computing %s task.".format(task.toString()))
       }
     }
 
