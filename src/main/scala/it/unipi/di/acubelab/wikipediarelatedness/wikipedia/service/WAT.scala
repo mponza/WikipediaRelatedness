@@ -1,5 +1,6 @@
-package it.unipi.di.acubelab.wikipediarelatedness.utils
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.service
 
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import org.slf4j.LoggerFactory
 
 import scala.util.parsing.json.JSON

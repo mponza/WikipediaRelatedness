@@ -170,17 +170,21 @@ function run_svd {
 # Experiments LDA relatedness with different thresholds.
 #
 function run_lda {
-    thresholds=( 10 50 80 100 )
 
-    for threshold in "${thresholds[@]}"
-    do
+    args="--name lda --threshold $threshold"
+    run_sbt "$args"
 
-        args="--name lda --threshold $threshold"
-        logging_info "Experimenting LDA with paramters: $args\n"
+    #thresholds=( 10 50 80 100 )
 
-        run_sbt "$args"
+    #for threshold in "${thresholds[@]}"
+    #do
 
-    done
+    #    args="--name lda --threshold $threshold"
+    #    logging_info "Experimenting LDA with paramters: $args\n"
+
+    #    run_sbt "$args"
+
+    #done
 }
 
 
