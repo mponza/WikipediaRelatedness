@@ -8,7 +8,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.es
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.vsm.VectorSpaceModelRelatedeness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.Word2VecRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalk.{CoSimRankRelatedness, PPRRelatedness}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, MilneWittenRelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set._
 
 
 object RelatednessFactory {
@@ -20,6 +20,14 @@ object RelatednessFactory {
     // Set-based
     case "milnewitten" => new MilneWittenRelatedness(options)
     case "jaccard" =>   new JaccardRelatedness(options)
+
+    case "adamicadar" => new AdamicAdarRelatedness(options)
+    case "biblio" => new BibliographicCopulingRelatedness(options)
+    case "cocitation" => new CoCitationRelatedness(options)
+    case "common" => new CommonNeighborsRelatedness(options)
+    case "dice" => new DiceRelatedness(options)
+    case "overlap" => new OverlapRelatedness(options)
+    case "preferential" => new PreferentialAttachmentRelatedness(options)
 
     //
     // LocalClustering-based
@@ -45,7 +53,8 @@ object RelatednessFactory {
     // Language Model
     case "lm" => new LMRelatedness(options)
 
-
+    //
+    // Clique-subgraph-based
     case "clique" => new CliqueRelatedness(options)
 
     //

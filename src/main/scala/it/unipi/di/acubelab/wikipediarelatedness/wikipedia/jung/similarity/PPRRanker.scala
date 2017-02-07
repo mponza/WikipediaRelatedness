@@ -1,6 +1,8 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity
 
+import edu.uci.ics.jung.algorithms.scoring.PageRankWithPriors
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Similarity
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungGraph
 import org.apache.commons.collections15.Transformer
 import org.slf4j.{Logger, LoggerFactory}
 
@@ -19,6 +21,29 @@ class PPRRanker(iterations: Int, pprAlpha: Double) extends PriorRanker(iteration
     */
   override protected def getPrior(wikiID: Int): Transformer[Int, java.lang.Double] = new StandardBasisPrior(wikiID)
 
+
+  /**
+    * Computes the similarity between two PageRankWithPriors.
+    *
+    * @param srcPPR
+    * @param dstPPR
+    * @return
+    */
+  protected override def computeSimilarity(wikiJungGraph: WikiJungGraph,
+                                  srcPPR: PageRankWithPriors[Int, Long], dstPPR: PageRankWithPriors[Int, Long]) = {
+    for (i <- 0 until iterations) {
+      logger.info("%d iteration...")
+      srcPPR.step()
+      dstPPR.step()
+
+      if (i == iterations - 1) {
+        val srcRanks = getRanks(wikiJungGraph, srcPPR)
+        val dstRanks = getRanks(wikiJungGraph, dstPPR)
+
+        updateSimilarityScore(srcRanks, dstRanks, i)
+      }
+    }
+  }
 
   /**
     * Updates the similiarity score after an iteration of computeSimilarity

@@ -58,13 +58,13 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
 
 
   /**
-    * Returns the intersected nodeIDs between srcWikiId and dstWikiId in wikiGraph.
+    * Returns the intersected wikiIDs between srcWikiId and dstWikiId in wikiGraph.
     *
     * @param srcWikiID
     * @param dstWikiID
     * @return
     */
-  def wikiIntersection(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
+  def intersection(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
 
     val iterA =  wikiGraph.successors(srcWikiID)
     val iterB = wikiGraph.successors(dstWikiID)

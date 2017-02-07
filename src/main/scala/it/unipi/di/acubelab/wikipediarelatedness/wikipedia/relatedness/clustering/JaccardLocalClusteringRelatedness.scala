@@ -16,7 +16,7 @@ class JaccardLocalClusteringRelatedness(options: RelatednessOptions) extends Loc
     if (srcWikiID == dstWikiID) return 1f
 
     // Intersection and union weighted by local clustering coefficients.
-    val intersection  = setOperations.wikiIntersection(srcWikiID, dstWikiID).toIntArray().map(lc.getCoefficient).sum
+    val intersection  = setOperations.intersection(srcWikiID, dstWikiID).toIntArray().map(lc.getCoefficient).sum
     if (intersection == 0) return 0f
 
     val union = setOperations.wikiUnion(srcWikiID, dstWikiID).toIntArray().map(lc.getCoefficient).sum

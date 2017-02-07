@@ -11,10 +11,10 @@ import org.apache.commons.collections15.Transformer
   *
   * @param graph
   */
-class UniformWeights(graph: DirectedGraph[java.lang.Integer, java.lang.Long]) extends Transformer[java.lang.Long, java.lang.Double] {
+class UniformWeights(graph: DirectedGraph[Int, Long]) extends Transformer[Long, java.lang.Double] {
 
 
-  override def transform(edge: java.lang.Long): Double = {
+  override def transform(edge: Long): Double = {
     val src = graph.getSource(edge)
 
     if (graph.degree(src) == 0) 0.0
