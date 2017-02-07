@@ -7,6 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lm.LMRela
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.esa.{ESAEntityRelatedness, ESARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.vsm.VectorSpaceModelRelatedeness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.Word2VecRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalk.{CoSimRankRelatedness, PPRRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{JaccardRelatedness, MilneWittenRelatedness}
 
 
@@ -49,7 +50,8 @@ object RelatednessFactory {
 
     //
     // PageRank
-    //case "ppr" => new PPRRelatedness(options)
+    case "csr" => new CoSimRankRelatedness(options)
+    case "ppr" => new PPRRelatedness(options)
   }
 
 }

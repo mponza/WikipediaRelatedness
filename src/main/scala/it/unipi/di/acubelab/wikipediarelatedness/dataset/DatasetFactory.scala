@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.dataset
 
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim.WikiSimDataset
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.{WiReNN, WiReNS, WiReSS}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.WiRe
 
 
 /**
@@ -18,10 +18,7 @@ object DatasetFactory {
     */
   def make(datasetName: String) : WikiRelateDataset = datasetName.toLowerCase() match {
     case "wikisim" => new WikiSimDataset
-
-    case "wire-ss" => new WiReSS
-    case "wire-ns" => new WiReNS
-    case "wire-nn" => new WiReNN
+    case "wire" => new WiRe
   }
 
 
@@ -30,6 +27,6 @@ object DatasetFactory {
     *
     * @return
     */
-  def datasets() = Seq("wikisim", "wire-ss", "wire-ns", "wire-nn").map(make(_))
+  def datasets() = Seq("wikisim", "wire").map(make(_)) //wire-ss", "wire-ns", "wire-nn").map(make(_))
 
 }

@@ -280,13 +280,39 @@ function run_clique {
 }
 
 
+#
+# Experiments RandomWalks measure over the whole Wikipedia graph.
+#
+function run_randomwalks {
+    rw=( "ppr" "csr" )
+    iters=( 5 10 )
+    decays=( 0.8 0.9 )
+
+    for r in "${rw[@]}"
+    do
+        for i in "${iters[@]}"
+        do
+            for d in "${decays[@]}"
+            do
+
+                args="--name $r --decay $d --iterations $i"
+                run_sbt "$args"
+
+            done
+
+        done
+    done
+}
+
+
+
 # ======================================================================================================================
 #
 # Main
 #
 # ======================================================================================================================
 
-#run_clique
+#
 
 run_milnewitten
 run_jaccard
@@ -302,4 +328,7 @@ run_lda
 
 run_w2v
 
+run_randomwalks
+
+#run_clique
 

@@ -1,18 +1,18 @@
-package it.unipi.di.acubelab.wikipediarelatedness.dataset.wire
+package it.unipi.di.acubelab.wikipediarelatedness.dataset.wire.subwire
 
 import java.io.File
 
 import com.github.tototoshi.csv.CSVReader
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiRelateDataset, WikiEntity, WikiRelateTask}
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateDataset, WikiRelateTask}
 
 import scala.collection.mutable.ListBuffer
 
 
 /**
-  * Trait of the WiRe Dataset.
+  * Trait of a subset of the WiRe Dataset.
   *
   */
-trait WiReDataset extends WikiRelateDataset {
+trait SubWiReDataset extends WikiRelateDataset {
 
   /**
     * Path to salient-salient, non-salient-salient or non-salient-non-salient file.
@@ -23,7 +23,6 @@ trait WiReDataset extends WikiRelateDataset {
 
   override def loadDataset() : Seq[WikiRelateTask] = {
     val path = wirePath()
-    logger.info("Loading WiRe Dataset... %s".format(path))
 
     val pairs = ListBuffer.empty[WikiRelateTask]
     val csvReader = CSVReader.open(new File(path))
@@ -39,10 +38,8 @@ trait WiReDataset extends WikiRelateDataset {
 
         pairs += new WikiRelateTask(src, dst, humanRelatedness)
     }
-
     csvReader.close()
 
-    logger.info("WiRe loaded!")
     pairs.toList
   }
 

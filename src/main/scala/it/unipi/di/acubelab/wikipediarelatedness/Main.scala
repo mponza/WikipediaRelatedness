@@ -2,8 +2,6 @@ package it.unipi.di.acubelab.wikipediarelatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.Benchmark
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.DatasetFactory
-import it.unipi.di.acubelab.wikipediarelatedness.utils.WikiMTX
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.randomwalk.CoSimRankCache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{RelatednessFactory, RelatednessOptions}
 import org.slf4j.LoggerFactory
 
@@ -30,6 +28,7 @@ object Main {
 
 }
 
+/*
 object CSR {
 
   def main(args: Array[String]) {
@@ -40,4 +39,4 @@ object CSR {
     CoSimRankCache.generateCache( DatasetFactory.datasets().flatten.toList, 5, 0.9f )
     CoSimRankCache.generateCache( DatasetFactory.datasets().flatten.toList, 10, 0.9f )
   }
-}
+}*/

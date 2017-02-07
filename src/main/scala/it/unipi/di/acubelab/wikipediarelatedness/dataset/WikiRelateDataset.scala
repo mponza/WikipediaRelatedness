@@ -32,9 +32,7 @@ trait WikiRelateDataset extends Traversable[WikiRelateTask] {
     * @param f
     * @tparam U
     */
-  def foreach[U](f: (WikiRelateTask) => U) {
-    wikiPairs.foreach(wikiRelTask => f(wikiRelTask))
-  }
+  def foreach[U](f: (WikiRelateTask) => U) = wikiPairs.foreach(wikiRelTask => f(wikiRelTask))
 
 
   override def toString() : String  // Name of the dataset
