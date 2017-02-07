@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity
 
 
 import edu.uci.ics.jung.algorithms.scoring.PageRankWithPriors
+import it.unipi.di.acubelab.extra.CustomPPR
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungGraph
 import org.apache.commons.collections15.Transformer
 import org.slf4j.Logger

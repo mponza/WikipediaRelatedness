@@ -2,9 +2,9 @@ import os
 from pyhocon import ConfigFactory
 
 
-def absolute_path(path_from_latent_gensim):
+def absolute_path(path):
     WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(WORKING_DIR, path_from_latent_gensim)
+    return os.path.join(WORKING_DIR, path)
 
 
 def dataset_paths():

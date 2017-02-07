@@ -2,8 +2,6 @@ package it.unipi.di.acubelab.wikipediarelatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.Benchmark
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.DatasetFactory
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.{WikiJungBVGraph, WikiJungGraph}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity.PPRRanker
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{RelatednessFactory, RelatednessOptions}
 import org.slf4j.LoggerFactory
 
@@ -29,7 +27,7 @@ object Main {
   }
 
 }
-
+/*
 object Jung {
   def main(args: Array[String]) {
     val wjg = new WikiJungBVGraph("out")
@@ -37,7 +35,7 @@ object Jung {
 
     println( ppr.similarity(17547, 27546, wjg) )
   }
-}
+}*/
 
 /*
 object CSR {

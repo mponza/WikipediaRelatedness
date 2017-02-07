@@ -46,6 +46,19 @@ function run_sbt {
 
 
 #
+# Classical set-based methods.
+#
+function run_classical_set {
+    names=( "adamicadar" "biblio" "cocitation" "common" "dice" "overlap" "preferential" )
+    for name in "${names[@]}"
+    do
+        args="--name $name"
+        run_sbt "$args"
+    done
+}
+
+
+#
 # Experiments Milne&Witten relatedness with different type of graphs.
 #
 function run_milnewitten {
@@ -313,6 +326,8 @@ function run_randomwalks {
 # ======================================================================================================================
 
 #
+
+run_classical_set
 
 run_milnewitten
 run_jaccard

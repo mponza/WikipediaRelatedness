@@ -17,8 +17,6 @@ def generate_table(outfile):
 
 
 def merge_dataset(datasets):
-    merged=pd.merge( datasets['WikiSim'], datasets['WiRe-SS'], on="Method" )
-    merged=pd.merge( merged, datasets['WiRe-NS'], on="Method" )
-    merged=pd.merge( merged, datasets['WiRe-NN'], on="Method" )
+    merged=pd.merge( datasets['WikiSim'], datasets['WiRe'], on="Method" )
 
     return merged.sort_values(by=['Method'])

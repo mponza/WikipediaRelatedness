@@ -1,6 +1,7 @@
 import os
 import json
 from gensim import utils
+from pyhocon import ConfigFactory
 
 
 def extract_json_pages(filename, filter_namespaces=False):
@@ -15,9 +16,37 @@ def extract_json_pages(filename, filter_namespaces=False):
             yield title, text, wiki_id
 
 
-def absolute_path(path_from_latent_gensim):
+
+def absolute_path(filename):
+    '''
+    :param filename:
+    :return: Absolute path of filename
+    '''
     WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(WORKING_DIR, path_from_latent_gensim)
+    return os.path.join(WORKING_DIR, filename)
+
+
+
+
+def dataset_paths():
+    reference = absolute_path('../../resources/reference.conf')
+
+    conf =  ConfigFactory.parse_file(reference)
+    corrdir = conf.get_string('wikipediarelatedness.benchmark.correlation')
+
+    datapaths = []
+    for dataname in os.listdir(corrdir):
+        datapaths.append( os.path.join(corrdir, dataname) )
+
+    return datapaths
+
+
+
+def dataset_paths():
+    reference = absolute_path('../../resources/reference.conf')
+
+    conf =  ConfigFactory.parse_file(reference)
+    corrdir = conf.get_string('wikipediarelatedness.benchmark.correlation')
 
 
 LEMMING = True  # whether using lemmatization or not
