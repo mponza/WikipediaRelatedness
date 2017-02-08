@@ -244,7 +244,7 @@ function run_clique {
     weighters=( "milnewitten --weighterGraph in" "w2v --weighterModel w2v.sg", "w2v --weighterModel deepwalk.dwsg"  )
 
     simRankers=( "ppr" "csr" )
-    iterations=( 3 10 30 )
+    iterations=( 2 3 10 )
     pprAlphas=( 0.1 0.2 )
     csrDecays=( 0.8 0.9 )
 
@@ -308,7 +308,7 @@ function run_randomwalks {
             for d in "${decays[@]}"
             do
 
-                args="--name $r --decay $d --iterations $i"
+                args="--name $r --pprAlpha $d --iterations $i"
                 run_sbt "$args"
 
             done
@@ -327,23 +327,25 @@ function run_randomwalks {
 
 #
 
-run_classical_set
 
-run_milnewitten
-run_jaccard
+run_clique
 
-run_jaccardlocalclustering
-run_cosinelocalclustering
+#run_classical_set
 
-run_esa
-run_vsm
+#run_milnewitten
+#run_jaccard
 
-run_svd
-run_lda
+#run_jaccardlocalclustering
+#run_cosinelocalclustering
 
-run_w2v
+#run_esa
+#run_vsm
 
-run_randomwalks
+#run_svd
+#run_lda
 
-#run_clique
+#run_w2v
+
+#run_randomwalks
+
 

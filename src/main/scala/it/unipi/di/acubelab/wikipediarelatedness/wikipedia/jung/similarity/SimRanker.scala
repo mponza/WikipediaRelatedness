@@ -17,6 +17,7 @@ object SimRanker {
    case "csr" => new CoSimRanker(options.iterations, options.pprAlpha, options.csrDecay)
    case "ppr" => new PPRRanker(options.iterations, options.pprAlpha)
 
+   case "hit"
   }
 
 }

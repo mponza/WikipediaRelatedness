@@ -2,7 +2,6 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity
 
 
 import edu.uci.ics.jung.algorithms.scoring.PageRankWithPriors
-import it.unipi.di.acubelab.extra.CustomPPR
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungGraph
 import org.apache.commons.collections15.Transformer
 import org.slf4j.Logger
@@ -72,7 +71,7 @@ abstract class PriorRanker(val iterations: Int, val pprAlpha: Double) extends Si
       val srcRanks = getRanks(wikiJungGraph, srcPPR)
       val dstRanks = getRanks(wikiJungGraph, dstPPR)
 
-      updateSimilarityScore(srcRanks, dstRanks, i)
+      updateSimilarityScore(srcRanks, dstRanks, i + 1)
     }
   }
 

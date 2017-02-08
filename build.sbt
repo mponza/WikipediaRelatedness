@@ -56,11 +56,9 @@ libraryDependencies ++= Seq(
 
   "org.scalatest" % "scalatest_2.11" % "3.0.0",
 
-  "com.twitter" % "cassovary-core_2.10" % "6.4.0"
+  "gov.nist.math" % "jama" % "1.0.3"
 
 )
-
-resolvers += "twitter" at "http://maven.twttr.com"
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html
 unmanagedJars in Compile ++= {
