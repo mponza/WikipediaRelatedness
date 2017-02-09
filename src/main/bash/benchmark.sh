@@ -318,6 +318,28 @@ function run_randomwalks {
 }
 
 
+function run_mixed {
+    models=(
+             # text-based (standard w2v)
+             "w2v.corpus" "w2v.coocc" "w2v.sg"
+
+             # random walk-based (DeepWalk)
+             "deepwalk.dw" "deepwalk.dw10" "deepwalk.dw90" "deepwalk.dwsg"
+    )
+
+    lambdas=( 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 )
+
+    for m in "${models[@]}"
+    do
+        for l in "${lambdas[@]}"
+        do
+             args="--name mix --firstname milnewitten --firstgraph in --secondname w2v --secondmodel $m --lambda $l"
+             run_sbt "$args"
+        done
+    done
+
+}
+
 
 # ======================================================================================================================
 #
@@ -328,7 +350,7 @@ function run_randomwalks {
 #
 
 
-run_clique
+#run_clique
 
 #run_classical_set
 
@@ -348,4 +370,4 @@ run_clique
 
 #run_randomwalks
 
-
+run_mixed

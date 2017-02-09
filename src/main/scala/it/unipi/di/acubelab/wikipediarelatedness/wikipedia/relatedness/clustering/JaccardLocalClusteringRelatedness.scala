@@ -19,7 +19,7 @@ class JaccardLocalClusteringRelatedness(options: RelatednessOptions) extends Loc
     val intersection  = setOperations.intersection(srcWikiID, dstWikiID).toIntArray().map(lc.getCoefficient).sum
     if (intersection == 0) return 0f
 
-    val union = setOperations.wikiUnion(srcWikiID, dstWikiID).toIntArray().map(lc.getCoefficient).sum
+    val union = setOperations.union(srcWikiID, dstWikiID).toIntArray().map(lc.getCoefficient).sum
 
     intersection / union
   }

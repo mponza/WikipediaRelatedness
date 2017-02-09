@@ -6,6 +6,6 @@ import org.slf4j.LoggerFactory
 class MilneWittenSubNodeCreator(graph: String, size: Int) extends TopKSubNodeCreator(size) {
   override protected val logger = LoggerFactory.getLogger(getClass)
 
-  override protected def topK: TopK = new MilneWittenTopK(graph)
+  override protected val topK: TopK = new MilneWittenTopK(graph)
 
 }

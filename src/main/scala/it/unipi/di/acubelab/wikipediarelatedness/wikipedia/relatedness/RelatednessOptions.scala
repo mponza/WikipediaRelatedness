@@ -28,6 +28,19 @@ case class RelatednessOptions(
 
 
                                //
+                               // Linear combination of two relatedness (name == comb)
+                               firstname: String = "",
+                               firstgraph: String = "",
+                               firstmodel: String = "",
+
+                               secondname: String = "",
+                               secondgraph: String = "",
+                               secondmodel: String = "",
+
+                               lambda: Double = 0.5,  // lambda * firstname + (1 - lambda) * secondname
+
+
+                               //
                                // SubGraph Weighting Options. Weights are compute by using another relatedness method.
                                // Used when method is subgraph.
 
@@ -45,7 +58,43 @@ case class RelatednessOptions(
                                iterations: Int = 30,
                                pprAlpha: Float = 0.1f,
                                csrDecay: Float = 0.8f
-)
+
+
+) {
+
+  def getWeighterRelatednessOptions = new RelatednessOptions(
+                                                name = this.weighter,
+                                                graph = this.weighterGraph,
+                                                model = this.weighterModel,
+                                                threshold = this.weighterThreshold,
+                                                firstname = this.firstname,
+                                                secondname = this.secondname,
+                                                lambda = this.lambda
+                                              )
+
+
+  /**
+    * Returns RelatednessOptions configurated for firstname relatedness.
+    * @return
+    */
+  def getFirstRelatednessOptions = new RelatednessOptions(
+                                                 name = this.firstname,
+                                                 graph = this.firstgraph,
+                                                 model = this.firstmodel
+                                              )
+
+  /**
+    * Returns RelatednessOptions configurated for secondname relatedness.
+    *
+    * @return
+    */
+  def getSecondRelatednessOptions = new RelatednessOptions(
+                                                name = this.secondname,
+                                                graph = this.secondgraph,
+                                                model = this.secondmodel
+                                              )
+
+}
 
 
 
@@ -80,6 +129,19 @@ object RelatednessOptions {
 
 
       //
+      // Mixed relatedness
+      opt[String]("firstname").action((x, conf) => conf.copy(firstname = x)).text("First relatedness")
+      opt[String]("firstgraph").action((x, conf) => conf.copy(firstgraph = x)).text("First relatedness graph")
+      opt[String]("firstmodel").action((x, conf) => conf.copy(firstmodel = x)).text("First relatedness model")
+
+      opt[String]("secondname").action((x, conf) => conf.copy(secondname = x)).text("Second relatedness")
+      opt[String]("secondgraph").action((x, conf) => conf.copy(secondgraph = x)).text("First relatedness graph")
+      opt[String]("secondmodel").action((x, conf) => conf.copy(secondmodel = x)).text("First relatedness model")
+
+      opt[Double]("lambda").action((x, conf) => conf.copy(lambda = x)).text("Linear combination weight of the first relatedness")
+
+
+      //
       // SubGraph Method and its parameters
       opt[String]("subNodes").action((x, conf) =>
         conf.copy(subNodes = x)).text("Technique used to generate the node of the subgraph between two nodes")
@@ -104,7 +166,6 @@ object RelatednessOptions {
       //
       // Random Walk Parameters
       opt[String]("simRanker").action((x, conf) => conf.copy(simRanker = x)).text("SimRank method.")
-
 
       opt[Int]("iterations").action((x, conf) => conf.copy(iterations = x)).text("PageRank iterations")
 

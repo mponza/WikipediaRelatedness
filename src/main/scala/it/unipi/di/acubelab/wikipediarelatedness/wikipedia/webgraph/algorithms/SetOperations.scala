@@ -19,8 +19,8 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
     * @return
     */
   def intersectionSize(srcWikiID: Int, dstWikiID: Int) : Int = {
-    val iterA =  wikiGraph.successors(srcWikiID)
-    val iterB = wikiGraph.successors(dstWikiID)
+    val iterA =  wikiGraph.graph.successors( wikiGraph.wiki2node.get(srcWikiID) )
+    val iterB = wikiGraph.graph.successors( wikiGraph.wiki2node.get(dstWikiID) )
 
     var intersection = 0
     var a = iterA.nextInt
@@ -49,7 +49,7 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
     * @param dstWikiID
     * @return
     */
-  def wikiUnion(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
+  def union(srcWikiID: Int, dstWikiID: Int) : IntArrayList = {
     val srcArray = wikiGraph.successorArray(srcWikiID)
     val dstArray = wikiGraph.successorArray(dstWikiID)
 

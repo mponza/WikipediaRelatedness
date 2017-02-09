@@ -2,7 +2,9 @@ package it.unipi.di.acubelab.wikipediarelatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.Benchmark
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.DatasetFactory
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{RelatednessFactory, RelatednessOptions}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.neural.W2VTopK
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.{MilneWittenTopK, TopKCacher, TopKFactory}
 import org.slf4j.LoggerFactory
 
@@ -28,15 +30,31 @@ object Main {
   }
 
 }
-
+/*
 object MilneWittenCacher {
   def main(args: Array[String]) {
-    val topk = new MilneWittenTopK("in")
+    val topk = new MilneWittenTopK("sym")
     val dataset = DatasetFactory.datasets()
 
     TopKCacher.generate(topk, dataset.flatten, topk.getCachePath)
   }
 }
+
+
+object W2VCacher {
+  def main(args: Array[String]) {
+    val topk = new W2VTopK(
+      Config.getString("wikipedia.topk.neural.w2v.corpus"),
+      Config.getString("wikipedia.topk.cache.neural.corpus.entity2entities")
+    )
+
+
+    val dataset = DatasetFactory.datasets()
+    TopKCacher.generate(topk, dataset.flatten, topk.getCachePath)
+  }
+
+}
+*/
 /*
 object Jung {
   def main(args: Array[String]) {

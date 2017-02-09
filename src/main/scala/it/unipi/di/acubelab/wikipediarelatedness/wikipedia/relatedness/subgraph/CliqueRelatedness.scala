@@ -44,15 +44,7 @@ class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
     * Returns a Relatedness method that will be subsequently used to weight the subgraph.
     *
     */
-  protected def getWeighter : Relatedness = {
-    val weightOptions = new RelatednessOptions(
-                              name = options.weighter,
-                              graph = options.weighterGraph,
-                              model = options.weighterModel,
-                              threshold = options.weighterThreshold
-                            )
+  protected def getWeighter : Relatedness = RelatednessFactory.make( options.getWeighterRelatednessOptions )
 
-    RelatednessFactory.make(weightOptions)
-  }
 
 }

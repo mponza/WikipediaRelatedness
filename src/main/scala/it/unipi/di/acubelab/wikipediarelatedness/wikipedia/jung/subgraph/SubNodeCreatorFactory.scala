@@ -16,7 +16,6 @@ object SubNodeCreatorFactory {
     case "mw.out" => new MilneWittenSubNodeCreator("out", size)
     case "mw.sym" => new MilneWittenSubNodeCreator("sym", size)
 
-
     case "esamw.in" => new ESAMilneWittenSubNodeCreator("in", size)
     case "esamw.out" => new ESAMilneWittenSubNodeCreator("out", size)
     case "esamw.sym" => new ESAMilneWittenSubNodeCreator("sym", size)

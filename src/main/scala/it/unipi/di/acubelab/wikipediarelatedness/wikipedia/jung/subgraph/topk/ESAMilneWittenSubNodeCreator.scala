@@ -10,8 +10,8 @@ import collection.JavaConverters._
 class ESAMilneWittenSubNodeCreator(graph: String, size: Int) extends TopKSubNodeCreator(size) {
   override protected def logger: Logger = LoggerFactory.getLogger(getClass)
 
-  protected def mw = new MilneWittenTopK(graph)
-  protected def esa = new ESATopK
+  protected val mw = new MilneWittenTopK(graph)
+  protected val esa = new ESATopK
 
 
   override protected def topK: TopK = new TopK {

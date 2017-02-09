@@ -15,6 +15,11 @@ object TopKFactory {
 
     //
     // Neural
+    case "corpus" => new W2VTopK(
+      Config.getString("wikipedia.topk.neural.w2v.corpus"),
+      Config.getString("wikipedia.topk.cache.neural.corpus.entity2entities")
+    )
+
     case "sg" => new W2VTopK(
       Config.getString("wikipedia.topk.neural.w2v.sg"),
       Config.getString("wikipedia.topk.cache.neural.sg.entity2entities")

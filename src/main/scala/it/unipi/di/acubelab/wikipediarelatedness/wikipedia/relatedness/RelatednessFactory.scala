@@ -61,6 +61,9 @@ object RelatednessFactory {
     // PageRank
     case "csr" => new CoSimRankRelatedness(options)
     case "ppr" => new PPRRelatedness(options)
+
+
+    case "mix" => new MixedRelatedness(options)
   }
 
 }
