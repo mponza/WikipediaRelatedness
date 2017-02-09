@@ -3,6 +3,8 @@ package it.unipi.di.acubelab.wikipediarelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.Benchmark
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.DatasetFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{RelatednessFactory, RelatednessOptions}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.neighbors.MilneWittenTopK
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.{TopKCacher, TopKFactory}
 import org.slf4j.LoggerFactory
 
 
@@ -26,6 +28,15 @@ object Main {
     }
   }
 
+}
+
+object MilneWittenCacher {
+  def main(args: Array[String]) {
+    val topk = new MilneWittenTopK("in")
+    val dataset = DatasetFactory.datasets()
+
+    TopKCacher.generate(topk, dataset.flatten.slice(0, 5), topk.getCachePath)
+  }
 }
 /*
 object Jung {

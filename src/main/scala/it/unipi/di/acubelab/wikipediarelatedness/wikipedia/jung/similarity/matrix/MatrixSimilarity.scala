@@ -9,5 +9,4 @@ abstract class MatrixSimilarity extends SimRanker {
 
   def similarity(srcWikiID: Int, dstWikiID: Int, wikiJungGraph: WikiJungGraph): Double
 
-
 }

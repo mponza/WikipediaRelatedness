@@ -8,7 +8,7 @@ import scala.collection.JavaConversions._
 class LaplacianGraph(wikiJungGraph: WikiJungGraph) {
 
   // n x n matrix
-  val (matrix, node2index) = graph2matrix(wikiJungGraph)  // laplacian matrix and node mapping in its indices.
+  val (matrix, node2index, volume) = graph2matrix(wikiJungGraph)  // laplacian matrix and node mapping in its indices.
 
 
   /**
@@ -17,15 +17,19 @@ class LaplacianGraph(wikiJungGraph: WikiJungGraph) {
     * @param wikiJungGraph
     * @return
     */
-  protected def graph2matrix(wikiJungGraph: WikiJungGraph) : (Array[Array[Double]], Int2IntOpenHashMap)= {
+  protected def graph2matrix(wikiJungGraph: WikiJungGraph) : (Array[Array[Double]], Int2IntOpenHashMap, Double)= {
     val n = wikiJungGraph.graph.getVertexCount
     val laplacian = Array.ofDim[Double](n, n)  // weighted laplacian from http://slideplayer.com/slide/5756785/
+    var volume = 0.0
 
     // Mapping between node and matrix indices
     val node2index = new Int2IntOpenHashMap
     wikiJungGraph.graph.getVertices.zipWithIndex.foreach {
       case (wikiID: Int, index: Int) =>
-         node2index.put(wikiID, index)
+
+        // not consider nodes with no out edges
+        node2index.put(wikiID, index)
+
     }
 
     // Filling laplacian matrix
@@ -33,24 +37,27 @@ class LaplacianGraph(wikiJungGraph: WikiJungGraph) {
       case src =>
 
         val srcIndex = node2index.get(src)
-        var d = 0f
+        var d = 0.0
 
         wikiJungGraph.graph.getOutEdges(src).foreach {
           case edge =>
 
             val dst = wikiJungGraph.graph.getDest(edge)
+
             val dstIndex = node2index(dst)
 
             val weight = wikiJungGraph.weights.transform(edge)
-            laplacian(srcIndex)(dstIndex) = - weight
+            laplacian(srcIndex)(dstIndex) = -weight
+
+            volume += weight
             d += weight
         }
 
         // diagonal elements
-        laplacian(srcIndex)(srcIndex) = d
+        laplacian(srcIndex)(srcIndex) = 1.0
     }
 
-    (laplacian, node2index)
+    (laplacian, node2index, volume)
   }
 
 }

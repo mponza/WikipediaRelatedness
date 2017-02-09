@@ -1,6 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clique.CliqueRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph.CliqueRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clustering.{CosineLocalClusteringRelatedness, JaccardLocalClusteringRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.latent.{LDARelatedness, SVDRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lm.LMRelatedness

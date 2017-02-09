@@ -1,4 +1,4 @@
-import os
+vim ~/import os
 import pandas as pd
 
 

@@ -79,5 +79,5 @@ trait TopKCached extends TopK {
     *
     * @return
     */
-  def getCachePath() = cachePath
+  def getCachePath = cachePath
 }

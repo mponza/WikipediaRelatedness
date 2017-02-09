@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 
 class ESATopK extends TopKCached {
   override protected def logger = LoggerFactory.getLogger(getClass)
-  override protected def cachePath = Config.getString("wikipedia.cache.esa")
+  override protected def cachePath = Config.getString("wikipedia.cache.topk.esa")
 
 
   /**

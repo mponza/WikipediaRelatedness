@@ -239,12 +239,12 @@ function run_w2v {
 #
 function run_clique {
     subNodes=( "esa" "sg" "dwsg" )
-    subSizes=( 10 30 50 )
+    subSizes=( 5 10 30 )
 
-    weighters=( "milnewitten --weighterGraph in" "w2v --weighterModel w2v.sg", "w2v --weighterModel deepwalk.dwsg"  )
+    weighters=( "milnewitten --weighterGraph in" "w2v --weighterModel w2v.sg" "w2v --weighterModel deepwalk.dwsg"  )
 
     simRankers=( "ppr" "csr" )
-    iterations=( 2 3 10 )
+    iterations=( 1 2 3 )
     pprAlphas=( 0.1 0.2 )
     csrDecays=( 0.8 0.9 )
 

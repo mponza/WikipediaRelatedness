@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set
 
 
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
+import it.unipi.di.acubelab.wikipediarelatedness.utils.FastMemoize
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.SetOperations
@@ -20,9 +20,14 @@ class MilneWittenRelatedness(options: RelatednessOptions) extends Relatedness {
   val wikiGraph = WikiBVGraphFactory.make(options.graph)
   val setOperations = new SetOperations(wikiGraph)
   val W = setOperations.wikiGraph.graph.numNodes
-  
 
-  override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
+  val memo = FastMemoize(relatedness)
+
+
+  protected override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) = memo(srcWikiID, dstWikiID)
+
+
+  protected def relatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     val sizeA = wikiGraph.outdegree(srcWikiID)
     val sizeB = wikiGraph.outdegree(dstWikiID)
 

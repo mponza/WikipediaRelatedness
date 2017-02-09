@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory
 /**
   * Class used to generate the cache over a sequence of WikiRelateTask for a topK method.
   *
-  * WARNING: Class Refactored, to be tested.
-  *
   */
 object TopKCacher {
   protected def logger = LoggerFactory.getLogger(getClass)
@@ -45,14 +43,11 @@ object TopKCacher {
     }
     pl.done()
 
-    //logger.info("Serializing cache into %s".format(topK.getCachePath()))
+    logger.info("Serializing cache into %s".format(topK.getCachePath))
     //new File(topK.getCachePath()).getParentFile.mkdirs
 
-    // ****************************************************************************************************************
-    // WARNING: THEN YOU NEED TO RELOAD AS SEQ
-    // ****************************************************************************************************************
-    new File(outpath).getParentFile.mkdirs
-    BinIO.storeObject(cache, outpath)
+    new File(topK.getCachePath).getParentFile.mkdirs
+    BinIO.storeObject(cache, topK.getCachePath)
   }
 
 }

@@ -93,9 +93,42 @@ object  Similarity {
 
   }
 
+
   def vectorMagnitude[T](vec: Seq[Tuple2[T, Float]]) : Float = {
     val powMagnitude = vec.foldLeft(0.0)((magnitude, elemTuple) => magnitude + math.pow(elemTuple._2, 2.0))
     math.sqrt(powMagnitude).toFloat
   }
+
+
+  def dotProduct[T : Ordering](src: Seq[Tuple2[T, Float]], dst: Seq[Tuple2[T, Float]]) : Float = {
+    var dot = 0f
+    var (i, j) = (0, 0)
+    while(i < src.length && j < dst.length) {
+      val (srcIndex, srcValue) = src(i)
+      val (dstIndex, dstValue) = dst(j)
+
+      if (srcValue.isNaN || dstValue.isNaN) {
+        throw new IllegalArgumentException("Element in Cosine Similarity is NaN.")
+      }
+
+      if(srcIndex == dstIndex) {
+        dot = dot + srcValue * dstValue
+        i += 1
+        j += 1
+
+      } else if (srcIndex < dstIndex) {
+        i += 1
+
+      } else {
+        j += 1
+      }
+    }
+
+    if (dot == 0f) return 0f
+
+    dot
+
+  }
+
 
 }

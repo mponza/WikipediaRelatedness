@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clique
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph
 
 import java.util.Locale
 
@@ -26,7 +26,10 @@ class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
     val nodes = subNodeCreator.subNodes(srcWikiID, dstWikiID)
     val subGraph = new WikiJungCliqueGraph(nodes, weighter)
 
-    simRanker.similarity(srcWikiID, dstWikiID, subGraph).toFloat
+    val s = simRanker.similarity(srcWikiID, dstWikiID, subGraph).toFloat
+    println(s)
+
+    s
   }
 
 

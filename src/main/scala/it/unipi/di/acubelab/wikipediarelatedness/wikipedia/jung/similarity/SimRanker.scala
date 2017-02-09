@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungGraph
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.similarity.matrix.CommuteTime
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessOptions
 
 
@@ -17,7 +18,7 @@ object SimRanker {
    case "csr" => new CoSimRanker(options.iterations, options.pprAlpha, options.csrDecay)
    case "ppr" => new PPRRanker(options.iterations, options.pprAlpha)
 
-   case "hit"
+   case "commute" => new CommuteTime()  // it sucks
   }
 
 }
