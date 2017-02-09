@@ -1,9 +1,8 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.neighbors
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessOptions
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.MilneWittenRelatedness
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKCached
 import org.slf4j.LoggerFactory
 
 

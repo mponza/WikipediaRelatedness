@@ -1,7 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.neighbors.MilneWittenTopK
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.neural.W2VTopK
 
 

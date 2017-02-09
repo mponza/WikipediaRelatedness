@@ -17,16 +17,16 @@ class ESARelatedness(val options: RelatednessOptions)  extends  Relatedness {
   val logger = LoggerFactory.getLogger(getClass)
   val esa = new ESATopK
 
-  val mwopts = new RelatednessOptions(graph = "in")
+  /*val mwopts = new RelatednessOptions(graph = "in")
   val graph = WikiBVGraphFactory.make("in")
   val mw = new MilneWittenRelatedness(mwopts)
-
+*/
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     if (srcWikiID == dstWikiID) return 1f
 
 
-    val srcConcepts = esa.topKScoredEntities(srcWikiID, options.threshold)
-    val dstConcepts = esa.topKScoredEntities(dstWikiID, options.threshold)
+    val srcConcepts = esa.topKScoredEntities(srcWikiID, options.threshold).sortBy(_._1)
+    val dstConcepts = esa.topKScoredEntities(dstWikiID, options.threshold).sortBy(_._1)
 
 
     Similarity.cosineSimilarity(srcConcepts, dstConcepts)
@@ -46,7 +46,7 @@ class ESARelatedness(val options: RelatednessOptions)  extends  Relatedness {
     Similarity.cosineSimilarity(srcConcepts, dstConcepts)
   }
 
-
+/*
   protected def changeweights(wikiID: Int, concepts: Seq[(Int, Float)]) = {
     concepts.filter {
       case pair => graph.wiki2node.containsKey(pair._1)
@@ -55,7 +55,7 @@ class ESARelatedness(val options: RelatednessOptions)  extends  Relatedness {
 
         ( wID, mw.computeRelatedness(wikiID, wID) )
     }
-  }
+  }*/
 
   override def toString() : String = { "ESA_threshold:%d".format(options.threshold) }
 }

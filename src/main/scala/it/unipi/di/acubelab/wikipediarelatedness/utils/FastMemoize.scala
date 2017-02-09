@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.utils
 
 import it.unimi.dsi.fastutil.longs.Long2FloatOpenHashMap
 
-// Rewriting Memoize code with fastutil hashtables.
+// Rewriting Memoize code with FastUtil hashtables.
 // Original code from: http://stackoverflow.com/questions/3640823/what-type-to-use-to-store-an-in-memory-mutable-data-table-in-scala
 
 

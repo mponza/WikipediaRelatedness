@@ -23,14 +23,14 @@ trait TopKCached extends TopK {
     *
     * @return
     */
-  protected def loadCache() : Int2ObjectOpenHashMap[List[(Int, Float)]] = {
+  protected def loadCache() : Int2ObjectOpenHashMap[Seq[(Int, Float)]] = {
     if ( !new File(cachePath).exists() ) {
       logger.warn("Cache not found. No cache will be used.")
-      return new Int2ObjectOpenHashMap[List[(Int, Float)]]()
+      return new Int2ObjectOpenHashMap[Seq[(Int, Float)]]()
     }
 
     logger.info("Loading cache from %s...".format(cachePath))
-    val cache = BinIO.loadObject(cachePath).asInstanceOf[Int2ObjectOpenHashMap[List[Tuple2[Int, Float]]]]
+    val cache = BinIO.loadObject(cachePath).asInstanceOf[Int2ObjectOpenHashMap[Seq[Tuple2[Int, Float]]]]  // before it was list, it does not seem generate problems
     logger.info("Cache loaded!")
 
     cache

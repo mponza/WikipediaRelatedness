@@ -18,5 +18,5 @@ class ESASubNodeCreator(size: Int) extends TopKSubNodeCreator(size) {
   protected val graph = WikiBVGraphFactory.make("out")
 
 
-  override protected def topKNodes(wikiID: Int): Seq[Int] = topK.topKEntities(wikiID, size).filter(graph.contains)
+  override def topKNodes(wikiID: Int): Seq[Int] = topK.topKEntities(wikiID, size).filter(graph.contains)
 }

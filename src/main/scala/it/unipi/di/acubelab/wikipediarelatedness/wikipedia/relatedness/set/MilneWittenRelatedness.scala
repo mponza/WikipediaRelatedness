@@ -24,7 +24,7 @@ class MilneWittenRelatedness(options: RelatednessOptions) extends Relatedness {
   val memo = FastMemoize(relatedness)
 
 
-  protected override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) = memo(srcWikiID, dstWikiID)
+  override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) = memo(srcWikiID, dstWikiID)
 
 
   protected def relatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
