@@ -1,14 +1,5 @@
-import os
-import sys
 import baker
 import logging
-import gensim
-import bz2
-
-from multiprocessing import cpu_count
-from multiprocessing import Pool
-
-from json_wikicorpus import extract_json_pages
 
 from corpus import process_corpus
 
@@ -22,14 +13,14 @@ from commute_time import generate_laplacian_pseudoinverse
 
 
 @baker.command
-def corpus_lda():
+def corpus_lda(num_topics=100):
     '''
     Generates LDA model from Wikipedia.
     Maps every Wikipedia document to the corresponding
     latent model.
     '''
-    generate_lda_model()
-    map_wikidocs2lda()
+    generate_lda_model(num_topics)
+    map_wikidocs2lda(num_topics)
 
 
 @baker.command
@@ -42,10 +33,10 @@ def process_wiki_corpus():
 
 
 @baker.command
-def wiki_lda():
-    process_corpus()
-    generate_lda_model()
-    map_wikidocs2lda()
+def wiki_lda(num_topics):
+    process_corpus(num_topics)
+    generate_lda_model(num_topics)
+    map_wikidocs2lda(num_topics)
 
 
 @baker.command

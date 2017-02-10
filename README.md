@@ -113,7 +113,7 @@ Generates statistical information from the Wikipedia corpus:
     
 Generate LDA model and process each Wikipedia page:
 
-    python src/main/python/latent corpus_lda
+    python src/main/python/latent corpus_lda num_topics
 
 
 For the eigenvector SVD generation on the Wikipedia graph just type:

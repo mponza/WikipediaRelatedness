@@ -20,9 +20,7 @@ from json_wikicorpus import JsonWikiCorpus
 
 from latent_utils import WIKI_FILENAME
 from latent_utils import WIKI_LDA_DIR
-from latent_utils import WIKI_LDA_MODEL
 from latent_utils import WIKI_CORPUS
-from latent_utils import WIKI_LDA_DOCS
 from latent_utils import LEMMING
 
 
@@ -74,19 +72,23 @@ def wiki_document_generator():
         yield (wiki_id, text)
 
 
-def map_wikidocs2lda():
+
+def map_wikidocs2lda(num_topics):
 
     logger = logging.getLogger('Wiki2LDA')
     pool = Pool(cpu_count())
 
     logger.info('Loading LDA model...')
-    lda = gensim.models.ldamodel.LdaState.load(WIKI_LDA_MODEL)
+    model_dir = os.path.join(WIKI_LDA_DIR, str(num_topics) + '/model')
+    lda = gensim.models.ldamodel.LdaState.load(model_dir)
 
+    # Mapping betwee doc-id -> topics
     logger.info('Mapping Wikipedia documents to LDA model...')
-    with smart_open(WIKI_LDA_DOCS, 'wb') as f:
+    doc_topics = os.path.join(WIKI_LDA_DIR, str(num_topics) + '/topics/documents.gz')
+    with smart_open(doc_topics, 'wb') as f:
         n = 0
 
-        for wiki_docs in utils.chunkize(wiki_document_generator(), 1000):
+        for wiki_docs in utils.chunkize(wiki_document_generator(), 10000):
 
             lda_wiki_docs = pool.map(wiki2LDA, [(lda, wiki_doc) for wiki_doc in wiki_docs])
 
@@ -102,7 +104,8 @@ def map_wikidocs2lda():
             logger.info('{0} documents mapped to LDA embedding.'.format(n))
 
 
-def generate_lda_model():
+def generate_lda_model(num_topics=200):
+
     logger.info('Loading wordids file...')
     wordids_filename = WIKI_FILENAME + 'wordids.txt.bz2'
     id2word = gensim.corpora.Dictionary.load_from_text(wordids_filename)
@@ -112,10 +115,11 @@ def generate_lda_model():
     mm = gensim.corpora.MmCorpus(wordtfidf_filename)
 
     logger.info('Generating LDA model...')
-    lda = gensim.models.LdaMulticore(corpus=mm, num_topics=100,
+    lda = gensim.models.LdaMulticore(corpus=mm, num_topics=num_topics,
                                      id2word=id2word, chunksize=10000)
 
     logger.info('Saving LDA model...')
-    if not os.path.isdir(WIKI_LDA_DIR):
-        os.makedirs(WIKI_LDA_DIR)
-    lda.save(WIKI_LDA_MODEL)
+    model_dir = os.path.join(WIKI_LDA_DIR, str(num_topics) + '/model')
+    if not os.path.isdir(model_dir):
+        os.makedirs(model_dir)
+    lda.save(model_dir)

@@ -18,12 +18,13 @@ from gensim.models import TfidfModel
 from json_wikicorpus import JsonWikiCorpus
 
 from latent_utils import WIKI_CORPUS
-from latent_utils import GENSIM_DIR
+#from latent_utils import GENSIM_DIR
 from latent_utils import WIKI_STATS
 from latent_utils import LEMMING
 
 
 DEFAULT_DICT_SIZE = 100000
+GENSIM_DIR = 'tbd...'
 
 
 def process_corpus(input_filename=WIKI_CORPUS, output_dir=GENSIM_DIR,

@@ -243,10 +243,10 @@ function run_clique {
 
     weighters=( "milnewitten --weighterGraph in" "w2v --weighterModel w2v.sg" "w2v --weighterModel deepwalk.dwsg"  )
 
-    simRankers=( "ppr" "csr" )
-    iterations=( 1 2 3 )
-    pprAlphas=( 0.1 0.2 )
-    csrDecays=( 0.8 0.9 )
+    simRankers=( "csr" ) # "ppr" "csr" )
+    iterations=( 1 ) # 2 3 )
+    pprAlphas=( 0.1 ) # 0.2 )
+    csrDecays=( 0.8 ) # 0.9 )
 
     #subNodes=( "esa" )
     #subSizes=( 10 50 100 )
@@ -318,6 +318,9 @@ function run_randomwalks {
 }
 
 
+#
+# Experiments linear combination between two relatedness methods based on w2v and MilneWitten.
+#
 function run_mixed {
     models=(
              # text-based (standard w2v)
@@ -350,24 +353,25 @@ function run_mixed {
 #
 
 
-#run_clique
 
-#run_classical_set
+run_classical_set
 
-#run_milnewitten
-#run_jaccard
+run_milnewitten
+run_jaccard
 
-#run_jaccardlocalclustering
-#run_cosinelocalclustering
+run_jaccardlocalclustering
+run_cosinelocalclustering
 
-#run_esa
-#run_vsm
+run_esa
+run_vsm
 
-#run_svd
-#run_lda
+run_svd
+run_lda
 
-#run_w2v
+run_w2v
 
-#run_randomwalks
+run_randomwalks
 
 run_mixed
+
+run_clique
