@@ -232,6 +232,7 @@ function run_w2v {
 
 #
 # Experiments relatedness with embeddings generated with LINE.
+#
 function run_line {
     sizes=( 100 200 500 )
     orders=( 1 2 )

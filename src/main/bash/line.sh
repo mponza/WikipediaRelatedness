@@ -36,9 +36,9 @@ fi
 # Hyper-parameters
 sizes=( 100 200 500 )
 orders=( 1 2 )
-negatives=( 1 2 5 10 )
-samples=( 50 100 200 500 )
-rhos=( 0.010 0.025 0.050 0.100 )
+negatives=( 2  5 10 )
+samples=( 100 200 500 )
+rhos=( 0.010 0.025 0.050 )
 
 
 if [ ! -d "$outdir" ]; then
