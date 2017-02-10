@@ -84,7 +84,7 @@ def map_wikidocs2lda(num_topics):
 
     # Mapping betwee doc-id -> topics
     logger.info('Mapping Wikipedia documents to LDA model...')
-    doc_topics = os.path.join(WIKI_LDA_DIR, str(num_topics) + '/topics/documents.gz')
+    doc_topics = os.path.join(WIKI_LDA_DIR, str(num_topics) + '/topics/topical_documents.gz')
     with smart_open(doc_topics, 'wb') as f:
         n = 0
 

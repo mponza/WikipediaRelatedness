@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Bash script for benchmarking all relatedness mea
 #
+# Bash script for benchmarking all relatedness mea
 
 
 

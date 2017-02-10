@@ -10,11 +10,15 @@ import org.slf4j.LoggerFactory
 import scala.io.Source
 
 
-class LDA extends Embeddings {
+class LDA(topics: Int) extends Embeddings {
   protected override def logger = LoggerFactory.getLogger(getClass)
 
 
-  protected override def loadEmbeddings() = loadEmbeddings(Config.getString("wikipedia.latent.lda"))
+  protected override def loadEmbeddings() = loadEmbeddings(getTopicsPath)
+
+
+  protected def getTopicsPath = Config.getString("wikipedia.latent.lda.topics") +
+                                                     "%d/topical_documents.gz".format(topics)
 
 
   protected def loadEmbeddings(path: String): WikiEmbeddings = {

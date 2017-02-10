@@ -92,14 +92,11 @@ For balancing purpose, rows with cooccurrence <= 10 need to be removed.
 
 
 
-
-
 WebGraph Processing
 -------------------
 
 Run `WikiWebGraph.generateBVGraphs` in order to process the Wikipedia graph with WebGraph and generatre the corresponding BVGraphs (in, out and symmetric).
 
-LLP: tobedone
 
 
 
@@ -162,40 +159,6 @@ Download `triangles-1.1.jar` from `LAW` into `lib/triangle` folder.
 
     
 
-
-    
-Benchmarking
-------------
-  
-Run the `Bench` class with one following parameter:
-  
-    """{"relatedness": "Milne-Witten"}"""
-    
-    """{"relatedness": "Jaccard", "graph": "inGraph"}"""
-    """{"relatedness": "Jaccard", "graph": "outGraph"}"""
-    """{"relatedness": "Jaccard", "graph": "symGraph"}"""
-    
-    """{"relatedness": "w2v", "model": "corpus"}"""
-    """{"relatedness": "w2v", "model": "deepWalk"}"""
-    """{"relatedness": "w2v", "model": "deepCorpus"}"""
-
-    """{"relatedness": "LocalClustering"}"""
-    
-    """{"relatedness": "MultiLLP"}"""
-    
-    """{"relatedness": "LMModel"}"""
-    
-    """{"relatedness": "CoSimRank", "graph": "deepCorpus"}"""
-    
-    ...
-    
-    sbt "run-main it.unipi.di.acubelab.wikipediarelatedness.MainClass"
-
-See `it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness` for the extended list of relatedness method avaiable.
-LLP need the label generation (see `processing` package).
-
-
-Finally, select the `Bench` option.
 
 
 Analysis

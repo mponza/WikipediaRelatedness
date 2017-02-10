@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory
   */
 class LDARelatedness(options: RelatednessOptions) extends EmbeddingsRelatedness(options)  {
   protected val logger = LoggerFactory.getLogger(getClass)
-  override protected val embeddings = new LDA
+  override protected val embeddings = new LDA(options.threshold)
 
 
   override def toString(): String = {

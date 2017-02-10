@@ -15,7 +15,6 @@ from latent_utils import LAPLACIAN_PINV_DIR
 
 
 
-
 logger = logging.getLogger('Average Commute Time')
 
 normalize_laplacian = True
