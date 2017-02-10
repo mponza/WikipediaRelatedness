@@ -230,6 +230,36 @@ function run_w2v {
 }
 
 
+#
+# Experiments relatedness with embeddings generated with LINE.
+function run_line {
+    sizes=( 100 200 500 )
+    orders=( 1 2 )
+    negatives=( 1 2 5 10 )
+    samples=( 50 100 200 500 )
+    rhos=( 0.010 0.025 0.050 0.100 )
+
+    for size in "${sizes[@]}"
+    do
+        for order in "${orders[@]}"
+        do
+            for neg in "${negatives[@]}"
+            do
+                for sample in "${samples[@]}"
+                do
+                    for rho in "${rhos[@]}"
+                    do
+                        args="--name line --size $size --order $order --negative $neg --sample $sample --rho $rhos"
+                        logging_info "Running LINE with paramters: $args\n"
+
+                        run_sbt "$args"
+                    done
+                done
+            done
+        done
+    done
+}
+
 
 # language model?
 
@@ -369,6 +399,8 @@ run_svd
 run_lda
 
 run_w2v
+
+run_line
 
 run_randomwalks
 

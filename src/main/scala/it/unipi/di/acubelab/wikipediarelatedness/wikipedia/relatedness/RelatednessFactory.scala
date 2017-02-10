@@ -1,12 +1,13 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.neural.line.LINEEmbeddings
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph.CliqueRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clustering.{CosineLocalClusteringRelatedness, JaccardLocalClusteringRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.latent.{LDARelatedness, SVDRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lm.LMRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.esa.{ESAEntityRelatedness, ESARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.vsm.VectorSpaceModelRelatedeness
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.Word2VecRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.{LINERelatedness, Word2VecRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalk.{CoSimRankRelatedness, PPRRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set._
 
@@ -48,6 +49,7 @@ object RelatednessFactory {
     //
     // Neural
     case "w2v" => new Word2VecRelatedness(options)
+    case "line" => new LINERelatedness(options)
 
     //
     // Language Model

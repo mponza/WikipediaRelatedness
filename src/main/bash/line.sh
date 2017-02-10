@@ -1,5 +1,12 @@
 #!/bin/bash
 
+
+# Constants
+train='data/wikipedia/dump/wiki-links-sorted' # checkme
+outdir='data/wikipedia/neural/line'
+threads=20
+
+
 #
 # Bash printing.
 #
@@ -8,13 +15,11 @@ function logging_info {
 }
 
 
-logging_info 'Unzipping Wikipedia graph...'
-gunzip -k data/wikipedia/dump/wiki-links-sorted.gz # check me if I remove wiki-links
+if [ ! -f "$train" ];  then
+   logging_info 'Unzipping Wikipedia graph...'
+   gunzip -k data/wikipedia/dump/wiki-links-sorted.gz
+fi
 
-
-
-
-# LINE parameters
 
 # Pasted from https://github.com/tangjianpku/LINE
 #
@@ -28,27 +33,19 @@ gunzip -k data/wikipedia/dump/wiki-links-sorted.gz # check me if I remove wiki-l
 # -threads, the total number of threads used; the default is 1.
 
 
-# Constants
-train='data/wikipedia/dump/wiki-links-sorted' # checkme
-outdir='data/wikipedia/neural/line'
-threads=20
-
 # Hyper-parameters
-sizes=$( 100 200 500 )
-orders=$( 1 2 )
-negatives=$( 1 2 5 10 )
-samples=$( 50 100 200 500 )
-rhos=$( 0.01 0.025 0.05 0.1 )
-
-sizes=$( 100 )
-orders=$( 1 2 )
-negatives=$( 1 )
-samples=$( 50  )
-rhos=$( 0.025  )
+sizes=( 100 200 500 )
+orders=( 1 2 )
+negatives=( 1 2 5 10 )
+samples=( 50 100 200 500 )
+rhos=( 0.010 0.025 0.050 0.100 )
 
 
-logging_info 'Creating LINE output directory...'
-mkdir outdir # same path in reference.conf ('wikipediarelatedness.wikipedia.neural.line')
+if [ ! -d "$outdir" ]; then
+    logging_info 'Creating LINE output directory...'
+    mkdir outdir # same path in reference.conf ('wikipediarelatedness.wikipedia.neural.line')
+fi
+
 
 
 for size in "${sizes[@]}"

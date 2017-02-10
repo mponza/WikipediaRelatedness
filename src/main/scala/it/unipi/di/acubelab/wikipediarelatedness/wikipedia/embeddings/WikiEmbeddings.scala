@@ -13,11 +13,6 @@ trait WikiEmbeddings {
   def apply(wikiID: Int) : INDArray
 
 
-  def cosine(srcWikiID: Int, dstWikiID: Int) = {
-    val srcVec = this(srcWikiID)
-    val dstVec = this(dstWikiID)
-
-    Transforms.cosineSim(srcVec, dstVec).toFloat
-  }
+  def cosine(srcWikiID: Int, dstWikiID: Int) = Transforms.cosineSim(this(srcWikiID), this(dstWikiID)).toFloat
 
 }

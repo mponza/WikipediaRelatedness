@@ -57,7 +57,17 @@ case class RelatednessOptions(
                                simRanker: String = "",
                                iterations: Int = 30,
                                pprAlpha: Float = 0.1f,
-                               csrDecay: Float = 0.8f
+                               csrDecay: Float = 0.8f,
+
+
+                               //
+                               // Neural Embeddings parameters
+                               size: Int = 100,
+                               order: Int = 2,
+                               negative: Int = 5,
+                               sample: Int = 5,
+                               rho: Float = 0.025f
+
 
 
 ) {
@@ -172,6 +182,15 @@ object RelatednessOptions {
       opt[Double]("pprAlpha").action((x, conf) => conf.copy(pprAlpha = x.toFloat)).text("PageRank decay")
 
       opt[Double]("csrDecay").action((x, conf) => conf.copy(csrDecay = x.toFloat)).text("CoSimRank decay")
+
+
+      //
+      // Neural Embeddings parameters
+      opt[Int]("size").action((x, conf) => conf.copy(size = x)).text("Embeddings Size")
+      opt[Int]("order").action((x, conf) => conf.copy(order = x)).text("Embeddings Order")
+      opt[Int]("negative").action((x, conf) => conf.copy(negative = x)).text("Embeddings Negative")
+      opt[Int]("sample").action((x, conf) => conf.copy(sample = x)).text("Embeddings Sample")
+      opt[Double]("rho").action((x, conf) => conf.copy(rho = x.toFloat)).text("Embeddings Rho")
 
     }
 

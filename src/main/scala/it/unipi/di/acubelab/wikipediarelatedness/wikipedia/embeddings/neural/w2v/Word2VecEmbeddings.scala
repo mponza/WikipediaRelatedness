@@ -7,12 +7,13 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.WikiEmbedd
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.factory.Nd4j
 
+
 /**
   * Wrapper of EmbeddingDataset.
   *
   * @param modelPath
   */
-class Word2VecEmbeddings(modelPath: String) extends WikiEmbeddings{
+class Word2VecEmbeddings(modelPath: String) extends WikiEmbeddings {
   protected val w2vDataset = {
     if (modelPath == "") throw new IllegalArgumentException("Model not specificed!.")
     EmbeddingsDataset.apply(new File(modelPath))
