@@ -2,7 +2,7 @@
 
 
 # Constants
-train='data/wikipedia/dump/wiki-links-sorted' # checkme
+train='data/wikipedia/dump/wiki-links-sorted'
 outdir='data/wikipedia/neural/line'
 threads=20
 
@@ -36,9 +36,15 @@ fi
 # Hyper-parameters
 sizes=( 100 200 500 )
 orders=( 1 2 )
-negatives=( 2  5 10 )
-samples=( 100 200 500 )
-rhos=( 0.010 0.025 0.050 )
+negatives=( 1 2 5 10 )
+samples=( 100 200 500 1000 )
+rhos=( 0.010 0.025 0.050 0.1 )
+
+sizes=( 100 )
+orders=( 1  )
+negatives=( 1  )
+samples=( 10 )
+rhos=( 0.025 )
 
 
 if [ ! -d "$outdir" ]; then
@@ -65,6 +71,9 @@ do
 
                     logging_info "Running LINE with parameters $args"
                     ./lib/LINE/linux/line $args
+
+                    logging_info "Cleaning unuseless LINE embeddings..."
+                    python2.7 src/main/python/clean line "$outfile"
 
                     logging_info "Compressing LINE embeddings..."
                     gzip "$outfile"

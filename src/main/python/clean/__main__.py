@@ -1,11 +1,16 @@
-import baker
 import logging
+import baker
 
-from line import from line import keep_dataset_wiki_ids
+from line import keep_dataset_wiki_ids
 
 
 @baker.command
 def line(filename):
+    '''
+
+    :param filename: absolute path to filename to clean
+    :return:
+    '''
     keep_dataset_wiki_ids(filename)
 
 

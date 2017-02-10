@@ -43,7 +43,7 @@ class LINE(val size: Int, val order: Int, val negative: Int, val sample: Int, va
       .format(size, order, negative, sample, rho))
 
     val lineEmbeddings = new Int2ObjectOpenHashMap[FloatArrayList]()
-    for (line <- reader.getLines().drop(1)) {
+    for (line <- reader.getLines()) {
       val values = line.split(" ")
 
       val wikiID = values(0).toInt
