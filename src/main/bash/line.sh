@@ -72,11 +72,10 @@ do
                     logging_info "Running LINE with parameters $args"
                     ./lib/LINE/linux/line $args
 
-                    logging_info "Cleaning unuseless LINE embeddings..."
+                    logging_info "Cleaning unuseless LINE embeddings and save it in gz format..."
                     python2.7 src/main/python/clean line "$outfile"
 
-                    logging_info "Compressing LINE embeddings..."
-                    gzip "$outfile"
+                    rm "$outfile"
 
                 done
             done

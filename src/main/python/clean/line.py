@@ -45,7 +45,7 @@ def get_wiki_ids():
 
 def keep_dataset_wiki_ids(filename):
     '''
-    Overwrite filename by keeping only those Wikipedia IDs contained in the datasets.
+    Write in filename.gz by those Wikipedia IDs contained in the datasets.
     :param filename: absolute filename of the LINE embeddings.
     :return:
     '''
