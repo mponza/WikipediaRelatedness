@@ -79,6 +79,8 @@ WIKI_LDA_DIR = wikiconf.get('latent.lda.topics')
 # WIKI_LDA_MODEL = os.path.join(WIKI_LDA_DIR, 'lda_model')
 # WIKI_LDA_DOCS = os.path.join(WIKI_LDA_DIR, 'lda_wiki_docs.gz')
 
+LDA_MODEL_DIR = lambda num_topics: os.path.join(WIKI_LDA_DIR, str(num_topics) + '/model')
+LDA_MODEL_FILENAME = lambda num_topics: os.path.join(LDA_MODEL_DIR(num_topics), "/wiki_lda_model")
 
 
 #

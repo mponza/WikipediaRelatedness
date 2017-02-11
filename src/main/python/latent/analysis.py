@@ -20,6 +20,8 @@ from json_wikicorpus import JsonWikiCorpus
 
 from latent_utils import WIKI_FILENAME
 from latent_utils import WIKI_LDA_DIR
+from latent_utils import LDA_MODEL_DIR
+from latent_utils import LDA_MODEL_FILENAME
 from latent_utils import WIKI_CORPUS
 from latent_utils import LEMMING
 
@@ -54,7 +56,6 @@ def wiki2LDA(lda_task):
             f.write(str(topic_id) + '\t' + str(prob) + '\n')
 
 
-
 def wiki_document_generator():
     '''
     Returns [(wiki_id, processed_tokens)] as defined in JsonWikiCorpus.
@@ -72,23 +73,21 @@ def wiki_document_generator():
         yield (wiki_id, text)
 
 
-
 def map_wikidocs2lda(num_topics):
 
     logger = logging.getLogger('Wiki2LDA')
     pool = Pool(cpu_count())
 
     logger.info('Loading LDA model...')
-    model_dir = os.path.join(WIKI_LDA_DIR, str(num_topics) + '/model')
-    lda = gensim.models.ldamodel.LdaState.load(model_dir)
+    lda = gensim.models.ldamodel.LdaState.load(LDA_MODEL_FILENAME(num_topics))
 
     # Mapping betwee doc-id -> topics
     logger.info('Mapping Wikipedia documents to LDA model...')
-    doc_topics = os.path.join(WIKI_LDA_DIR, str(num_topics) + '/topics/topical_documents.gz')
+    doc_topics = os.path.join(LDA_MODEL_DIR(num_topics) + '/topical_documents.gz')
     with smart_open(doc_topics, 'wb') as f:
         n = 0
 
-        for wiki_docs in utils.chunkize(wiki_document_generator(), 10000):
+        for wiki_docs in utils.chunkize(wiki_document_generator(), 100000):
 
             lda_wiki_docs = pool.map(wiki2LDA, [(lda, wiki_doc) for wiki_doc in wiki_docs])
 
@@ -116,10 +115,11 @@ def generate_lda_model(num_topics=200):
 
     logger.info('Generating LDA model...')
     lda = gensim.models.LdaMulticore(corpus=mm, num_topics=num_topics,
-                                     id2word=id2word, chunksize=10000)
+                                     id2word=id2word, chunksize=100000)
 
     logger.info('Saving LDA model...')
-    model_dir = os.path.join(WIKI_LDA_DIR, str(num_topics) + '/model')
+    model_dir = LDA_MODEL_DIR(num_topics)
     if not os.path.isdir(model_dir):
         os.makedirs(model_dir)
-    lda.save(model_dir)
+
+    lda.save(LDA_MODEL_FILENAME(num_topics))

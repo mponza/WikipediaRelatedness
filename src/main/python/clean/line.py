@@ -24,7 +24,7 @@ def get_wiki_ids():
 
     # WikiSim
     filename = conf.get_string('wikipediarelatedness.dataset.wikisim.wat')
-    df = pd.read_csv(filename)
+    df = pd.read_csv(filename, header=None)
     df.columns =  ['src_word', 'src_wiki_id', 'src_wiki_title', 'dst_word', 'dst_wiki_id', 'dst_wiki_title', 'rel']
     wiki_ids = df['src_wiki_id'].tolist() + df['dst_wiki_id'].tolist()
 
@@ -51,6 +51,7 @@ def keep_dataset_wiki_ids(filename):
     '''
     logging.info('Retrieving unique Wikiedia IDs...')
     wiki_ids = get_wiki_ids()
+    open('/tmp/prova', 'w').write(str(wiki_ids))
     logging.info('{0} Unique Wikipedia IDs loaded.'.format(len(wiki_ids)))
 
     lines = []

@@ -36,9 +36,9 @@ fi
 # Hyper-parameters
 sizes=( 100 200 500 1000 )
 orders=( 1 2 )
-negatives=( 1 2 5 10 50 )
+negatives=( 1 2 5 10 )
 samples=( 100 200 500 )
-rhos=( 0.010 0.025 0.050 0.1 )
+rhos=( 0.010 0.025 0.050 )
 
 #sizes=( 100 )
 #orders=( 1  )
