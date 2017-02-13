@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.randomwalk
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.casaro
 
 import java.io.File
 import java.util.concurrent.TimeUnit

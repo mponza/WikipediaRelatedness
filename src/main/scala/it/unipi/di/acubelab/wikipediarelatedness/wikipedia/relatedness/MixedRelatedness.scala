@@ -1,5 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
+import java.util.Locale
+
 import org.slf4j.LoggerFactory
 
 
@@ -28,5 +30,5 @@ class MixedRelatedness(options: RelatednessOptions) extends Relatedness {
   }
 
 
-  override def toString = "MixedRelatedness_first:%s,second:%s,lambda:%1.2f".format(fst, scd, lambda)
+  override def toString = "MixedRelatedness_first:%s,second:%s,lambda:%1.2f".formatLocal(Locale.US, fst, scd, lambda)
 }

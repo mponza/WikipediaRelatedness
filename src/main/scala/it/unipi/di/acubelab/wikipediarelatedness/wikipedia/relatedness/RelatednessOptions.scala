@@ -77,8 +77,16 @@ case class RelatednessOptions(
                                                 graph = this.weighterGraph,
                                                 model = this.weighterModel,
                                                 threshold = this.weighterThreshold,
+
                                                 firstname = this.firstname,
+                                                firstgraph = this.firstgraph,
+                                                firstmodel = this.firstmodel,
+
                                                 secondname = this.secondname,
+                                                secondgraph = this.secondgraph,
+                                                secondmodel = this.secondmodel,
+
+
                                                 lambda = this.lambda
                                               )
 

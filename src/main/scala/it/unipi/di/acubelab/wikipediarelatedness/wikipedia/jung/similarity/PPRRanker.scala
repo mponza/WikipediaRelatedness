@@ -35,5 +35,4 @@ class PPRRanker(iterations: Int, pprAlpha: Double) extends PriorRanker(iteration
     }
   }
 
-
 }

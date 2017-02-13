@@ -6,10 +6,13 @@ import java.util
 import it.cnr.isti.hpc.{LinearAlgebra, Word2VecCompress}
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unipi.di.acubelab.wat.dataset.Dataset
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.ops.transforms.Transforms
+
+import scala.collection.JavaConversions._
 
 trait EmbeddingsDataset extends Dataset {
   def size: Int
@@ -53,7 +56,15 @@ trait EmbeddingsDataset extends Dataset {
 }
 
 object EmbeddingsDataset {
+
+  // Used by apply(Word2VecCompress) because vocabulary of words not explicitly available
+  def entities() = {
+    WordVectorSerializer.loadGoogleModel(  new File(Config.getString("wikipedia.neural.w2v.sg") ), true ).vocab()
+      .words().filter(_.startsWith("ent_")).toList
+  }
+
   def apply(model: WordVectors) = new EmbeddingsDataset {
+
     override def size: Int = model.vocab().numWords()
     override def similarity(w1: String, w2: String): Float = model.similarity(w1, w2).toFloat
     override def embedding(word: String): EmbeddingVector = {
@@ -77,16 +88,30 @@ object EmbeddingsDataset {
     }
 
     override def contextVector(words: List[String]) = {
-      import scala.collection.JavaConversions._
       model.getWordVectorsMean(words)
     }
   }
 
   def apply(model: Word2VecCompress) = new EmbeddingsDataset {
+    protected val entities = EmbeddingsDataset.entities()
     def dimEmbedding: Int = model.dimensions()
+
     def size: Int = model.size()
+
     def contains(word: String): Boolean = model.word_id(word) != null
+
     def embedding(word: String): EmbeddingVector = model.get(word)
+
+
+    //
+    // For now we implement only this
+    override def topKSimilarFromWord(word: String, k: Int) = {
+      entities.map {
+        case entity: String => (entity, similarity(entity, word))
+      }.sortBy(_._2).reverse.slice(0, k).map(_._1)
+    }
+
+
     def similarity(w1: String, w2: String): Float = {
       val vec1 = embedding(w1)
 

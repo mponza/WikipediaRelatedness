@@ -1,6 +1,6 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalk
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.casaro
 
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.randomwalk.CoSimRankCache
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.casaro.CoSimRankCache
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
 import org.slf4j.LoggerFactory
 
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
   *
   * @param options
   */
-class PPRRelatedness(options: RelatednessOptions) extends Relatedness {
+class CasaroPPRRelatedness(options: RelatednessOptions) extends Relatedness {
   protected val logger = LoggerFactory.getLogger(getClass)
   protected val ppr = new CoSimRankCache(options.pprAlpha, options.iterations)
 

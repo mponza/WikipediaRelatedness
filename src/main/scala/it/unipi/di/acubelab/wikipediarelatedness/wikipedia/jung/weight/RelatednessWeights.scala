@@ -5,6 +5,8 @@ import it.unimi.dsi.fastutil.ints.Int2DoubleOpenHashMap
 import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.apache.commons.collections15.Transformer
+import org.slf4j.LoggerFactory
+
 import scala.collection.JavaConversions._
 
 
@@ -16,7 +18,7 @@ import scala.collection.JavaConversions._
   */
 class RelatednessWeights(graph: DirectedGraph[Int, Long], relatedness: Relatedness)
                           extends Transformer[Long, java.lang.Double] {
-
+  protected val logger = LoggerFactory.getLogger(getClass)
   protected val weights = computeNormalizedWeights()
 
   /**
@@ -35,7 +37,16 @@ class RelatednessWeights(graph: DirectedGraph[Int, Long], relatedness: Relatedne
       val dst = getDestination(edge)
 
       val rel = relatedness.computeRelatedness(src, dst)
-      weights.put(edge, rel)
+
+      if (rel.isNaN) {
+        logger.warn("NaN relatedness between %d and %d. Using 0.0 as weight.".format(src, dst))
+        weights.put(edge, 0.0)
+
+      } else {
+
+        weights.put(edge, rel)
+      }
+
 
       val currentSum = sums.getOrDefault(src, 0.0)
       sums.put(src, currentSum + rel)

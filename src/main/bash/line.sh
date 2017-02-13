@@ -34,22 +34,22 @@ fi
 
 
 # Hyper-parameters
-sizes=( 100 200 500 1000 )
+sizes=( 300 400 ) # 200 500 1000 )
 orders=( 1 2 )
 negatives=( 1 2 5 10 )
-samples=( 100 200 500 )
-rhos=( 0.010 0.025 0.050 )
+samples=( 50 100 200 500 )
+rhos=( 0.010 0.025 0.050 ) #( 0.010 0.025 0.050 )
 
 #sizes=( 100 )
 #orders=( 1  )
-#negatives=( 1  )
+#negatives=( 1 )
 #samples=( 10 )
 #rhos=( 0.025 )
 
 
 if [ ! -d "$outdir" ]; then
     logging_info 'Creating LINE output directory...'
-    mkdir outdir # same path in reference.conf ('wikipediarelatedness.wikipedia.neural.line')
+    mkdir "$outdir"  # same path in reference.conf ('wikipediarelatedness.wikipedia.neural.line')
 fi
 
 

@@ -8,7 +8,8 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lm.LMRela
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.esa.{ESAEntityRelatedness, ESARelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.vsm.VectorSpaceModelRelatedeness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.{LINERelatedness, Word2VecRelatedness}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalk.{CoSimRankRelatedness, PPRRelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.casaro.{CasaroCoSimRankRelatedness, CasaroPPRRelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalks.PPRRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set._
 
 
@@ -60,9 +61,11 @@ object RelatednessFactory {
     case "clique" => new CliqueRelatedness(options)
 
     //
-    // PageRank
-    case "csr" => new CoSimRankRelatedness(options)
+    // RandomWalks
     case "ppr" => new PPRRelatedness(options)
+
+    case "casaro.csr" => new CasaroCoSimRankRelatedness(options)
+    case "casaro.ppr" => new CasaroPPRRelatedness(options)
 
 
     case "mix" => new MixedRelatedness(options)

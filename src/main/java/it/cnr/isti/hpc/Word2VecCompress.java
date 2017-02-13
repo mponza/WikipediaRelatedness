@@ -7,6 +7,8 @@ import it.unimi.dsi.fastutil.io.BinIO;
 import it.unimi.dsi.fastutil.io.FastByteArrayOutputStream;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2LongFunction;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.io.OutputBitStream;
 import it.unimi.dsi.logging.ProgressLogger;
 import it.unimi.dsi.sux4j.mph.MinimalPerfectHashFunction;
@@ -19,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Word2VecCompress implements Serializable {
@@ -122,6 +125,15 @@ public class Word2VecCompress implements Serializable {
 	public int dimensions() {
 		return vectorSize;
 	}
+
+
+    //
+    // Experimental. Result: Does not work. null.
+    public ObjectList<CharSequence> get_words_dictionary() {
+        ShiftAddXorSignedStringMap words = (ShiftAddXorSignedStringMap) dictionary;
+        return words.list();
+    }
+
 
 	public static void main(String[] args) throws Exception {
 		SimpleJSAP jsap = new SimpleJSAP(

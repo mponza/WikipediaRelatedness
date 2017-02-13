@@ -16,18 +16,18 @@ object TopKFactory {
     //
     // Neural
     case "corpus" => new W2VTopK(
-      Config.getString("wikipedia.topk.neural.w2v.corpus"),
-      Config.getString("wikipedia.topk.cache.neural.corpus.entity2entities")
+      Config.getString("wikipedia.neural.w2v.corpus"),
+      Config.getString("wikipedia.cache.topk.neural.corpus.entity2entities")
     )
 
     case "sg" => new W2VTopK(
-      Config.getString("wikipedia.topk.neural.w2v.sg"),
-      Config.getString("wikipedia.topk.cache.neural.sg.entity2entities")
+      Config.getString("wikipedia.neural.w2v.sg"),
+      Config.getString("wikipedia.cache.topk.neural.sg.entity2entities")
     )
 
     case "dwsg" => new W2VTopK(
-      Config.getString("wikipedia.topk.neural.deepwalk.dwsg"),
-      Config.getString("wikipedia.topk.cache.neural.dwsg.entity2entities")
+      Config.getString("wikipedia.neural.deepwalk.dwsg"),
+      Config.getString("wikipedia.cache.topk.neural.dwsg.entity2entities")
     )
 
 

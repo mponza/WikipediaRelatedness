@@ -208,13 +208,11 @@ function run_w2v {
     models=(
              # text-based (standard w2v)
              "w2v.corpus" "w2v.coocc" "w2v.sg"
-
-             # ask to Francesco
-             "el.el_1st_dw" "el.el_1st" "el.el_dw"
+             "w2v.corpus200" "w2v.corpus300" "w2v.corpus400"
 
              # random walk-based (DeepWalk)
              "deepwalk.dw" "deepwalk.deep_corpus"
-             "deepwalk.dw10" "deepwalk.dw30" "deepwalk.dw50" "deepwalk.dw70" "deepwalk.dw90"\
+             "deepwalk.dw10" "deepwalk.dw30" "deepwalk.dw50" "deepwalk.dw70" "deepwalk.dw90"
              "deepwalk.dwsg"
     )
 
@@ -269,15 +267,17 @@ function run_line {
 # Experiments based on clique graph generation.
 #
 function run_clique {
-    subNodes=( "esa" "sg" "dwsg" )
+    # subNodes=( "esa"   "sg" "dwsg" )
+    subNodes=( "mw.in" "mw.out" "mw.sym" "esamw.in" "esamw.out" "esamw.sym")
     subSizes=( 5 10 30 )
 
-    weighters=( "milnewitten --weighterGraph in" "w2v --weighterModel w2v.sg" "w2v --weighterModel deepwalk.dwsg"  )
+    # weighters=( "milnewitten --weighterGraph in" "w2v --weighterModel w2v.sg" "w2v --weighterModel deepwalk.dwsg"  )
+    weighters=( "milnewitten --weighterGraph in" )
 
     simRankers=( "csr" ) # "ppr" "csr" )
-    iterations=( 1 ) # 2 3 )
-    pprAlphas=( 0.1 ) # 0.2 )
-    csrDecays=( 0.8 ) # 0.9 )
+    iterations=( 1  3 )  # 2 3 )
+    pprAlphas=( 0.1 0.2 ) # 0.2 )
+    csrDecays=( 0.8 0.9 ) # 0.9 )
 
     #subNodes=( "esa" )
     #subSizes=( 10 50 100 )
@@ -375,6 +375,66 @@ function run_mixed {
 }
 
 
+
+function run_mixclique {
+    subNodes=( "esa" )
+    subSizes=( 5 10 30 )
+
+    weighters=( "mix --firstname milnewitten --firstgraph in --secondname w2v --secondmodel w2v.corpus"
+                "mix --firstname milnewitten --firstgraph in --secondname w2v --secondmodel w2v.sg"
+                "mix --firstname milnewitten --firstgraph in --secondname w2v --secondmodel deepwalk.sg" )
+
+    lambdas=( 0.1 0.3 0.5 0.7 0.9 )
+
+    simRankers=( "csr" ) # "ppr" "csr" )
+    iterations=( 1 3 ) # 2 3 )
+    pprAlphas=( 0.1 0.2 ) # 0.2 )
+    csrDecays=( 0.8 0.9 ) # 0.9 )
+
+
+    for nodes in "${subNodes[@]}"
+    do
+        for size in "${subSizes[@]}"
+        do
+            for weight in "${weighters[@]}"
+            do
+                for simRank in "${simRankers[@]}"
+                do
+                    for iters in "${iterations[@]}"
+                    do
+                        for ppr in "${pprAlphas[@]}"
+                        do
+                            for csr in "${csrDecays[@]}"
+                            do
+
+                                for lam in "${lambdas[@]}"
+                                do
+
+                                    args="--name clique --subNodes $nodes --subSize $size --weighter $weight "
+                                    args+="--simRanker $simRank --iterations $iters --pprAlpha $ppr --csrDecay $csr --lambda $lam"
+
+                                    logging_info "Experimenting MixedClique Relatedness with parameters: $args\n"
+
+                                    run_sbt "$args"
+
+                                done
+                            done
+                        done
+                    done
+                done
+            done
+        done
+    done
+
+}
+
+
+
+
+
+
+
+
 # ======================================================================================================================
 #
 # Main
@@ -385,26 +445,26 @@ function run_mixed {
 
 
 
-run_classical_set
+#run_classical_set
 
-run_milnewitten
-run_jaccard
+#run_milnewitten
+#run_jaccard
 
-run_jaccardlocalclustering
-run_cosinelocalclustering
+#run_jaccardlocalclustering
+#run_cosinelocalclustering
 
-run_esa
-run_vsm
+#run_esa
+#run_vsm
 
-run_svd
-run_lda
+#run_svd
+#run_lda
 
-run_w2v
+#run_line da buttare lol
 
-run_line
+#run_randomwalks
 
-run_randomwalks
-
-run_mixed
-
+# launch these
+#run_w2v
+#run_mixed
 run_clique
+#run_mixclique

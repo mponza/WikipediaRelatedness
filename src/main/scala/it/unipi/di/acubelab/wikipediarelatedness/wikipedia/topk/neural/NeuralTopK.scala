@@ -3,6 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.neural
 import java.io.File
 
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTitleID
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKCached
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.{Logger, LoggerFactory}
@@ -36,7 +37,7 @@ abstract class NeuralTopK extends TopKCached {
         try {
 
           val wID = word.substring(4, word.length).toInt
-          if (wikiBVGraph.contains(wID)) {
+          if (wID != wikiID && wikiBVGraph.contains(wID)) {
 
             val score = embeddings.similarity("ent_" + wikiID, "ent_" + wID)
             scoredEntities += Tuple2(wID, score)
@@ -49,6 +50,11 @@ abstract class NeuralTopK extends TopKCached {
         }
 
       }
+    }
+
+    println("Top-2 for %s".format(WikiTitleID.map(wikiID)))
+    scoredEntities.slice(0, 2).foreach {
+      case p => println(WikiTitleID.map(p._1), p._2)
     }
 
     scoredEntities.toList

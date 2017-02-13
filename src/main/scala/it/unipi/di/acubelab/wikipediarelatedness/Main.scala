@@ -44,8 +44,8 @@ object MilneWittenCacher {
 object W2VCacher {
   def main(args: Array[String]) {
     val topk = new W2VTopK(
-      Config.getString("wikipedia.topk.neural.w2v.corpus"),
-      Config.getString("wikipedia.topk.cache.neural.corpus.entity2entities")
+      Config.getString("wikipedia.neural.w2v.corpus"),
+      Config.getString("wikipedia.cache.topk.neural.corpus.entity2entities")
     )
 
 
@@ -54,8 +54,8 @@ object W2VCacher {
   }
 
 }
-*/
-/*
+
+
 object Jung {
   def main(args: Array[String]) {
     val wjg = new WikiJungBVGraph("out")

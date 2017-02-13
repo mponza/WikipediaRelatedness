@@ -87,7 +87,7 @@ def map_wikidocs2lda(num_topics):
     with smart_open(doc_topics, 'wb') as f:
         n = 0
 
-        for wiki_docs in utils.chunkize(wiki_document_generator(), 100000):
+        for wiki_docs in utils.chunkize(wiki_document_generator(), 10000):
 
             lda_wiki_docs = pool.map(wiki2LDA, [(lda, wiki_doc) for wiki_doc in wiki_docs])
 
@@ -115,7 +115,7 @@ def generate_lda_model(num_topics=200):
 
     logger.info('Generating LDA model...')
     lda = gensim.models.LdaMulticore(corpus=mm, num_topics=num_topics,
-                                     id2word=id2word, chunksize=100000)
+                                     id2word=id2word, chunksize=10000)
 
     logger.info('Saving LDA model...')
     model_dir = LDA_MODEL_DIR(num_topics)

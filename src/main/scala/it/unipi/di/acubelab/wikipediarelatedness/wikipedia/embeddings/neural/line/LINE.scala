@@ -48,7 +48,7 @@ class LINE(val size: Int, val order: Int, val negative: Int, val sample: Int, va
 
       val wikiID = values(0).toInt
       val emebedding = values.slice(1, values.length).map(_.toFloat)
-      
+
       lineEmbeddings.put(wikiID, new FloatArrayList(emebedding))
     }
 

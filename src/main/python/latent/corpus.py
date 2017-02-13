@@ -45,6 +45,7 @@ def process_corpus(input_filename=WIKI_CORPUS, output_dir=GENSIM_DIR,
         dictionary = HashDictionary(id_range=keep_words, debug=debug)
         dictionary.allow_update = True # start collecting document frequencies
         wiki = JsonWikiCorpus(inp, to_lemmatize=to_lemmatize, dictionary=dictionary)
+
         MmCorpus.serialize(outp + '_bow.mm', wiki, progress_cnt=10000) # ~4h on my macbook pro without lemmatization, 3.1m articles (august 2012)
         # with HashDictionary, the token->id mapping is only fully instantiated now, after `serialize`
         dictionary.filter_extremes(no_below=20, no_above=0.1, keep_n=DEFAULT_DICT_SIZE)

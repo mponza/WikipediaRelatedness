@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.topk
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.{ESATopK, MilneWittenTopK, TopK}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.{Logger, LoggerFactory}
 
 import collection.JavaConverters._
@@ -12,13 +13,14 @@ class ESAMilneWittenSubNodeCreator(graph: String, size: Int) extends TopKSubNode
 
   protected val mw = new MilneWittenTopK(graph)
   protected val esa = new ESATopK
+  protected val wikiBVGraph = WikiBVGraphFactory.make(graph)
 
 
   override protected def topK: TopK = new TopK {
 
     override def topKScoredEntities(wikiID: Int, k: Int): Seq[(Int, Float)] = {
         val mwTopK = mw.topKEntities(wikiID, k)
-        val dstTopK = esa.topKEntities(wikiID, k)
+        val dstTopK = esa.topKEntities(wikiID, k).filter(wikiBVGraph.contains)
 
         val nodes = new IntOpenHashSet()
 

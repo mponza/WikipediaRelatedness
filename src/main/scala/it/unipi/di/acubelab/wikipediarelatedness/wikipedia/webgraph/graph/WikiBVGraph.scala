@@ -15,7 +15,7 @@ class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) 
 
 
   // WikiID -> NodeID mapping.
-  protected lazy val node2wiki = reverseWiki2Node()
+  lazy val node2wiki = reverseWiki2Node()
   protected val vertices = wiki2node.keySet().toIntArray()
 
 
