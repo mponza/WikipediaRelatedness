@@ -10,7 +10,7 @@ object SubNodeCreatorFactory {
     case "esa" => new ESASubNodeCreator(size)
     case "esaentity" => new ESAEntitySubNodeCreator(size)
 
-    case "sg" | "dwsg" => new NeuralSubNodeCreator(size, TopKFactory.make(name))
+    case "sg" | "dwsg" | "corpus" => new NeuralSubNodeCreator(size, TopKFactory.make(name))
 
     case "mw.in" => new MilneWittenSubNodeCreator("in", size)
     case "mw.out" => new MilneWittenSubNodeCreator("out", size)

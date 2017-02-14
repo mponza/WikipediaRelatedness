@@ -9,7 +9,6 @@ def generate_table(outfile):
 
     for datapath in dataset_paths():
         corrdata = CorrelationDataset(datapath)
-        print(corrdata.dataset_name)
         datasets[corrdata.dataset_name] = corrdata.to_df()
 
     merged = merge_dataset(datasets)

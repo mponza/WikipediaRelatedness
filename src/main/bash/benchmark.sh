@@ -165,7 +165,7 @@ function run_vsm {
 # Experiments SVD relatedness with different thresholds.
 #
 function run_svd {
-    thresholds=( 10 50 100 150 200 )
+    thresholds=( 100 ) #( 10 50 100 150 200 )
 
     for threshold in "${thresholds[@]}"
     do
@@ -445,19 +445,19 @@ function run_mixclique {
 
 
 
-#run_classical_set
+run_classical_set
 
-#run_milnewitten
-#run_jaccard
+run_milnewitten
+run_jaccard
 
 #run_jaccardlocalclustering
 #run_cosinelocalclustering
 
-#run_esa
-#run_vsm
+run_esa
+run_vsm
 
-#run_svd
-#run_lda
+run_svd
+run_lda
 
 #run_line da buttare lol
 
@@ -466,5 +466,5 @@ function run_mixclique {
 # launch these
 #run_w2v
 #run_mixed
-run_clique
+#run_clique
 #run_mixclique

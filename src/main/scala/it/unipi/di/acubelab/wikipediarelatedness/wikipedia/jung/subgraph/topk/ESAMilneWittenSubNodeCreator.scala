@@ -20,14 +20,14 @@ class ESAMilneWittenSubNodeCreator(graph: String, size: Int) extends TopKSubNode
 
     override def topKScoredEntities(wikiID: Int, k: Int): Seq[(Int, Float)] = {
         val mwTopK = mw.topKEntities(wikiID, k)
-        val dstTopK = esa.topKEntities(wikiID, k).filter(wikiBVGraph.contains)
+        val esaTopK = esa.topKEntities(wikiID, k).filter(wikiBVGraph.contains)
 
         val nodes = new IntOpenHashSet()
 
         var (i, j) = (0, 0)
         var n = nodes.size()
 
-        while(i < mwTopK.length && j < dstTopK.length && nodes.size() < size) {
+        while(i < mwTopK.length && j < esaTopK.length && nodes.size() < size) {
 
           while (i < mwTopK.length && n == nodes.size() && nodes.size() < size) {
             nodes.add( mwTopK(i) )
@@ -35,8 +35,8 @@ class ESAMilneWittenSubNodeCreator(graph: String, size: Int) extends TopKSubNode
           }
           if (n != nodes.size()) n += 1
 
-          while (j < dstTopK.length && n == nodes.size() && nodes.size() < size) {
-            nodes.add( dstTopK(j) )
+          while (j < esaTopK.length && n == nodes.size() && nodes.size() < size) {
+            nodes.add( esaTopK(j) )
             j += 1
           }
           if (n != nodes.size()) n += 1
@@ -44,7 +44,7 @@ class ESAMilneWittenSubNodeCreator(graph: String, size: Int) extends TopKSubNode
         }
 
         while (i < mwTopK.length && nodes.size() < size) { nodes.add( mwTopK(i) ) ; i += 1 }
-        while (j < dstTopK.length && nodes.size() < size) { nodes.add( dstTopK(j) ) ; j += 1 }
+        while (j < esaTopK.length && nodes.size() < size) { nodes.add( esaTopK(j) ) ; j += 1 }
 
 
         nodes.toIntArray.map((_, 1f))  // 1f is a fake score

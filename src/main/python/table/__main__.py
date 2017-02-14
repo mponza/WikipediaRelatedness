@@ -2,6 +2,7 @@ import baker
 import logging
 
 from tabling import generate_table
+from latex import latex_table
 
 
 @baker.command
@@ -12,6 +13,10 @@ def generate(outfile):
     generate_table(outfile)
 
 
+
+def latex(gdocsfile, outfile):
+
+    latex_table(gdocsfile, outfile)
 
 
 if __name__ == '__main__':
