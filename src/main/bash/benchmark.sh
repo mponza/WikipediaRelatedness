@@ -445,19 +445,19 @@ function run_mixclique {
 
 
 
-run_classical_set
+#run_classical_set
 
-run_milnewitten
-run_jaccard
+#run_milnewitten
+#run_jaccard
 
-#run_jaccardlocalclustering
-#run_cosinelocalclustering
+run_jaccardlocalclustering
+run_cosinelocalclustering
 
-run_esa
-run_vsm
+#run_esa
+#run_vsm
 
-run_svd
-run_lda
+#run_svd
+#run_lda
 
 #run_line da buttare lol
 

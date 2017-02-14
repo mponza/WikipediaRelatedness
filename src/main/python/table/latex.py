@@ -38,15 +38,15 @@ def latex_table(gdocsfilename, outfile):
     header += '\\centering\n'
     header += '\\caption{My caption}\n'
     header += '\\label{table:methodsperformance}\n'
-    header += '\\begin{tabular}{lccc|ccc}\n'
+    header += '\\begin{tabular}{lccc@{\\hskip 0.3in}ccc@{\\hskip 0.4in}c}\n'
     header += '\\toprule\n'
     header += '\\multirow{2}{*}{\\textbf{Method}} & \\multicolumn{3}{c|}{\\textbf{WikiSim}} & \\multicolumn{3}{c}{\\textbf{WiRe}} \\\\\n'
-    header += '& \\textbf{Pearson} & \\textbf{Spearman} & \\textbf{Harmonic} & \\textbf{Pearson} & \\textbf{Spearman} & \\textbf{Harmonic} \\\\ \hline \n'''
+    header += '& \\textbf{Pearson} & \\textbf{Spearman} & \\textbf{Harmonic} & \\textbf{Pearson} & \\textbf{Spearman} & \\textbf{Harmonic} & \\textbf{AVG} \\\\ \hline \n'
 
     # Table rows
     latexrow = []
     for i, r in df.iterrows():
-        for c in cs:
+        for c in columns:
             latexrow.append( r[c] )
             latexrow.append( ' & ' )
 

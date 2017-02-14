@@ -9,15 +9,14 @@ class AdamicAdarRelatedness(val options: RelatednessOptions) extends Relatedness
   protected val graph = WikiBVGraphFactory.make("sym")
   protected val operations = new SetOperations(graph)
 
+
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = {
     val interWikiIDs = operations.intersection(srcWikiID, dstWikiID).toIntArray()
 
-    interWikiIDs.filter(graph.outdegree(_) > 0).map {
+    interWikiIDs.filter(graph.outdegree(_) > 1).map {
       case wikiID =>
-          1 / Math.log(graph.outdegree(wikiID))
-
+        1 / Math.log(graph.outdegree(wikiID))
     }.sum.toFloat
-
   }
 
   override def toString() = "AdamicAdar"

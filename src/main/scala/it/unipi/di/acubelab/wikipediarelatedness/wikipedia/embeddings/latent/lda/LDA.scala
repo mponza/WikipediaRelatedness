@@ -18,7 +18,7 @@ class LDA(topics: Int) extends Embeddings {
 
 
   protected def getTopicsPath = Config.getString("wikipedia.latent.lda.topics") +
-                                                     "%d/topical_documents.gz".format(topics)
+                                                     "/%d/topical_documents.gz".format(topics)
 
 
   protected def loadEmbeddings(path: String): WikiEmbeddings = {

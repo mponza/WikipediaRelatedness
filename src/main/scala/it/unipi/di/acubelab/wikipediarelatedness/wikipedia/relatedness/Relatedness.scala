@@ -24,12 +24,12 @@ trait Relatedness {
     * @return The relatedness between src and dst of the WikiRelTask at hand.
     */
   def computeRelatedness(task: WikiRelateTask) : Float = {
-    //val greaterZero = Math.max(computeRelatedness(task.src.wikiID, task.dst.wikiID), 0f)
-    //val lowerOne = Math.min(greaterZero, 1f)
+    val greaterZero = Math.max(computeRelatedness(task.src.wikiID, task.dst.wikiID), 0f)
+    val lowerOne = Math.min(greaterZero, 1f)
 
-    //lowerOne
+    lowerOne
 
-    computeRelatedness(task.src.wikiID, task.dst.wikiID)
+    //computeRelatedness(task.src.wikiID, task.dst.wikiID)
   }
 
 
