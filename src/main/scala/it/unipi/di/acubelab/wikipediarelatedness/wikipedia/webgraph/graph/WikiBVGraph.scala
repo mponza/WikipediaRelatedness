@@ -121,11 +121,9 @@ class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) 
 
   override def copy(): ImmutableGraph = new WikiBVGraph(graph.copy(), wiki2node)
 
-
   override def numNodes(): Int = graph.numNodes()
 
   override def numArcs(): Long = graph.numArcs()
-
 
   override def randomAccess(): Boolean = graph.randomAccess()
 }

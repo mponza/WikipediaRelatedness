@@ -37,7 +37,7 @@ abstract class NeuralTopK extends TopKCached {
         try {
 
           val wID = word.substring(4, word.length).toInt
-          if (wID != wikiID && wikiBVGraph.contains(wID)) {
+          if (wikiBVGraph.contains(wID)) {
 
             val score = embeddings.similarity("ent_" + wikiID, "ent_" + wID)
             scoredEntities += Tuple2(wID, score)

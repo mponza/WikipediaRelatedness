@@ -76,7 +76,12 @@ object EmbeddingsDataset {
 
     override def contains(word: String): Boolean = model.hasWord(word)
 
-    override def topKSimilarFromWord(word: String, k: Int) = model.wordsNearest(word, k)
+    //override def topKSimilarFromWord(word: String, k: Int) = model.wordsNearest(word, k)
+    override def topKSimilarFromWord(word: String, k: Int) = {
+      entities.map {
+        case entity: String => (entity, similarity(entity, word))
+      }.sortBy(_._2).reverse.slice(0, k).map(_._1)
+    }
 
     override def topKSimilarFromWords(words: List[String], k: Int) = model.wordsNearest(contextVector(words), k)
 
