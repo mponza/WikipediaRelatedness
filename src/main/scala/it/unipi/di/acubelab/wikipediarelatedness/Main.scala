@@ -57,7 +57,7 @@ object W2VCacher {
 
 }
 
-
+/*
 object Statistics{
 
 
@@ -87,7 +87,7 @@ object Statistics{
   }
 
 }
-
+*/
 
 /*
 object Jung {
