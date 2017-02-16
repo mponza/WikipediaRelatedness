@@ -104,7 +104,6 @@ def map_wikidocs2lda(num_topics):
 
 
 def generate_lda_model(num_topics=200):
-
     logger.info('Loading wordids file...')
     wordids_filename = WIKI_FILENAME + 'wordids.txt.bz2'
     id2word = gensim.corpora.Dictionary.load_from_text(wordids_filename)

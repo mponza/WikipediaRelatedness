@@ -1,11 +1,12 @@
 package it.unipi.di.acubelab.wikipediarelatedness.dataset.extend
 
-import java.io.{File, PrintWriter}
-import java.util.Locale
+import java.io.PrintWriter
 import java.util.concurrent.TimeUnit
 
 import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{DatasetFactory, WikiRelateDataset, WikiRelateTask}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessOptions
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.JaccardRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.{WikiBVDistance, WikiBVPageRank}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
@@ -19,6 +20,8 @@ object WikiRelateDatasetExtender {
 
   protected val distance = new WikiBVDistance()
   protected val pageRank = new WikiBVPageRank()
+  protected val outJaccRel = new JaccardRelatedness(new RelatednessOptions(graph = "out"))
+  protected val inJaccRel = new JaccardRelatedness(new RelatednessOptions(graph = "in"))
 
 
   def main(args: Array[String]): Unit = {
@@ -41,7 +44,7 @@ object WikiRelateDatasetExtender {
     val pl = new ProgressLogger(logger, 1, TimeUnit.MINUTES)
     pl.start("Starting extending computation...")
 
-    val exdataset = dataset.slice(0, 2).map {
+    val exdataset = dataset.map {
       case task =>
         val extask = extend(task)
         pl.update()
@@ -53,6 +56,9 @@ object WikiRelateDatasetExtender {
     exdataset.toSeq
   }
 
+
+  //
+  // Main extender method.
 
   /**
     * Generate ExtendedWikiRelateTask with extended information.
@@ -71,8 +77,14 @@ object WikiRelateDatasetExtender {
 
     extask.distance = distance.getDistance(task.src.wikiID, task.dst.wikiID)
 
-    extask.srcPageRank = pageRank.getPositionPageRank(task.src.wikiID).toFloat
-    extask.dstPageRank = pageRank.getPositionPageRank(task.dst.wikiID).toFloat
+    extask.srcPageRank = pageRank.getPageRank(task.src.wikiID).toFloat
+    extask.dstPageRank = pageRank.getPageRank(task.dst.wikiID).toFloat
+
+    extask.srcPRpos = pageRank.getPositionPageRank(task.src.wikiID)
+    extask.dstPRpos = pageRank.getPositionPageRank(task.dst.wikiID)
+
+    extask.outJaccard = outJaccRel.computeRelatedness(task)
+    extask.inJaccard = inJaccRel.computeRelatedness(task)
 
     extask
   }

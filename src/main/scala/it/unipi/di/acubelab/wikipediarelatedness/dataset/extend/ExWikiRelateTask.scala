@@ -17,10 +17,6 @@ class ExWikiRelateTask(wikiRelateTask: WikiRelateTask) {
   val dstWikiID = wikiRelateTask.dst.wikiID
   val dstWikiTile = wikiRelateTask.dst.wikiTitle
 
-  val rel = wikiRelateTask.humanRelatedness
-
-  var distance = 0
-
   var srcOutDegree = 0
   var srcInDegree = 0
 
@@ -34,15 +30,29 @@ class ExWikiRelateTask(wikiRelateTask: WikiRelateTask) {
   var srcPRpos = -1
   var dstPRpos = -1
 
+  val rel = wikiRelateTask.humanRelatedness
+
+  var distance = 0
+
+  var outJaccard = 0f
+  var inJaccard = 0f
+
 
   override def toString = {
     val src = "%d,\"%s\",%d,%d,%1.10f,%d".formatLocal(Locale.US, srcWikiID, srcWikiTitle, srcOutDegree, srcInDegree, srcPageRank, srcPRpos)
     val dst = "%d,\"%s\",%d,%d,%1.10f,%d".formatLocal(Locale.US, dstWikiID, dstWikiTile, dstOutDegree, dstInDegree, dstPageRank, dstPRpos)
 
-    "%s,%s,%1.2f,%d".formatLocal(Locale.US, src, dst, rel, distance)
+    "%s,%s,%1.2f,%d,%1.5f,%1.5f".formatLocal(Locale.US, src, dst, rel, distance, outJaccard, inJaccard)
   }
 
 
-  def header() = "srcWikiID,srcWikiTitle,srcOutDegree,srcInDegree,srcPageRank,dstWikiID,dstWikiTile,dstOutDegree,dstInDegree,dstPageRank,rel,distance"
+  def header() = {
+    val src = "srcWikiID,srcWikiTitle,srcOutDegree,srcInDegree,srcPageRank,srcPRpos"
+
+    val dst = ",dstWikiID,dstWikiTile,dstOutDegree,dstInDegree,dstPageRank,dstPRpos,"
+    val pair = "rel,distance,outJaccard,inJaccard"
+
+    src + dst + pair
+  }
 }
 

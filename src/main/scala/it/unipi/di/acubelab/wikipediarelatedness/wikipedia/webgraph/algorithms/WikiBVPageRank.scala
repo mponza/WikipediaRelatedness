@@ -27,7 +27,7 @@ class WikiBVPageRank {
   protected def computePageRanks() = {
     logger.info("Computing PageRank...")
     val ranker =  new PageRankParallelGaussSeidel(wikiGraph.graph)
-    ranker.stepUntil(new IterationNumberStoppingCriterion(5))
+    ranker.stepUntil(new IterationNumberStoppingCriterion(30))
     //ranker.stepUntil(new NormStoppingCriterion(0.001))
     ranker.rank
   }
@@ -44,10 +44,7 @@ class WikiBVPageRank {
 
     // Array of WikiID: PageRank position
     val posRank = Array.ofDim[Int](wikiGraph.numNodes() + 1)
-    sortedRank.zipWithIndex.foreach {
-      case ((nodeID, index)) => println(nodeID)
-        posRank(nodeID) = index
-    }
+    sortedRank.zipWithIndex.foreach { case ((nodeID, index)) => posRank(nodeID) = index }
 
     logger.info("Top PageRanked Wikipedia Page: %s".format( WikiTitleID.map( sortedRank.head )) )
     logger.info("Last PageRanked Wikipedia Page: %s".format( WikiTitleID.map( sortedRank.last )) )
