@@ -24,6 +24,7 @@ from latent_utils import LDA_MODEL_DIR
 from latent_utils import LDA_MODEL_FILENAME
 from latent_utils import WIKI_CORPUS
 from latent_utils import LEMMING
+from latent_utils import get_wiki_ids
 
 
 logger = logging.getLogger('LDA')
@@ -63,12 +64,13 @@ def wiki_document_generator():
 
     wiki_corpus = JsonWikiCorpus(WIKI_CORPUS, to_lemmatize=LEMMING, dictionary={})
     wiki_corpus.metadata = True
+    wiki_ids = get_wiki_ids()
 
-    wiki_docs = []
-    for meta_texts in wiki_corpus.get_texts():
+    for meta_texts in wiki_corpus.get_texts(wiki_ids):
 
         wiki_id = meta_texts[1][0]
         text = meta_texts[0]
+
 
         yield (wiki_id, text)
 
@@ -87,7 +89,7 @@ def map_wikidocs2lda(num_topics):
     with smart_open(doc_topics, 'wb') as f:
         n = 0
 
-        for wiki_docs in utils.chunkize(wiki_document_generator(), 10000):
+        for wiki_docs in utils.chunkize(wiki_document_generator(), 100):  #, 10000):
 
             lda_wiki_docs = pool.map(wiki2LDA, [(lda, wiki_doc) for wiki_doc in wiki_docs])
 

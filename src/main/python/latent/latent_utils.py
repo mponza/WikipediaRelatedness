@@ -1,19 +1,33 @@
 import os
 import json
+import pandas as pd
+
 from gensim import utils
 from pyhocon import ConfigFactory
 
 
-def extract_json_pages(filename, filter_namespaces=False):
+def extract_json_pages(filename, filter_namespaces=False, keep_wikids=None):
     with utils.smart_open(filename) as fin:
         for line in fin:
             document = json.loads(line.strip())
 
             title = document['wikiTitle']
-            text = ' '.join(document['sentences'])
             wiki_id = str(document['wikiId'])
 
-            yield title, text, wiki_id
+            try:
+                if keep_wikids is None or int(wiki_id) in keep_wikids:
+
+                    text = ' '.join(document['sentences'])
+                    print '==='
+                    print wiki_id
+
+                    yield title, text, wiki_id
+
+            except Exception:
+                continue
+
+
+            # yield title, text, wiki_id
 
 
 
@@ -48,6 +62,32 @@ def configuration():
     """
     reference = absolute_path('../../resources/reference.conf')
     return ConfigFactory.parse_file(reference).get('wikipediarelatedness')
+
+
+
+def get_wiki_ids():
+    '''
+    :return:  set of WikiIDs which belongs to dataset files.
+    '''
+
+    conf = configuration()
+
+    # WikiSim
+    filename = conf.get_string('dataset.wikisim.wat')
+    df = pd.read_csv(filename, header=None)
+    df.columns =  ['src_word', 'src_wiki_id', 'src_wiki_title', 'dst_word', 'dst_wiki_id', 'dst_wiki_title', 'rel']
+    wiki_ids = df['src_wiki_id'].tolist() + df['dst_wiki_id'].tolist()
+
+    # WiRe
+    for wire_name in ['salient_salient', 'nonsalient_salient', 'nonsalient_nonsalient']:
+        filename  = conf.get_string('dataset.wire.' + wire_name)
+        df = pd.read_csv(filename)
+
+        wiki_ids += df['srcWikiID'].tolist()
+        wiki_ids += df['dstWikiID'].tolist()
+
+    return set(wiki_ids)
+
 
 
 LEMMING = True  # whether using lemmatization or not

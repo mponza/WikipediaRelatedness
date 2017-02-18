@@ -36,6 +36,7 @@ case class RelatednessOptions(
                                secondname: String = "",
                                secondgraph: String = "",
                                secondmodel: String = "",
+                               secondthreshold: Int = 0,
 
                                lambda: Double = 0.5,  // lambda * firstname + (1 - lambda) * secondname
 
@@ -109,7 +110,8 @@ case class RelatednessOptions(
   def getSecondRelatednessOptions = new RelatednessOptions(
                                                 name = this.secondname,
                                                 graph = this.secondgraph,
-                                                model = this.secondmodel
+                                                model = this.secondmodel,
+                                                threshold = this.secondthreshold
                                               )
 
 }
@@ -153,8 +155,12 @@ object RelatednessOptions {
       opt[String]("firstmodel").action((x, conf) => conf.copy(firstmodel = x)).text("First relatedness model")
 
       opt[String]("secondname").action((x, conf) => conf.copy(secondname = x)).text("Second relatedness")
-      opt[String]("secondgraph").action((x, conf) => conf.copy(secondgraph = x)).text("First relatedness graph")
-      opt[String]("secondmodel").action((x, conf) => conf.copy(secondmodel = x)).text("First relatedness model")
+      opt[String]("secondgraph").action((x, conf) => conf.copy(secondgraph = x)).text("Second relatedness graph")
+      opt[String]("secondmodel").action((x, conf) => conf.copy(secondmodel = x)).text("Second relatedness model")
+      opt[Int]("secondthreshold").action((x, conf) => conf.copy(secondthreshold = x)).text("Second relatedness threshold")
+
+
+
 
       opt[Double]("lambda").action((x, conf) => conf.copy(lambda = x)).text("Linear combination weight of the first relatedness")
 

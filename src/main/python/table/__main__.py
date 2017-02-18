@@ -13,7 +13,7 @@ def generate(outfile):
     generate_table(outfile)
 
 
-
+@baker.command
 def latex(gdocsfile, outfile):
 
     latex_table(gdocsfile, outfile)

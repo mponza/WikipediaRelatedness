@@ -9,6 +9,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.es
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.vsm.VectorSpaceModelRelatedeness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.{LINERelatedness, Word2VecRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.casaro.{CasaroCoSimRankRelatedness, CasaroPPRRelatedness}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.distance.DistanceRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalks.PPRRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set._
 
@@ -69,6 +70,8 @@ object RelatednessFactory {
 
 
     case "mix" => new MixedRelatedness(options)
+
+    case "distance" => new DistanceRelatedness(options)
   }
 
 }

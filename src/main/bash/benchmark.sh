@@ -353,21 +353,41 @@ function run_randomwalks {
 # Experiments linear combination between two relatedness methods based on w2v and MilneWitten.
 #
 function run_mixed {
-    models=(
+    #models=(
+
              # text-based (standard w2v)
-             "w2v.corpus" "w2v.coocc" "w2v.sg"
+    #         "w2v.corpus" "w2v.coocc" "w2v.sg"
 
              # random walk-based (DeepWalk)
-             "deepwalk.dw" "deepwalk.dw10" "deepwalk.dw90" "deepwalk.dwsg"
+    #         "deepwalk.dw" "deepwalk.dw10" "deepwalk.dw90" "deepwalk.dwsg"
+    #)
+
+    #lambdas=( 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 )
+
+    #for m in "${models[@]}"
+    #do
+    #    for l in "${lambdas[@]}"
+    #    do
+    #         args="--name mix --firstname milnewitten --firstgraph in --secondname w2v --secondmodel $m --lambda $l"
+    #         run_sbt "$args"
+    #    done
+    #done
+
+
+
+    thresholds=(
+
+             # text-based (standard w2v)
+             10000
     )
 
     lambdas=( 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 )
 
-    for m in "${models[@]}"
+    for m in "${thresholds[@]}"
     do
         for l in "${lambdas[@]}"
         do
-             args="--name mix --firstname milnewitten --firstgraph in --secondname w2v --secondmodel $m --lambda $l"
+             args="--name mix --firstname milnewitten --firstgraph in --secondname esa --secondthreshold $m --lambda $l"
              run_sbt "$args"
         done
     done
@@ -450,8 +470,8 @@ function run_mixclique {
 #run_milnewitten
 #run_jaccard
 
-run_jaccardlocalclustering
-run_cosinelocalclustering
+#run_jaccardlocalclustering
+#run_cosinelocalclustering
 
 #run_esa
 #run_vsm
@@ -465,6 +485,6 @@ run_cosinelocalclustering
 
 # launch these
 #run_w2v
-#run_mixed
+run_mixed
 #run_clique
 #run_mixclique

@@ -24,7 +24,7 @@ object WikiRelateDatasetExtender {
   protected val inJaccRel = new JaccardRelatedness(new RelatednessOptions(graph = "in"))
 
 
-  def main(args: Array[String]): Unit = {
+  def run(args: Array[String]): Unit = {
     logger.info("Extending WikiSim dataset...")
     val exwikisim = extend(DatasetFactory.make("wikisim"))
     save(exwikisim, "/tmp/wikisim.csv")

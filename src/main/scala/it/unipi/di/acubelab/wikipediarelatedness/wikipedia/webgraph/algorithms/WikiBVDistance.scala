@@ -31,7 +31,10 @@ class WikiBVDistance(wikiGraph: WikiBVGraph = WikiBVGraphFactory.make("sym")) {
     val srcNodeID = wikiGraph.getNodeID(srcWikiID)
     val dstNodeID = wikiGraph.getNodeID(dstWikiID)
 
-    if (graph.successorArray(srcNodeID).contains(dstNodeID)) return 1
+    if (graph.successorArray(srcNodeID).contains(dstNodeID)) {
+      logger.debug("Distance between %s and %s is 1.".format(WikiTitleID.map(srcNodeID), WikiTitleID.map(dstWikiID)))
+      return 1
+    }
 
     val dist = try {
 

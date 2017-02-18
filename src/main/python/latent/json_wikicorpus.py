@@ -92,10 +92,10 @@ class JsonWikiCorpus(wikicorpus.WikiCorpus):
         self.to_lemmatize = to_lemmatize  # avoid confusion between function and variable
         super(JsonWikiCorpus, self).__init__(fname, processes, to_lemmatize, dictionary, filter_namespaces)
 
-    def get_texts(self):
+    def get_texts(self, keep_wiki_ids=None):
         articles, articles_all = 0, 0
         positions, positions_all = 0, 0
-        texts = ((text, self.to_lemmatize, title, pageid) for title, text, pageid in extract_json_pages(self.fname, self.filter_namespaces))
+        texts = ((text, self.to_lemmatize, title, pageid) for title, text, pageid in extract_json_pages(self.fname, self.filter_namespaces, keep_wiki_ids))
         pool = multiprocessing.Pool(self.processes)
 
         for group in utils.chunkize(texts, chunksize=10 * self.processes, maxsize=1):
@@ -103,7 +103,7 @@ class JsonWikiCorpus(wikicorpus.WikiCorpus):
                 articles_all += 1
                 positions_all += len(tokens)
                 # article redirects and short stubs are pruned here
-                if len(tokens) < wikicorpus.ARTICLE_MIN_WORDS or any(title.startswith(ignore + ':') for ignore in wikicorpus.IGNORED_NAMESPACES):
+                if keep_wiki_ids is None and len(tokens) < wikicorpus.ARTICLE_MIN_WORDS or any(title.startswith(ignore + ':') for ignore in wikicorpus.IGNORED_NAMESPACES):
                     continue
                 articles += 1
                 positions += len(tokens)

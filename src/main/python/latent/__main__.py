@@ -19,7 +19,7 @@ def corpus_lda(num_topics=100):
     Maps every Wikipedia document to the corresponding
     latent model.
     '''
-    generate_lda_model(num_topics)
+    #generate_lda_model(num_topics)
     map_wikidocs2lda(num_topics)
 
 
