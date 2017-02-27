@@ -12,6 +12,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.casaro.{C
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.distance.DistanceRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalks.PPRRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set._
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.topk.TopKRelatedness
 
 
 object RelatednessFactory {
@@ -60,6 +61,8 @@ object RelatednessFactory {
     //
     // Clique-subgraph-based
     case "clique" => new CliqueRelatedness(options)
+
+    case "topk" => new TopKRelatedness(options)
 
     //
     // RandomWalks

@@ -15,8 +15,10 @@ class LemmaLuceneIndex() extends LuceneIndex() {
     */
   override def wikipediaBody(wikiID: Int) : String = {
     val rawBody = super.wikipediaBody(wikiID)
-    val lemmaBody = CoreNLP.lemmatize(rawBody) mkString(" ")
+    return rawBody
 
+    // before there was this
+    val lemmaBody = CoreNLP.lemmatize(rawBody) mkString(" ")
     lemmaBody
   }
 }

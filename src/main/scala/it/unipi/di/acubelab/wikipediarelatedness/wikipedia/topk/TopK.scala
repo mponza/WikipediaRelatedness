@@ -18,4 +18,9 @@ trait TopK {
     * @return
     */
   def topKScoredEntities(wikiID: Int, k: Int) : Seq[(Int, Float)]
+
+
+
+
+
 }

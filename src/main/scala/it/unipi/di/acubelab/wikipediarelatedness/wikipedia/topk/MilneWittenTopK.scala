@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory
 class MilneWittenTopK(graph: String) extends TopKCached {
   override protected def logger = LoggerFactory.getLogger(getClass)
 
-  override protected def cachePath = Config.getString("wikipedia.cache.topk.milnewitten." + graph)
+  override protected def cacheTopKPath = Config.getString("wikipedia.cache.topk.milnewitten." + graph)
   protected val milnewitten = new MilneWittenRelatedness(new RelatednessOptions(graph = graph))
 
 

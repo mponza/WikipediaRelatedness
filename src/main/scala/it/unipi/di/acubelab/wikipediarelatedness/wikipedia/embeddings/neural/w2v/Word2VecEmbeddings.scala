@@ -6,6 +6,7 @@ import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.WikiEmbeddings
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.factory.Nd4j
+import org.nd4j.linalg.ops.transforms.Transforms
 import org.slf4j.LoggerFactory
 
 
@@ -33,5 +34,11 @@ class Word2VecEmbeddings(modelPath: String) extends WikiEmbeddings {
       Nd4j.create(w2vDataset.embedding("ent_" + wikiID))
     }
   }
+
+
+  //
+  // WARNING: Beta
+  def textVector(words: Seq[String]) = w2vDataset.contextVector(words)
+  def textCosine(srcText: Seq[String], dstText : Seq[String]) = Transforms.cosineSim( textVector(srcText), textVector(dstText) )
 
 }

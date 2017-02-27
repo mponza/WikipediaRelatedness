@@ -486,5 +486,5 @@ function run_mixclique {
 # launch these
 #run_w2v
 run_mixed
-#run_clique
+run_clique
 #run_mixclique

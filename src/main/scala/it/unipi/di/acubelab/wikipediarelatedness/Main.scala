@@ -47,7 +47,9 @@ object W2VCacher {
   def main(args: Array[String]) {
     val topk = new W2VTopK(
       Config.getString("wikipedia.neural.w2v.corpus400"),
-      Config.getString("wikipedia.cache.topk.neural.corpus400.entity2entities")
+      Config.getString("wikipedia.cache.topk.neural.corpus400.entity")
+      //Config.getString("wikipedia.neural.deepwalk.dw10"),
+      //Config.getString("wikipedia.cache.topk.neural.dw10.entity2entities")
     )
 
 
@@ -56,8 +58,8 @@ object W2VCacher {
   }
 
 }
-*/
-/*
+
+
 object Statistics{
 
 

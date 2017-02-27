@@ -11,12 +11,18 @@ class LMRelatedness(options: RelatednessOptions) extends Relatedness {
   protected val nGramModel = LmReaders.readLmBinary[String](Config.getString("wikipedia.language_model"))
 
 
+
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = {
+    val srcEntityName = "ent_%s".format(srcWikiID)
+    val dstEntityName = "ent_%s".format(dstWikiID)
 
-    import scala.collection.JavaConversions._
-    val ents = List("ent_%d".format(srcWikiID), "ent_%d".format(dstWikiID))
+    val list = new java.util.ArrayList[String](2)
 
-    (nGramModel.scoreSentence(ents) + nGramModel.scoreSentence(ents.reverse)) * 0.5f
+    list.add(srcEntityName)
+    list.add(dstEntityName)
+
+    val logProb = nGramModel.getLogProb(list)
+    math.pow(2.0, logProb).toFloat
   }
 
   override def toString(): String = {

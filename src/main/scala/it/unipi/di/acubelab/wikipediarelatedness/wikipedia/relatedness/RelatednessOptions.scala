@@ -62,15 +62,17 @@ case class RelatednessOptions(
 
 
                                //
-                               // Neural Embeddings parameters
+                               // Neural Embeddings parameters, e.g. LINE
                                size: Int = 100,
                                order: Int = 2,
                                negative: Int = 5,
                                sample: Int = 5,
-                               rho: Float = 0.025f
+                               rho: Float = 0.025f,
 
 
-
+                               //
+                               // TopK
+                               topk: String = ""
 ) {
 
   def getWeighterRelatednessOptions = new RelatednessOptions(
@@ -206,6 +208,10 @@ object RelatednessOptions {
       opt[Int]("sample").action((x, conf) => conf.copy(sample = x)).text("Embeddings Sample")
       opt[Double]("rho").action((x, conf) => conf.copy(rho = x.toFloat)).text("Embeddings Rho")
 
+
+      //
+      // TopK
+      opt[String]("topk").action((x, conf) => conf.copy(topk = x)).text("TopK Retrieval Method")
     }
 
     parser.parse(args, RelatednessOptions()) match {

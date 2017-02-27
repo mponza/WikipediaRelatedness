@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory
 
 class ESATopK extends TopKCached {
   override protected def logger = LoggerFactory.getLogger(getClass)
-  override protected def cachePath = Config.getString("wikipedia.cache.topk.esa")
+  override protected def cacheTopKPath = Config.getString("wikipedia.cache.topk.esa.entity")
 
 
   /**
-    * Pure computation of the top-k most similar entities wihtout using cache.
+    * Pure computation of the top-k most similar entities without using cache.
     *
     * @param wikiID
     * @param k

@@ -6,8 +6,8 @@ import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.factory.Nd4j
 
 
-class LDAEmbeddings extends LatentWikiEmbeddings {
-  protected val matrix = Nd4j.zeros(4730474, 100)
+class LDAEmbeddings(topics: Int) extends LatentWikiEmbeddings {
+  protected val matrix = Nd4j.zeros(4730474, topics)
   protected val wiki2row = new Int2IntOpenHashMap
 
 

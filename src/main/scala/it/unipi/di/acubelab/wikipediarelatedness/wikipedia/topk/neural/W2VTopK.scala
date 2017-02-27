@@ -7,5 +7,5 @@ class W2VTopK(w2vModelPath: String, w2vCachePath: String) extends NeuralTopK {
   override protected def logger = LoggerFactory.getLogger(getClass)
 
   override protected def modelPath: String = w2vModelPath
-  override protected def cachePath: String = w2vCachePath
+  override protected def cacheTopKPath: String = w2vCachePath
 }

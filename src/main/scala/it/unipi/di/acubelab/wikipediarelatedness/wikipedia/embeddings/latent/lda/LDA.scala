@@ -18,11 +18,11 @@ class LDA(topics: Int) extends Embeddings {
 
 
   protected def getTopicsPath = Config.getString("wikipedia.latent.lda.topics") +
-                                                     "/%d/topical_documents.gz".format(topics)
+                                                     "/%d/model/topical_documents.gz".format(topics)
 
 
   protected def loadEmbeddings(path: String): WikiEmbeddings = {
-    val lda = new LDAEmbeddings()
+    val lda = new LDAEmbeddings(topics)
 
     val reader = Source.fromInputStream(
       new GZIPInputStream(
@@ -35,7 +35,7 @@ class LDA(topics: Int) extends Embeddings {
     logger.info("Loading LDA embedding from %s...".format(path))
     for (line <- reader.getLines()) {
       val row = line.split("\t")
-      val embedding = Array.fill[Float](100)(0f)
+      val embedding = Array.fill[Float](topics)(0f)
 
       row.slice(1, row.size).foreach {
         case indexValue =>

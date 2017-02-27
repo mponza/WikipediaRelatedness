@@ -18,9 +18,6 @@ def extract_json_pages(filename, filter_namespaces=False, keep_wikids=None):
                 if keep_wikids is None or int(wiki_id) in keep_wikids:
 
                     text = ' '.join(document['sentences'])
-                    print '==='
-                    print wiki_id
-
                     yield title, text, wiki_id
 
             except Exception:

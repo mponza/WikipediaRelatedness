@@ -47,6 +47,9 @@ def latex_table(gdocsfilename, outfile):
     latexrow = []
     for i, r in df.iterrows():
         for c in columns:
+            #if c == 'Method':
+            #    latexrow.append( '\\textsc{' + str(r[c]).lower() + '}' )
+            #else:
             latexrow.append( r[c] )
             latexrow.append( ' & ' )
 

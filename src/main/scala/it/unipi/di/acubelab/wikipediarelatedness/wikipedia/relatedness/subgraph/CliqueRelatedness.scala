@@ -27,7 +27,6 @@ class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
     val subGraph = new WikiJungCliqueGraph(nodes, weighter)
 
     val s = simRanker.similarity(srcWikiID, dstWikiID, subGraph).toFloat
-    println(s)
 
     s
   }

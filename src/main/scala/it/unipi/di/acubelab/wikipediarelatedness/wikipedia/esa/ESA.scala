@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa.lemma.LemmaLuceneIndex
+import org.slf4j.LoggerFactory
 //import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.esa.ESATopKCache
 import org.apache.lucene.queryparser.classic.QueryParser
 
@@ -8,8 +9,15 @@ import org.apache.lucene.queryparser.classic.QueryParser
 /**
   * Static class which implements ESA upon the Wikipedia Corpus.
   * Concept vectors are always sorted by their SCORE (not wikiID!).
+  *
   */
+
+// Efficiency improvements:
+// Experiment MoreLikeThis: http://stackoverflow.com/questions/7657673/how-to-find-similar-documents/7657757#7657757
+// See this implementation: https://github.com/pvoosten/explicit-semantic-analysis (what about TextQuery?)
+// ****************************************
 object ESA {
+  protected val logger = LoggerFactory.getLogger("ESA")
   lazy val lucene = new LemmaLuceneIndex()
   //val cache = new ESATopKCache()
 
@@ -25,6 +33,10 @@ object ESA {
     val parser = new QueryParser("body", LuceneIndex.analyzer)
     val query = parser.createBooleanQuery("body", text)
 
+    // Alternatives
+    //val query = parser.parse(text)
+    //val query = parser.createPhraseQuery("body", text)
+
     val threshold = if (resultThreshold >= 0) resultThreshold else Integer.MAX_VALUE
 
     val concepts = lucene.searcher.search(query, threshold).scoreDocs.map { hit =>
@@ -39,7 +51,7 @@ object ESA {
 
 
   /**
-    * Returns ESA's concepts vector of wikiID. If available, it exploit the cache.
+    * Returns ESA's concepts vector of wikiID.
     *
     * @param wikiID
     * @param resultThreshold
