@@ -125,9 +125,6 @@ object EmbeddingsDataset {
     }
   }
 
-
-
-
   def apply(model: Word2VecCompress) = new EmbeddingsDataset {
     protected val logger = LoggerFactory.getLogger(getClass)
     protected val entities = EmbeddingsDataset.wordEntities

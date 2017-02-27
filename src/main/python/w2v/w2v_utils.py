@@ -33,11 +33,11 @@ def d2v_filename(size, train_algo):
     '''
 
     config = configuration()
-    d2v_dir = config.get('wikipedia.neural.doc2vec.gensim')
+
+    dirname =  'size:{0}_model:{1}'.format(size, train_algo)
+    d2v_dir = os.path.join( config.get('wikipedia.neural.doc2vec.gensim'), dirname )
 
     if not os.path.isdir(d2v_dir):
         os.makedirs(d2v_dir)
 
-    filename = 'd2v_size:%d_model:%s.bin'.format(size, train_algo)
-
-    return os.path.join(d2v_dir, filename)
+    return os.path.join(d2v_dir, 'doc2vec.bin')

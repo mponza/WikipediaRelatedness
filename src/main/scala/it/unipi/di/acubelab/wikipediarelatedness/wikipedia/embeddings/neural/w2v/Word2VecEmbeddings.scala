@@ -39,6 +39,8 @@ class Word2VecEmbeddings(modelPath: String) extends WikiEmbeddings {
   //
   // WARNING: Beta
   def textVector(words: Seq[String]) = w2vDataset.contextVector(words)
-  def textCosine(srcText: Seq[String], dstText : Seq[String]) = Transforms.cosineSim( textVector(srcText), textVector(dstText) )
+
+  def textCosine(srcText: Seq[String], dstText : Seq[String]) =
+    Transforms.cosineSim( textVector(srcText), textVector(dstText) ).toFloat
 
 }

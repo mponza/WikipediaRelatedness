@@ -5,9 +5,8 @@ from doc2vec import generate_doc2vec_embeddings
 
 
 @baker.command
-def generate(size):
-
-    generate_doc2vec_embeddings(size)
+def generate(size, train_algo):
+    generate_doc2vec_embeddings(size, train_algo)
 
 
 if __name__ == '__main__':

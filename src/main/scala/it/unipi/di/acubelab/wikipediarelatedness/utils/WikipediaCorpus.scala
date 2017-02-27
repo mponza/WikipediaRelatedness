@@ -26,7 +26,7 @@ object WikipediaCorpus {
     * @param wikiID
     * @return
     */
-  def getRawText(wikiID: Int) = wikiID2text.get(wikiID)
+  def getWords(wikiID: Int) = wikiID2text.get(wikiID).flatMap(_.split(" "))
 
 
   /**
@@ -34,7 +34,7 @@ object WikipediaCorpus {
     * @param wikiID
     * @return
     */
-  def getEntityText(wikiID: Int) = getRawText(wikiID).filter(_.startsWith("ent_"))
+  def getEntityText(wikiID: Int) = getWords(wikiID).filter(_.startsWith("ent_"))
 
 
 
