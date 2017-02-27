@@ -15,14 +15,36 @@ import scala.util.parsing.json.JSON
 
 
 object WikipediaCorpus {
-
   protected val logger = LoggerFactory.getLogger("WikipediaCorpus")
 
+  protected lazy val wikiID2text = BinIO.loadObject(new File(Config.getString("wikipedia.dataset_corpus")))
+    .asInstanceOf[Int2ObjectOpenHashMap[Seq[String]]]
+
+
+  /**
+    * Raw text of a Wikipedia document.
+    * @param wikiID
+    * @return
+    */
+  def getRawText(wikiID: Int) = wikiID2text.get(wikiID)
+
+
+  /**
+    * Text with only ent_wikiID of a Wikipedia document.
+    * @param wikiID
+    * @return
+    */
+  def getEntityText(wikiID: Int) = getRawText(wikiID).filter(_.startsWith("ent_"))
+
+
+
+  //
+  // Processing methods
 
   /**
     * Process Wikipedia Corpus and keep only texts of documents present in the dataset.
     */
-  def filterWikipediaDocuments() = {
+  protected def filterWikipediaDocuments() = {
 
     val wikiID2text = new Int2ObjectOpenHashMap[Seq[String]]()
 
@@ -38,11 +60,11 @@ object WikipediaCorpus {
     pl.start("Parsing Wikipedia Corpus...")
 
     val reader = Source.fromInputStream(
-      new GZIPInputStream(
-        new FileInputStream(
-          new File(Config.getString("wikipedia.corpus")))
-        )
-    )
+        new GZIPInputStream(
+          new FileInputStream(
+            new File(Config.getString("wikipedia.corpus")))
+          )
+      )
 
     val iter = reader.getLines()
     while(iter.hasNext && wikiID2text.size() != wikiIDs.size) {
@@ -68,29 +90,6 @@ object WikipediaCorpus {
     }
     pl.done()
 
-    /*
-    reader.getLines().foreach {
-      case wikiDoc: String =>
-
-          val wikiJson = JSON.parseFull(wikiDoc)
-          wikiJson match {
-            case Some(jsonMap: Map[String, Any]@unchecked) =>
-
-              val wikiID = jsonMap("wikiId").asInstanceOf[Double].toInt
-
-              if (wikiIDs.contains(wikiID)) {
-                val wikiSents = jsonMap("sentences").asInstanceOf[Seq[String]] // vedere come parsare lista
-                wikiID2text.put(wikiID, wikiSents)
-              }
-
-            case _ => logger.error("Error parsing Wikipedia Document %s".format(wikiJson.toString))
-          }
-
-        pl.update()
-    }
-    pl.done()
-    */
-
     // Storing
     logger.info("Storing Dataset Corpus as OpenHasMap...")
     BinIO.storeObject(wikiID2text, Config.getString("wikipedia.dataset_corpus"))
@@ -103,35 +102,3 @@ object WikipediaCorpus {
   }
 
 }
-
-
-
-/*
-*
-* JSON.parseFull(strResponse)
-
-    jsonResponse match {
-      case Some(jsonMap: Map[String, Any] @unchecked) =>
-
-        jsonMap("title") match {
-          case jsonTitle: Map[String, Any] @unchecked =>
-
-            if (jsonTitle.contains("redirect_title")) {
-              jsonTitle("redirect_title") match {
-                case jsonWiki: Map[String, Any] @unchecked  =>
-
-                  val redirectedTitle = jsonWiki("wiki_title").asInstanceOf[String]
-                  val redirectedWikiID = jsonWiki("wiki_id").asInstanceOf[Double].toInt
-
-                  logger.warn("Redirected %s with %s.".format(title, redirectedTitle))
-                  return (redirectedTitle, redirectedWikiID)
-
-                case _ => ;
-              }
-            }
-
-            jsonTitle("title") match {
-              case jsonWiki: Map[String, Any] @unc
-*
-*
-* */
