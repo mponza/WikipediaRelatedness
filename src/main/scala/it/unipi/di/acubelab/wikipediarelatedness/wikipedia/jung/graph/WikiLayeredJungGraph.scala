@@ -14,40 +14,47 @@ import org.slf4j.LoggerFactory
   *
   * @param src
   * @param dst
-  * @param nodes
   * @param relatedness
   */
-class WikiLayeredJungGraph(src: Int, dst: Int, nodes: Seq[Int], relatedness: Relatedness) extends WikiJungGraph {
+
+class WikiLayeredJungGraph(src: Int, dst: Int, srcNodes: Seq[Int], dstNodes: Seq[Int], relatedness: Relatedness) extends WikiJungGraph {
   protected val logger = LoggerFactory.getLogger(getClass)
 
-  override val graph = generateLayerdGraph(nodes)
+  override val graph = generateLayerdGraph(src, dst, srcNodes, dstNodes)
   override val weights = new RelatednessWeights(graph, relatedness)
 
 
-  protected def generateLayerdGraph(nodes: Seq[Int]) : DirectedGraph[Int, Long] = {
+  protected def generateLayerdGraph(src: Int, dst: Int, srcNodes: Seq[Int], dstNodes: Seq[Int]) : DirectedGraph[Int, Long] = {
     // logger.debug("Generating graph clique...")
 
     val graph = new DirectedSparseGraph[Int, Long]
 
-    nodes.foreach(graph.addVertex)
+    srcNodes.foreach(graph.addVertex)
+    dstNodes.foreach(graph.addVertex)
 
-    // Each edge is a long with src and dst
-    nodes.foreach {
-      case src =>
-        val srcShifted = src.asInstanceOf[Long] << 32
+    // Edges between src (dst) and its nodes.
+    srcNodes.filter(_ != src).foreach( addUnidrectedEdge(src, _, graph) )
+    dstNodes.filter(_ != dst).foreach( addUnidrectedEdge(dst, _, graph) )
 
-        nodes.filter(_ != src).foreach {
-          case dst =>
+    srcNodes.foreach {
+      case srcNode =>
+        dstNodes.foreach {
+          case dstNode =>
 
-            val edge = srcShifted | dst
-            graph.addEdge(edge, src, dst)
+            // srcNode (resp. dstNode) are:
+            //    - different
+            //    - neither src nor dst
+            if (srcNode != dstNode &&
+                srcNode != src && srcNode != dst &&
+                dstNode != dst && dstNode != src) {
 
+              addUnidrectedEdge(srcNode, dstNode, graph)
+            }
         }
-
     }
 
-    // logger.debug("Clique generated with %d nodes".format(graph.getVertexCount))
-    // logger.debug("Clique generated with %d edges".format(graph.getEdgeCount))
+    logger.debug("LayeredGraph generated with %d nodes".format(graph.getVertexCount))
+    logger.debug("LayeredGraph generated with %d edges".format(graph.getEdgeCount))
 
     graph
   }

@@ -12,6 +12,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, Similarity}
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors
 import org.nd4j.linalg.api.ndarray.INDArray
+import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.ops.transforms.Transforms
 import org.slf4j.LoggerFactory
 
@@ -62,7 +63,7 @@ object EmbeddingsDataset {
   protected val logger = LoggerFactory.getLogger("EmbeddingDataset")
 
   // Used by apply(Word2VecCompress) because vocabulary of words not explicitly available
-  val wordEntities = {
+  lazy val wordEntities = {
     logger.debug("Loading Embedding vocabulary...")
     WordVectorSerializer.loadGoogleModel(  new File(Config.getString("wikipedia.neural.w2v.sg") ), true ).vocab()
       .words().filter(_.startsWith("ent_")).toList
@@ -121,13 +122,14 @@ object EmbeddingsDataset {
     }
 
     override def contextVector(words: Seq[String]) = {
-      model.getWordVectorsMean(words)
+      logger.debug("context vector of... %s".format(words.slice(0, 5) mkString " "))
+      model.getWordVectorsMean(words.filter(contains(_)))
     }
   }
 
   def apply(model: Word2VecCompress) = new EmbeddingsDataset {
     protected val logger = LoggerFactory.getLogger(getClass)
-    protected val entities = EmbeddingsDataset.wordEntities
+    lazy protected val entities = EmbeddingsDataset.wordEntities
 
     def dimEmbedding: Int = model.dimensions()
 
@@ -173,6 +175,12 @@ object EmbeddingsDataset {
       val cosine = distance / (srcNorm * dstNorm)
 
       cosine.toFloat
+    }
+
+    override def contextVector(words: Seq[String]) = {
+      val embeddings = words.filter(contains(_)).map(embedding(_).asInstanceOf[Array[Double]]).toArray
+      val ndarray = Nd4j.create(embeddings)
+      ndarray.sum(1)
     }
   }
 

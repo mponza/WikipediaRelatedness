@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.neural.line.LINEEmbeddings
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph.CliqueRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph.SubCliqueRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clustering.{CosineLocalClusteringRelatedness, JaccardLocalClusteringRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.latent.{LDARelatedness, SVDRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lm.LMRelatedness
@@ -10,6 +10,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lucene.vs
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.{LINERelatedness, Word2VecRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.casaro.{CasaroCoSimRankRelatedness, CasaroPPRRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.distance.DistanceRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.neural.Word2VecDoc2VecRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalks.PPRRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set._
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.topk.TopKRelatedness
@@ -52,6 +53,7 @@ object RelatednessFactory {
     //
     // Neural
     case "w2v" => new Word2VecRelatedness(options)
+    case "w2d2v" => new Word2VecDoc2VecRelatedness(options)
     case "line" => new LINERelatedness(options)
 
     //
@@ -60,7 +62,7 @@ object RelatednessFactory {
 
     //
     // Clique-subgraph-based
-    case "clique" => new CliqueRelatedness(options)
+    case "clique" => new SubCliqueRelatedness(options)
 
     case "topk" => new TopKRelatedness(options)
 

@@ -15,10 +15,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedn
   *
   * @param options
   */
-class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
-  protected val subNodeCreator = SubNodeCreatorFactory.make(options.subNodes, options.subSize)
-  protected val weighter = getWeighter
-  protected val simRanker = SimRanker.make(options)
+class SubCliqueRelatedness(options: RelatednessOptions) extends SubGraphRelatedness(options) {
 
 
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = {
@@ -26,9 +23,7 @@ class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
     val nodes = subNodeCreator.subNodes(srcWikiID, dstWikiID)
     val subGraph = new WikiJungCliqueGraph(nodes, weighter)
 
-    val s = simRanker.similarity(srcWikiID, dstWikiID, subGraph).toFloat
-
-    s
+    simRanker.similarity(srcWikiID, dstWikiID, subGraph).toFloat
   }
 
 
@@ -37,13 +32,5 @@ class CliqueRelatedness(val options: RelatednessOptions) extends Relatedness {
         .formatLocal(Locale.US, options.subNodes, options.subSize, options.simRanker,
                      options.iterations, options.pprAlpha, options.csrDecay, weighter.toString)
   }
-
-
-  /**
-    * Returns a Relatedness method that will be subsequently used to weight the subgraph.
-    *
-    */
-  protected def getWeighter : Relatedness = RelatednessFactory.make( options.getWeighterRelatednessOptions )
-
 
 }

@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.esa
 
 import java.io.Reader
 
+import it.unipi.di.acubelab.wikipediarelatedness.utils.StopWords
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents
 import org.apache.lucene.analysis.core.{LowerCaseFilter, StopAnalyzer, StopFilter, WhitespaceTokenizer}
 import org.apache.lucene.analysis.Analyzer
@@ -31,8 +32,7 @@ class WikipediaBodyAnalyzer extends Analyzer {
 }
 
 object WikipediaBodyAnalyzer {
-  // https://meta.wikimedia.org/wiki/Stop_word_list/google_stop_word_list
-  val _googleStopWords =
+  /*val _googleStopWords =
     ("a about above after again against all am an and any are aren't as at be because been before being below " +
     "between both but by can't cannot could couldn't did didn't do does doesn't doing don't down during " +
     "each few for from further had hadn't has hasn't have haven't having he he'd he'll he's her here here's " +
@@ -42,8 +42,8 @@ object WikipediaBodyAnalyzer {
     "theirs them themselves then there there's these they they'd they'll they're they've this those through " +
     "to too under until up very was wasn't we we'd we'll we're we've were weren't what what's when when's " +
     "where where's which while who who's whom why why's with won't would wouldn't you you'd you'll you're " +
-    "you've your yours yourself yourselves").split(" ").toList
+    "you've your yours yourself yourselves").split(" ").toList*/
 
   import scala.collection.JavaConversions._
-  val GOOGLE_STOP_WORDS_SET = CharArraySet.unmodifiableSet(new CharArraySet(_googleStopWords, false))
+  val GOOGLE_STOP_WORDS_SET = CharArraySet.unmodifiableSet(new CharArraySet(StopWords.getStopWordList, false))
 }

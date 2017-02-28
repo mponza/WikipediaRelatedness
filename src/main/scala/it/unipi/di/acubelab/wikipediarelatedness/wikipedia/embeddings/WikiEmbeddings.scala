@@ -24,4 +24,6 @@ trait WikiEmbeddings {
     Transforms.cosineSim(srcVec, dstVec).toFloat
   }
 
+
+
 }

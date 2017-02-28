@@ -15,16 +15,18 @@ import org.slf4j.LoggerFactory
 class Word2VecDoc2VecRelatedness(options: RelatednessOptions) extends  Word2VecRelatedness(options)  {
   override val logger = LoggerFactory.getLogger(getClass)
 
-  protected override val embeddings = new Word2VecEmbeddings(
+  protected override val embeddings = null
+
+  protected val model = new Word2VecEmbeddings(
     Config.getString("wikipedia.neural." + options.model)
   )
 
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
-
+    logger.debug("%d %d".format(srcWikiID, dstWikiID))
     val srcText = WikipediaCorpus.getWords(srcWikiID)//.filter(_.startsWith("ent_"))
     val dstText = WikipediaCorpus.getWords(dstWikiID)//.filter(_.startsWith("ent_"))
 
-    embeddings.textCosine(srcText, dstText)
+    model.textCosine(srcText, dstText)
   }
 
   override def toString: String = "W2VD2V_model:%s".format(options.model)

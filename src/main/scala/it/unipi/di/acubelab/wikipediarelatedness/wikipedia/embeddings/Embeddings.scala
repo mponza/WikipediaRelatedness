@@ -24,5 +24,4 @@ trait Embeddings {
 
 
   def cosine(srcWikiID: Int, dstWikiID: Int) = embeddings.cosine(srcWikiID, dstWikiID)
-
 }

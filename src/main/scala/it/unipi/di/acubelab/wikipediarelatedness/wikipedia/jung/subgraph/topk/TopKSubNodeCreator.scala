@@ -16,8 +16,7 @@ abstract class TopKSubNodeCreator(size: Int) extends SubNodeCreator {
     * @param wikiID
     * @return
     */
-  protected def topKNodes(wikiID: Int): Seq[Int] = topK.topKEntities(wikiID, size)
-
+  def topKNodes(wikiID: Int): Seq[Int] = topK.topKEntities(wikiID, size)
 
   /**
     * Computes tw top-k vectors of the most relevant concepts of srcWikiID and dstWikiID, respectively.

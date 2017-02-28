@@ -31,7 +31,7 @@ class JsonCorpus(LineSentence):
                 if n == 0:
                     break
 
-                line =  to_unicode(line.strip())  # check me
+                line = unicode(line.strip(), errors='replace') # to_unicode(line.strip())  # check me
                 document = json.loads(line)
 
                 tokens = [token for sentence in document['sentences'] for token in sentence.split()]
@@ -77,16 +77,39 @@ def train_doc2vec(size, dm, outfilename):
         dm=dm
     )
 
-    #  model.save(outfilename, binary=True)
+    model.save(outfilename)  # commentme
     return model
 
 
-def map_doc2vec(model): #outfilename):
-    #model = Doc2Vec.load(outfilename) #, unicode_errors='ignore', binary=True)
+def map_doc2vec(outfilename):
+    model = Doc2Vec.load(outfilename) #, unicode_errors='ignore', binary=True)
 
     mapped_doc2vec_filename = os.path.join( '/'.join(outfilename.split('/')[0:-1]) , 'notstored_mapping_' + outfilename.split('/')[-1])
-    print mapped_doc2vec_filename
     logging.debug('Mapping documents into {0} file...'.format(mapped_doc2vec_filename))
+
+    wiki_ids = get_wiki_ids(wikicorpus_filename())
+
+    with smart_open(mapped_doc2vec_filename, 'wb') as f:
+        for wiki_id in wiki_ids:
+            print wiki_id
+            print model
+            vec = model.docvecs[wiki_id]
+
+            print '---------'
+            str_vec = ' '.join(['{1:.10f}'.format(v) for v in vec])
+
+            f.write('ent_{0} '.format(wiki_id) + str_vec + '\n')
+
+    logging.debug("Document mapped.")
+
+
+
+def oldmap_doc2vec(model): #outfilename):
+    #model = Doc2Vec.load(outfilename) #, unicode_errors='ignore', binary=True)
+
+    #mapped_doc2vec_filename = os.path.join( '/'.join(outfilename.split('/')[0:-1]) , 'notstored_mapping_' + outfilename.split('/')[-1])
+    #print mapped_doc2vec_filename
+    #logging.debug('Mapping documents into {0} file...'.format(mapped_doc2vec_filename))
 
     wiki_ids = get_wiki_ids(wikicorpus_filename())
 
@@ -117,5 +140,6 @@ def generate_doc2vec_embeddings(size, train_algo):
     model = train_doc2vec(int(size), dm, outfilename)
 
     logging.info('Mapping documents into Doc2Vec embeddings...')
-    map_doc2vec(model)#d2v_filename(size, train_algo))
+    d2v_filename(size, train_algo)
+    map_doc2vec(model)
 
