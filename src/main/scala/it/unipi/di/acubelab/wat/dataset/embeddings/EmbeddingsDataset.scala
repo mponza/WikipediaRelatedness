@@ -10,13 +10,15 @@ import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wat.dataset.Dataset
 import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, Similarity}
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer
-import org.deeplearning4j.models.embeddings.wordvectors.WordVectors
-import org.nd4j.linalg.api.ndarray.INDArray
+import org.deeplearning4j.models.embeddings.wordvectors.{WordVectors, WordVectorsImpl}
+import org.nd4j.linalg.api.ndarray.{BaseNDArray, INDArray}
+import org.nd4j.linalg.api.ops.impl.accum.{Mean, Sum}
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.ops.transforms.Transforms
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ListBuffer
 
 trait EmbeddingsDataset extends Dataset {
   def size: Int
@@ -122,8 +124,57 @@ object EmbeddingsDataset {
     }
 
     override def contextVector(words: Seq[String]) = {
+      val v = ListBuffer.empty[Array[Double]]
+      for (w <- words.filter(contains(_)).filter(_.startsWith("ent_"))) {
+        v += model.getWordVector(w)
+      }
+
+      val matrix = Nd4j.create(v.toArray)
+      matrix.mean(0) // 0
+
+      /*
       logger.debug("context vector of... %s".format(words.slice(0, 5) mkString " "))
-      model.getWordVectorsMean(words.filter(contains(_)))
+      try {
+        val sum = new Sum()
+        for (w <- words.filter(contains(_)).slice(0, 10)) {
+
+          logger.debug(w)
+          val v = model.getWordVector(w)
+          logger.debug("%d".format(v.length))
+          logger.debug("--")
+        }
+
+        logger.debug("=================")
+        val vecs = model.getWordVectors(words.filter(contains(_)).slice(0, 5))
+        vecs.mean(0)
+
+
+      } catch {
+        case e: Exception =>
+          try {
+            logger.debug("Only entities....")
+            val vecs = model.getWordVectors(words.filter(_.startsWith("ent_")).filter(contains(_)).slice(0, 5))
+            vecs.mean(0)
+
+
+          } catch {
+            case e: Exception =>
+
+              logger.debug("Custom building....")
+
+              val v = ListBuffer.empty[Array[Double]]
+              for (w <- words.filter(contains(_)).slice(0, 10)) {
+
+                logger.debug(w)
+                v += model.getWordVector(w)
+              }
+
+              val matrix = Nd4j.create(v.toArray)
+              matrix.mean(1) // 0?
+          }
+      }*/
+
+
     }
   }
 
@@ -180,7 +231,7 @@ object EmbeddingsDataset {
     override def contextVector(words: Seq[String]) = {
       val embeddings = words.filter(contains(_)).map(embedding(_).asInstanceOf[Array[Double]]).toArray
       val ndarray = Nd4j.create(embeddings)
-      ndarray.sum(1)
+      ndarray.sum(0) // or 1?
     }
   }
 

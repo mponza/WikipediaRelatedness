@@ -11,4 +11,6 @@ class SubSparseRelatedness(options: RelatednessOptions) extends SubGraphRelatedn
 
     simRanker.similarity(srcWikiID, dstWikiID, subGraph).toFloat
   }
+
+  override def toString() = "Sparse_%s".format(subGraphString())
 }

@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.neural.line.LINEEmbeddings
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph.SubCliqueRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph.{SubCliqueRelatedness, SubLayeredRelatedenss, SubSparseRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clustering.{CosineLocalClusteringRelatedness, JaccardLocalClusteringRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.latent.{LDARelatedness, SVDRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.lm.LMRelatedness
@@ -63,6 +63,8 @@ object RelatednessFactory {
     //
     // Clique-subgraph-based
     case "clique" => new SubCliqueRelatedness(options)
+    case "sparse" => new SubSparseRelatedness(options)
+    case "layer" => new SubLayeredRelatedenss(options)
 
     case "topk" => new TopKRelatedness(options)
 

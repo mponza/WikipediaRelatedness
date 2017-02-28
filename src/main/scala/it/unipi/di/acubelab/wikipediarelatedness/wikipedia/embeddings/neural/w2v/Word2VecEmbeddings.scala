@@ -46,6 +46,7 @@ class Word2VecEmbeddings(modelPath: String) extends WikiEmbeddings {
     w2vDataset.contextVector(textNoStopWords)
   }
 
+
   /**
     * Cosine similarity between two texts which are subsequently mapped into an average w2v vector.
     *
@@ -53,7 +54,6 @@ class Word2VecEmbeddings(modelPath: String) extends WikiEmbeddings {
     * @param dstText
     * @return
     */
-  def textCosine(srcText: Seq[String], dstText : Seq[String]) =
-    Transforms.cosineSim( textVector(srcText), textVector(dstText) ).toFloat
+  def textCosine(srcText: Seq[String], dstText : Seq[String]) = Transforms.cosineSim( textVector(srcText), textVector(dstText) ).toFloat
 
 }

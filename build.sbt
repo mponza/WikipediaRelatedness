@@ -8,8 +8,9 @@ scalacOptions += "-target:jvm-1.8"
 
 scalacOptions ++= Seq("-feature", "-deprecation")
 
-scalacOptions ++= Seq("-country", "us")
-scalacOptions ++= Seq("-language", "us")
+
+//scalacOptions ++= Seq("-country", "us")
+//scalacOptions ++= Seq("-language", "us")
 
 
 fork in run := true
@@ -25,7 +26,7 @@ libraryDependencies ++= Seq(
   "org.scalaj" % "scalaj-http_2.11" % "2.3.0",
 
 
-"org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
   "com.google.guava" % "guava" % "19.0",
 
   "it.unimi.dsi" % "webgraph" % "3.5.2",
@@ -56,7 +57,11 @@ libraryDependencies ++= Seq(
 
   "org.scalatest" % "scalatest_2.11" % "3.0.0",
 
-  "gov.nist.math" % "jama" % "1.0.3"
+  "gov.nist.math" % "jama" % "1.0.3",
+
+  "com.twitter" %% "finagle-core" % "6.41.0",
+  "com.twitter" %% "finagle-stats" % "6.41.0"
+
 
 )
 

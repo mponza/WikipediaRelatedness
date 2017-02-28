@@ -97,8 +97,8 @@ object WikipediaCorpus {
   }
 
 
-  def main(args: Array[String]) {
+  /*def main(args: Array[String]) {
     this.filterWikipediaDocuments()
-  }
+  }*/
 
 }

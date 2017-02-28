@@ -10,11 +10,13 @@ class SubLayeredRelatedenss(options: RelatednessOptions) extends SubGraphRelated
 
 
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = {
-    val srcNodes = layeredSubNodeCreator.topKNodes(srcWikiID)
-    val dstNodes = layeredSubNodeCreator.topKNodes(dstWikiID)
+    val srcNodes = layeredSubNodeCreator.topKNodes(srcWikiID).slice(0, options.subSize / 2)
+    val dstNodes = layeredSubNodeCreator.topKNodes(dstWikiID).slice(0, options.subSize / 2)
 
     val subGraph = new WikiLayeredJungGraph(srcWikiID, dstWikiID, srcNodes, dstNodes, weighter)
 
     simRanker.similarity(srcWikiID, dstWikiID, subGraph).toFloat
   }
+
+  override def toString() = "Layered_%s".format(subGraphString())
 }
