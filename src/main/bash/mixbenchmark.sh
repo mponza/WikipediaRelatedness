@@ -38,13 +38,13 @@ weighters=( "--firstname milnewitten --firstgraph in --secondname w2v --secondmo
             "--firstname w2v --firstmodel w2v.corpus400 --secondname w2v --secondmodel deepwalk.dw10"
             )
 
-lambdas=( 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 )
+lambdas=( 0.1 0.3 0.5 0.7 0.9 )
 
 
 for weight in "${weighters[@]}"
 do
 
-    args="--name sparse --subNodes $nodes --subSize $size --weighter mix $weight "
+    args="--name sparse --subNodes esa --subSize 30 --weighter mix $weight "
     args+="--simRanker csr --iterations 1 --pprAlpha 0.1 --csrDecay 0.9"
 
     logging_info "Experimenting Clique Relatedness with parameters: $args\n"

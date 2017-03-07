@@ -20,7 +20,7 @@ object WikiSimCleaner{
   logger.info("Loading WikiBVGraph...")
 
 
-  def main(args: Array[String]): Unit = {
+  def mainTest(args: Array[String]): Unit = {
     WikiSimCleaner.process(new WikiSimMilneWittenDataset)
   }
 
