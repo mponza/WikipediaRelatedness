@@ -47,6 +47,8 @@ def wiki2LDA(lda_task):
 
     return (wiki_id, wikiLDA)
 
+
+    # unuseless
     tmp = os.path.join(WIKI_LDA_DIR, 'tmp')
     if not os.path.exists(tmp):
         os.makedirs(tmp)

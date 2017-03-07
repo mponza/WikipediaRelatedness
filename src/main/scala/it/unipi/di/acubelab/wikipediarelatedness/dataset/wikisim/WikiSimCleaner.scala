@@ -1,16 +1,12 @@
 package it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim
-/*
-import java.io.File
-import java.util.Locale
 
-import com.github.tototoshi.csv.CSVWriter
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateDataset, WikiRelateTask}
-import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, WAT}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.service.WAT
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
 
-/
+/*
   * Procedure used to clean the WikiSim dataset. One of the first/worst Scala code I have written.
   * To used it add srcWord a
   *
@@ -18,20 +14,25 @@ import org.slf4j.LoggerFactory
   *
   *
   * @param wikiSim
-
-class WikiSimCleaner(wikiSim: WikiRelateDataset) {
+  */
+object WikiSimCleaner{
   val logger = LoggerFactory.getLogger(getClass)
   logger.info("Loading WikiBVGraph...")
 
 
-  def process() : Unit = {
+  def main(args: Array[String]): Unit = {
+    WikiSimCleaner.process(new WikiSimMilneWittenDataset)
+  }
+
+
+  def process(wikiSim: WikiSimMilneWittenDataset) : Unit = {
     logger.info("Processing Dataset...")
     val normWikiSimPairs = normalize(wikiSim.toList)
     val redirWikiSimPairs = redirect(normWikiSimPairs)
     val filterWikiSimPairs = wikiFilter(redirWikiSimPairs)
 
     checkDuplicated(filterWikiSimPairs)
-    store(filterWikiSimPairs, Config.getString("dataset.mw_wikisim"))
+    //store(filterWikiSimPairs, Config.getString("dataset.mw_wikisim"))
 
     logger.info("Dataset has been processed!")
   }
@@ -41,14 +42,14 @@ class WikiSimCleaner(wikiSim: WikiRelateDataset) {
     *
     * @return List of normalized Wikipedia Similarity Pairs between the specified range.
     */
-  def normalize(wikiSimPairs: List[WikiRelateTask]) : List[WikiRelateTask] = {
+  def normalize(wikiSimPairs: List[WikiSimTask]) : List[WikiSimTask] = {
     logger.info("Normalizing...")
 
     wikiSimPairs.map {
-      case wikiRelateTask: WikiRelateTask =>
+      case wikiRelateTask: WikiSimTask =>
         val normalizedRelatedness = wikiRelateTask.humanRelatedness / 10.0f
 
-        new WikiRelateTask(wikiRelateTask.src, wikiRelateTask.dst,  normalizedRelatedness, wikiRelateTask.srcWord, wikiRelateTask.dstWord)
+        new WikiSimTask(wikiRelateTask.src, wikiRelateTask.dst,  normalizedRelatedness, wikiRelateTask.srcWord, wikiRelateTask.dstWord)
     }
   }
 
@@ -57,11 +58,11 @@ class WikiSimCleaner(wikiSim: WikiRelateDataset) {
     * @param wikiSimPairs
     * @return wikiSimPairs re-mapped when they are Wikipedia redirects.
     */
-  def redirect(wikiSimPairs: List[WikiRelateTask]) : List[WikiRelateTask]  = {
+  def redirect(wikiSimPairs: List[WikiSimTask]) : List[WikiSimTask]  = {
     logger.info("Redirecting...")
 
     wikiSimPairs.map {
-      case wikiRelTask: WikiRelateTask =>
+      case wikiRelTask: WikiSimTask =>
 
         val (srcWikiTitle, srcWikiID) = WAT.redirect(wikiRelTask.src.wikiTitle)
         val srcRedWikiEntity = new WikiEntity(srcWikiID, srcWikiTitle)
@@ -69,7 +70,7 @@ class WikiSimCleaner(wikiSim: WikiRelateDataset) {
         val (dstWikiTitle, dstWikiID) = WAT.redirect(wikiRelTask.dst.wikiTitle)
         val dstRedWikiEntity = new WikiEntity(dstWikiID, dstWikiTitle)
 
-        new WikiRelateTask(srcRedWikiEntity, dstRedWikiEntity, wikiRelTask.humanRelatedness, wikiRelTask.srcWord, wikiRelTask.dstWord)
+        new WikiSimTask(srcRedWikiEntity, dstRedWikiEntity, wikiRelTask.humanRelatedness, wikiRelTask.srcWord, wikiRelTask.dstWord)
     }
   }
 
@@ -80,28 +81,32 @@ class WikiSimCleaner(wikiSim: WikiRelateDataset) {
     * @param wikiRelateTasks
     * @return
     */
-  def wikiFilter(wikiRelateTasks: List[WikiRelateTask]) : List[WikiRelateTask] = {
+  def wikiFilter(wikiRelateTasks: List[WikiSimTask]) : List[WikiSimTask] = {
     logger.info("Filtering...")
 
     val wikiGraph = WikiBVGraphFactory.make("out")
 
+    var n = 0
     val realWikiPairs = wikiRelateTasks.filter {
       case wikiRelTask: WikiRelateTask =>
 
         val keep = wikiGraph.contains(wikiRelTask.src.wikiID) && wikiGraph.contains(wikiRelTask.dst.wikiID)
         if (!keep) {
-          logger.warn("The following tuple: %s has been removed (Not present in the Wikipedia Graph)."
+          logger.warn("The following tuple: %s has been removed (Not present in the Wikipedia Graph, probably Disambiguation page)."
             .format(wikiRelTask))
+
+          n += 1
         }
 
         keep
     }
 
+    logger.warn("Removed %d disambiguation pages".format(n))
     realWikiPairs
   }
 
 
-  def checkDuplicated(wikiRelateTasks: List[WikiRelateTask]) = {
+  def checkDuplicated(wikiRelateTasks: List[WikiSimTask]) = {
     val groupedPairs = wikiRelateTasks.groupBy(wikiRelTask => "%s,%s"
       .format(wikiRelTask.src.wikiTitle, wikiRelTask.dst.wikiTitle))
 
@@ -113,26 +118,30 @@ class WikiSimCleaner(wikiSim: WikiRelateDataset) {
   }
 
 
-  def store(wikiSimPairs: List[WikiRelateTask], path: String) : Unit = {
-    logger.info("Writing...")
-
-    new File(path).getParentFile.mkdirs
-    val csvWriter = CSVWriter.open(path)
-
-    wikiSimPairs.foreach {
-      case wikiRelateTask: WikiRelateTask =>
-        println(toCSVString(wikiRelateTask))
-        csvWriter.writeRow(toCSVString(wikiRelateTask))
-    }
-
-    csvWriter.close
-  }
-
-  def toCSVString(wikiRelateTask: WikiRelateTask) : Seq[Any] = {
+  def toCSVString(wikiRelateTask: WikiSimTask) : Seq[Any] = {
     Seq(wikiRelateTask.srcWord, wikiRelateTask.src.wikiID, wikiRelateTask.src.wikiTitle,
       wikiRelateTask.dstWord, wikiRelateTask.dst.wikiID, wikiRelateTask.dst.wikiTitle,
       wikiRelateTask.humanRelatedness)
 
   }
 
-}*/
+
+  /*
+  def store(wikiSimPairs: List[WikiSimTask], path: String) : Unit = {
+  logger.info("Writing...")
+
+  new File(path).getParentFile.mkdirs
+  val csvWriter = CSVWriter.open(path)
+
+  wikiSimPairs.foreach {
+    case wikiRelateTask: WikiRelateTask =>
+      println(toCSVString(wikiRelateTask))
+      csvWriter.writeRow(toCSVString(wikiRelateTask))
+  }
+
+  csvWriter.close
+  }
+  */
+
+
+}

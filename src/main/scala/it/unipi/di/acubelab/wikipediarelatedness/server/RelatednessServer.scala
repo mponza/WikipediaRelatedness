@@ -10,7 +10,7 @@ import com.twitter.util.{Await, Future}
 object RelatednessServer {
 
   // Code adapted from https://gist.github.com/stonegao/1273845
-  def main(args: Array[String]) {
+  def mainTest(args: Array[String]) {
 
     val service = new Service[Request, Response] {
 
@@ -19,7 +19,7 @@ object RelatednessServer {
           request.method match { // -> Path(request.path) match {
             case Post => // -> Root / Path("relate/graph") =>
               val c = request.contentString
-              val json = c.toJ
+              //val json = c.js
               null
 
             case _ =>

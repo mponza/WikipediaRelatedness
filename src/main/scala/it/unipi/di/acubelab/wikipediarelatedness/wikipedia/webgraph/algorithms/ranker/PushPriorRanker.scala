@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 
 
 /**
-  * Uses is carefully.
+  * Use this carefully.
   *
   * @param wikiID
   * @param wikiBVGraph
@@ -35,10 +35,7 @@ class PushPriorRanker(val wikiID: Int, val wikiBVGraph: WikiBVGraph, val alpha: 
 
     // Scala code adapted from http://law.di.unimi.it/software/law-docs/it/unimi/dsi/law/rank/PageRankPush.html
     val rank = Array.ofDim[Double]( ppr.graph.numNodes() )
-    for(i <- ppr.node2Seen.size() until 0 by -1 ) {
-      rank( ppr.seen2Node(i) ) = ppr.rank(i) / ppr.pNorm
-      println( ppr.rank(i) )
-    }
+    for(i <- ppr.node2Seen.size() until 0 by -1 ) rank( ppr.seen2Node(i) ) = ppr.rank(i) / ppr.pNorm
 
     rank
   }
@@ -49,10 +46,7 @@ class PushPriorRanker(val wikiID: Int, val wikiBVGraph: WikiBVGraph, val alpha: 
 
     // Scala code adapted from http://law.di.unimi.it/software/law-docs/it/unimi/dsi/law/rank/PageRankPush.html
     val rank = Array.ofDim[Double]( ppr.graph.numNodes() )
-    for(i <- ppr.node2Seen.size() until 0 by -1 ) {
-      rank( ppr.seen2Node(i) ) = ppr.rank(i) / ppr.pNorm
-      println( ppr.rank(i) )
-    }
+    for(i <- ppr.node2Seen.size() until 0 by -1 ) rank( ppr.seen2Node(i) ) = ppr.rank(i) / ppr.pNorm
 
     rank
   }

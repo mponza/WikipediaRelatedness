@@ -161,9 +161,6 @@ object RelatednessOptions {
       opt[String]("secondmodel").action((x, conf) => conf.copy(secondmodel = x)).text("Second relatedness model")
       opt[Int]("secondthreshold").action((x, conf) => conf.copy(secondthreshold = x)).text("Second relatedness threshold")
 
-
-
-
       opt[Double]("lambda").action((x, conf) => conf.copy(lambda = x)).text("Linear combination weight of the first relatedness")
 
 

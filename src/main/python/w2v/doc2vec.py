@@ -29,7 +29,7 @@ class JsonCorpus(LineSentence):
                 line = unicode(line.strip(), errors='replace') # to_unicode(line.strip())  # check me
                 document = json.loads(line)
 
-                tokens = [token for sentence in document['sentences'] for token in sentence.split()]
+                tokens = [token for sentence in document['sentences'] for token in sentence.split() if token.startswith('ent_')]
                 id = int(document['wikiId'])
 
                 yield TaggedDocument(tokens, [id])
@@ -40,15 +40,10 @@ def get_wiki_ids(filename):
     wiki_ids = []
     logging.info('Loading WikiIDs...')
     bar = ProgressBar()
-    n = 100
     with smart_open(filename) as fin:
         for line in bar(fin):
             document = json.loads(line)
             wiki_ids.append(int(document['wikiId']))
-            n = n - 1
-
-            if n == 0:
-                break
 
     return set(wiki_ids)
 

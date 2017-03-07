@@ -11,7 +11,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.neural.{L
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.casaro.{CasaroCoSimRankRelatedness, CasaroPPRRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.distance.DistanceRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.neural.Word2VecDoc2VecRelatedness
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalks.PPRRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalks.{CoSimRankRelatedness, PPRRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set._
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.topk.TopKRelatedness
 
@@ -71,6 +71,7 @@ object RelatednessFactory {
     //
     // RandomWalks
     case "ppr" => new PPRRelatedness(options)
+    case "csr" => new CoSimRankRelatedness(options)
 
     case "casaro.csr" => new CasaroCoSimRankRelatedness(options)
     case "casaro.ppr" => new CasaroPPRRelatedness(options)

@@ -55,6 +55,7 @@ csrDecays=( 0.8 )
 #csrDecays=( 0.9 )
 
 # WTF re-write it with recursion...
+# check http://superuser.com/questions/318067/how-to-iterate-over-all-pair-combinations-in-a-list-in-bash
 for nodes in "${subNodes[@]}"
 do
     for size in "${subSizes[@]}"
