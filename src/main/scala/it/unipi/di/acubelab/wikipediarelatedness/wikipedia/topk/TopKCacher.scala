@@ -36,7 +36,7 @@ object TopKCacher {
     wikiIDs.foreach {
       case wikiID =>
 
-        val scoredEntities = topK.topKScoredEntities(wikiID, 10000)
+        val scoredEntities = topK.topKScoredEntities(wikiID, 100)
         cache.put(wikiID, scoredEntities)
 
         pl.update()

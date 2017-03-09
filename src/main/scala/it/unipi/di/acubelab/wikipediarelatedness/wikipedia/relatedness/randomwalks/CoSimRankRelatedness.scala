@@ -6,6 +6,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedn
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.similarity.WikiBVCoSimRank
 import org.slf4j.LoggerFactory
 
+
 class CoSimRankRelatedness(options: RelatednessOptions) extends Relatedness {
   protected val logger = LoggerFactory.getLogger(getClass)
   protected val csr = new WikiBVCoSimRank(options.iterations, options.pprAlpha, options.csrDecay)

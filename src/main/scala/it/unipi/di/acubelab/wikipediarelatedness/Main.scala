@@ -41,8 +41,8 @@ object MilneWittenCacher {
     TopKCacher.generate(topk, dataset.flatten, topk.getCachePath)
   }
 }
-
-
+*/
+/*
 object W2VCacher {
   def main(args: Array[String]) {
     val topk = new W2VTopK(
@@ -57,9 +57,9 @@ object W2VCacher {
     TopKCacher.generate(topk, dataset.flatten, topk.getCachePath)
   }
 
-}
+}*/
 
-
+/*
 object Statistics{
 
 

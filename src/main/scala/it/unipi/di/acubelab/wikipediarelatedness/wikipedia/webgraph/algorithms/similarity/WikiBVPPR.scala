@@ -1,15 +1,22 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.similarity
 
 import it.unimi.dsi.law.rank.SpectralRanking.IterationNumberStoppingCriterion
-import it.unipi.di.acubelab.webgraph.{PPRParallelGaussSeidel, PPRVectors}
+import it.unipi.di.acubelab.webgraph.{PPRParallelGaussSeidel, PPRTask}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 
 
 /**
   * Abstract class for the computation of the stationary distribution over the whole Wikipedia.
+  * Methods commonly used to be overrided:
+  *
+  *   - getPreferenceVector, if non-uniform is needed
+  *   - similarity, by taking into account several stationary distributions.
+  *
   * @param iterations
   * @param alpha
   */
 abstract class WikiBVPPR(val iterations: Int, val alpha: Float) {
+  protected val wikiBVgraph = WikiBVGraphFactory.make("in")
 
   def similarity(srcWikiID: Int, dstWikiID: Int): Float = {
     if (srcWikiID == dstWikiID) return 1f
@@ -22,14 +29,31 @@ abstract class WikiBVPPR(val iterations: Int, val alpha: Float) {
   }
 
 
-  protected def computePPRVectors(wikiID: Int) = {
+  protected def computePPRVectors(wikiID: Int) : List[Seq[(Int, Float)]]= {
     val pageRank = new PPRParallelGaussSeidel()
     pageRank.alpha = alpha
 
-    val pprVectors = new PPRVectors
-    pageRank.stepUntil(wikiID, new IterationNumberStoppingCriterion(iterations), pprVectors)
+    val preference = getPreferenceVector(wikiID)
+    val pprTask = new PPRTask(preference)
 
-    pprVectors
+    pageRank.stepUntil(new IterationNumberStoppingCriterion(iterations), pprTask)
+
+    pprTask.pprs.toList
+  }
+
+
+  /**
+    * Default uniform preference vector.
+    * @param wikiID
+    * @return
+    */
+  protected def getPreferenceVector(wikiID: Int): Array[Double]= {
+    val nodeID = wikiBVgraph.getNodeID(wikiID)
+    val preference = Array.ofDim[Double]( wikiBVgraph.numNodes() )
+
+    preference(nodeID) = 1.0
+
+    preference
   }
 
 
@@ -39,6 +63,6 @@ abstract class WikiBVPPR(val iterations: Int, val alpha: Float) {
     * @param srcPPRVectors
     * @param dstPPRVectors
     */
-  protected def similarity(srcPPRVectors: PPRVectors, dstPPRVectors: PPRVectors) : Float
+  protected def similarity(srcPPRVectors: List[Seq[(Int, Float)]], dstPPRVectors: List[Seq[(Int, Float)]]) : Float
 
 }

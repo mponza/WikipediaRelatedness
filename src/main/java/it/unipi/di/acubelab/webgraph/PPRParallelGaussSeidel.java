@@ -9,7 +9,6 @@ import it.unimi.dsi.law.util.KahanSummation;
 import it.unimi.dsi.logging.ProgressLogger;
 import it.unimi.dsi.webgraph.ImmutableGraph;
 import it.unimi.dsi.webgraph.NodeIterator;
-import it.unimi.dsi.law.rank.SpectralRanking.StoppingCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +17,10 @@ import java.util.BitSet;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicLong;
 
-
+/**
+ * Customization of PageRankParallelGaussSeidel which saves at each PageRank iteration the stationary distribution.
+ * The Wikipedia (in) graph is used.
+ */
 public class PPRParallelGaussSeidel extends PageRank  {
     private static final Logger LOGGER = LoggerFactory.getLogger(PPRParallelGaussSeidel.class);
     private final ProgressLogger progressLogger;
@@ -150,17 +152,16 @@ public class PPRParallelGaussSeidel extends PageRank  {
      *      1. It drugs preference with standard basis vector in nodeID(srcWikiID)\
      *      2. fill pprVector with the stationary distribution of each
      *
-     * @param srcWikiID
      * @param stoppingCriterion
-     * @param pprVectors
+     * @param pprTask saves the stationary distribution at each iteration inside this
      * @throws IOException
      */
-    public void stepUntil(int srcWikiID, final StoppingCriterion stoppingCriterion, PPRVectors pprVectors) throws IOException {
+    public void stepUntil(final StoppingCriterion stoppingCriterion, PPRTask pprTask) throws IOException {
         // Set preference vector before initialization
-        int nodeID = pprGraph.wikiBVgraph.getNodeID(srcWikiID);
-        System.out.println("---------------");
-        this.preference = new DoubleArrayList(new double[pprGraph.n]);
-        this.preference.set(nodeID, 1.0);
+        //int nodeID = pprGraph.wikiBVgraph.getNodeID(srcWikiID);
+        //this.preference = new DoubleArrayList(new double[pprGraph.n]);
+        //this.preference.set(nodeID, 1.0);
+        this.preference = pprTask.preference();
 
         this.init();
         PPRParallelGaussSeidel.IterationThread[] thread = new PPRParallelGaussSeidel.IterationThread[this.numberOfThreads];
@@ -187,7 +188,7 @@ public class PPRParallelGaussSeidel extends PageRank  {
                 PPRParallelGaussSeidel.this.normDelta = PPRParallelGaussSeidel.this.danglingRankAccumulator = 0.0D;
                 PPRParallelGaussSeidel.this.nextNode.set(0L);
                 PPRParallelGaussSeidel.this.progressLogger.expectedUpdates = (long) PPRParallelGaussSeidel.this.n;
-                pprVectors.add(PPRParallelGaussSeidel.this.rank);
+                pprTask.add(PPRParallelGaussSeidel.this.rank);
                 PPRParallelGaussSeidel.this.progressLogger.start("Iteration " + PPRParallelGaussSeidel.this.iteration++ + "...");
             }
         });

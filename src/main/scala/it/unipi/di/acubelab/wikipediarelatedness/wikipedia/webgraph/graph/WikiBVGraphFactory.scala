@@ -53,9 +53,9 @@ object WikiBVGraphFactory {
         case "sym" => immSymGraph
         case "sym_no_loop" =>  immSymNoLoopGraph
       }
-      val threadedImmGraph = if (threadSafe) immGraph.copy() else immGraph
+      //val threadedImmGraph = if (threadSafe) immGraph.copy() else immGraph
 
-      new WikiBVGraph(threadedImmGraph.copy(), wiki2node)
+      new WikiBVGraph(immGraph.copy(), wiki2node)
   }
 
 }

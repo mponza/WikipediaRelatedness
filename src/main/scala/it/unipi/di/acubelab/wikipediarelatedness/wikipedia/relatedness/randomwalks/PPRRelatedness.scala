@@ -3,7 +3,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwa
 import java.util.Locale
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessOptions}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.PPRRanker
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.algorithms.
 import org.slf4j.LoggerFactory
 
 
