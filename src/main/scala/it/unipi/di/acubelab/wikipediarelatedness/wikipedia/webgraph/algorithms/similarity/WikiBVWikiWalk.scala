@@ -22,16 +22,18 @@ class WikiBVWikiWalk(iterations: Int, alpha: Float) extends WikiBVPPRCos(iterati
   override protected def getPreferenceVector(wikiID: Int): Array[Double]= {
     val preference = Array.ofDim[Double]( wikiBVgraph.numNodes() )
 
-    val topk = esaTopK.topKScoredEntities(wikiID, 10000)
-    val sumScores = topk.map(_._2).sum
+    val topk = esaTopK.topKScoredEntities(wikiID, 10000).filter( x => wikiBVgraph.contains(x._1) )
+    val sumScores = topk.map(_._2.toInt).sum.toDouble
 
     topk.foreach {
       case (wID: Int, score: Float) =>
-        val nodeID = wikiBVgraph.getNodeID(wikiID)
-        val normScore = score / sumScores
 
-        preference(nodeID) = normScore
+        val nodeID = wikiBVgraph.getNodeID(wID)
+        val normScore = score.toInt / sumScores
+
+        preference(nodeID) = normScore.toDouble
     }
+
 
     preference
   }

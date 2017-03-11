@@ -328,126 +328,39 @@ function run_clique {
 # Experiments RandomWalks measure over the whole Wikipedia graph.
 #
 function run_randomwalks {
-    rw=( "ppr" "csr" )
-    iters=( 5 10 )
+    rw=( "cosimrank" "wikiwalk" ) # "pprcos"
+    iters=( 5 )
+    dampings=( 0.8 ) # 0.9 )  # here dampings are 1 - alpha
     decays=( 0.8 0.9 )
 
     for r in "${rw[@]}"
     do
         for i in "${iters[@]}"
         do
-            for d in "${decays[@]}"
+            for d in "${dampings[@]}"
             do
 
-                args="--name $r --pprAlpha $d --iterations $i"
-                run_sbt "$args"
+                if [ "$r" -ne "cosimrank" ];
+                then
+                    args="--name $r --pprAlpha $d --iterations $i"
+                    run_sbt "$args"
 
-            done
+                else
 
-        done
-    done
-}
-
-
-#
-# Experiments linear combination between two relatedness methods based on w2v and MilneWitten.
-#
-function run_mixed {
-    #models=(
-
-             # text-based (standard w2v)
-    #         "w2v.corpus" "w2v.coocc" "w2v.sg"
-
-             # random walk-based (DeepWalk)
-    #         "deepwalk.dw" "deepwalk.dw10" "deepwalk.dw90" "deepwalk.dwsg"
-    #)
-
-    #lambdas=( 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 )
-
-    #for m in "${models[@]}"
-    #do
-    #    for l in "${lambdas[@]}"
-    #    do
-    #         args="--name mix --firstname milnewitten --firstgraph in --secondname w2v --secondmodel $m --lambda $l"
-    #         run_sbt "$args"
-    #    done
-    #done
-
-
-
-    thresholds=(
-
-             # text-based (standard w2v)
-             10000
-    )
-
-    lambdas=( 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 )
-
-    for m in "${thresholds[@]}"
-    do
-        for l in "${lambdas[@]}"
-        do
-             args="--name mix --firstname milnewitten --firstgraph in --secondname esa --secondthreshold $m --lambda $l"
-             run_sbt "$args"
-        done
-    done
-
-}
-
-
-
-function run_mixclique {
-    subNodes=( "esa" )
-    subSizes=( 5 10 30 )
-
-    weighters=( "mix --firstname milnewitten --firstgraph in --secondname w2v --secondmodel w2v.corpus"
-                "mix --firstname milnewitten --firstgraph in --secondname w2v --secondmodel w2v.sg"
-                "mix --firstname milnewitten --firstgraph in --secondname w2v --secondmodel deepwalk.sg" )
-
-    lambdas=( 0.1 0.3 0.5 0.7 0.9 )
-
-    simRankers=( "csr" ) # "ppr" "csr" )
-    iterations=( 1 3 ) # 2 3 )
-    pprAlphas=( 0.1 0.2 ) # 0.2 )
-    csrDecays=( 0.8 0.9 ) # 0.9 )
-
-
-    for nodes in "${subNodes[@]}"
-    do
-        for size in "${subSizes[@]}"
-        do
-            for weight in "${weighters[@]}"
-            do
-                for simRank in "${simRankers[@]}"
-                do
-                    for iters in "${iterations[@]}"
+                    for csr in "${decays[@]}"
                     do
-                        for ppr in "${pprAlphas[@]}"
-                        do
-                            for csr in "${csrDecays[@]}"
-                            do
 
-                                for lam in "${lambdas[@]}"
-                                do
+                        args="--name cosimrank --pprAlpha $d --iterations $i --csrDecay $csr"
+                        run_sbt "$args"
 
-                                    args="--name clique --subNodes $nodes --subSize $size --weighter $weight "
-                                    args+="--simRanker $simRank --iterations $iters --pprAlpha $ppr --csrDecay $csr --lambda $lam"
-
-                                    logging_info "Experimenting MixedClique Relatedness with parameters: $args\n"
-
-                                    run_sbt "$args"
-
-                                done
-                            done
-                        done
                     done
-                done
+                fi
             done
+
         done
     done
 
 }
-
 
 
 
@@ -485,6 +398,7 @@ function run_mixclique {
 
 # launch these
 #run_w2v
-run_mixed
-run_clique
+#run_clique
 #run_mixclique
+
+run_randomwalks

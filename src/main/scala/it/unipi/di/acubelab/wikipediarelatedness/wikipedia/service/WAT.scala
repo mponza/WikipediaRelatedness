@@ -14,7 +14,6 @@ object WAT {
     val strResponse = Http(Config.getString("service.wat")).param("title", title).timeout(1000000000, 10000000).asString.body.toString
 
     val jsonResponse = JSON.parseFull(strResponse)
-    println(strResponse)
 
     jsonResponse match {
       case Some(jsonMap: Map[String, Any] @unchecked) =>

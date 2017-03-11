@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 
 
 /**
-  * Beta. Use it carefully. Linear combination between two relatendess methods.
+  * Use it CAREFULLY. Linear combination between two relatendess methods. Used as subgraph weighting.
   *
   * @param options
   */

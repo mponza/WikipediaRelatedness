@@ -1,11 +1,11 @@
 package it.unipi.di.acubelab.webgraph;
 
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleIterators;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import it.unimi.dsi.fastutil.io.BinIO;
 import it.unimi.dsi.law.rank.PageRank;
 import it.unimi.dsi.law.util.KahanSummation;
+import it.unimi.dsi.law.rank.SpectralRanking.StoppingCriterion;
 import it.unimi.dsi.logging.ProgressLogger;
 import it.unimi.dsi.webgraph.ImmutableGraph;
 import it.unimi.dsi.webgraph.NodeIterator;

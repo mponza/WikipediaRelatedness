@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sizes=(200 300 400 500 1000)
+sizes=(100 200 300 400)
 for size in "${sizes[@]}"
 do
     printf "[Bash] Running LDA with size $size..."

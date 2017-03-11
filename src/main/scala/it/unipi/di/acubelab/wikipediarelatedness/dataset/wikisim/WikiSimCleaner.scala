@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.dataset.wikisim
 
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelateDataset, WikiRelateTask}
+import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.service.WAT
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
@@ -32,7 +33,7 @@ object WikiSimCleaner{
     val filterWikiSimPairs = wikiFilter(redirWikiSimPairs)
 
     checkDuplicated(filterWikiSimPairs)
-    //store(filterWikiSimPairs, Config.getString("dataset.mw_wikisim"))
+    store(filterWikiSimPairs, null) // Config.getString("dataset.mw_wikisim"))
 
     logger.info("Dataset has been processed!")
   }
@@ -113,7 +114,9 @@ object WikiSimCleaner{
     groupedPairs.foreach{
       case (strPair, pairTasks) =>
 
-        if (pairTasks.length > 1) logger.warn("Duplicated pair %s".format(strPair))
+        if (pairTasks.length > 1) {
+          logger.warn("Duplicated pair %s with length: %d".format(strPair, pairTasks.length))
+        }
     }
   }
 
@@ -126,22 +129,22 @@ object WikiSimCleaner{
   }
 
 
-  /*
+
   def store(wikiSimPairs: List[WikiSimTask], path: String) : Unit = {
   logger.info("Writing...")
 
-  new File(path).getParentFile.mkdirs
-  val csvWriter = CSVWriter.open(path)
+  //new File(path).getParentFile.mkdirs
+  //val csvWriter = CSVWriter.open(path)
 
   wikiSimPairs.foreach {
     case wikiRelateTask: WikiRelateTask =>
       println(toCSVString(wikiRelateTask))
-      csvWriter.writeRow(toCSVString(wikiRelateTask))
+      //csvWriter.writeRow(toCSVString(wikiRelateTask))
   }
 
-  csvWriter.close
+  //csvWriter.close
   }
-  */
+
 
 
 }

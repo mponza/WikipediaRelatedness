@@ -32,15 +32,16 @@ function run_sbt {
 #
 # subNodes=( "esa"   "sg" "dwsg" )
 
-subNodes=( "esa" "mw.in" "corpus400" "dw10")
-subSizes=( 10 20 30 40 )
+#subNodes=( "esa" "mw.in" "corpus400" "dw10")
+subNodes=("mw.out" "mw.sym")
+subSizes=( 30 )
 
 weighters=( "milnewitten --weighterGraph in" "w2v --weighterModel w2v.corpus400" "w2v --weighterModel deepwalk.dw10" )
 
 simRankers=( "csr" ) # "ppr" "csr" )
 iterations=( 1 )  # 2 3 )
 pprAlphas=( 0.1 )
-csrDecays=( 0.8 )
+csrDecays=( 0.9 )
 
 #subNodes=( "esa" )
 #subSizes=( 10 50 100 )
@@ -71,10 +72,10 @@ do
                         for csr in "${csrDecays[@]}"
                         do
 
-                            args="--name clique --subNodes $nodes --subSize $size --weighter $weight "
+                            args="--name sparse --subNodes $nodes --subSize $size --weighter $weight "
                             args+="--simRanker $simRank --iterations $iters --pprAlpha $ppr --csrDecay $csr"
 
-                            logging_info "Experimenting Clique Relatedness with parameters: $args\n"
+                            logging_info "Experimenting Subgraph Relatedness with parameters: $args\n"
 
                             run_sbt "$args"
                         done

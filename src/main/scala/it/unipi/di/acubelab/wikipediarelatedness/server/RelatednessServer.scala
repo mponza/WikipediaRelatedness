@@ -10,7 +10,7 @@ import com.twitter.util.{Await, Future}
 object RelatednessServer {
 
   // Code adapted from https://gist.github.com/stonegao/1273845
-  def mainTest(args: Array[String]) {
+  def main(args: Array[String]) {
 
     val service = new Service[Request, Response] {
 
