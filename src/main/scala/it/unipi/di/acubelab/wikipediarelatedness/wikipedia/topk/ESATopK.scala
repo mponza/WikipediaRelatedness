@@ -21,4 +21,5 @@ class ESATopK extends TopKCached {
     logger.warn("%d not present in cache. Running raw ESA for top-k retrieval...".format(wikiID))
     ESA.wikipediaConcepts(wikiID, k)
   }
+
 }

@@ -33,10 +33,12 @@ function run_sbt {
 # subNodes=( "esa"   "sg" "dwsg" )
 
 #subNodes=( "esa" "mw.in" "corpus400" "dw10")
-subNodes=("mw.out" "mw.sym")
+subNodes=( "mw.in" "mw.sym" ) # "mw.out")
 subSizes=( 30 )
 
 weighters=( "milnewitten --weighterGraph in" "w2v --weighterModel w2v.corpus400" "w2v --weighterModel deepwalk.dw10" )
+
+
 
 simRankers=( "csr" ) # "ppr" "csr" )
 iterations=( 1 )  # 2 3 )

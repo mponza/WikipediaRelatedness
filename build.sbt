@@ -62,7 +62,6 @@ libraryDependencies ++= Seq(
   "com.twitter" %% "finagle-core" % "6.41.0",
   "com.twitter" %% "finagle-stats" % "6.41.0"
 
-
 )
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html
@@ -72,3 +71,5 @@ unmanagedJars in Compile ++= {
   val customJars = (baseDirectories ** "*.jar")
   customJars.classpath
 }
+
+mainClass in (Compile, run) := Some("it.unipi.di.acubelab.wikipediarelatedness.Main")

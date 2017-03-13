@@ -6,7 +6,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.DatasetFactory
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{RelatednessFactory, RelatednessOptions}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.neural.W2VTopK
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKCacher
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.{MilneWittenTopK, TopKCacher}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
@@ -32,6 +32,7 @@ object Main {
   }
 
 }
+
 /*
 object MilneWittenCacher {
   def main(args: Array[String]) {
@@ -42,6 +43,7 @@ object MilneWittenCacher {
   }
 }
 */
+
 /*
 object W2VCacher {
   def main(args: Array[String]) {

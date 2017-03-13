@@ -30,10 +30,10 @@ function run_sbt {
 #
 # Experiments based on clique graph generation.
 
-subNodes=( "esa" )
+subNodes=( "mw.out" )  # check args!
 subSizes=( 30 )
 
-weighters=( # "--firstname milnewitten --firstgraph in --secondname w2v --secondmodel w2v.corpus400"
+weighters=( "--firstname milnewitten --firstgraph in --secondname w2v --secondmodel w2v.corpus400"
             "--firstname milnewitten --firstgraph in --secondname w2v --secondmodel deepwalk.dw10"
             "--firstname w2v --firstmodel w2v.corpus400 --secondname w2v --secondmodel deepwalk.dw10"
             )
@@ -45,7 +45,7 @@ for weight in "${weighters[@]}"
 do
     for lambda in "${lambdas[@]}"
     do
-        args="--name sparse --subNodes esa --subSize 30 --weighter mix $weight "
+        args="--name sparse --subNodes mw.out --subSize 30 --weighter mix $weight "
         args+="--simRanker csr --iterations 1 --pprAlpha 0.1 --csrDecay 0.9 --lambda $lambda"
 
         logging_info "Experimenting Sparse Relatedness with parameters: $args\n"

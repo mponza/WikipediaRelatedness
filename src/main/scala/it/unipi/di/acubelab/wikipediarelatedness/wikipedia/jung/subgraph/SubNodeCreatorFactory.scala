@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKFactory
 
 object SubNodeCreatorFactory {
 
-  def make(name: String, size: Int) = name match {
+  def make(name: String, size: Int) : TopKSubNodeCreator = name match {
 
     //
     // Classical entity-based approaches
@@ -27,7 +27,7 @@ object SubNodeCreatorFactory {
 
     //
     // Context-based
-    case "context.esa" => new ESAContextSubNodeCreator(size)
-    case "context.corpus" | "context.dw10"=> new NeuralSubNodeCreator(size, TopKFactory.make(name.substring(8, name.length)))
+    //case "context.esa" => new ESAContextSubNodeCreator(size)
+    //case "context.corpus" | "context.dw10"=> new NeuralSubNodeCreator(size, TopKFactory.make(name.substring(8, name.length)))
   }
 }

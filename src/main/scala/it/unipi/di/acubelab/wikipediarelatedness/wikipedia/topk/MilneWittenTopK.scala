@@ -32,7 +32,7 @@ class MilneWittenTopK(graph: String) extends TopKCached {
 
     neighborhood.filter(_ != wikiID).map {
       case wID => Tuple2(wID, milnewitten.computeRelatedness(wikiID, wID))
-    }.sortBy(_._2).slice(0, k)
+    }.sortBy(_._2).reverse.slice(0, k)
 
   }
 }
