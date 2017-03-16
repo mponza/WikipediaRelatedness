@@ -192,3 +192,22 @@ Benchmark
 ---------
 
     bash src/main/bash/benchmark.sh
+    
+    
+    
+Compressing Embeddings
+----------------------
+
+    git clone --recursive https://github.com/ot/entity2vec
+    cd ot/entity2vec
+    
+    git submodule init
+    git submodule update
+    
+    python2.7 model_quantization.py quant data/word_model.bin data/word
+    
+    mvn exec:java -Dexec.mainClass="it.cnr.isti.hpc.Word2VecCompress" -Dexec.args="data/word.e0.100.txt data/word.e0.100.bin"
+    
+Load the final data/word.e0.100.bin using `EmbeddingDataset`.
+    
+    

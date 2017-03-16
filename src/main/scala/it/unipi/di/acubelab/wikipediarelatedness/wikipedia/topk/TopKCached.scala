@@ -48,7 +48,7 @@ trait TopKCached extends TopK {
       cachedTopKScoredEntities(wikiID, k)
 
     } else {
-      logger.debug("%d not in cache.".format(wikiID))
+      //logger.debug("%d not in cache.".format(wikiID))
       nonCachedTopKScoredEntities(wikiID, k)
     }
   }

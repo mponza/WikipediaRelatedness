@@ -31,6 +31,7 @@ libraryDependencies ++= Seq(
 
   "it.unimi.dsi" % "webgraph" % "3.5.2",
   "it.unimi.dsi" % "fastutil" % "7.0.12",
+  "it.unimi.dsi" % "sux4j" % "4.0.0",
 
   "net.sf.jung" % "jung2" % "2.0.1",
   "net.sf.jung" % "jung-api" % "2.0.1",
@@ -60,7 +61,10 @@ libraryDependencies ++= Seq(
   "gov.nist.math" % "jama" % "1.0.3",
 
   "com.twitter" %% "finagle-core" % "6.41.0",
-  "com.twitter" %% "finagle-stats" % "6.41.0"
+  "com.twitter" %% "finagle-stats" % "6.41.0",
+
+  "com.madhukaraphatak" % "java-sizeof_2.11" % "0.1"
+
 
 )
 
@@ -72,4 +76,4 @@ unmanagedJars in Compile ++= {
   customJars.classpath
 }
 
-mainClass in (Compile, run) := Some("it.unipi.di.acubelab.wikipediarelatedness.Main")
+//mainClass in (Compile, run) := Some("it.unipi.di.acubelab.wikipediarelatedness.Main")

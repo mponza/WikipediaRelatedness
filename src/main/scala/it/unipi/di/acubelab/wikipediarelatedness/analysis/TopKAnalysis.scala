@@ -1,10 +1,13 @@
 package it.unipi.di.acubelab.wikipediarelatedness.analysis
 
 import java.io.FileWriter
+import java.util.Locale
 
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.DatasetFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.SubNodeCreatorFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.topk.TopKSubNodeCreator
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessOptions
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.MilneWittenRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopK
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
@@ -19,6 +22,12 @@ class TopKAnalysis {
   protected val inBVgraph = WikiBVGraphFactory.make("in")
 
 
+  /**
+    * Analyzis for unweighted topk entities.
+    *
+    * @param topk
+    * @param outpath
+    */
   def percentileTopK2Graph(topk: TopKSubNodeCreator, outpath: String) = {
     // Entity pairs
     val entityParis = DatasetFactory.datasets().flatten.map(x => (x.src.wikiID, x.dst.wikiID))
@@ -47,6 +56,44 @@ class TopKAnalysis {
 
     storeAnalysis(analysis.toList, outpath)
   }
+
+
+  def weightedPercentileTopK2Graph(topk: TopKSubNodeCreator, outpath: String) = {
+    // Entity pairs
+    val entityParis = DatasetFactory.datasets().flatten.map(x => (x.src.wikiID, x.dst.wikiID))
+
+    val analysis = new ListBuffer[String] // srcWikiID,dstWikiID,label
+    val rel = new MilneWittenRelatedness(new RelatednessOptions(graph = "in"))
+
+    entityParis.foreach {
+      case pair =>
+        val src = pair._1
+        val dst = pair._2
+
+        val nodes = topk.subNodes(src, dst)
+
+        val srcSum = nodes.filter(_ != src).map(rel.computeRelatedness(src, _)).sum  // MW caches scores
+        val dstSum =  nodes.filter(_ != dst).map(rel.computeRelatedness(dst, _)).sum
+
+        nodes.foreach {
+          case node =>
+            if (node != src) {
+              val srcLabel = whatNeighbor(src, node)
+              val srcRow = "%d,%d,%s,%1.3f".formatLocal(Locale.US, src, node, srcLabel, rel.computeRelatedness(src, node) ) // / srcSum)
+              analysis += srcRow
+            }
+
+            if (node != dst) {
+              val dstLabel = whatNeighbor(dst, node)
+              val dstRow = "%d,%d,%s,%1.3f".formatLocal(Locale.US, dst, node, dstLabel, rel.computeRelatedness(dst, node)) // / dstSum)
+              analysis += dstRow
+            }
+        }
+    }
+
+    storeAnalysis(analysis.toList, outpath)
+  }
+
 
 
   /**
@@ -100,12 +147,12 @@ class TopKAnalysis {
 
 object TopKAnalysis {
 
+
   def mainTest(args: Array[String]) = {
     val topKAnalysis = new TopKAnalysis
 
-
     val subnode = SubNodeCreatorFactory.make(args(0), 30)
-    topKAnalysis.percentileTopK2Graph(subnode, args(1))
+    topKAnalysis.weightedPercentileTopK2Graph(subnode, args(1))
     //val topk = TopKFactory.make(args(0))
     //topKAnalysis.analysisTopK2Graph(topk, args(1))
   }
