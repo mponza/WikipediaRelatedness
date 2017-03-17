@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.neural.line.LINEEmbeddings
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.FastDeepWalkRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.relatedness.FastDeepWalkRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph.{SubCliqueRelatedness, SubLayeredRelatedenss, SubSparseRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clustering.{CosineLocalClusteringRelatedness, JaccardLocalClusteringRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.latent.{LDARelatedness, SVDRelatedness}

@@ -1,4 +1,4 @@
-package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast
+package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.relatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessFactory, RelatednessOptions}
 

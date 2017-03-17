@@ -78,7 +78,8 @@ object EmbeddingsDataset {
 
     override def similarity(w1: String, w2: String): Float = {
       if(!model.hasWord(w1) || !model.hasWord(w2)) return 0f
-      model.similarity(w1, w2).toFloat
+      Transforms.cosineSim(model.getWordVectorMatrix(w1), model.getWordVectorMatrix(w2)).toFloat
+      //model.similarity(w1, w2).toFloat
     }
 
     override def embedding(word: String): EmbeddingVector = {
