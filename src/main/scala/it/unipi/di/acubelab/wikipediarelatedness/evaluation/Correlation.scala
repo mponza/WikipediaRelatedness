@@ -58,7 +58,8 @@ object Correlation {
   protected def humanAndMachineScores(dataset: WikiRelateDataset) : (Array[Double], Array[Double]) = {
 
     val datasetNotNaN = dataset.filter(task => !task.machineRelatedness.isNaN).toList
-    if (datasetNotNaN.size != dataset.size) logger.warn("%d NaN values removed.".format(dataset.size - datasetNotNaN.size))
+    if (datasetNotNaN.size != dataset.size) logger.warn("************* %d NaN values removed.*************"
+                                                        .format(dataset.size - datasetNotNaN.size))
 
     val humanScores = datasetNotNaN.map(task => task.humanRelatedness.toDouble).toArray
     val machineScores = datasetNotNaN.map(task => task.machineRelatedness.toDouble).toArray

@@ -4,6 +4,7 @@ import java.io.File
 import java.util
 import java.util.concurrent.TimeUnit
 
+import com.madhukaraphatak.sizeof.SizeEstimator
 import it.cnr.isti.hpc.{LinearAlgebra, Word2VecCompress}
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.logging.ProgressLogger
@@ -182,12 +183,11 @@ object EmbeddingsDataset {
     protected val logger = LoggerFactory.getLogger(getClass)
     lazy protected val entities = EmbeddingsDataset.wordEntities
 
+    println("Size of Word2VecCompress is %d" format SizeEstimator.estimate(model))
+
     def dimEmbedding: Int = model.dimensions()
-
     def size: Int = model.size()
-
     def contains(word: String): Boolean = model.word_id(word) != null
-
     def embedding(word: String): EmbeddingVector = model.get(word)
 
 
@@ -234,6 +234,7 @@ object EmbeddingsDataset {
       ndarray.sum(0) // or 1?
     }
   }
+
 
   def apply(file: File): EmbeddingsDataset = {
     if (file.getAbsolutePath.endsWith(".e0.100.tr.bin")) {

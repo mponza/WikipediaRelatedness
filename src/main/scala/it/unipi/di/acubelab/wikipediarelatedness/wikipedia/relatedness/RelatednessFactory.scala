@@ -14,6 +14,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embedding
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalks.{CoSimRankRelatedness, PPRRelatedness, WikiWalkRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set._
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.topk.TopKRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.uncompressed.UncompressedMilneWittenRelatedness
 
 
 object RelatednessFactory {
@@ -24,6 +25,8 @@ object RelatednessFactory {
     //
     // Set-based
     case "milnewitten" => new MilneWittenRelatedness(options)
+    case "uncom.mw" => new UncompressedMilneWittenRelatedness(options)
+
     case "jaccard" =>   new JaccardRelatedness(options)
 
     case "adamicadar" => new AdamicAdarRelatedness(options)

@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness
 
 import it.unimi.dsi.webgraph.algo.{ConnectedComponents, NeighbourhoodFunction, SumSweepUndirectedDiameterRadius}
-import it.unipi.di.acubelab.wikipediarelatedness.benchmark.Benchmark
+import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{Benchmark, MultipleBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.DatasetFactory
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{RelatednessFactory, RelatednessOptions}
@@ -26,7 +26,7 @@ object Main {
     DatasetFactory.datasets().foreach {
       dataset =>
 
-        val benchmark = new Benchmark(dataset, relatedness)
+        val benchmark = new MultipleBenchmark(dataset, relatedness)
         benchmark.run()
     }
   }

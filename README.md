@@ -204,8 +204,11 @@ Compressing Embeddings
     git submodule init
     git submodule update
     
-    python2.7 model_quantization.py quant data/word_model.bin data/word
+Change the version of `sux4j` in the `pom.xml` file to `4.0.0`, then
     
+    mvn package
+    
+    python2.7 model_quantization.py quant data/word_model.bin data/word
     mvn exec:java -Dexec.mainClass="it.cnr.isti.hpc.Word2VecCompress" -Dexec.args="data/word.e0.100.txt data/word.e0.100.bin"
     
 Load the final data/word.e0.100.bin using `EmbeddingDataset`.

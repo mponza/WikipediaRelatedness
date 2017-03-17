@@ -21,13 +21,13 @@ class MilneWittenRelatedness(options: RelatednessOptions) extends Relatedness {
   val setOperations = new SetOperations(wikiGraph)
   val W = setOperations.wikiGraph.graph.numNodes
 
-  val memo = FastMemoize(relatedness)
+  // Enable these two lines for memoization, change the next un-memoized comptueRelatedness to relatedness and
+  // set it as protected.
+  //val memo = FastMemoize(relatedness)
+  // override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) = memo(srcWikiID, dstWikiID)
 
 
-  override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) = memo(srcWikiID, dstWikiID)
-
-
-  protected def relatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     val sizeA = wikiGraph.outdegree(srcWikiID)
     val sizeB = wikiGraph.outdegree(dstWikiID)
 

@@ -12,7 +12,10 @@ trait Relatedness {
     */
   def computeRelatedness(tasks: Seq[WikiRelateTask]) : Unit = {
     tasks.foreach {
-      case task => task.machineRelatedness = computeRelatedness(task)
+      case task =>
+        task.start()
+        task.machineRelatedness = computeRelatedness(task)
+        task.end()
     }
   }
 

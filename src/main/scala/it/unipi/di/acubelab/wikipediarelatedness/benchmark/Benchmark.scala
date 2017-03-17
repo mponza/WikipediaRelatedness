@@ -51,6 +51,7 @@ class Benchmark(val dataset: WikiRelateDataset, val relatedness: Relatedness) {
   }
 
 
+
   /**
     * Writes relatedness score into file.
     *

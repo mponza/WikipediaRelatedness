@@ -13,6 +13,15 @@ import java.util.Locale
 class WikiRelateTask(val src: WikiEntity, val dst: WikiEntity, val humanRelatedness: Float) {
   var machineRelatedness : Float = Float.NaN  // the only mutable field, updated by the chosen relatedness algorithm
 
+  // Computation time fields & methods
+  protected var startingTime = 0L
+  protected var endingTime = 0L
+
+  def start() = startingTime = System.currentTimeMillis()
+  def end() = endingTime = System.currentTimeMillis()
+  def elapsed() = endingTime - startingTime
+
+
   override def toString() : String = {
     "%s,%s,%1.5f,%1.5f".formatLocal(Locale.US, src, dst, humanRelatedness, machineRelatedness)
   }
