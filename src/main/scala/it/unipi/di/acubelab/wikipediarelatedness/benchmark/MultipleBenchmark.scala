@@ -43,7 +43,7 @@ class MultipleBenchmark(dataset: WikiRelateDataset, relatedness: Relatedness, va
     logger.info("Average Realtedness Time %1.5f milliseconds." format avgPair)
 
     val writer = new PrintWriter(path)
-    writer.write("Total,Average\n%d,%1.5f" format (avgTotal, avgPair))
+    writer.write("Total,Average\n%1.5f,%1.5f" format (avgTotal, avgPair))
     writer.close()
   }
 

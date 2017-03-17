@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.neural.line.LINEEmbeddings
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.FastDeepWalkRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph.{SubCliqueRelatedness, SubLayeredRelatedenss, SubSparseRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clustering.{CosineLocalClusteringRelatedness, JaccardLocalClusteringRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.latent.{LDARelatedness, SVDRelatedness}
@@ -25,7 +26,6 @@ object RelatednessFactory {
     //
     // Set-based
     case "milnewitten" => new MilneWittenRelatedness(options)
-    case "uncom.mw" => new UncompressedMilneWittenRelatedness(options)
 
     case "jaccard" =>   new JaccardRelatedness(options)
 
@@ -84,6 +84,12 @@ object RelatednessFactory {
     case "mix" => new MixedRelatedness(options)
 
     case "distance" => new DistanceRelatedness(options)
+
+    //
+    // Just for Time-Space Benchmarking
+    case "uncom.mw" => new UncompressedMilneWittenRelatedness(options)
+    case "uncom.dw" => new FastDeepWalkRelatedness(false)
+    case "com.dw" => new FastDeepWalkRelatedness(true)
   }
 
 }

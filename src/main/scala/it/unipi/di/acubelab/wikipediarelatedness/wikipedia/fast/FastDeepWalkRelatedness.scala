@@ -29,4 +29,6 @@ class FastDeepWalkRelatedness(compressed: Boolean = false) extends Relatedness {
 
     EmbeddingsDataset.apply(new File(filename) )
   }
+
+  override def toString = if (!compressed) "FastDeepWalk-original" else "FastDeepWalk-compressed"
 }
