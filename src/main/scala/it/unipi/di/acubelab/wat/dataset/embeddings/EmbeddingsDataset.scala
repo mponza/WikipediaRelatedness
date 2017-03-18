@@ -9,6 +9,7 @@ import it.cnr.isti.hpc.{LinearAlgebra, Word2VecCompress}
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wat.dataset.Dataset
+import it.unipi.di.acubelab.wat.dataset.impl.Word2Vec
 import it.unipi.di.acubelab.wikipediarelatedness.utils.{Config, Similarity}
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer
 import org.deeplearning4j.models.embeddings.wordvectors.{WordVectors, WordVectorsImpl}
@@ -236,13 +237,39 @@ object EmbeddingsDataset {
     }
   }
 
+  def apply(model: Word2Vec) = new EmbeddingsDataset {
+    override def size: Int = model.vectorSize
+    override def similarity(w1: String, w2: String): Float = model.cosine(w1, w2).toFloat
+    override def embedding(word: String): EmbeddingVector = {
+      if (!model.contains(word)) {
+        return null
+      }
+      model.vector(word)
+    }
+    override def contains(word: String): Boolean = model.contains(word)
+  }
 
   def apply(file: File): EmbeddingsDataset = {
+    if (file.getAbsolutePath.endsWith(".e0.100.tr.bin")) {
+      apply(BinIO.loadObject(file).asInstanceOf[Word2VecCompress])
+    } else {
+      assert(file.getAbsolutePath.endsWith(".bin"))
+
+      val model = new Word2Vec()
+      model.load(file.getAbsolutePath)
+
+      apply(model)
+      //      val isBinary = file.getAbsolutePath.endsWith(".bin")
+      //      apply(WordVectorSerializer.loadGoogleModel(file, isBinary))
+    }
+  }
+
+  /*def apply(file: File): EmbeddingsDataset = {
     if (file.getAbsolutePath.endsWith(".e0.100.tr.bin")) {
       apply(BinIO.loadObject(file).asInstanceOf[Word2VecCompress])
     } else {
       val isBinary = file.getAbsolutePath.endsWith(".bin")
       apply(WordVectorSerializer.loadGoogleModel(file, isBinary))
     }
-  }
+  }*/
 }
