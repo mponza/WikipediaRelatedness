@@ -72,7 +72,9 @@ class FastAlgorithmicScheme(milnewittenCompressed: Boolean = true, deepwalkCompr
     var srcMagnitude = 0f
     var dstMagnitude = 0f
 
-    for(nodeID <- nodes) {
+    val iterNode = nodes.iterator()
+    while(iterNode.hasNext) {
+      val nodeID = iterNode.nextInt()
       val srcWeight = mwdw.computeRelatedness(srcWikiID, nodeID)
       val dstWeight = mwdw.computeRelatedness(srcWikiID, nodeID)
       inner += srcWeight * dstWeight

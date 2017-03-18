@@ -15,7 +15,6 @@ public class LinearAlgebra {
             x2 += v1[offset1 + i + 2] * v2[offset2 + i + 2];
             x3 += v1[offset1 + i + 3] * v2[offset2 + i + 3];
         }
-
         return x0 + x1 + x2 + x3;
     }
 }

@@ -22,6 +22,11 @@ class WikiOut {
   protected val wikiIDs2MWDW = BinIO.loadObject( Config.getString( "wikipedia.cache.fast.wikiout.mwdw" ) )
                                     .asInstanceOf[ Long2FloatOpenHashMap ]
 
+  /**
+    * TopK of WikiID respecti with its out neighbors according with its Milne&Witten score
+    * @param wikiID
+    * @return
+    */
   def topK(wikiID: Int) = wikiID2TopKOut.get(wikiID)
 
 

@@ -18,17 +18,16 @@ class MultipleBenchmark(dataset: WikiRelateDataset, relatedness: Relatedness, va
   override protected val logger = LoggerFactory.getLogger(getClass)
 
   override def run() = {
-    val performance = Array.ofDim[Long](n)  // milliseconds for each runRelatedness over all dataset
-    val pairPerformance = Array.ofDim[Long](n)
+    val performance = Array.ofDim[Long](n + 1)  // milliseconds for each runRelatedness over all dataset
 
-    for(i <- 0 until n) {
+    for(i <- 0 until n + 1) {
       runRelatedness()
       performance(i) = dataset.map(_.elapsed()).sum
     }
 
     writeRelatednessScores()
     writeCorrelationScores()
-    writeComputationTime(performance)
+    writeComputationTime(performance.slice(1, 11))
   }
 
 
