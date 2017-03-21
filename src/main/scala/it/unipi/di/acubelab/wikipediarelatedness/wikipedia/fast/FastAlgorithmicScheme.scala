@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.relatedness.{FastDeepWalkRelatedness, FastMWDWRelatedness, FastMilneWittenRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.wikiout.WikiOut
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.SubNodeCreatorFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessFactory, RelatednessOptions}
@@ -19,15 +20,15 @@ class FastAlgorithmicScheme(milnewittenCompressed: Boolean = true, deepwalkCompr
   val wikiOut = new WikiOut
 
   val mwdw = {
-    val options = new RelatednessOptions(name="mix", lambda=0.5,
-      firstname="milnewitten", firstgraph="in",
-      secondname="w2v", secondmodel="deepwalk.dw10"
-    )
-    RelatednessFactory.make(options)
-    //val mw = new FastMilneWittenRelatedness(milnewittenCompressed)
-    //val dw = new FastDeepWalkRelatedness(deepwalkCompressed)
+    //val options = new RelatednessOptions(name="mix", lambda=0.5,
+    //  firstname="milnewitten", firstgraph="in",
+    //  secondname="w2v", secondmodel="deepwalk.dw10"
+    //)
+    //RelatednessFactory.make(options)
+    val mw = new FastMilneWittenRelatedness(milnewittenCompressed)
+    val dw = new FastDeepWalkRelatedness(deepwalkCompressed)
 
-    //new FastMWDWRelatedness(mw, dw)
+    new FastMWDWRelatedness(mw, dw)
   }
 
   val subNodeCreator = SubNodeCreatorFactory.make("mw.out", 30)
@@ -117,7 +118,7 @@ class FastAlgorithmicScheme(milnewittenCompressed: Boolean = true, deepwalkCompr
     dstSum = dstSum / 0.9f
 
 
-    // Cosine simliarity
+    // Cosine similarity
 
     var inner = 0f
     var (srcMagnitude, dstMagnitude) = (0f, 0f)

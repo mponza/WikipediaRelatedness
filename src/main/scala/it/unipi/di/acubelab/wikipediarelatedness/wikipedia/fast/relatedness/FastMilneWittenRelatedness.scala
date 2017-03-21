@@ -17,4 +17,6 @@ class FastMilneWittenRelatedness(compressed: Boolean = true) extends Relatedness
     * @return
     */
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = milneWitten.computeRelatedness(srcWikiID, dstWikiID)
+
+  override def toString = "FastMW_%s" format name
 }

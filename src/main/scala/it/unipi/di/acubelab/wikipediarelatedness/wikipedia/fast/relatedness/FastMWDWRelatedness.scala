@@ -17,7 +17,7 @@ class FastMWDWRelatedness(milneWitten: FastMilneWittenRelatedness, deepWalk: Fas
     val precompRel = wikiout.relatedness(srcWikiID, dstWikiID)
     if(precompRel >= 0f) return precompRel
 
-    0.5f * milneWitten.computeRelatedness(srcWikiID, dstWikiID) * deepWalk.computeRelatedness(srcWikiID, dstWikiID)
+    0.5f * (milneWitten.computeRelatedness(srcWikiID, dstWikiID) + deepWalk.computeRelatedness(srcWikiID, dstWikiID) )
   }
 
 
