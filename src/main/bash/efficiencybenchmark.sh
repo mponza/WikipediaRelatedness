@@ -6,24 +6,28 @@ function run_sbt {
 }
 
 
-mw=("uncom.mw" "com.mw")
-dw=("uncom.dw" "com.dw")
+mw=( "uncom.mw" "com.mw" )
+dw=( "uncom.dw" "com.dw" )
 
-mwdw=("${mw[@]}" "${dw[@]}")
+#mwdw=("${mw[@]}" "${dw[@]}")
 
 
 # Single Method Evaluation
-for method in "${mwdw[@]}":
-    do
-        run_sbt "--name $method"
-    done
+# for method in "${mwdw[@]}"
+#     do
+#         printf "[Bash] Experimenting $method..."
+#         run_sbt "--name $method"
+#     done
 
 
 # Algorithmic Scheme Evaluation
-for mw in "${mw[@]}":
+for mw in "${mw[@]}"
 do
-    for dw in "${dw[@]}":
+    for dw in "${dw[@]}"
     do
-        run_sbt "--name algo:$mw+$dw"
+        printf "[Bash] $mw\n"
+        printf "[Bash] $dw\n"
+        printf "[Bash] Experimenting algo:${mw}+${dw}...\n"
+        run_sbt "--name algo:${mw}+${dw}"
     done
 done

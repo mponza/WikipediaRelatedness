@@ -14,7 +14,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.casaro.{C
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.distance.DistanceRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.embeddings.neural.Word2VecDoc2VecRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.randomwalks.{CoSimRankRelatedness, PPRRelatedness, WikiWalkRelatedness}
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set._
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.set.{MilneWittenRelatedness, _}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.topk.TopKRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.uncompressed.UncompressedMilneWittenRelatedness
 
@@ -89,13 +89,14 @@ object RelatednessFactory {
     //
     // Just for Time-Space Benchmarking
     case "uncom.mw" => new UncompressedMilneWittenRelatedness(options)
+    case "com.mw" => new MilneWittenRelatedness(new RelatednessOptions(graph = "in"))
     case "uncom.dw" => new FastDeepWalkRelatedness(false)
     case "com.dw" => new FastDeepWalkRelatedness(true)
 
     case "algo:uncom.mw+uncom.dw" => new FastAlgorithmicScheme(false, false)
     case "algo:uncom.mw+com.dw" => new FastAlgorithmicScheme(false, true)
     case "algo:com.mw+uncom.dw" => new FastAlgorithmicScheme(true, false)
-    case "algo:com.mw+com.dw" => new FastAlgorithmicScheme(false, true)
+    case "algo:com.mw+com.dw" => new FastAlgorithmicScheme(true, true)
   }
 
 }

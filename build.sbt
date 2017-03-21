@@ -76,4 +76,4 @@ unmanagedJars in Compile ++= {
   customJars.classpath
 }
 
-//mainClass in (Compile, run) := Some("it.unipi.di.acubelab.wikipediarelatedness.Main")
+mainClass in (Compile, run) := Some("it.unipi.di.acubelab.wikipediarelatedness.Main")

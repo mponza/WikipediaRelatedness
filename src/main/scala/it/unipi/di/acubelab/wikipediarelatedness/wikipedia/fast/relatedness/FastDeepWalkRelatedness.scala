@@ -7,7 +7,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
 
-class FastDeepWalkRelatedness(compressed: Boolean = false) extends Relatedness {
+class FastDeepWalkRelatedness(compressed: Boolean) extends Relatedness {
 
   val embeddings = loadEmbeddings(compressed)
 

@@ -2,6 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.benchmark
 
 import java.io.PrintWriter
 import java.nio.file.Paths
+import java.util.Locale
 
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateDataset
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
@@ -42,7 +43,7 @@ class MultipleBenchmark(dataset: WikiRelateDataset, relatedness: Relatedness, va
     logger.info("Average Realtedness Time %1.5f milliseconds." format avgPair)
 
     val writer = new PrintWriter(path)
-    writer.write("Total,Average\n%1.5f,%1.5f" format (avgTotal, avgPair))
+    writer.write("Total,Average\n%1.5f,%1.5f" formatLocal (Locale.US, avgTotal, avgPair))
     writer.close()
   }
 

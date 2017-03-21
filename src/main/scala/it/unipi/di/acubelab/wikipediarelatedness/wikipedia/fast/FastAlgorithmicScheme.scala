@@ -13,7 +13,7 @@ import scala.collection.mutable.ListBuffer
   * Faster implementation of the Algorithmic Scheme for computing Relatedness and evaluating its performance
   * with compressed/uncompressed data.
   */
-class FastAlgorithmicScheme(milnewittenCompressed: Boolean = true, deepwalkCompressed: Boolean = false) extends Relatedness {
+class FastAlgorithmicScheme(milnewittenCompressed: Boolean, deepwalkCompressed: Boolean) extends Relatedness {
   protected val logger = LoggerFactory.getLogger(getClass)
   protected val outSize = 30
 
@@ -30,8 +30,6 @@ class FastAlgorithmicScheme(milnewittenCompressed: Boolean = true, deepwalkCompr
 
     new FastMWDWRelatedness(mw, dw)
   }
-
-  val subNodeCreator = SubNodeCreatorFactory.make("mw.out", 30)
 
   //override def toString = "FastASR_mw:%s,dw:%s" format (mw, dw)
 
