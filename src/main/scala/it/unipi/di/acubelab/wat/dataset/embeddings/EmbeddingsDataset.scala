@@ -251,10 +251,11 @@ object EmbeddingsDataset {
 
   def apply(file: File): EmbeddingsDataset = {
     if (file.getAbsolutePath.endsWith(".e0.100.tr.bin")) {
+      logger.info("Loading compressed embeddings...")
       apply(BinIO.loadObject(file).asInstanceOf[Word2VecCompress])
     } else {
       assert(file.getAbsolutePath.endsWith(".bin"))
-
+      logger.info("Loading uncompressed embeddings...")
       val model = new Word2Vec()
       model.load(file.getAbsolutePath)
 
@@ -264,7 +265,9 @@ object EmbeddingsDataset {
     }
   }
 
-  /*def apply(file: File): EmbeddingsDataset = {
+  /*
+  // older and slower
+  def apply(file: File): EmbeddingsDataset = {
     if (file.getAbsolutePath.endsWith(".e0.100.tr.bin")) {
       apply(BinIO.loadObject(file).asInstanceOf[Word2VecCompress])
     } else {

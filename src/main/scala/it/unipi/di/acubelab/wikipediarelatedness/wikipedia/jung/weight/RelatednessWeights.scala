@@ -19,6 +19,8 @@ import scala.collection.JavaConversions._
 class RelatednessWeights(graph: DirectedGraph[Int, Long], relatedness: Relatedness)
                           extends Transformer[Long, java.lang.Double] {
   protected val logger = LoggerFactory.getLogger(getClass)
+  val rawWs = new Long2DoubleOpenHashMap()
+  val normSums = new Int2DoubleOpenHashMap()
   protected val weights = computeNormalizedWeights()
 
   /**
@@ -42,14 +44,18 @@ class RelatednessWeights(graph: DirectedGraph[Int, Long], relatedness: Relatedne
         logger.warn("NaN relatedness between %d and %d. Using 0.0 as weight.".format(src, dst))
         weights.put(edge, 0.0)
 
+        rawWs.put(edge, 0.0)
+
       } else {
 
         weights.put(edge, rel)
-      }
 
+        rawWs.put(edge, rel)
+      }
 
       val currentSum = sums.getOrDefault(src, 0.0)
       sums.put(src, currentSum + rel)
+      normSums.put(src, currentSum + rel)
     }
 
     // Normalizes weights by the sum of the source
@@ -61,7 +67,7 @@ class RelatednessWeights(graph: DirectedGraph[Int, Long], relatedness: Relatedne
       val src = getSource(edge)
       // sum is 1 if src has no edges or it has only edges with weight 0
       val sum = if (sums.getOrDefault(src, 0.0) == 0.0) 1.0 else sums.get(src)
-
+      //logger.info("Normalizeding edge %d %d of %1.3f with %1.3f" format (src, getDestination(edge), weight, sum) )
       normalizedWeights.put(edge, weight / sum)
     }
 
@@ -75,8 +81,8 @@ class RelatednessWeights(graph: DirectedGraph[Int, Long], relatedness: Relatedne
     w
   }
 
-  protected def getSource(edge: Long) = (edge.toLong >>> 32).toInt
-  protected def getDestination(edge: Long) = edge.toInt
+  def getSource(edge: Long) = (edge.toLong >>> 32).toInt
+  def getDestination(edge: Long) = edge.toInt
 
 
 }

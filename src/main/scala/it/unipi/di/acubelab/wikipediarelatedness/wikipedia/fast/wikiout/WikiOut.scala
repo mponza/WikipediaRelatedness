@@ -19,11 +19,11 @@ class WikiOut {
                                       .asInstanceOf[ Int2ObjectOpenHashMap[ Array[Int] ] ]
 
   // (M&W + DW) / 2 score for every Wikipedia ID and its top30 out nodes
-  protected val wikiIDs2MWDW = BinIO.loadObject( Config.getString( "wikipedia.cache.fast.wikiout.mwdw" ) )
+  protected lazy val wikiIDs2MWDW = BinIO.loadObject( Config.getString( "wikipedia.cache.fast.wikiout.mwdw" ) )
                                     .asInstanceOf[ Long2FloatOpenHashMap ]
 
   /**
-    * TopK of WikiID respecti with its out neighbors according with its Milne&Witten score
+    * TopK of WikiID respect with its out neighbors according with its Milne&Witten score
     * @param wikiID
     * @return
     */

@@ -31,6 +31,7 @@ class PPRRanker(iterations: Int, pprAlpha: Double) extends PriorRanker(iteration
     if (iteration == iterations) {
       val floatSrc = srcRanks.map { case ((index, s)) => (index, s.toFloat) }
       val floatDst = dstRanks.map { case ((index, s)) => (index, s.toFloat) }
+
       score = Similarity.cosineSimilarity(floatSrc, floatDst).toDouble
     }
   }

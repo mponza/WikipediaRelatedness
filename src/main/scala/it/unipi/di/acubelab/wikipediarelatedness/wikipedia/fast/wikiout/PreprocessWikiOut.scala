@@ -37,10 +37,15 @@ object PreprocessWikiOut {
 
     val pl = new ProgressLogger(logger, 1, TimeUnit.MINUTES)
     pl.start("Pre-processing scored out nodes for each Wikipedia Entity...")
-    for(wikiID <- wikiBVGraph.getVertices) {
-      val topKouts =  mwTopK.topKEntities(wikiID, 30)
 
-      wikiID2TopKOut.put(wikiID, topKouts.toArray)
+    val wikiOut = new WikiOut
+
+    for(wikiID <- wikiBVGraph.getVertices) {
+      //val topKouts =  mwTopK.topKEntities(wikiID, 30)
+
+      //wikiID2TopKOut.put(wikiID, topKouts.toArray)
+
+      val topKouts = wikiOut.topK(wikiID)
 
       topKouts.foreach {
         case wID =>
@@ -59,14 +64,14 @@ object PreprocessWikiOut {
     }
     pl.done()
 
-    logger.info("Storing TopK...")
-    val topkoutfile = Config.getString("wikipedia.cache.fast.wikiout.topk")
-    new File(topkoutfile).getParentFile.mkdirs()
-    BinIO.storeObject(wikiID2TopKOut, topkoutfile)
+    //logger.info("Storing TopK...")
+    //val topkoutfile = Config.getString("wikipedia.cache.fast.wikiout.topk")
+    //new File(topkoutfile).getParentFile.mkdirs()
+    //BinIO.storeObject(wikiID2TopKOut, topkoutfile)
 
     logger.info("Storing MWDW...")
     val mwdwoutfile = Config.getString("wikipedia.cache.fast.wikiout.mwdw")
-    BinIO.storeObject(wikiID2TopKOut, topkoutfile)
+    BinIO.storeObject(wikiIDs2MWDW, mwdwoutfile)
 
     logger.info("Storing done.")
   }

@@ -6,6 +6,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungGr
 import org.apache.commons.collections15.Transformer
 import org.slf4j.Logger
 
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 
 
@@ -20,6 +21,8 @@ abstract class PriorRanker(val iterations: Int, val pprAlpha: Double) extends Si
   protected def logger: Logger
   protected var score: Double    // similarity score
 
+  var src = 0
+  var dst = 0
 
   /**
     * Computes similarity by running PageRankWithPriors on srcWikiID and dstWikiID.
@@ -32,6 +35,9 @@ abstract class PriorRanker(val iterations: Int, val pprAlpha: Double) extends Si
   override def similarity(srcWikiID: Int, dstWikiID: Int, wikiJungGraph: WikiJungGraph): Double = {
     val srcPPR = pageRanker( wikiJungGraph, getPrior(srcWikiID) )
     val dstPPR = pageRanker( wikiJungGraph, getPrior(dstWikiID) )
+
+    src = srcWikiID
+    dst = dstWikiID
 
     initSimilarityScore()
     computeSimilarity(wikiJungGraph, srcPPR, dstPPR)
@@ -46,7 +52,9 @@ abstract class PriorRanker(val iterations: Int, val pprAlpha: Double) extends Si
   protected def pageRanker(wikiJungGraph: WikiJungGraph, prior: Transformer[Int, java.lang.Double]) :
     PageRankWithPriors[Int, Long] = {
 
+    // val ppr = new DebuggingPageRankWithPriors[Int, Long](wikiJungGraph.graph, wikiJungGraph.weights, prior, pprAlpha)// new PageRankWithPriors[Int, Long](wikiJungGraph.graph, wikiJungGraph.weights, prior, pprAlpha)
     val ppr = new PageRankWithPriors[Int, Long](wikiJungGraph.graph, wikiJungGraph.weights, prior, pprAlpha)
+
 
     ppr.setMaxIterations(iterations)
     ppr.setTolerance(0.0)
@@ -64,12 +72,31 @@ abstract class PriorRanker(val iterations: Int, val pprAlpha: Double) extends Si
     */
   protected def computeSimilarity(wikiJungGraph: WikiJungGraph,
                                     srcPPR: PageRankWithPriors[Int, Long], dstPPR: PageRankWithPriors[Int, Long]) = {
+
+/*
+    val field = srcPPR.getClass.getSuperclass.getSuperclass.getDeclaredField("current_values")
+    field.setAccessible(true)
+    val javaMap = field.get(srcPPR).asInstanceOf[java.util.HashMap[Int, Double]] //NoSuchFieldException
+    import scala.collection.JavaConverters._
+    val m = javaMap.asScala
+    val sf = m.map(x => "%d -> %1.2f" format (x._1, x._2)) mkString ", "
+    println("---")
+    println(sf)
+    println("---")*/
+
+   // f.setAccessible(true);
+   // Hashtable iWantThis = (Hashtable) f.get(obj); //IllegalAccessException
+
     for (i <- 0 until iterations) {
       srcPPR.step()
       dstPPR.step()
 
       val srcRanks = getRanks(wikiJungGraph, srcPPR)
       val dstRanks = getRanks(wikiJungGraph, dstPPR)
+
+      println(src)
+      println( srcRanks.zipWithIndex mkString " " )
+      if(srcRanks.map(_._2).sum == 1f) println("Is one")
 
       updateSimilarityScore(srcRanks, dstRanks, i + 1)
     }

@@ -19,7 +19,7 @@ class FastDeepWalkRelatedness(compressed: Boolean = false) extends Relatedness {
     * @return
     */
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = {
-    Math.max( embeddings.similarity("ent_" + srcWikiID, "ent_" + dstWikiID), 0f)
+    Math.max( embeddings.similarity("ent_" + srcWikiID, "ent_" + dstWikiID), 0f )
   }
 
 
