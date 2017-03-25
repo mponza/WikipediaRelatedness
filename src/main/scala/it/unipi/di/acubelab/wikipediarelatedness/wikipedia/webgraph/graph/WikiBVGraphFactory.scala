@@ -2,7 +2,7 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph
 
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph}
+import it.unimi.dsi.webgraph.{BVGraph, EFGraph, ImmutableGraph}
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import org.slf4j.LoggerFactory
 
@@ -18,6 +18,8 @@ object WikiBVGraphFactory {
   lazy val immInGraph = loadImmutableGraph(Config.getString("wikipedia.webgraph.in"))
   lazy val immSymGraph = loadImmutableGraph(Config.getString("wikipedia.webgraph.sym"))
   lazy val immSymNoLoopGraph = loadImmutableGraph(Config.getString("wikipedia.webgraph.sym_no_loop"))
+
+  lazy val efImmInGraph = loadEFImmutableGraph(Config.getString("wikipedia.webgraph.ef.in"))
 
   // WikiID -> NodeID mapping
   lazy val wiki2node = BinIO.loadObject(Config.getString("wikipedia.webgraph.mapping"))
@@ -38,6 +40,9 @@ object WikiBVGraphFactory {
   }
 
 
+  protected def loadEFImmutableGraph(path: String): ImmutableGraph = EFGraph.load(path)
+
+
   /**
     * Returns a lightweight copy WikiBVGraph from its name.
     * If threadSafe is true it returns a lightweight copy of the graph which can be parallel processed.
@@ -52,6 +57,7 @@ object WikiBVGraphFactory {
         case "in" => immInGraph
         case "sym" => immSymGraph
         case "sym_no_loop" =>  immSymNoLoopGraph
+        case "ef.in" => efImmInGraph
       }
       //val threadedImmGraph = if (threadSafe) immGraph.copy() else immGraph
 

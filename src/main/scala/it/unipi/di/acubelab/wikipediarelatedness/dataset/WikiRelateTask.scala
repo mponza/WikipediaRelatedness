@@ -26,3 +26,4 @@ class WikiRelateTask(val src: WikiEntity, val dst: WikiEntity, val humanRelatedn
     "%s,%s,%1.5f,%1.5f".formatLocal(Locale.US, src, dst, humanRelatedness, machineRelatedness)
   }
 }
+

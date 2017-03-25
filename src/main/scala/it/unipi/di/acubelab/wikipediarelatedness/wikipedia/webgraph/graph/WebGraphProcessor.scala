@@ -1,10 +1,12 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph
 
-import java.io.File
+import java.io.{File, FileInputStream}
+import java.util.concurrent.TimeUnit
 
+import it.unimi.dsi.webgraph._
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.webgraph.{BVGraph, ImmutableGraph, Transform}
+import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import org.slf4j.LoggerFactory
 
@@ -13,34 +15,39 @@ import org.slf4j.LoggerFactory
   * Main class used to process the Wikipedia graph with WebGraph.
   *
   */
-class WebGraphProcessor {
-  val logger = LoggerFactory.getLogger(getClass)
+object WebGraphProcessor {
+  val logger = LoggerFactory.getLogger("WebGraphProcessor")
 
 
   /**
     * Builds and stores a BVGraph from the raw Wikipedia Graph.
     *
     */
-  def generateBVGraph() = {
+  def main(args: Array[String]) {
     logger.info("Building Wikipedia ImmutableGraph...")
+
     val outGraph = new ImmutableWikiGraph
 
+    storeEFInGraph(Transform.transpose(outGraph), Config.getString("wikipedia.webgraph.ef.in"))
+
+    return
+
     logger.info("Storing Wikipedia2BVGraph mapping...")
-    storeMapping(outGraph.wiki2node, Config.getString("webgraph.mapping"))
+    storeMapping(outGraph.wiki2node, Config.getString("wikipedia.webgraph.mapping"))
 
     logger.info("Storing Out Wikipedia BVGraph...")
-    storeBVGraph(outGraph, Config.getString("webgraph.out"))
+    storeBVGraph(outGraph, Config.getString("wikipedia.webgraph.out"))
 
     logger.info("Storing In Wikipedia BVGraph...")
-    storeBVGraph(Transform.transpose(outGraph), Config.getString("webgraph.in"))
+    storeBVGraph(Transform.transpose(outGraph), Config.getString("wikipedia.webgraph.in"))
 
     logger.info("Storing Sym Wikipedia BVGraph...")
-    storeBVGraph(Transform.symmetrize(outGraph), Config.getString("webgraph.sym"))
+    storeBVGraph(Transform.symmetrize(outGraph), Config.getString("wikipedia.webgraph.sym"))
 
     // See http://law.di.unimi.it/software/law-docs/it/unimi/dsi/law/graph/LayeredLabelPropagation.html
     logger.info("Storing Sym and Self-loopless Wikipedia BVGraph...")
     val noLoopGraph = Transform.filterArcs(outGraph, Transform.NO_LOOPS)
-    storeBVGraph(Transform.symmetrizeOffline(noLoopGraph, 20000000), Config.getString("webgraph.sym_no_loop"))
+    storeBVGraph(Transform.symmetrizeOffline(noLoopGraph, 20000000), Config.getString("wikipedia.webgraph.sym_no_loop"))
 
     logger.info("Wikipedia has been processed as BVGraph!")
   }
@@ -55,7 +62,14 @@ class WebGraphProcessor {
   def storeBVGraph(graph: ImmutableGraph, path: String) = {
     new File(path).getParentFile.mkdirs
     BVGraph.store(graph, path)
-    logger.info("BVGraph stored in %s!".format(path))
+    logger.info("BVGraph stored in %s.".format(path))
+  }
+
+
+  def storeEFInGraph(graph: ImmutableGraph, path: String) = {
+    new File(path).getParentFile.mkdirs
+    EFGraph.store(graph, path)
+    logger.info("EFGraph stored in %s.".format(path))
   }
 
 

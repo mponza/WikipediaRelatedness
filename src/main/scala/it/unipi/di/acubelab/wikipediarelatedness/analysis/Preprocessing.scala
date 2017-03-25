@@ -23,8 +23,8 @@ object Preprocessing {
 
   def main(args: Array[String]) = {
 
-    //wikipediaSize
-    embeddingSize()
+    wikipediaSize
+    //embeddingSize()
     /*
     val outWikiBVGraph = WikiBVGraphFactory.make("out")
 
@@ -90,21 +90,22 @@ object Preprocessing {
 
 
   def wikipediaSize() = {
-    val outWikiBVGraph = WikiBVGraphFactory.make("out")
-    logger.info("Compressed out-Wikipedia Graph: %d" format SizeEstimator.estimate(outWikiBVGraph.graph) )
-    logger.info("Mapping out-Wikipedia Graph: %d" format SizeEstimator.estimate(outWikiBVGraph.wiki2node) )
-    uncompressedGraph(outWikiBVGraph)
+    //val outWikiBVGraph = WikiBVGraphFactory.make("out")
+    //logger.info("Compressed out-Wikipedia Graph: %d" format SizeEstimator.estimate(outWikiBVGraph.graph) )
+    //logger.info("Mapping out-Wikipedia Graph: %d" format SizeEstimator.estimate(outWikiBVGraph.wiki2node) )
+    //uncompressedGraph(outWikiBVGraph)
 
 
-    val inWikiBVGraph = WikiBVGraphFactory.make("in")
+    val inWikiBVGraph = WikiBVGraphFactory.make("ef.in")
     logger.info("Compressed in-Wikipedia Graph: %d" format SizeEstimator.estimate(inWikiBVGraph.graph) )
-    uncompressedGraph(inWikiBVGraph)
+    //ncompressedGraph(inWikiBVGraph)
   }
 
 
   def uncompressedGraph(wikiBVGraph: WikiBVGraph) = {
     //val adjacentList = new Int2ObjectOpenHashMap[Array[Int]]
-    val adjacentList = Array.ofDim[(Int, Array[Int])](wikiBVGraph.getVertices.size)
+    //val adjacentList = Array.ofDim[(Int, Array[Int])](wikiBVGraph.getVertices.size)
+    val adjacentList = Array.ofDim[Array[Int]](wikiBVGraph.wiki2node.keySet().toIntArray().max + 1)
 
     var sumsize = 0L
     var i = 0
@@ -117,7 +118,8 @@ object Preprocessing {
       }
 
       //adjacentList.put(wikiID, adj)
-      adjacentList(i) =  ((wikiID, adj))
+      //adjacentList(i) =  ((wikiID, adj))
+      adjacentList(wikiID) = adj
       i += 1
       sumsize += SizeEstimator.estimate(adj)
     }

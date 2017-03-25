@@ -6,10 +6,11 @@ class UncompressedSetOperations(val wikiGraph: UncompressedWikiBVGraph) {
 
 
   def intersectionSize(srcWikiID: Int, dstWikiID: Int) : Int = {
+
+    if(wikiGraph.outdegree(srcWikiID) == 0 || wikiGraph.outdegree(dstWikiID) == 0) return 0
+
     val a = wikiGraph.successorArray(srcWikiID)
     val b = wikiGraph.successorArray(dstWikiID)
-
-    if (a.isEmpty || b.isEmpty) return 0
 
     var i = 0
     var j = 0

@@ -1,5 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph
 
+import it.unimi.dsi.fastutil.Arrays
 import it.unimi.dsi.fastutil.ints.{Int2IntOpenHashMap, IntArrayList}
 import it.unimi.dsi.webgraph.{ImmutableGraph, LazyIntIterator, LazyIntIterators}
 import org.slf4j.LoggerFactory
@@ -17,7 +18,6 @@ class WikiBVGraph(val graph: ImmutableGraph, val wiki2node: Int2IntOpenHashMap) 
   // WikiID -> NodeID mapping.
   lazy val node2wiki = reverseWiki2Node()
   protected val vertices = wiki2node.keySet().toIntArray()
-
 
   /**
     * Returns the wikiIDs successor of wikiID.

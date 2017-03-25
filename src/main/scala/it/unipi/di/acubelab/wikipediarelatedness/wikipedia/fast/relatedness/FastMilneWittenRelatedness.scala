@@ -5,7 +5,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedn
 class FastMilneWittenRelatedness(compressed: Boolean) extends Relatedness {
 
   val name = if (compressed) "milnewitten" else "uncom.mw"
-  val options = new RelatednessOptions(name = name, graph = "in")
+  val options = new RelatednessOptions(name = name, graph = "ef.in")
   val milneWitten = RelatednessFactory.make(options)
 
 

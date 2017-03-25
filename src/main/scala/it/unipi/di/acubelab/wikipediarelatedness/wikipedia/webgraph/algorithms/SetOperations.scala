@@ -20,9 +20,15 @@ class SetOperations(val wikiGraph: WikiBVGraph) {
     */
   def intersectionSize(srcWikiID: Int, dstWikiID: Int) : Int = {
 
+
+    val srcNodeID = wikiGraph.getNodeID(srcWikiID)
+    val dstNodeID = wikiGraph.getNodeID(dstWikiID)
+
+    if (wikiGraph.graph.outdegree(srcNodeID) == 0 || wikiGraph.graph.outdegree(dstNodeID) == 0) return 0
+
     // using successorArrays does not change time performance
-    val iterA =  wikiGraph.graph.successors( wikiGraph.wiki2node.get(srcWikiID) )
-    val iterB = wikiGraph.graph.successors( wikiGraph.wiki2node.get(dstWikiID) )
+    val iterA = wikiGraph.graph.successors(srcNodeID)
+    val iterB = wikiGraph.graph.successors(dstNodeID)
 
     var intersection = 0
     var a = iterA.nextInt

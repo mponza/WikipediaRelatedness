@@ -12,6 +12,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.WikiLinksReader
 class ImmutableWikiGraph extends ImmutableGraph {
   val (outGraph, wiki2node) = loadWikipediaGraph
 
+
   /**
     *  Loads tyhe Wikipedia ImmutableGraph and the mapping between wikiID and nodeID.
     *
@@ -34,12 +35,13 @@ class ImmutableWikiGraph extends ImmutableGraph {
         directedEdges.get(srcNodeID).add(dstNodeID)
     }
 
-    for(i <- 0 to directedEdges.size - 1) {
-      java.util.Collections.sort(directedEdges.get(i))
+    for(i <- 0 until directedEdges.size) {
+        java.util.Collections.sort(directedEdges.get(i))
     }
 
     (directedEdges, wiki2node)
   }
+
 
   /**
     * If  wikiID is not in wiki2node then it is inserted.
