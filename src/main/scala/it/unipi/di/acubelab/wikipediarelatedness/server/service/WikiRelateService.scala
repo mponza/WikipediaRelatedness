@@ -5,9 +5,8 @@ import com.twitter.finagle.http.Method.Post
 import com.twitter.finagle.http.Version.Http11
 import com.twitter.finagle.http.{Request, Response, Status}
 import com.twitter.util.{Await, Future}
-import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.server.utils.ResponseParsing
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{RelatednessFactory, RelatednessOptions}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessFactory, RelatednessOptions}
 import org.slf4j.LoggerFactory
 
 
@@ -17,10 +16,9 @@ import org.slf4j.LoggerFactory
   * Original code adapted from https://gist.github.com/stonegao/1273845
   *
   */
-class WikiRelateService extends Service[Request, Response] {
+class WikiRelateService(val relatedness: Relatedness) extends Service[Request, Response] {
 
   protected val logger = LoggerFactory.getLogger(getClass)
-  protected lazy val relatedness = RelatednessFactory.make(new RelatednessOptions(name="algo:uncom.mw+uncom.dw"))
 
 
   def apply(request: Request): Future[Response] = {
@@ -29,9 +27,13 @@ class WikiRelateService extends Service[Request, Response] {
         case Post =>
 
           val wikiRelateTask = ResponseParsing(request)
+          val queryString = "%s (%d) and %s (%d)"  format  (wikiRelateTask.src.wikiTitle, wikiRelateTask.src.wikiID,
+                                                               wikiRelateTask.dst.wikiTitle, wikiRelateTask.dst.wikiID)
 
-          logger.info("Computing Relatedness for WikiTask: %s..." format wikiRelateTask.toString())
+
           wikiRelateTask.machineRelatedness = relatedness.computeRelatedness(wikiRelateTask)
+          logger.info("Computing elatedness between %s... " format queryString)
+          logger.info("Relatedness between %s is %1.3f" format (queryString, wikiRelateTask.machineRelatedness) )
 
           val response = ResponseParsing(wikiRelateTask)
           Future.apply(response)
@@ -45,8 +47,6 @@ class WikiRelateService extends Service[Request, Response] {
 
     }
   }
-
-
 
 
   def run() = Await.ready( getServer )
