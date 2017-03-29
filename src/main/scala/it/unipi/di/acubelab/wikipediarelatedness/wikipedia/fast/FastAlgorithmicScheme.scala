@@ -5,6 +5,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.relatedness.{Fas
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.wikiout.WikiOut
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.SubNodeCreatorFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessFactory, RelatednessOptions}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -16,6 +17,7 @@ import scala.collection.mutable.ListBuffer
 class FastAlgorithmicScheme(milnewittenCompressed: Boolean, deepwalkCompressed: Boolean) extends Relatedness {
   protected val logger = LoggerFactory.getLogger(getClass)
   protected val outSize = 30
+  protected val nodeIDs = WikiBVGraphFactory.make("out").wiki2node
 
   val wikiOut = new WikiOut
 
@@ -42,6 +44,9 @@ class FastAlgorithmicScheme(milnewittenCompressed: Boolean, deepwalkCompressed: 
     */
   override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
     if (srcWikiID == dstWikiID) return 1f
+
+    if (!nodeIDs.containsKey(srcWikiID)) { logger.warn("src: %d not present." format srcWikiID); return 0f }
+    if (!nodeIDs.containsKey(dstWikiID)) { logger.warn("dst: %d not present." format srcWikiID); return 0f }
 
 
     // Creation of the set of unique nodes of the Wikipedia subgraph

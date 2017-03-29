@@ -7,7 +7,7 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
 // json response -> WikiRelateTask
-case class WikiIDs(srcWikID: Int, dstWikiID: Int)
+case class WikiIDs(srcWikiID: Int, dstWikiID: Int)
 case class WikiTitles(srcWikiTitle: String, dstWikiTitle: String)
 
 // WikiRelateTask -> json response
@@ -36,15 +36,15 @@ object ResponseParsing {
     // wikiIDs
     if (content.contains("srcWikiID") && content.contains("dstWikiID")) {
 
-      val wikiIDs = json.extract[WikiIDs]
-      val srcWikiEntity = param2WikiEntity(wikiIDs.srcWikID)
-      val dstWikiEntity = param2WikiEntity(wikiIDs.dstWikiID)
+        val wikiIDs = json.extract[WikiIDs]
+        val srcWikiEntity = param2WikiEntity(wikiIDs.srcWikiID)
+        val dstWikiEntity = param2WikiEntity(wikiIDs.dstWikiID)
 
-      return new WikiRelateTask(srcWikiEntity, dstWikiEntity, -1f)
+        return new WikiRelateTask(srcWikiEntity, dstWikiEntity, -1f)
 
 
     // wikiTitles
-    } else if(content.contains("srcWikiTitle"   ) && content.contains("dstWikiTitle")) {
+    } else if(content.contains("srcWikiTitle") && content.contains("dstWikiTitle")) {
       val wikiTitles = json.extract[WikiTitles]
       val srcWikiEntity = param2WikiEntity(wikiTitles.srcWikiTitle)
       val dstWikiEntity = param2WikiEntity(wikiTitles.dstWikiTitle)

@@ -1,12 +1,14 @@
 package it.unipi.di.acubelab.wikipediarelatedness.server.service
 
+import java.util.Locale
+
 import com.twitter.finagle.{Http, Service}
 import com.twitter.finagle.http.Method.Post
 import com.twitter.finagle.http.Version.Http11
 import com.twitter.finagle.http.{Request, Response, Status}
 import com.twitter.util.{Await, Future}
 import it.unipi.di.acubelab.wikipediarelatedness.server.utils.ResponseParsing
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessFactory, RelatednessOptions}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import org.slf4j.LoggerFactory
 
 
@@ -23,20 +25,23 @@ class WikiRelateService(val relatedness: Relatedness) extends Service[Request, R
 
   def apply(request: Request): Future[Response] = {
     try {
+
       request.method match {
         case Post =>
+              // logger.info("Parsing request %s" format request.getContentString())
 
-          val wikiRelateTask = ResponseParsing(request)
-          val queryString = "%s (%d) and %s (%d)"  format  (wikiRelateTask.src.wikiTitle, wikiRelateTask.src.wikiID,
-                                                               wikiRelateTask.dst.wikiTitle, wikiRelateTask.dst.wikiID)
+              val wikiRelateTask = ResponseParsing(request)
+              val queryString = "%s (%d) and %s (%d)" format(wikiRelateTask.src.wikiTitle, wikiRelateTask.src.wikiID,
+                wikiRelateTask.dst.wikiTitle, wikiRelateTask.dst.wikiID)
 
 
-          wikiRelateTask.machineRelatedness = relatedness.computeRelatedness(wikiRelateTask)
-          logger.info("Computing elatedness between %s... " format queryString)
-          logger.info("Relatedness between %s is %1.3f" format (queryString, wikiRelateTask.machineRelatedness) )
+              wikiRelateTask.machineRelatedness = relatedness.computeRelatedness(wikiRelateTask)
+              logger.info("Computing relatedness between %s... " format queryString)
+              logger.info("Relatedness between %s is %1.3f" formatLocal(Locale.US, wikiRelateTask.machineRelatedness))
 
-          val response = ResponseParsing(wikiRelateTask)
-          Future.apply(response)
+              val response = ResponseParsing(wikiRelateTask)
+              Future.apply(response)
+
 
         case _ => Future.value(Response.apply(Http11, Status.NotFound))
       }
@@ -53,5 +58,5 @@ class WikiRelateService(val relatedness: Relatedness) extends Service[Request, R
 
   def getServer = Http.serve(getURL, this)
 
-  def getURL = ":8080"
+  def getURL = ":9090"
 }

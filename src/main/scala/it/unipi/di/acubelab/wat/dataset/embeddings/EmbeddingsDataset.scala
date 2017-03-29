@@ -78,7 +78,7 @@ object EmbeddingsDataset {
     override def size: Int = model.vocab().numWords()
 
     override def similarity(w1: String, w2: String): Float = {
-      //if(!model.hasWord(w1) || !model.hasWord(w2)) return 0f
+      if(!model.hasWord(w1) || !model.hasWord(w2)) return 0f
       //Transforms.cosineSim(model.getWordVectorMatrix(w1), model.getWordVectorMatrix(w2)).toFloat
       model.similarity(w1, w2).toFloat
     }
@@ -239,7 +239,10 @@ object EmbeddingsDataset {
 
   def apply(model: Word2Vec) = new EmbeddingsDataset {
     override def size: Int = model.vectorSize
-    override def similarity(w1: String, w2: String): Float = model.cosine(w1, w2).toFloat
+    override def similarity(w1: String, w2: String): Float = {
+      if(!model.contains(w1) || !model.contains(w2)) return 0f
+      model.cosine(w1, w2).toFloat
+    }
     override def embedding(word: String): EmbeddingVector = {
       if (!model.contains(word)) {
         return null

@@ -13,9 +13,6 @@ object RelatednessServer {
     val fastAlgoScheme = RelatednessFactory.make(new RelatednessOptions(name="algo:uncom.mw+uncom.dw"))
     val service = new WikiRelateService(fastAlgoScheme)
     service.run()
-
-
-
   }
 
 }
