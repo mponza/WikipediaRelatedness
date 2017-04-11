@@ -20,7 +20,7 @@ object MonoRelatednessServer extends TwitterServer {
   lazy val fastAlgoScheme = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="algo:uncom.mw+uncom.dw")) )
   lazy val mwFastAlgoScheme = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="algo:uncom.mw")) )
   lazy val mw = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="uncom.mw", graph="in")) )
-  lazy val jaccard = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="jaccard", graph="in")) )
+  lazy val jaccard = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="uncom.jacc", graph="in")) )
 
 
   def main() {

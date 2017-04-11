@@ -34,9 +34,10 @@ class WikiRelateService(val relatedness: Relatedness, val port: Int = 9090) exte
               val queryString = "%s (%d) and %s (%d)" format(wikiRelateTask.src.wikiTitle, wikiRelateTask.src.wikiID,
                 wikiRelateTask.dst.wikiTitle, wikiRelateTask.dst.wikiID)
 
+
               wikiRelateTask.machineRelatedness = relatedness.computeRelatedness(wikiRelateTask)
-              //logger.info("[%s] Computing relatedness between %s... " format (relatedness.toString, queryString) )
-              //logger.info("Relatedness between %s is %1.3f" formatLocal(Locale.US, queryString, wikiRelateTask.machineRelatedness))
+              logger.info("[%s] Computing relatedness between %s... " format (relatedness.toString, queryString) )
+              logger.info("Relatedness between %s is %1.3f" formatLocal(Locale.US, queryString, wikiRelateTask.machineRelatedness))
 
               val response = ResponseParsing(wikiRelateTask)
               Future.apply(response)

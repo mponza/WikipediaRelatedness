@@ -1,5 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.uncompressed
 
+import it.unimi.dsi.fastutil.ints.IntArrayList
 
 
 class UncompressedSetOperations(val wikiGraph: UncompressedWikiBVGraph) {
@@ -30,6 +31,14 @@ class UncompressedSetOperations(val wikiGraph: UncompressedWikiBVGraph) {
     } while (i < a.length && j < b.length)
 
     intersection
+  }
+
+
+  def unionSize(srcWikiID: Int, dstWikiID: Int) : Int = {
+    val srcArray = wikiGraph.successorArray(srcWikiID)
+    val dstArray = wikiGraph.successorArray(dstWikiID)
+
+    new IntArrayList((srcArray ++ dstArray).distinct).size()
   }
 
 }
