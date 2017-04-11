@@ -10,11 +10,11 @@ import com.twitter.util.{Await, Future}
 import it.unipi.di.acubelab.wikipediarelatedness.server.utils.ResponseParsing
 import org.slf4j.LoggerFactory
 
-class WikiRelateGraphService extends Service[Request, Response] {
+abstract class WikiRelateGraphService extends Service[Request, Response] {
 
   protected val logger = LoggerFactory.getLogger(getClass)
 
-
+/*
   def apply(request: Request): Future[Response] = {
     try {
 
@@ -44,7 +44,7 @@ class WikiRelateGraphService extends Service[Request, Response] {
 
     }
   }
-
+*/
 
   def run() = Await.ready( getServer )
 

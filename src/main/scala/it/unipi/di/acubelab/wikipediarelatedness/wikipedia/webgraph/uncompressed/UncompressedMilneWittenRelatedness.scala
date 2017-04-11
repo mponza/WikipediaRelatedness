@@ -23,6 +23,18 @@ class UncompressedMilneWittenRelatedness (options: RelatednessOptions) extends R
 
 
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
+    if (srcWikiID == dstWikiID) return 1f // added
+
+    if(!wikiGraph.wiki2node.containsKey(srcWikiID) || !wikiGraph.wiki2node.containsKey(dstWikiID)) {
+      logger.warn("%d not present!" format srcWikiID )
+      return 0f
+    }
+
+    if(!wikiGraph.wiki2node.containsKey(dstWikiID)) {
+      logger.warn("%d not present!" format dstWikiID )
+      return 0f
+    }
+
     val sizeA = wikiGraph.outdegree(srcWikiID)
     val sizeB = wikiGraph.outdegree(dstWikiID)
 
@@ -34,6 +46,8 @@ class UncompressedMilneWittenRelatedness (options: RelatednessOptions) extends R
       (math.log(W) - math.log(sizeA min sizeB))
 
     val normRel = 1 - ((rel.toFloat max 0f) min 1f)
+
+
 
     normRel
   }

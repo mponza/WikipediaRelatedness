@@ -73,7 +73,7 @@ class WikiBVDistance(wikiGraph: WikiBVGraph = WikiBVGraphFactory.make("sym")) {
 
 
   protected def computeBFS(srcNodeID: Int) : ParallelBreadthFirstVisit = {
-    val maxDistance = 4
+    val maxDistance = 10
 
     val bfs = new ParallelBreadthFirstVisit(wikiGraph.graph, 0, false, null)
     for (i <- 0 until maxDistance) bfs.visit(srcNodeID)

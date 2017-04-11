@@ -28,7 +28,8 @@ object WebGraphProcessor {
 
     val outGraph = new ImmutableWikiGraph
 
-    storeEFInGraph(Transform.transpose(outGraph), Config.getString("wikipedia.webgraph.ef.in"))
+    storeEFInGraph(outGraph, Config.getString("wikipedia.webgraph.ef.out"))
+    //storeEFInGraph(Transform.transpose(outGraph), Config.getString("wikipedia.webgraph.ef.in"))
 
     return
 

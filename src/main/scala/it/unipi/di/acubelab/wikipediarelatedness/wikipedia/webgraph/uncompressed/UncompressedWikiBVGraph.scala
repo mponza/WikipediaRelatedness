@@ -51,7 +51,6 @@ class UncompressedWikiBVGraph(graph: ImmutableGraph, wiki2node: Int2IntOpenHashM
     adjacentList
   }
 
-
   override def successorArray(wikiID: Int) = wikiID2neighs.get(wikiID)
 
   override def outdegree(wikiID: Int) = wikiID2neighs.get(wikiID).size

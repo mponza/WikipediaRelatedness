@@ -62,6 +62,7 @@ libraryDependencies ++= Seq(
 
   "com.twitter" %% "finagle-core" % "6.41.0",
   "com.twitter" %% "finagle-stats" % "6.41.0",
+  "com.twitter" % "twitter-server_2.11" % "1.28.0",
 
   "com.madhukaraphatak" % "java-sizeof_2.11" % "0.1",
 

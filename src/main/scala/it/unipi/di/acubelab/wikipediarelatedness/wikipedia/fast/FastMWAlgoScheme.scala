@@ -3,35 +3,18 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.relatedness.{FastDeepWalkRelatedness, FastMWDWRelatedness, FastMilneWittenRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.wikiout.WikiOut
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.subgraph.SubNodeCreatorFactory
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessFactory, RelatednessOptions}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
 import org.slf4j.LoggerFactory
 
-import scala.collection.mutable.ListBuffer
-
-/**
-  * Faster implementation of the Algorithmic Scheme for computing Relatedness and evaluating its performance
-  * with compressed/uncompressed data.
-  */
-class FastAlgorithmicScheme(milnewittenCompressed: Boolean, deepwalkCompressed: Boolean) extends Relatedness {
+class FastMWAlgoScheme extends Relatedness {
   protected val logger = LoggerFactory.getLogger(getClass)
   protected val outSize = 30
   protected val nodeIDs = WikiBVGraphFactory.make("out").wiki2node
 
   val wikiOut = new WikiOut
 
-  val mwdw = {
-    //val options = new RelatednessOptions(name="mix", lambda=0.5,
-    //  firstname="milnewitten", firstgraph="in",
-    //  secondname="w2v", secondmodel="deepwalk.dw10"
-    //)
-    //RelatednessFactory.make(options)
-    val mw = new FastMilneWittenRelatedness(milnewittenCompressed)
-    val dw = new FastDeepWalkRelatedness(deepwalkCompressed)
-
-    new FastMWDWRelatedness(mw, dw)
-  }
+  val mwdw = new FastMilneWittenRelatedness(false)
 
   //override def toString = "FastASR_mw:%s,dw:%s" format (mw, dw)
 
@@ -153,5 +136,5 @@ class FastAlgorithmicScheme(milnewittenCompressed: Boolean, deepwalkCompressed: 
 
   }
 
-  override def toString = "AlgorithmicScheme_%s" format mwdw.toString
+  override def toString = "MWAlgorithmicScheme_%s" format mwdw.toString
 }

@@ -4,6 +4,7 @@ import com.twitter.finagle.http.{Request, Response, Status}
 import org.json4s.jackson.JsonMethods._
 import org.json4s._
 
+
 trait SerivceParser[T] {
 
   /**
@@ -11,12 +12,15 @@ trait SerivceParser[T] {
     * @param request
     * @return
     */
-  def apply(request: Request) : T  = {
+  def apply(request: Request) : T/*  = {
     implicit val formats = DefaultFormats
 
     val content = request.getContentString()
     val json = parse(content)
-  }
+
+
+    null
+  }*/
 
 
   /**

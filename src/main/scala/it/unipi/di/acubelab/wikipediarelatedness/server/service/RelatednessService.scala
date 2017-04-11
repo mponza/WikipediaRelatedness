@@ -22,6 +22,8 @@ trait RelatednessService[T]  extends Service[Request, Response] {
 
       request.method match {
         case Post =>
+          null
+          /*
           // logger.info("Parsing request %s" format request.getContentString())
           val task  =
 
@@ -35,7 +37,7 @@ trait RelatednessService[T]  extends Service[Request, Response] {
           logger.info("Relatedness between %s is %1.3f" formatLocal(Locale.US, wikiRelateTask.machineRelatedness))
 
           val response = ResponseParsing(wikiRelateTask)
-          Future.apply(response)
+          Future.apply(response)*/
 
 
         case _ => Future.value(Response.apply(Http11, Status.NotFound))
