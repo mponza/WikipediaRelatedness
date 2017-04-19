@@ -1,35 +1,17 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.relatedness.FastMilneWittenRelatedness
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.wikiout.WikiOut
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
-import org.slf4j.LoggerFactory
 
-class FastMWAlgoScheme extends Relatedness {
-  protected val logger = LoggerFactory.getLogger(getClass)
-  protected val outSize = 30
-  protected val nodeIDs = WikiBVGraphFactory.make("out").wiki2node
 
-  val wikiOut = new WikiOut
+class FastLambdaMWDWAlgoScheme(milnewittenCompressed: Boolean, deepwalkCompressed: Boolean) extends FastAlgorithmicScheme(milnewittenCompressed, deepwalkCompressed) {
 
-  val mwdw = new FastMilneWittenRelatedness(false)
 
-  //override def toString = "FastASR_mw:%s,dw:%s" format (mw, dw)
-
-  /**
-    * Computes the relatedness between two Wikipedia entities uniquely identified by their ID.
-    *
-    * @param srcWikiID
-    * @param dstWikiID
-    * @return
-    */
-  override def computeRelatedness(srcWikiID: Int, dstWikiID: Int) : Float = {
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int, lambda: Float): Float = {
     if (srcWikiID == dstWikiID) return 1f
 
-    if (!nodeIDs.containsKey(srcWikiID)) { logger.warn("src: %d not present." format srcWikiID); return 0f }
-    if (!nodeIDs.containsKey(dstWikiID)) { logger.warn("dst: %d not present." format dstWikiID); return 0f }
+
+    if (!nodeIDs.containsKey(srcWikiID)) { logger.warn("[Lambda] src: %d not present." format srcWikiID); return 0f }
+    if (!nodeIDs.containsKey(dstWikiID)) { logger.warn("[Lambda] dst: %d not present." format dstWikiID); return 0f }
 
 
     // Creation of the set of unique nodes of the Wikipedia subgraph
@@ -79,21 +61,21 @@ class FastMWAlgoScheme extends Relatedness {
       val nodeID = iterNode.nextInt()
 
       if (nodeID != srcWikiID && nodeID != dstWikiID) {
-        srcWeightVec(i) = mwdw.computeRelatedness(srcWikiID, nodeID)
-        dstWeightVec(i) = mwdw.computeRelatedness(dstWikiID, nodeID)
+        srcWeightVec(i) = mwdw.computeRelatedness(srcWikiID, nodeID, lambda)
+        dstWeightVec(i) = mwdw.computeRelatedness(dstWikiID, nodeID, lambda)
 
         srcSum += srcWeightVec(i)
         dstSum += dstWeightVec(i)
       }
 
       if (nodeID == srcWikiID) {
-        dstWeightVec(i) =  mwdw.computeRelatedness(dstWikiID, nodeID)
+        dstWeightVec(i) =  mwdw.computeRelatedness(dstWikiID, nodeID, lambda)
         dstSum += dstWeightVec(i)
         srcIndex = i
       }
 
       if(nodeID == dstWikiID) {
-        srcWeightVec(i) = mwdw.computeRelatedness(srcWikiID, nodeID)
+        srcWeightVec(i) = mwdw.computeRelatedness(srcWikiID, nodeID, lambda)
         srcSum += srcWeightVec(i)
         dstIndex = i
       }
@@ -135,6 +117,4 @@ class FastMWAlgoScheme extends Relatedness {
     inner / ( math.sqrt(srcMagnitude) * math.sqrt(dstMagnitude) ).toFloat
 
   }
-
-  override def toString = "MWAlgorithmicScheme_%s" format mwdw.toString
 }

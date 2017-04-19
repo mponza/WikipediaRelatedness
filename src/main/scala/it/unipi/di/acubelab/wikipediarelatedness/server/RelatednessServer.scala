@@ -9,9 +9,6 @@ import org.slf4j.LoggerFactory
 
 
 
-
-
-
 object RelatednessServer extends TwitterServer {
 
   private val logger = LoggerFactory.getLogger("RelatednessServer")

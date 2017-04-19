@@ -20,6 +20,22 @@ case class WikiRelateResponse(srcWikID: Int, dstWikiID: Int, srcWikiTitle: Strin
   */
 object ResponseParsing {
 
+
+  /**
+    * Extracts float with name 'name' from request.
+    *
+    * @param request
+    * @param name
+    * @return
+    */
+  def getFloat(request: Request, name: String) : Float = {
+    val content = request.getContentString()
+    if (!content.contains(name)) {throw new IllegalArgumentException("%s field not present in request." format name)}
+
+    request.getParam("lambda").toFloat
+  }
+
+
   /**
     * Parses request and returns the corresponding WikiRelateTask.
     *

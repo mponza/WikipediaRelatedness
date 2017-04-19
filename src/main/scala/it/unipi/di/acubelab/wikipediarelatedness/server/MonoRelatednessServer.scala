@@ -6,7 +6,8 @@ import com.twitter.finagle.http.Version.{apply => _, _}
 import com.twitter.finagle.http.{Request, Response, Status}
 import com.twitter.server.TwitterServer
 import com.twitter.util.{Await, Future}
-import it.unipi.di.acubelab.wikipediarelatedness.server.service.WikiRelateService
+import it.unipi.di.acubelab.wikipediarelatedness.server.service.{LambdaWikiRelateService, WikiRelateService}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.relatedness.FastMWDWRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{RelatednessFactory, RelatednessOptions}
 import org.slf4j.LoggerFactory
 
@@ -18,6 +19,8 @@ object MonoRelatednessServer extends TwitterServer {
 
 
   lazy val fastAlgoScheme = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="algo:uncom.mw+uncom.dw")) )
+  lazy val lambdaFastAlgoScheme = new LambdaWikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="lambdaAlgo:uncom.mw+uncom.dw"))
+                                                                .asInstanceOf[FastMWDWRelatedness] )
   lazy val mwFastAlgoScheme = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="algo:uncom.mw")) )
   lazy val mw = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="uncom.mw", graph="in")) )
   lazy val jaccard = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="uncom.jacc", graph="in")) )
@@ -36,6 +39,8 @@ object MonoRelatednessServer extends TwitterServer {
               request.path match {
 
                 case "/algoMW+DW" => fastAlgoScheme(request)
+                case "/algoLambdaMW+DW" => lambdaFastAlgoScheme(request)
+
                 case "/algoMW" => mwFastAlgoScheme(request)
 
                 case "/milnewitten" => mw(request)
@@ -54,7 +59,7 @@ object MonoRelatednessServer extends TwitterServer {
       }
     }
 
-    val routingServer = Http.serve(":9070", routingService)
+    val routingServer = Http.serve(":9090", routingService)
     logger.info("Server up!")
     Await.all(routingServer, adminHttpServer)
   }

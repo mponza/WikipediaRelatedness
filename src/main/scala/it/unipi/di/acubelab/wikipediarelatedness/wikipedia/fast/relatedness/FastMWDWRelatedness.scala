@@ -1,5 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.relatedness
 
+import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.wikiout.WikiOut
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
@@ -20,6 +21,26 @@ class FastMWDWRelatedness(milneWitten: FastMilneWittenRelatedness, deepWalk: Fas
     0.5f * (milneWitten.computeRelatedness(srcWikiID, dstWikiID) + deepWalk.computeRelatedness(srcWikiID, dstWikiID) )
   }
 
+
+  /**
+    * As computeRelatedness but with a configurable lambda weight.
+    *
+    * @param srcWikiID
+    * @param dstWikiID
+    * @param lambda
+    * @return
+    */
+  def computeRelatedness(srcWikiID: Int, dstWikiID: Int, lambda: Float) : Float = {
+    lambda * milneWitten.computeRelatedness(srcWikiID, dstWikiID) + (1f - lambda) * deepWalk.computeRelatedness(srcWikiID, dstWikiID)
+  }
+
+
+  def computeRelatedness(task: WikiRelateTask, lambda: Float) : Float = {
+    val greaterZero = Math.max(computeRelatedness(task.src.wikiID, task.dst.wikiID, lambda), 0f)
+    val lowerOne = Math.min(greaterZero, 1f)
+
+    lowerOne
+  }
 
   override def toString() = "MWDW_[MW:%s, DW: %s]" format (milneWitten, deepWalk)
 }

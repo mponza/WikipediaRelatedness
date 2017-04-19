@@ -1,7 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.embeddings.neural.line.LINEEmbeddings
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.{FastAlgorithmicScheme, FastMWAlgoScheme}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.{FastAlgorithmicScheme, FastLambdaMWDWAlgoScheme, FastMWAlgoScheme}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.relatedness.FastDeepWalkRelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph.{SubCliqueRelatedness, SubLayeredRelatedenss, SubSparseRelatedness}
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.clustering.{CosineLocalClusteringRelatedness, JaccardLocalClusteringRelatedness}
@@ -100,6 +100,7 @@ object RelatednessFactory {
     case "algo:com.mw+com.dw" => new FastAlgorithmicScheme(true, true)
 
     case "algo:uncom.mw" => new FastMWAlgoScheme
+    case "lambdaAlgo:uncom.mw+uncom.dw" => new FastLambdaMWDWAlgoScheme(false, false)
   }
 
 }
