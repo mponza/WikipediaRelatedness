@@ -7,11 +7,11 @@ import com.twitter.finagle.http.Version.{apply => _, _}
 import com.twitter.finagle.http.{Request, Response, Status}
 import com.twitter.util.Future
 import it.unipi.di.acubelab.wikipediarelatedness.server.utils.ResponseParsing
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.relatedness.FastMWDWRelatedness
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.FastLambdaAlgoScheme
 import org.slf4j.LoggerFactory
 
 
-class LambdaWikiRelateService(lambdaRelatedness: FastMWDWRelatedness, port: Int = 9090)
+class LambdaWikiRelateService(lambdaRelatedness: FastLambdaAlgoScheme, port: Int = 9090)
   extends WikiRelateService(lambdaRelatedness, port) {
 
   override protected val logger = LoggerFactory.getLogger(getClass)
@@ -23,16 +23,15 @@ class LambdaWikiRelateService(lambdaRelatedness: FastMWDWRelatedness, port: Int 
         case Post =>
           //logger.info("Parsing request %s" format request.getContentString())
 
-          val wikiRelateTask = ResponseParsing(request)
-          val lambda = ResponseParsing.getFloat(request, "lambda")
+          val (wikiRelateTask, lambda) = ResponseParsing.parseWithLambda(request)
 
           val queryString = "%s (%d) and %s (%d) with lambda %1.2f" format(wikiRelateTask.src.wikiTitle, wikiRelateTask.src.wikiID,
             wikiRelateTask.dst.wikiTitle, wikiRelateTask.dst.wikiID, lambda)
 
 
-          wikiRelateTask.machineRelatedness = relatedness.asInstanceOf[FastMWDWRelatedness].computeRelatedness(wikiRelateTask, lambda)
+          wikiRelateTask.machineRelatedness = lambdaRelatedness.computeRelatedness(wikiRelateTask, lambda)
           //logger.info("[%s] Computing relatedness between %s... " format (relatedness.toString, queryString) )
-          logger.info("Relatedness between %s is %1.3f" formatLocal(Locale.US, queryString, wikiRelateTask.machineRelatedness))
+          //logger.info("Relatedness between %s is %1.3f" formatLocal(Locale.US, queryString, wikiRelateTask.machineRelatedness))
 
           val response = ResponseParsing(wikiRelateTask)
           Future.apply(response)

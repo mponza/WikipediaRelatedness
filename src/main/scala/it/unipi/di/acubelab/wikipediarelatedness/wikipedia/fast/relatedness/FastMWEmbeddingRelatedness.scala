@@ -4,7 +4,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.WikiRelateTask
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.wikiout.WikiOut
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
-class FastMWDWRelatedness(milneWitten: FastMilneWittenRelatedness, deepWalk: FastDeepWalkRelatedness) extends Relatedness {
+class FastMWEmbeddingRelatedness(milneWitten: FastMilneWittenRelatedness, embeddingRelatedness: FastEmbeddingRelatedness) extends Relatedness {
   protected val wikiout = new WikiOut
 
   /**
@@ -18,7 +18,7 @@ class FastMWDWRelatedness(milneWitten: FastMilneWittenRelatedness, deepWalk: Fas
     val precompRel = wikiout.relatedness(srcWikiID, dstWikiID)
     if(precompRel >= 0f) return precompRel
 
-    0.5f * (milneWitten.computeRelatedness(srcWikiID, dstWikiID) + deepWalk.computeRelatedness(srcWikiID, dstWikiID) )
+    0.5f * (milneWitten.computeRelatedness(srcWikiID, dstWikiID) + embeddingRelatedness.computeRelatedness(srcWikiID, dstWikiID) )
   }
 
 
@@ -31,7 +31,7 @@ class FastMWDWRelatedness(milneWitten: FastMilneWittenRelatedness, deepWalk: Fas
     * @return
     */
   def computeRelatedness(srcWikiID: Int, dstWikiID: Int, lambda: Float) : Float = {
-    lambda * milneWitten.computeRelatedness(srcWikiID, dstWikiID) + (1f - lambda) * deepWalk.computeRelatedness(srcWikiID, dstWikiID)
+    lambda * milneWitten.computeRelatedness(srcWikiID, dstWikiID) + (1f - lambda) * embeddingRelatedness.computeRelatedness(srcWikiID, dstWikiID)
   }
 
 
@@ -42,5 +42,6 @@ class FastMWDWRelatedness(milneWitten: FastMilneWittenRelatedness, deepWalk: Fas
     lowerOne
   }
 
-  override def toString() = "MWDW_[MW:%s, DW: %s]" format (milneWitten, deepWalk)
+
+  override def toString() = "MWDW_[MW:%s, DW: %s]" format (milneWitten, embeddingRelatedness)
 }

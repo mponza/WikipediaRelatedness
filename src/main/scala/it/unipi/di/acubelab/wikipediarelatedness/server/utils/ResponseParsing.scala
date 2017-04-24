@@ -8,10 +8,14 @@ import org.json4s.jackson.JsonMethods._
 
 // json response -> WikiRelateTask
 case class WikiIDs(srcWikiID: Int, dstWikiID: Int)
+case class LambdaWikiIDs(srcWikiID: Int, dstWikiID: Int, lambda: Float)
+
 case class WikiTitles(srcWikiTitle: String, dstWikiTitle: String)
+
 
 // WikiRelateTask -> json response
 case class WikiRelateResponse(srcWikID: Int, dstWikiID: Int, srcWikiTitle: String, dstWikiTile: String, relatedndess: Float)
+
 
 
 /**
@@ -21,18 +25,23 @@ case class WikiRelateResponse(srcWikID: Int, dstWikiID: Int, srcWikiTitle: Strin
 object ResponseParsing {
 
 
-  /**
-    * Extracts float with name 'name' from request.
-    *
-    * @param request
-    * @param name
-    * @return
-    */
-  def getFloat(request: Request, name: String) : Float = {
-    val content = request.getContentString()
-    if (!content.contains(name)) {throw new IllegalArgumentException("%s field not present in request." format name)}
+  def parseWithLambda(request: Request) : (WikiRelateTask, Float) = {
+    implicit val formats = DefaultFormats
 
-    request.getParam("lambda").toFloat
+    val content = request.getContentString()
+    val json = parse(content)
+
+    if (content.contains("srcWikiID") && content.contains("dstWikiID") && content.contains("lambda")) {
+
+      val lambdaWikiIDs = json.extract[LambdaWikiIDs]
+      val srcWikiEntity = param2WikiEntity(lambdaWikiIDs.srcWikiID)
+      val dstWikiEntity = param2WikiEntity(lambdaWikiIDs.dstWikiID)
+
+      return (new WikiRelateTask(srcWikiEntity, dstWikiEntity, -1f), lambdaWikiIDs.lambda)
+
+    }
+
+    throw new IllegalArgumentException("ParseWithLambda failed. You need to specify all fields.")
   }
 
 

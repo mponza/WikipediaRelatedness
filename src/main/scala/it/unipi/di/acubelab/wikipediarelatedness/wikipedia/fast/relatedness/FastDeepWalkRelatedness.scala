@@ -7,23 +7,9 @@ import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.Relatedness
 
 
-class FastDeepWalkRelatedness(compressed: Boolean) extends Relatedness {
+class FastDeepWalkRelatedness(compressed: Boolean) extends FastEmbeddingRelatedness(compressed) {
 
-  val embeddings = loadEmbeddings(compressed)
-
-  /**
-    * Computes the relatedness between two Wikipedia entities uniquely identified by their ID.
-    *
-    * @param srcWikiID
-    * @param dstWikiID
-    * @return
-    */
-  override def computeRelatedness(srcWikiID: Int, dstWikiID: Int): Float = {
-    Math.max( embeddings.similarity("ent_" + srcWikiID, "ent_" + dstWikiID), 0f )
-  }
-
-
-  protected def loadEmbeddings(compressed: Boolean) = {
+  override protected def loadEmbeddings(compressed: Boolean) = {
     val filename =  if (!compressed) Config.getString("wikipedia.neural.deepwalk.dw10")
                      else Config.getString("wikipedia.neural.deepwalk.ot.dw10")
 
