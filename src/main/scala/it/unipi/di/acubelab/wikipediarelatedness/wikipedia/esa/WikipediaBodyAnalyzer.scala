@@ -4,9 +4,8 @@ import java.io.Reader
 
 import it.unipi.di.acubelab.wikipediarelatedness.utils.StopWords
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents
-import org.apache.lucene.analysis.core.{LowerCaseFilter, StopAnalyzer, StopFilter, WhitespaceTokenizer}
+import org.apache.lucene.analysis.core.{LowerCaseFilter, StopFilter, WhitespaceTokenizer}
 import org.apache.lucene.analysis.Analyzer
-import org.apache.lucene.analysis.snowball.SnowballFilter
 import org.apache.lucene.analysis.util.CharArraySet
 import org.slf4j.LoggerFactory
 

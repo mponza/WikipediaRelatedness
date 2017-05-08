@@ -23,10 +23,10 @@ object MonoRelatednessServer extends TwitterServer {
 
   lazy val fastAlgoScheme = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="algo:uncom.mw+uncom.dw")) )
 
-  //lazy val lambdaFastAlgoScheme = new LambdaWikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="lambdaAlgo:uncom.mw+uncom.dw"))
-  //                                                              .asInstanceOf[FastLambdaMWDWAlgoScheme] )
-  //lazy val lambdaE2VFastAlgoScheme = new LambdaWikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="lambdaAlgo:uncom.mw+uncom.e2v"))
-  //                                                              .asInstanceOf[FastLambdaMWE2VAlgoScheme] )
+  lazy val lambdaFastAlgoScheme = new LambdaWikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="lambdaAlgo:uncom.mw+uncom.dw"))
+                                                                .asInstanceOf[FastLambdaMWDWAlgoScheme] )
+  lazy val lambdaE2VFastAlgoScheme = new LambdaWikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="lambdaAlgo:uncom.mw+uncom.e2v"))
+                                                                .asInstanceOf[FastLambdaMWE2VAlgoScheme] )
 
   lazy val mwFastAlgoScheme = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="algo:uncom.mw")) )
   lazy val mw = new WikiRelateService( RelatednessFactory.make(new RelatednessOptions(name="uncom.mw", graph="in")) )
@@ -46,8 +46,8 @@ object MonoRelatednessServer extends TwitterServer {
               request.path match {
 
                 case "/algoMW+DW" => fastAlgoScheme(request)
-                //case "/algoLambdaMW+DW" => lambdaFastAlgoScheme(request)
-                //case "/algoLambdaMW+E2V" => lambdaE2VFastAlgoScheme(request)
+                case "/algoLambdaMW+DW" => lambdaFastAlgoScheme(request)
+                case "/algoLambdaMW+E2V" => lambdaE2VFastAlgoScheme(request)
 
                 case "/algoMW" => mwFastAlgoScheme(request)
 

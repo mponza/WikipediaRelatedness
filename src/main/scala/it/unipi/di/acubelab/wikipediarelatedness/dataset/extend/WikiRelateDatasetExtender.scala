@@ -18,10 +18,22 @@ import org.slf4j.LoggerFactory
 object WikiRelateDatasetExtender {
   protected val logger = LoggerFactory.getLogger(getClass)
 
-  protected val distance = new WikiBVDistance()
-  protected val pageRank = new WikiBVPageRank()
+  protected val distance = new WikiBVDistance(WikiBVGraphFactory.make("un.sym"))
+  //protected val pageRank = new WikiBVPageRank()
   protected val outJaccRel = new JaccardRelatedness(new RelatednessOptions(graph = "out"))
   protected val inJaccRel = new JaccardRelatedness(new RelatednessOptions(graph = "in"))
+
+
+  def main(args: Array[String]) = {
+    //(val src: WikiEntity, val dst: WikiEntity, val humanRelatedness: Float)
+    val wikisim = DatasetFactory.make("wikisim").map {
+      case w => new WikiRelateTask(w.src, w.dst, w.humanRelatedness * 10f)
+    }
+    val wire = DatasetFactory.make("wire")
+
+    val exData = extend(wikisim ++ wire)
+    save(exData, "/tmp/wi.csv")
+  }
 
 
   def run(args: Array[String]): Unit = {
@@ -40,7 +52,7 @@ object WikiRelateDatasetExtender {
     *
     * @param dataset
     */
-  protected def extend(dataset: WikiRelateDataset) : Seq[ExWikiRelateTask] = {
+  protected def extend(dataset: Traversable[WikiRelateTask]) : Seq[ExWikiRelateTask] = {
     val pl = new ProgressLogger(logger, 1, TimeUnit.MINUTES)
     pl.start("Starting extending computation...")
 
@@ -75,15 +87,16 @@ object WikiRelateDatasetExtender {
     extask.dstInDegree = WikiBVGraphFactory.make("in").outdegree(task.dst.wikiID)
     extask.dstOutDegree = WikiBVGraphFactory.make("out").outdegree(task.dst.wikiID)
 
-    extask.distance = distance.getDistance(task.src.wikiID, task.dst.wikiID)
+    extask.src2DstDistance = distance.getDistance(task.src.wikiID, task.dst.wikiID)
+    extask.dst2SrcDistance = distance.getDistance(task.dst.wikiID, task.src.wikiID)
 
-    extask.srcPageRank = pageRank.getPageRank(task.src.wikiID).toFloat
-    extask.dstPageRank = pageRank.getPageRank(task.dst.wikiID).toFloat
+    //extask.srcPageRank = pageRank.getPageRank(task.src.wikiID).toFloat
+    //extask.dstPageRank = pageRank.getPageRank(task.dst.wikiID).toFloat
 
-    extask.srcPRpos = pageRank.getPositionPageRank(task.src.wikiID)
-    extask.dstPRpos = pageRank.getPositionPageRank(task.dst.wikiID)
+    //extask.srcPRpos = pageRank.getPositionPageRank(task.src.wikiID)
+    //extask.dstPRpos = pageRank.getPositionPageRank(task.dst.wikiID)
 
-    extask.outJaccard = outJaccRel.computeRelatedness(task)
+    //extask.outJaccard = outJaccRel.computeRelatedness(task)
     extask.inJaccard = inJaccRel.computeRelatedness(task)
 
     extask

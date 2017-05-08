@@ -1,7 +1,6 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.subgraph
 
 import java.io.FileWriter
-import java.util.Locale
 
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.jung.graph.WikiJungSparseGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.RelatednessOptions
@@ -42,29 +41,37 @@ object SubSparseRelatedness {
 
   val inDistance = new WikiBVDistance(WikiBVGraphFactory.make("ef.in"))
   val outDistance = new WikiBVDistance(WikiBVGraphFactory.make("ef.out"))
+  val symDistance = new WikiBVDistance(WikiBVGraphFactory.make("un.sym"))
 
 
   def updateDistance(src: Int, dst: Int) = {
 
 
-    var inDist = inDistance.getDistance(src, dst)
-    var outDist = outDistance.getDistance(src, dst)
+    //var inDist = inDistance.getDistance(src, dst)
+    //var outDist = outDistance.getDistance(src, dst)
+    var symDist = symDistance.getDistance(src, dst)
 
 
-    println("============= From %d to %d distance is %d" format (src, dst, inDist) )
-    val inFile = new FileWriter("/tmp/in.csv", true)
-    inFile.write( "%d,%d,%d\n" format (src, dst, inDist) )
-    inFile.close()
+    println("============= From %d to %d distance is %d" format (src, dst, symDist) )
+    //val inFile = new FileWriter("/tmp/in.csv", true)
+    //inFile.write( "%d,%d,%d\n" format (src, dst, inDist) )
+    //inFile.close()
 
-    val outFile = new FileWriter("/tmp/out.csv", true)
-    outFile.write( "%d,%d,%d\n" format (src, dst, outDist) )
-    outFile.close()
+    //val outFile = new FileWriter("/tmp/out.csv", true)
+    //outFile.write( "%d,%d,%d\n" format (src, dst, outDist) )
+    //outFile.close()
 
-    val avgFile = new FileWriter("/tmp/avg.csv", true)
-    if(inDist == -1f || outDist == -1f) println("%d and %d is -1" format (src, dst) )
-    val avgDist = if(inDist == -1f || outDist == -1f) -1f else (outDist + inDist) * 0.5f
-    avgFile.write( "%d,%d,%1.2f\n" formatLocal (Locale.US, src, dst, avgDist) )
-    avgFile.close()
+    val symFile = new FileWriter("/tmp/sym.csv", true)
+    symFile.write( "%d,%d,%d\n" format (src, dst, symDist) )
+    if(symDist == -1f) println("%d and %d is -1" format (src, dst) )
+    symFile.close()
+
+
+    //val avgFile = new FileWriter("/tmp/avg.csv", true)
+    //if(inDist == -1f || outDist == -1f) println("%d and %d is -1" format (src, dst) )
+    //val avgDist = if(inDist == -1f || outDist == -1f) -1f else (outDist + inDist) * 0.5f
+    //avgFile.write( "%d,%d,%1.2f\n" formatLocal (Locale.US, src, dst, avgDist) )
+    //avgFile.close()
 
 
   }

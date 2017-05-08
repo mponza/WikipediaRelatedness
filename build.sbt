@@ -69,9 +69,6 @@ libraryDependencies ++= Seq(
   "org.json4s" % "json4s-native_2.11" % "3.5.1",
   "org.json4s" % "json4s-jackson_2.11" % "3.5.1"
 
-
-
-
 )
 
 // http://www.scala-sbt.org/0.13.5/docs/Detailed-Topics/Library-Management.html

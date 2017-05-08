@@ -57,6 +57,7 @@ object WikiBVGraphFactory {
 
     if (graphName == "un.in") return new UncompressedWikiBVGraph(immInGraph, wiki2node)
     if (graphName == "un.out") return new UncompressedWikiBVGraph(immOutGraph, wiki2node)
+    if (graphName == "un.sym") return new UncompressedWikiBVGraph(immSymGraph, wiki2node)
 
       val immGraph = graphName match {
         case "out" => immOutGraph

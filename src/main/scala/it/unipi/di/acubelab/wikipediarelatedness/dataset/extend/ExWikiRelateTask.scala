@@ -32,7 +32,8 @@ class ExWikiRelateTask(wikiRelateTask: WikiRelateTask) {
 
   val rel = wikiRelateTask.humanRelatedness
 
-  var distance = 0
+  var src2DstDistance = 0f
+  var dst2SrcDistance = 0f
 
   var outJaccard = 0f
   var inJaccard = 0f
@@ -42,17 +43,26 @@ class ExWikiRelateTask(wikiRelateTask: WikiRelateTask) {
     val src = "%d,\"%s\",%d,%d,%1.10f,%d".formatLocal(Locale.US, srcWikiID, srcWikiTitle, srcOutDegree, srcInDegree, srcPageRank, srcPRpos)
     val dst = "%d,\"%s\",%d,%d,%1.10f,%d".formatLocal(Locale.US, dstWikiID, dstWikiTile, dstOutDegree, dstInDegree, dstPageRank, dstPRpos)
 
-    "%s,%s,%1.2f,%d,%1.5f,%1.5f".formatLocal(Locale.US, src, dst, rel, distance, outJaccard, inJaccard)
+    //"%s,%s,%1.2f,%d,%1.5f,%1.5f".formatLocal(Locale.US, src, dst, rel, distance, outJaccard, inJaccard)
+    // srcWikiID,dstWikiID,srcDegIn,srcDegOut,dstDegIn,dstDegOut,src2dstDist,dst2srcDist,rel
+    "%d,%d,%d,%d,%d,%d,%1.2f,%1.2f,%1.5f,%1.2f".formatLocal(Locale.US,
+      srcWikiID,dstWikiID,
+      srcInDegree,srcOutDegree,
+      dstInDegree,dstOutDegree,
+      src2DstDistance,dst2SrcDistance,inJaccard,rel)
+    //"%s,%s,%1.2f,%d,%1.5f,%1.5f".formatLocal(Locale.US, src, dst, rel, distance, outJaccard, inJaccard)
   }
 
 
   def header() = {
-    val src = "srcWikiID,srcWikiTitle,srcOutDegree,srcInDegree,srcPageRank,srcPRpos"
+    //val src = "srcWikiID,srcWikiTitle,srcOutDegree,srcInDegree,srcPageRank,srcPRpos"
 
-    val dst = ",dstWikiID,dstWikiTile,dstOutDegree,dstInDegree,dstPageRank,dstPRpos,"
-    val pair = "rel,distance,outJaccard,inJaccard"
+    //val dst = ",dstWikiID,dstWikiTile,dstOutDegree,dstInDegree,dstPageRank,dstPRpos,"
+    //val pair = "rel,distance,outJaccard,inJaccard"
 
-    src + dst + pair
+    //src + dst + pair
+
+    "srcWikiID,dstWikiID,srcDegIn,srcDegOut,dstDegIn,dstDegOut,src2dstDist,dst2srcDist,jaccIn,rel"
   }
 }
 

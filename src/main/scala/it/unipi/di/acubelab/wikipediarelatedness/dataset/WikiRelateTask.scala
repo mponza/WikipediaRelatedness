@@ -23,7 +23,7 @@ class WikiRelateTask(val src: WikiEntity, val dst: WikiEntity, val humanRelatedn
 
 
   override def toString() : String = {
-    "%s,%s,%1.5f,%1.5f".formatLocal(Locale.US, src, dst, humanRelatedness, machineRelatedness)
+    "\"%s\",%d,\"%s\",%d,%1.5f,%1.5f".formatLocal(Locale.US, src.wikiTitle, src.wikiID, dst.wikiTitle, dst.wikiID, humanRelatedness, machineRelatedness)
   }
 }
 

@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
   *
   * @param wikiGraph
   */
-class WikiBVDistance(wikiGraph: WikiBVGraph = WikiBVGraphFactory.make("sym")) {
+class WikiBVDistance(wikiGraph: WikiBVGraph = WikiBVGraphFactory.make("un.out") ) { // WikiBVGraphFactory.make("sym")) {
   protected val logger = LoggerFactory.getLogger(getClass)
   protected val visits = new Int2ObjectOpenHashMap[Tuple2[IntArrayList, IntArrayList]]()  // {nodeID -> (nodeIDs, cutpoints)}
 
@@ -32,7 +32,7 @@ class WikiBVDistance(wikiGraph: WikiBVGraph = WikiBVGraphFactory.make("sym")) {
     val dstNodeID = wikiGraph.getNodeID(dstWikiID)
 
     if (graph.successorArray(srcNodeID).contains(dstNodeID)) {
-      logger.debug("Distance between %s and %s is 1.".format(WikiTitleID.map(srcNodeID), WikiTitleID.map(dstWikiID)))
+      logger.debug("Distance between %s and %s is 1.".format(WikiTitleID.map(srcWikiID), WikiTitleID.map(dstWikiID)))
       return 1
     }
 
@@ -48,7 +48,7 @@ class WikiBVDistance(wikiGraph: WikiBVGraph = WikiBVGraphFactory.make("sym")) {
         updateVisits(srcNodeID, dstNodeID, bfs)
     }
 
-    logger.debug("Distance between %s and %s is %d.".format(WikiTitleID.map(srcNodeID), WikiTitleID.map(dstWikiID), dist))
+    logger.debug("Distance between %s and %s is %d.".format(WikiTitleID.map(srcWikiID), WikiTitleID.map(dstWikiID), dist))
     dist
   }
 
