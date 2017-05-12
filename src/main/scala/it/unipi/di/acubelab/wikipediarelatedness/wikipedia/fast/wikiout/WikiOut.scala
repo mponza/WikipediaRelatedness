@@ -19,7 +19,7 @@ class WikiOut {
                                       .asInstanceOf[ Int2ObjectOpenHashMap[ Array[Int] ] ]
 
   // (M&W + DW) / 2 score for every Wikipedia ID and its top30 out nodes
-  protected lazy val wikiIDs2MWDW = BinIO.loadObject( Config.getString( "wikipedia.cache.fast.wikiout.mwdw" ) )
+  protected val wikiIDs2MWDW = BinIO.loadObject( Config.getString( "wikipedia.cache.fast.wikiout.mwdw" ) )
                                     .asInstanceOf[ Long2FloatOpenHashMap ]
 
   /**
@@ -49,6 +49,9 @@ class WikiOut {
     val srcShifted = src.asInstanceOf[Long] << 32
     srcShifted | dst
   }
+
+
+  def getWikiIDTopKOut = wikiID2TopKOut
 
 }
 

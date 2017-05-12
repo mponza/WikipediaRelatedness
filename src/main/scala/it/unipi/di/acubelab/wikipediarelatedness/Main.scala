@@ -20,9 +20,10 @@ object Main {
 
     DatasetFactory.datasets().foreach {
       dataset =>
-
-        val benchmark = new Benchmark(dataset, relatedness)
-        benchmark.run()
+            val benchmark = new MultipleBenchmark(dataset, relatedness)
+            benchmark.run()
+        //val benchmark = new Benchmark(dataset, relatedness)
+        //benchmark.run()
     }
   }
 

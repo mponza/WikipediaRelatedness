@@ -10,6 +10,7 @@ import it.unimi.dsi.fastutil.ints.{Int2ObjectOpenHashMap, IntOpenHashSet}
 import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wat.dataset.embeddings.EmbeddingsDataset
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.fast.wikiout.WikiOut
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.{WikiBVGraph, WikiBVGraphFactory}
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer
@@ -22,8 +23,10 @@ object Preprocessing {
   protected val logger = LoggerFactory.getLogger("Preprocessing")
 
   def main(args: Array[String]) = {
+    wikipediaSize()
+    wikiOutSpace
 
-    wikipediaSize
+    //wikipediaSize
     //embeddingSize()
     /*
     val outWikiBVGraph = WikiBVGraphFactory.make("out")
@@ -90,22 +93,27 @@ object Preprocessing {
 
 
   def wikipediaSize() = {
-    //val outWikiBVGraph = WikiBVGraphFactory.make("out")
-    //logger.info("Compressed out-Wikipedia Graph: %d" format SizeEstimator.estimate(outWikiBVGraph.graph) )
-    //logger.info("Mapping out-Wikipedia Graph: %d" format SizeEstimator.estimate(outWikiBVGraph.wiki2node) )
-    //uncompressedGraph(outWikiBVGraph)
+    val outWikiBVGraph = WikiBVGraphFactory.make("out")
+    logger.info("Compressed out-Wikipedia Graph: %d" format SizeEstimator.estimate(outWikiBVGraph.graph) )
+    logger.info("Mapping out-Wikipedia Graph: %d" format SizeEstimator.estimate(outWikiBVGraph.wiki2node) )
+    uncompressedGraph(outWikiBVGraph)
 
 
     val inWikiBVGraph = WikiBVGraphFactory.make("ef.in")
     logger.info("Compressed in-Wikipedia Graph: %d" format SizeEstimator.estimate(inWikiBVGraph.graph) )
-    //ncompressedGraph(inWikiBVGraph)
+    uncompressedGraph(inWikiBVGraph)
+
   }
 
 
   def uncompressedGraph(wikiBVGraph: WikiBVGraph) = {
-    //val adjacentList = new Int2ObjectOpenHashMap[Array[Int]]
+    val fastAdjacentList = new Int2ObjectOpenHashMap[Array[Int]]
     //val adjacentList = Array.ofDim[(Int, Array[Int])](wikiBVGraph.getVertices.size)
     val adjacentList = Array.ofDim[Array[Int]](wikiBVGraph.wiki2node.keySet().toIntArray().max + 1)
+
+    println("MaxWikiID: %d".format(wikiBVGraph.wiki2node.keySet().toIntArray().max) )
+    println("NumNodes %d".format(wikiBVGraph.numNodes()))
+    println("NumArcs %d".format(wikiBVGraph.numArcs()))
 
     var sumsize = 0L
     var i = 0
@@ -120,12 +128,43 @@ object Preprocessing {
       //adjacentList.put(wikiID, adj)
       //adjacentList(i) =  ((wikiID, adj))
       adjacentList(wikiID) = adj
+      if (adj.length > 0)
+        fastAdjacentList.put(wikiID, adj)
       i += 1
       sumsize += SizeEstimator.estimate(adj)
     }
 
     logger.info("Size Of uncomrpessed graph: %d" format SizeEstimator.estimate(adjacentList))
+    logger.info("Size Of uncomrpessed Fastutil graph: %d" format SizeEstimator.estimate(fastAdjacentList))
     logger.info("Size Of uncomrpessed graph: %d" format sumsize)
+
+  }
+
+
+
+  def wikiOutSpace() = {
+    val topK = new WikiOut().getWikiIDTopKOut
+
+    logger.info("Size Of uncomrpessed Fastutil Top-K: %d" format SizeEstimator.estimate(topK))
+
+    val uncomp = Array.ofDim[Array[Int]](topK.keySet().toIntArray.max + 1)
+
+    println("MaxWikiID: %d".format(topK.keySet().toIntArray.max) )
+
+    for(wikiID <- topK.keySet().toIntArray) {
+      val n = Math.min(topK.get(wikiID).length, 30)
+
+      //var ks = Array.ofDim[Int](n)
+      val sortedTopK = topK.get(wikiID)//.sorted
+
+      assert(sortedTopK.length == n)
+
+      //ks = sortedTopK
+
+      uncomp(wikiID) = sortedTopK
+    }
+
+    logger.info("Size Of uncomrpessed TopKOut: %d" format SizeEstimator.estimate(uncomp))
 
   }
 

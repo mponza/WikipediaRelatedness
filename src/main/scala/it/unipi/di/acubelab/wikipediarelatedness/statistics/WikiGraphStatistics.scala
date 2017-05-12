@@ -1,5 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.statistics
 
+import java.io.FileWriter
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 import it.unimi.dsi.fastutil.objects.AbstractObjectList
@@ -22,7 +24,7 @@ object WikiGraphStatistics {
 
   class SDCDF extends SampleDistanceCumulativeDistributionFunction {
 
-    def sample(graph: ImmutableGraph, k: Int) : Array[Array[Int]] = SampleDistanceCumulativeDistributionFunction.sample(graph, k, 24)
+    def sample(graph: ImmutableGraph, k: Int) : Array[Array[Int]] = SampleDistanceCumulativeDistributionFunction.sample(graph, k, true, 24)
 
 
     // Code adapted from https://github.com/lhelwerd/WebGraph/blob/master/src/it/unimi/dsi/webgraph/algo/SampleDistanceCumulativeDistributionFunction.java
@@ -32,6 +34,7 @@ object WikiGraphStatistics {
       // Computing samples
       var l = 0
       for(s <- sample) { l = Math.max(l, s.length) }
+
       val samples = new AbstractObjectList[Array[Double]] {
 
         override def get(index: Int): Array[Double] = {
@@ -40,7 +43,7 @@ object WikiGraphStatistics {
           val n = graph.numNodes()
 
           for( i <- 0 until l ) {
-            result(i) = s( Math.min( i, s.length - 1 ) ) * n
+            result(i) = s( Math.min( i, s.length - 1 ) ) * n.toDouble
           }
 
           result
@@ -49,13 +52,62 @@ object WikiGraphStatistics {
         override def size(): Int = sample.length
       }
 
-      val avgDist = Jackknife.compute(samples, ApproximateNeighbourhoodFunctions.AVERAGE_DISTANCE )
-      for(i <- 0 until avgDist.estimate.length) {
-        println("Average Distance")
-        println("%1.3f".format(avgDist.bigEstimate(i).setScale(30, RoundingMode.HALF_EVEN)))
-        println("%1.3f".format(avgDist.standardError(i)))
-        println("%1.3f".format(avgDist.standardError(i) / avgDist.estimate(i)))
+
+      def jackknife2CSV(jk: Jackknife, index: Int) = {
+        "%1.10f,%1.10f,%1.10f".formatLocal(
+          Locale.US,
+          jk.estimate(index),
+          jk.standardError(index),
+          jk.standardError(index) / jk.estimate(index)
+        )
       }
+
+      val nf = Jackknife.compute( samples, Jackknife.IDENTITY )
+      val cdf = Jackknife.compute( samples, ApproximateNeighbourhoodFunctions.CDF )
+      val pmf = Jackknife.compute( samples, ApproximateNeighbourhoodFunctions.PMF )
+      val spid = Jackknife.compute( samples, ApproximateNeighbourhoodFunctions.SPID)
+      val effDiam = Jackknife.compute( samples, ApproximateNeighbourhoodFunctions.EFFECTIVE_DIAMETER)
+      val harmDiam = Jackknife.compute( samples, ApproximateNeighbourhoodFunctions.HARMONIC_DIAMETER)
+      val avgDist = Jackknife.compute(samples, ApproximateNeighbourhoodFunctions.AVERAGE_DISTANCE )
+
+      val wikiStatFile = new FileWriter("/tmp/wikiStats.csv")
+      wikiStatFile.write("distance," +
+                          "nfEstimate,nfStdErr,nfStdEst," +
+                          "cdfEstimate,cdfStdErr,cdfStdEst," +
+                          "pmfEstimate,pmfStdErr,pmfStdEst\n")
+
+      for(i <- 0 until pmf.estimate.length) {
+
+        wikiStatFile.write("%d,%s,%s,%s\n".format(i, jackknife2CSV(nf, i), jackknife2CSV(cdf, i), jackknife2CSV(pmf, i)))
+
+        println("=================================")
+        println(i)
+        println("NF: " + nf.bigEstimate(i).setScale( 30, RoundingMode.HALF_EVEN ) + "\t" + nf.standardError(i) + "\t" + 100 * nf.standardError(i) / nf.estimate(i) )
+
+        println("CDF: " + cdf.bigEstimate(i).setScale( 30, RoundingMode.HALF_EVEN ) + "\t" + cdf.standardError(i) + "\t" + 100 * cdf.standardError(i) / cdf.estimate(i) )
+        println("PMF: " + pmf.bigEstimate(i).setScale( 30, RoundingMode.HALF_EVEN ) + "\t" + pmf.standardError(i)+ "\t" + 100 * pmf.standardError(i) / pmf.estimate(i))
+        //println("AVGDIST: " + avgDist.bigEstimate(i).setScale(30, RoundingMode.HALF_EVEN) + "\t" + avgDist.standardError(i)  + "\t" + avgDist.standardError(i) / avgDist.estimate(i))
+      }
+
+      wikiStatFile.close()
+
+      println("AVG Len %d".format(avgDist.estimate.length))
+      println("AVG Est %1.3f".format(avgDist.estimate(0)))
+      println("AVG BigEst %1.3f".format(avgDist.bigEstimate(0).setScale( 30, RoundingMode.HALF_EVEN )))
+
+
+      println("SPID %1.5f".format(spid.estimate(0)))
+      println("SPID %d".format(spid.estimate.length))
+      println("EffDiam %1.5f".format(effDiam.estimate(0)))
+      println("HarmDiam %1.5f".format(harmDiam.estimate(0)))
+
+
+      //for(i <- 0 until avgDist.estimate.length) {
+      //  println("Average Distance")
+      //  println("%1.3f".format(avgDist.bigEstimate(i).setScale(30, RoundingMode.HALF_EVEN)))
+      //  println("%1.3f".format(avgDist.standardError(i)))
+      //  println("%1.3f".format(avgDist.standardError(i) / avgDist.estimate(i)))
+      //}
 
     }
   }
