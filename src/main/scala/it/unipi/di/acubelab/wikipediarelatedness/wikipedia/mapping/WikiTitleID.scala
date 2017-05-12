@@ -76,7 +76,7 @@ object WikiTitleID {
     * @param wikiTitle
     * @return
     */
-  def map(wikiTitle: String) = wikiTitle2ID.getInt(wikiTitle)
+  def map(wikiTitle: String) = wikiTitle2ID.getOrDefault(wikiTitle, -1)
 
 
   /**
