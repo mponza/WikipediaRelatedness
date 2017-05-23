@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
 import it.unipi.di.acubelab.wikipediarelatedness.utils.Config
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.service.RemoteWikipedia
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
@@ -76,7 +77,15 @@ object WikiTitleID {
     * @param wikiTitle
     * @return
     */
-  def map(wikiTitle: String) = wikiTitle2ID.getOrDefault(wikiTitle, -1)
+  def map(wikiTitle: String) : Int = {
+    val wikiID = wikiTitle2ID.getOrDefault(wikiTitle, -1)
+
+    if (wikiID < 0) {
+      return RemoteWikipedia.title2ID(wikiTitle)
+    }
+
+    wikiID
+  }
 
 
   /**
@@ -86,5 +95,4 @@ object WikiTitleID {
     * @return
     */
   def map(wikiID: Int) = wikiID2Title.getOrDefault(wikiID, wikiID.toString)
-
 }

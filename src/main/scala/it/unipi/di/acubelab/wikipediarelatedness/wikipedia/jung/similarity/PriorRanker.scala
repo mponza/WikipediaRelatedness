@@ -94,10 +94,6 @@ abstract class PriorRanker(val iterations: Int, val pprAlpha: Double) extends Si
       val srcRanks = getRanks(wikiJungGraph, srcPPR)
       val dstRanks = getRanks(wikiJungGraph, dstPPR)
 
-      println(src)
-      println( srcRanks.zipWithIndex mkString " " )
-      if(srcRanks.map(_._2).sum == 1f) println("Is one")
-
       updateSimilarityScore(srcRanks, dstRanks, i + 1)
     }
   }

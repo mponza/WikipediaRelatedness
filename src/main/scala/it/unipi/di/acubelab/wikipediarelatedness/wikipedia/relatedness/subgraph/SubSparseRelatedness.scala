@@ -14,10 +14,10 @@ class SubSparseRelatedness(options: RelatednessOptions) extends SubGraphRelatedn
     val nodes = subNodeCreator.subNodes(srcWikiID, dstWikiID)
     val subGraph = new WikiJungSparseGraph(srcWikiID, dstWikiID, nodes, weighter)
 
-    println("Node length %d" format nodes.size)
+    //println("Node length %d" format nodes.size)
 
-    distance(srcWikiID, nodes)
-    distance(dstWikiID, nodes)
+    //distance(srcWikiID, nodes)
+    //distance(dstWikiID, nodes)
 
     simRanker.similarity(srcWikiID, dstWikiID, subGraph).toFloat
   }

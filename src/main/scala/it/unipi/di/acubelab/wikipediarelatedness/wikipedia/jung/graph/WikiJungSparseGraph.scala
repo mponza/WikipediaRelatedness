@@ -32,8 +32,8 @@ class WikiJungSparseGraph(src: Int, dst: Int, nodes: Seq[Int], relatedness: Rela
         if (node != dst) addUnidrectedEdge(dst, node, graph)
     }
 
-    logger.debug("SparseGraph generated with %d nodes".format(graph.getVertexCount))
-    logger.debug("SparseGraph generated with %d edges".format(graph.getEdgeCount))
+    //logger.debug("SparseGraph generated with %d nodes".format(graph.getVertexCount))
+    //logger.debug("SparseGraph generated with %d edges".format(graph.getEdgeCount))
 
     graph
   }
