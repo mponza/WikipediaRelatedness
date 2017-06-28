@@ -8,11 +8,14 @@ import org.json4s.jackson.JsonMethods._
 
 
 case class RelParameters(srcWikiID: Int, dstWikiID: Int, method: String = "")
+case class TextParameters(text: String, method: String = "esa")
 
 
 object RestfulParameters {
 
   def request2RelParameters(request: Request) : RelParameters = {
+    implicit val formats = DefaultFormats
+
     val content = request.getContentString()
     val json = parse(content)
 
@@ -22,6 +25,20 @@ object RestfulParameters {
 
     // wrong json
     throw new IllegalArgumentException("{srcWikiID, dstWikiID, method} parameters not present in the json request.")
+  }
+
+
+  def request2TextParameters(request: Request) : TextParameters = {
+    implicit val formats = DefaultFormats
+
+    val content = request.getContentString()
+    val json = parse(content)
+
+    if (content.contains("text")) {
+      return json.extract[TextParameters]
+    }
+
+    throw new IllegalArgumentException("{text} parameters not present in the json request.")
   }
 
 }

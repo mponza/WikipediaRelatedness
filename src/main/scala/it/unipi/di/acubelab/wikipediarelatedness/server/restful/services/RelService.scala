@@ -8,10 +8,17 @@ import it.unipi.di.acubelab.wikipediarelatedness.dataset.{WikiEntity, WikiRelate
 import it.unipi.di.acubelab.wikipediarelatedness.server.restful.RestfulParameters
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTitleID
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{Relatedness, RelatednessFactory, RelatednessOptions}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.webgraph.graph.WikiBVGraphFactory
+import org.json4s._
 import org.json4s.jackson.JsonMethods._
+import org.slf4j.LoggerFactory
 
 
-class RelService(val port: Int = 7000) extends Service[Request, Response] {
+class RelService extends Service[Request, Response] {
+
+  def logger = LoggerFactory.getLogger("RelService")
+
+  lazy val wikiOutGraph = WikiBVGraphFactory.make("un.out")
 
   lazy val jacc = RelatednessFactory.make(new RelatednessOptions(name="uncom.jacc", graph="in"))
   lazy val mw = RelatednessFactory.make(new RelatednessOptions(name="uncom.mw", graph="in"))
@@ -30,10 +37,24 @@ class RelService(val port: Int = 7000) extends Service[Request, Response] {
         val relParams = RestfulParameters.request2RelParameters(request)
 
         val rel = getRelatedness(relParams.method)
-        val wikiRelTask = getWikiRelTask( relParams.srcWikiID, relParams.dstWikiID )
-        rel.computeRelatedness(wikiRelTask)
+        val wikiRelTask = getWikiRelTask(relParams.srcWikiID, relParams.dstWikiID)
 
-        Future.apply(wikiRelTask2Response(wikiRelTask) )
+        try {
+
+          wikiRelTask.machineRelatedness = rel.computeRelatedness(wikiRelTask)
+
+        } catch {
+          case e: Exception =>
+
+            if(!wikiOutGraph.contains(relParams.srcWikiID)) logger.warn("%d not in Wikipedia".format(relParams.srcWikiID))
+            if(!wikiOutGraph.contains(relParams.dstWikiID)) logger.warn("%d not in Wikipedia".format(relParams.dstWikiID))
+
+            wikiRelTask.machineRelatedness = 0f
+        }
+
+        logger.info("Relatedness between %s and %s is %1.2f".format(wikiRelTask.src, wikiRelTask.dst, wikiRelTask.machineRelatedness))
+
+        Future.apply(wikiRelTask2Response(wikiRelTask))
     }
 
   }
@@ -43,10 +64,8 @@ class RelService(val port: Int = 7000) extends Service[Request, Response] {
     case "jaccard" => jacc
     case "milnewitten" => mw
 
-    case "2Stage-MW" => mwFastAlgoScheme
-    case "2Stage-MWDW" => mwDWFastAlgoScheme
-
-      // esa?
+    case "2stage-mw" => mwFastAlgoScheme
+    case "2stage-mwdw" => mwDWFastAlgoScheme
   }
 
 

@@ -21,6 +21,7 @@ class LemmaLuceneProcessing extends LuceneProcessing {
         val sentences = jsonObject("sentences").asInstanceOf[List[String]]
         val body = processBody(sentences)
 
+
         return (title, id, body.mkString(" "))
 
       case _ => ;
