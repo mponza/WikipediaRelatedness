@@ -52,7 +52,7 @@ class RelService extends Service[Request, Response] {
             wikiRelTask.machineRelatedness = 0f
         }
 
-        logger.info("Relatedness between %s and %s is %1.2f".format(wikiRelTask.src, wikiRelTask.dst, wikiRelTask.machineRelatedness))
+        logger.info("Relatedness [%s] between %s and %s is %1.2f".format(relParams.method, wikiRelTask.src, wikiRelTask.dst, wikiRelTask.machineRelatedness))
 
         Future.apply(wikiRelTask2Response(wikiRelTask))
     }

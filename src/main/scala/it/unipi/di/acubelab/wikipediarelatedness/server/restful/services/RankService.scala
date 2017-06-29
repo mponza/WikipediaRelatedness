@@ -24,9 +24,12 @@ class RankService extends RelService {
     request.method match {
       case Post =>
 
-        val relParams = RestfulParameters.request2RelParameters(request)
+
+        val relParams = RestfulParameters.request2RelParameters4Rank(request)
         var rankedEntities = Array.empty[(Int, Float)]
 
+
+        logger.info("Ranking entities for entity %d with method %s".format(relParams.srcWikiID, relParams.method))
 
         //
         // ESA-specific ranking

@@ -7,7 +7,7 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
 
-case class RelParameters(srcWikiID: Int, dstWikiID: Int, method: String = "")
+case class RelParameters(srcWikiID: Int, dstWikiID: Int = -1, method: String = "")
 case class TextParameters(text: String, method: String = "esa")
 
 
@@ -25,6 +25,20 @@ object RestfulParameters {
 
     // wrong json
     throw new IllegalArgumentException("{srcWikiID, dstWikiID, method} parameters not present in the json request.")
+  }
+
+  def request2RelParameters4Rank(request: Request) : RelParameters = {
+    implicit val formats = DefaultFormats
+
+    val content = request.getContentString()
+    val json = parse(content)
+
+    if (content.contains("srcWikiID") && content.contains("method")) {
+      return json.extract[RelParameters]
+    }
+
+    // wrong json
+    throw new IllegalArgumentException("{srcWikiID, method} parameters not present in the json request.")
   }
 
 

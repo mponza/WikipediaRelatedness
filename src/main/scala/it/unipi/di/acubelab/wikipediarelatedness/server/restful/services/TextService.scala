@@ -23,6 +23,8 @@ class TextService extends RankService {
 
         val textParams = RestfulParameters.request2TextParameters(request)
 
+        logger.info("Text entities for query %s".format(textParams.text))
+
         val lemmaText = text2CleanedLemmas(textParams.text)
 
         val rankedEntities = ESA.wikipediaConcepts(lemmaText, 10000).filter(_._2 != 0).sortBy(-_._2).toArray
