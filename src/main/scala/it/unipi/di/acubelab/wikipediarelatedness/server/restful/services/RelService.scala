@@ -36,6 +36,7 @@ class RelService extends Service[Request, Response] {
 
         val relParams = RestfulParameters.request2RelParameters(request)
 
+
         val rel = getRelatedness(relParams.method)
         val wikiRelTask = getWikiRelTask(relParams.srcWikiID, relParams.dstWikiID)
 

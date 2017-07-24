@@ -17,7 +17,7 @@ class ESATopK extends TopKCached {
     * @param k
     * @return
     */
-  override protected def nonCachedTopKScoredEntities(wikiID: Int, k: Int): Seq[(Int, Float)] = {
+  override def nonCachedTopKScoredEntities(wikiID: Int, k: Int): Seq[(Int, Float)] = {
     logger.warn("%d not present in cache. Running raw ESA for top-k retrieval...".format(wikiID))
     ESA.wikipediaConcepts(wikiID, k)
   }

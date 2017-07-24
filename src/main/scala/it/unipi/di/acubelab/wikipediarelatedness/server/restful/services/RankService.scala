@@ -5,9 +5,8 @@ import com.twitter.finagle.http.{Request, Response, Status}
 import com.twitter.util.Future
 import it.unipi.di.acubelab.wikipediarelatedness.server.restful.RestfulParameters
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.mapping.WikiTitleID
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.TopKFactory
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.topk.{ESATopK, TopKFactory}
 import org.slf4j.LoggerFactory
-
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
@@ -34,7 +33,8 @@ class RankService extends RelService {
         //
         // ESA-specific ranking
         if(relParams.method == "esa") {
-          rankedEntities = esaTopK.topKScoredEntities(relParams.srcWikiID, 10000).filter(_ != relParams.srcWikiID).filter(_._2 != 0f).toArray
+          // WARNING: try me, before it was standard topk (cached)
+          rankedEntities = esaTopK.asInstanceOf[ESATopK].nonCachedTopKScoredEntities(relParams.srcWikiID, 10000).filter(_ != relParams.srcWikiID).filter(_._2 != 0f).toArray
         }
 
 
@@ -43,6 +43,11 @@ class RankService extends RelService {
         else {
 
           val rel = getRelatedness(relParams.method)
+
+          if (!wikiOutGraph.contains(relParams.srcWikiID)) {
+            logger.error("%s not present in the current Wikipedia graph".format(relParams.srcWikiID))
+            return Future.apply(rankedEntities2Response(relParams.srcWikiID, relParams.method, Array.empty[(Int, Float)]) )
+          }
 
           val outEntities = wikiOutGraph.successorArray(relParams.srcWikiID).distinct.filter(_ != relParams.srcWikiID)
           rankedEntities = outEntities.map {

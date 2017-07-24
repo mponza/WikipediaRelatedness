@@ -25,14 +25,13 @@ object RestfulServer extends TwitterServer {
       override def apply(request: Request): Future[Response] = {
 
         request.method match {
+
           case Method.Post =>
 
             request.path match {
               case "/rel" => relService(request)
               case "/rank" => rankService(request)
               case "/text" => textService(request)
-
-              //case "/rank" =>
             }
         }
       }
