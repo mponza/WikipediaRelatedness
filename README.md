@@ -1,4 +1,3 @@
-
 ![WikipediaRelatedness](http://pages.di.unipi.it/ponza/public/images/wikipediarelatedness/logo.png)
 
 
@@ -10,7 +9,7 @@ Welcome to Wikipedia Relatedness libary. This repository stores all algorithms t
 
 Citation and Further Reading
 ----------------------------
-If you find this code useful, please cite our paper
+If you find this code useful, please cite our paper:
 
 > [Marco Ponza](http://pages.di.unipi.it/ponza), [Paolo Ferragina](http://pages.di.unipi.it/ferragina/), [Soumen Chakrabarti](https://www.cse.iitb.ac.in/~soumen/):
 > A Two-Stage Framework for Computing Entity Relatedness in Wikipedia.
