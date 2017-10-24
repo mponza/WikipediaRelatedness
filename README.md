@@ -18,7 +18,9 @@ Relatedness between Two Wikipedia Entities
 ------------------------------------------
 
 **Endpoint**: `http://wikirel_url/rel`
+
 **Description**. Given two entities `srcWikiID` and `dstWikiID`, it computes the relatedness between them (several methods are available).
+
 **Request** (mandatory parameters: `srcWikiID`, `dstWikiID` and `method`):
 
     {
@@ -30,6 +32,7 @@ Relatedness between Two Wikipedia Entities
                            "2stage-mw"
                            "2stage-mwdw"
     }
+
 **Response**:
 
     {
@@ -42,8 +45,11 @@ Relatedness between Two Wikipedia Entities
     
 Ranked Entities for Entity Expansion
 ------------------------------------------
+
 **Endpoint**: `http://wikirel_url/rank`
+
 **Description**: Given an entity `srcWikiID`, it returns a list of the most related entities to `srcWikiID` (several methods are available).
+
 **Request** (mandatory parameters: `srcWikiID`and `method`):
 
     {
@@ -57,6 +63,7 @@ Ranked Entities for Entity Expansion
                            "2stage-mwdw"
                            "esa"
     }
+
 **Response**:
 
     {
@@ -74,8 +81,11 @@ Ranked Entities for Entity Expansion
 
 ESA Text-Entity Expansion
 -------------------------
+
 **Endpoint**: `http://wikirel_url/text`
+
 **Description**: Given a short input text, it returns a list of most related entities by using Explicit Semantic Analysis.
+
 **Request**:
 
     {
