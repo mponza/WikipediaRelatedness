@@ -1,3 +1,4 @@
+srcWord,srcWikiID,srcWikiTitle,dstWord,dstWikiID,dstWikiTitle,relatedness
 love,17547,Love,sex,27546,Sexual_intercourse,0.677
 tiger,30075,Tiger,cat,6678,Cat,0.735
 tiger,30075,Tiger,tiger,30075,Tiger,1.0
