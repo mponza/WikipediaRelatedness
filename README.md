@@ -94,6 +94,10 @@ ESA Text-Entity Expansion
             ]
     }
 
+
+Getting `wikirel_url`
+---------------------
+
 For obtaining an already-working endpoint (`wikirel_url`) just send an email to the [first author](http://pages.di.unipi.it/ponza/contact/) of the paper. We are planning to deploy the whole relatedness webservice into the [SoBiData](http://www.sobigdata.eu/) infrastructure... stay tuned! 
 
 
@@ -104,9 +108,7 @@ Citation and Further Reading
 If you find any resource (code or data) of this repository useful, please cite our paper:
 
 > [Marco Ponza](http://pages.di.unipi.it/ponza), [Paolo Ferragina](http://pages.di.unipi.it/ferragina/), [Soumen Chakrabarti](https://www.cse.iitb.ac.in/~soumen/):
->
 > A Two-Stage Framework for Computing Entity Relatedness in Wikipedia.
->
 > *In Proceedings of 26th International Conference on Information & Knowledge Management (CIKM 2017)*.
 
 
