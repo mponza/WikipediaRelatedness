@@ -7,7 +7,6 @@ Introduction
 Welcome to the Wikipedia Relatedness libary. This repository stores all algorithms that have been implemented in the paper `A Two-Stage Framework for Computing Entity Relatedness in Wikipedia`. More documentation and some code cleaning will be done in the next months.
 
 
-
 Relatedness Webservice API
 ==========================
 
