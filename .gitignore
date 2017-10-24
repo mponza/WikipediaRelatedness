@@ -86,7 +86,6 @@ fabric.properties
 
 
 ### Custom ###
-data/
 lib/
 sbt/
 *.gz
@@ -226,6 +225,3 @@ ENV/
 # Rope project settings
 .ropeproject
 
-
-# Exceptions
-!data/dataset/*
