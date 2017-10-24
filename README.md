@@ -107,7 +107,7 @@ ESA Text-Entity Expansion
 Getting `wikirel_url`
 ---------------------
 
-For obtaining an already-working endpoint (`wikirel_url`) just send an email to the [first author](http://pages.di.unipi.it/ponza/contact/) of the paper. We are planning to deploy the whole relatedness webservice into the [SoBiData](http://www.sobigdata.eu/) infrastructure... stay tuned! 
+For obtaining an already-working endpoint (`wikirel_url`) just send an email to the [first author](http://pages.di.unipi.it/ponza/contact/) of the paper. We are planning to deploy the whole relatedness webservice into the [SoBigData](http://www.sobigdata.eu/) infrastructure... stay tuned! 
 
 
 
