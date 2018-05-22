@@ -3,31 +3,56 @@ package it.unipi.di.acubelab.wikipediarelatedness
 import it.unipi.di.acubelab.wikipediarelatedness.benchmark.{Benchmark, MultipleBenchmark}
 import it.unipi.di.acubelab.wikipediarelatedness.dataset.DatasetFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.{RelatednessFactory, RelatednessOptions}
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.graph.fast.FastWikiGraphProcessor
 import org.slf4j.LoggerFactory
+
+
+/**
+  * Take as input a graph of out-edges in tsv format and save it in FastUtil format.
+  */
+object WikiGraphProcessing {
+
+  val logger = LoggerFactory.getLogger("WikiGraphProcessing")
+
+  def main(args: Array[String]): Unit = {
+
+    val wikiGraphTSV = args(0)
+
+    val wikiOutBin = args(1)
+    val wikiInBin = args(2)
+    val wikiSymBin = args(3)
+
+    new FastWikiGraphProcessor().process( wikiGraphTSV, wikiOutBin, wikiInBin, wikiSymBin )
+  }
+
+}
+
+
+
 
 
 /**
   * Experiments a relatedness algorithm over all available datasets.
   *
   */
-object Main {
-  val logger = LoggerFactory.getLogger("Main")
-
-  def main(args: Array[String]) {
-
-    val options = RelatednessOptions.make(args)
-    val relatedness = RelatednessFactory.make(options)
-
-    DatasetFactory.datasets().foreach {
-      dataset =>
-            val benchmark = new MultipleBenchmark(dataset, relatedness)
-            benchmark.run()
-        //val benchmark = new Benchmark(dataset, relatedness)
-        //benchmark.run()
-    }
-  }
-
-}
+//object Main {
+//  val logger = LoggerFactory.getLogger("Main")
+//
+//  def main(args: Array[String]) {
+//
+//    val options = RelatednessOptions.make(args)
+//    val relatedness = RelatednessFactory.make(options)
+//
+//    DatasetFactory.datasets().foreach {
+//      dataset =>
+//            val benchmark = new MultipleBenchmark(dataset, relatedness)
+//            benchmark.run()
+//        //val benchmark = new Benchmark(dataset, relatedness)
+//        //benchmark.run()
+//    }
+//  }
+//
+//}
 
 
 /*

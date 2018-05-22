@@ -28,11 +28,6 @@ object WebGraphProcessor {
 
     val outGraph = new ImmutableWikiGraph
 
-    storeEFInGraph(outGraph, Config.getString("wikipedia.webgraph.ef.out"))
-    //storeEFInGraph(Transform.transpose(outGraph), Config.getString("wikipedia.webgraph.ef.in"))
-
-    return
-
     logger.info("Storing Wikipedia2BVGraph mapping...")
     storeMapping(outGraph.wiki2node, Config.getString("wikipedia.webgraph.mapping"))
 
@@ -44,11 +39,6 @@ object WebGraphProcessor {
 
     logger.info("Storing Sym Wikipedia BVGraph...")
     storeBVGraph(Transform.symmetrize(outGraph), Config.getString("wikipedia.webgraph.sym"))
-
-    // See http://law.di.unimi.it/software/law-docs/it/unimi/dsi/law/graph/LayeredLabelPropagation.html
-    logger.info("Storing Sym and Self-loopless Wikipedia BVGraph...")
-    val noLoopGraph = Transform.filterArcs(outGraph, Transform.NO_LOOPS)
-    storeBVGraph(Transform.symmetrizeOffline(noLoopGraph, 20000000), Config.getString("wikipedia.webgraph.sym_no_loop"))
 
     logger.info("Wikipedia has been processed as BVGraph!")
   }

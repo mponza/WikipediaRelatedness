@@ -14,7 +14,7 @@ class ImmutableWikiGraph extends ImmutableGraph {
 
 
   /**
-    *  Loads tyhe Wikipedia ImmutableGraph and the mapping between wikiID and nodeID.
+    *  Loads the Wikipedia ImmutableGraph and the mapping between wikiID and nodeID.
     *
     * @return
     */

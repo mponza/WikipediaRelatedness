@@ -20,8 +20,9 @@ object WikiBVGraphFactory {
   lazy val immSymGraph = loadImmutableGraph(Config.getString("wikipedia.webgraph.sym"))
   lazy val immSymNoLoopGraph = loadImmutableGraph(Config.getString("wikipedia.webgraph.sym_no_loop"))
 
-  lazy val efImmInGraph = loadEFImmutableGraph(Config.getString("wikipedia.webgraph.ef.in"))
-  lazy val efImmOutGraph = loadEFImmutableGraph(Config.getString("wikipedia.webgraph.ef.out"))
+  // If comrpessed is needed
+//  lazy val efImmInGraph = loadEFImmutableGraph(Config.getString("wikipedia.webgraph.ef.in"))
+//  lazy val efImmOutGraph = loadEFImmutableGraph(Config.getString("wikipedia.webgraph.ef.out"))
 
   // WikiID -> NodeID mapping
   lazy val wiki2node = BinIO.loadObject(Config.getString("wikipedia.webgraph.mapping"))
@@ -64,8 +65,8 @@ object WikiBVGraphFactory {
         case "in" => immInGraph
         case "sym" => immSymGraph
         case "sym_no_loop" =>  immSymNoLoopGraph
-        case "ef.in" => efImmInGraph
-        case "ef.out" => efImmOutGraph
+//        case "ef.in" => efImmInGraph
+//        case "ef.out" => efImmOutGraph
       }
       //val threadedImmGraph = if (threadSafe) immGraph.copy() else immGraph
 
