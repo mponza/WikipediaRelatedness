@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.graph
 
 import it.unimi.dsi.fastutil.ints.{Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
+import it.unimi.dsi.fastutil.io.BinIO
 import org.slf4j.LoggerFactory
 
 class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
@@ -10,7 +11,7 @@ class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
 
 
   /**
-    * Returns out-degree of wikiID in graph.
+    * Returns degree of wikiID in graph.
     * @param wikiID
     * @return
     */
@@ -60,4 +61,21 @@ class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
     */
   def getNumNodes : Int = { numNodes }
 
+}
+
+
+object WikiGraph {
+  private val logger = LoggerFactory.getLogger(classOf[WikiGraph])
+
+  def apply(graphFilename: String): WikiGraph = {
+    logger.info(s"Loading WikiGraph from ${graphFilename}...")
+
+    val wikiGraph = new WikiGraph(
+      BinIO.loadObject(graphFilename).asInstanceOf[Int2ObjectOpenHashMap[IntArrayList]]
+    )
+
+    logger.info("Done.")
+
+    wikiGraph
+  }
 }

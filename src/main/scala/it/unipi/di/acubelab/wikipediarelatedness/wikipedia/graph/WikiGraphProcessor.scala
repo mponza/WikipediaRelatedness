@@ -1,6 +1,7 @@
 package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.graph
 
 import java.io.File
+import java.util.Collections
 
 import it.unimi.dsi.fastutil.ints.{Int2ObjectOpenHashMap, IntArrayList, IntOpenHashSet}
 import it.unimi.dsi.fastutil.io.BinIO
@@ -47,15 +48,15 @@ class WikiGraphProcessor {
     addGraph2Graph(outGraph, symGraph)
     addGraph2Graph(inGraph, symGraph)
 
-    logger.info("Sorting graphs' edges...")
-    sortGraph(outGraph)
-    sortGraph(inGraph)
-    sortGraph(symGraph)
-
     logger.info("Removing duplicated edges...")
     uniqueGraphEdges(outGraph)
     uniqueGraphEdges(inGraph)
     uniqueGraphEdges(symGraph)
+
+    logger.info("Sorting graphs' edges...")
+    sortGraph(outGraph)
+    sortGraph(inGraph)
+    sortGraph(symGraph)
 
     logger.info("Serializing graphs...")
     serializeGraph(outGraph, outGraphFilename)
@@ -114,8 +115,10 @@ class WikiGraphProcessor {
 
     while(iterIDs.hasNext) {
       val src = iterIDs.nextInt()
-      java.util.Collections.sort(graph.get(src))
+      val edges = graph.get(src)
+      Collections.sort(edges)
     }
+
   }
 
 
@@ -136,7 +139,7 @@ class WikiGraphProcessor {
     */
   def statistics(graph: Int2ObjectOpenHashMap[IntArrayList]): Unit = {
     val wikiGraph = new WikiGraph(graph)
-    logger.info(s" ${wikiGraph.getNumNodes} indexed nodes")
+    logger.info(s"${wikiGraph.getNumNodes} indexed nodes")
     logger.info(s"${wikiGraph.allEdges()} indexed edges")
   }
 

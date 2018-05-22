@@ -1,6 +1,9 @@
 package it.unipi.di.acubelab.wikipediarelatedness
 
+import it.unipi.di.acubelab.wikipediarelatedness.evaluation.benchmark.WikiRelBenchmark
+import it.unipi.di.acubelab.wikipediarelatedness.evaluation.dataset.WikiRelDatasetFactory
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.graph.WikiGraphProcessor
+import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.WikiRelatednessFactory
 import org.slf4j.LoggerFactory
 
 
@@ -24,3 +27,19 @@ object WikiGraphProcessing {
 
 }
 
+
+object WikiRelBenchmarking {
+
+  def main(args: Array[String]) : Unit = {
+
+
+    val wire = WikiRelDatasetFactory.apply("WiRe")
+
+    val graphFilename = args(0)
+    val rel = WikiRelatednessFactory.makeMilneWitten(graphFilename)
+
+    val benchmark = new WikiRelBenchmark(wire, rel)
+    benchmark.run()
+
+  }
+}
