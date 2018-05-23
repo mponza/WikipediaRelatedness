@@ -140,7 +140,7 @@ class WikiGraphProcessor {
   def statistics(graph: Int2ObjectOpenHashMap[IntArrayList]): Unit = {
     val wikiGraph = new WikiGraph(graph)
     logger.info(s"${wikiGraph.getNumNodes} indexed nodes")
-    logger.info(s"${wikiGraph.allEdges()} indexed edges")
+    logger.info(s"${wikiGraph.countAllEdges()} indexed edges")
   }
 
 }

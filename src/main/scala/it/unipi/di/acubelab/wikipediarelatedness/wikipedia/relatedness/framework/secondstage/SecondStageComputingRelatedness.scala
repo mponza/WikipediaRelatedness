@@ -98,7 +98,7 @@ class SecondStageComputingRelatedness(weightsOfSubGraph: WeightsOfSubGraph) {
     var (srcMagnitude, dstMagnitude) = (0f, 0f)
     var (srcWeight, dstWeight) = (0f, 0f)
 
-    for(i <- 0 until (k min srcWeightVec.size)) {
+    for(i <- 0 until (k min srcWeightVec.size) ) {
 
       if(i != srcIndex && i != dstIndex) {
         srcWeight = srcWeightVec(i) / srcNorm

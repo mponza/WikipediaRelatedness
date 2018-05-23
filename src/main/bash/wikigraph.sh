@@ -8,6 +8,9 @@ WIKI_GRAPH_OUT_BIN="/home/ponza/Developer/WikipediaRelatedness/data/wikipedia/gr
 WIKI_GRAPH_IN_BIN="/home/ponza/Developer/WikipediaRelatedness/data/wikipedia/graph/bin/wiki-in-graph.bin"
 WIKI_GRAPH_SYM_BIN="/home/ponza/Developer/WikipediaRelatedness/data/wikipedia/graph/bin/wiki-sym-graph.bin"
 
+TOP_CACHE="/home/ponza/Developer/WikipediaRelatedness/data/wikipedia/topk/wiki-out-mw-top-nodes.bin"
+WEIGHT_CACHE="/home/ponza/Developer/WikipediaRelatedness/data/wikipedia/weights/mw-weights.bin"
+
 
 function processing() {
 sbt/bin/sbt "runMain it.unipi.di.acubelab.wikipediarelatedness.WikiGraphProcessing \
@@ -22,8 +25,27 @@ function milneWittenBenchmarking() {
 }
 
 function twoStageFrameworkBenchmarking() {
-    sbt/bin/sbt "runMain it.unipi.di.acubelab.wikipediarelatedness.TwoStageFrameworkBenchmarking
+    sbt/bin/sbt "runMain it.unipi.di.acubelab.wikipediarelatedness.TwoStageFrameworkBenchmarking \
     $WIKI_GRAPH_OUT_BIN\
     $WIKI_GRAPH_IN_BIN\
-    30"
+    30\
+    $TOP_CACHE
+    "
 }
+
+function topNodesCaching() {
+    sbt/bin/sbt "runMain it.unipi.di.acubelab.wikipediarelatedness.TopNodesCaching \
+    $WIKI_GRAPH_OUT_BIN \
+    $WIKI_GRAPH_IN_BIN \
+    $TOP_CACHE"
+}
+
+function weightCaching() {
+    sbt/bin/sbt "runMain it.unipi.di.acubelab.wikipediarelatedness.WeightCaching \
+    $WIKI_GRAPH_OUT_BIN \
+    $WIKI_GRAPH_IN_BIN \
+    $WIKI_GRAPH_OUT_BIN \
+    $WEIGHT_CACHE"
+}
+
+

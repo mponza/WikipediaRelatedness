@@ -42,7 +42,7 @@ abstract class WikiGraphBasedRelatedness(wikiGraph: WikiGraph) extends WikiRelat
       while (iterA.hasNext && iterB.hasNext && a < b) a = iterA.nextInt
       while (iterA.hasNext && iterB.hasNext && b < a) b = iterB.nextInt
 
-      if((!iterA.hasNext || !iterB.hasNext()) && a == b) {
+      if((!iterA.hasNext || !iterB.hasNext) && a == b) {
         // one matched element but iteration is finished
         intersection += 1
       }

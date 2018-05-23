@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
 
   private val logger = LoggerFactory.getLogger(classOf[WikiGraph])
-  private lazy val numNodes = allDistinctWikiIDs
+  private lazy val numNodes = allDistinctWikiIDs.size
 
 
   /**
@@ -15,7 +15,7 @@ class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
     * @param wikiID
     * @return
     */
-  def degree(wikiID: Int) = { graph.get(wikiID).size() }
+  def degree(wikiID: Int) = { if (graph.containsKey(wikiID)) graph.get(wikiID).size() else 0 }
 
 
   /**
@@ -30,21 +30,24 @@ class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
     * Computes the number of distinct nodes in the graph
     * @return
     */
-  private def allDistinctWikiIDs : Int = {
+  def allDistinctWikiIDs : Seq[Int] = {
     val wikiIDs = new IntOpenHashSet()
 
     wikiIDs.addAll(graph.keySet())
-    graph.keySet().stream().forEach(wikiID => wikiIDs.addAll( edges(wikiID) ))
+    graph.keySet().toIntArray.foreach(wikiID => wikiIDs.addAll( edges(wikiID) ))
 
-    wikiIDs.size()
+    wikiIDs.toIntArray
   }
+
+
+
 
 
   /**
     * Computes the number of edges in the graph.
     * @return
     */
-  def allEdges() : Int = {
+  def countAllEdges() : Int = {
 
     var numEdges = 0
     graph.keySet().stream().forEach(
@@ -52,6 +55,17 @@ class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
         .forEach(srcDst => numEdges += 1 )  )
 
     numEdges
+  }
+
+
+  /**
+    * Computes all edges in terms of pairs of wikiIDs
+    * @return
+    */
+  def allEdges() : Seq[(Int, Int)] = {
+    graph.keySet().toIntArray.toStream
+      .flatMap(src => edges(src).toIntArray.map(dst => (src, dst))  )
+
   }
 
 

@@ -22,6 +22,8 @@ class MilneWittenRelatedness(wikiGraph: WikiGraph) extends WikiGraphBasedRelated
 
     val normRel = 1f - ((rel.toFloat max 0f) min 1f)
 
+    println(s"MWRel between ${srcWikiID} and ${dstWikiID} is ${normRel}")
+
     normRel
   }
 
