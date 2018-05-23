@@ -8,10 +8,6 @@ K=2
 QUERY_PAIRS=src/main/resources/example/toy-queries.tsv
 RELS=/tmp/toy-queries2rels.tsv
 
-#
-#GRAPH=tmp-graph.tsv
-#QUERY_PAIRS=tmp-graph.tsv
-
 
 echo "Indexing graph and cache generation..."
 bash src/main/bash/build.sh $GRAPH $DATA

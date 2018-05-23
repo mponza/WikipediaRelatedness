@@ -1,6 +1,6 @@
 ![WikipediaRelatedness](http://pages.di.unipi.it/ponza/public/images/wikipediarelatedness/logo.png)
 
-Branch for an immediate application of the TwoStageFramework over every kind of graph and set of query nodes. Typing only two commands.
+Branch for an immediate application of the TwoStageFramework over every kind of graph. Typing only two commands.
 
 
 # Indexing
@@ -18,7 +18,7 @@ You can compute the Two-Stage Framework relatedness over a set of query nodes by
 
     src/main/bash/apply.sh k path/to/two-stage-data path/to/queries.tsv path/to/queries2rel.csv
     
-where `k` is the size of the subgraph (suggested value: 30), `two-stage-data` is the same directory provided in the Indexing step and `queries.tsv` are the list of query nodes in tsv format of which the relatedness needs to be computed and saved in `queries2rel.csv`.
+where `k` is the size of the subgraph (the value used in the paper was fixed to 30), `two-stage-data` is the same directory provided in the Indexing step and `queries.tsv` are the list of query nodes in tsv format of which the relatedness needs to be computed and saved in `queries2rel.csv`.
 
 
 # Example
