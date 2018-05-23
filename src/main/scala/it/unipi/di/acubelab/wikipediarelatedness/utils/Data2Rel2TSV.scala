@@ -29,11 +29,7 @@ class Data2Rel2TSV(wikiRelatedness: WikiRelatedness) {
 
     pl.done()
 
-    println("======")
-    println(wikiIDsRel.map(x => x._3) mkString " ")
-    println("======")
-
-    wikiIDsRel.foreach( triple => writer.write( s"${triple._1}\t${triple._2}\t%1.20f\n".format(triple._3) ))
+    wikiIDsRel.foreach( triple => writer.write( s"${triple._1}\t${triple._2}\t%1.5f\n".format(triple._3) ))
     writer.flush()
 
   }

@@ -5,7 +5,7 @@ Branch for an immediate application of the TwoStageFramework over every kind of 
 
 # Indexing
 
-First, you need to index and pre-process several resources for running the TwoStageFramework. This can be automatically done with
+First, you need to index and pre-process several resources for running the TwoStageFramework. This can be automatically done with:
 
     src/main/bash/build.sh path/to/graph.tsv path/to/two-stage-data
     
@@ -14,7 +14,7 @@ where `graph.tsv` is the graph in tsv format (or tsv.gz) and `two-stage-data` is
 
 # Running
 
-You can compute the Two-Stage Framework relatedness over a set of query nodes by simply typing
+You can compute the Two-Stage Framework relatedness over a set of query nodes by simply typing:
 
     src/main/bash/apply.sh k path/to/two-stage-data path/to/queries.tsv path/to/queries2rel.csv
     
@@ -23,7 +23,7 @@ where `k` is the size of the subgraph (the value used in the paper was fixed to 
 
 # Example
 
-For a running example please check `src/main/bash/example.sh`
+For a running example on a very small graph please check `src/main/bash/example.sh`.
 
 
 
