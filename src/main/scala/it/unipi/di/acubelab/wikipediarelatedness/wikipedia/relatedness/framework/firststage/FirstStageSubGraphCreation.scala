@@ -2,7 +2,6 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.framewor
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.framework.firststage.nodes.NodesOfSubGraph
-import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.framework.secondstage.weights.WeightsOfSubGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.framework.subgraph.WikiSubGraph
 
 /**
@@ -17,15 +16,16 @@ class FirstStageSubGraphCreation(nodesOfSubGraph: NodesOfSubGraph, k: Int) {
   def growWikipediaSubGraph(srcWikiID: Int, dstWikiID: Int): WikiSubGraph = {
 
     if (srcWikiID.equals(dstWikiID)) {
-      // safe time, the Second Stage returns 1f when srcWikiID.equals(dstWikiID)
-      return new WikiSubGraph(srcWikiID, dstWikiID, null)
+      // save time, the Second Stage returns 1f when srcWikiID.equals(dstWikiID) without any more computation
+      return new WikiSubGraph(srcWikiID, dstWikiID, null, k)
     }
 
     val srcTopNodes = nodesOfSubGraph.topNodes(srcWikiID).slice(0, k)
-    val dstTopNodes = nodesOfSubGraph.topNodes(dstTopNodes).slice(0, k)
+    val dstTopNodes = nodesOfSubGraph.topNodes(dstWikiID).slice(0, k)
 
     new WikiSubGraph(srcWikiID, dstWikiID,
-                      chooseNodes(srcWikiID, dstWikiID, srcTopNodes, dstTopNodes)
+                      chooseNodes(srcWikiID, dstWikiID, srcTopNodes, dstTopNodes),
+                      k
                     )
   }
 
@@ -42,9 +42,6 @@ class FirstStageSubGraphCreation(nodesOfSubGraph: NodesOfSubGraph, k: Int) {
     val nodes = new IntOpenHashSet()
     nodes.add(srcWikiID)
     nodes.add(dstWikiID)
-
-    val srcVec = Seq.empty[Int] // change
-    val dstVec = Seq.empty[Int]
 
     var (i, j) = (0, 0)
     var n = nodes.size()

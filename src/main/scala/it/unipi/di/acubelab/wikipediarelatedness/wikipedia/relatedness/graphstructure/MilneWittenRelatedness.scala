@@ -10,7 +10,6 @@ class MilneWittenRelatedness(wikiGraph: WikiGraph) extends WikiGraphBasedRelated
   override def relatedness(srcWikiID: Int, dstWikiID: Int): Float = {
 
     val intersectionSize = super.intersection(srcWikiID, dstWikiID)
-    logger.info(intersectionSize.toString)
     if(intersectionSize == 0) return 0f
 
     val srcDegree = wikiGraph.degree(srcWikiID)

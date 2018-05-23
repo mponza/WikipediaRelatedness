@@ -17,6 +17,13 @@ sbt/bin/sbt "runMain it.unipi.di.acubelab.wikipediarelatedness.WikiGraphProcessi
             $WIKI_GRAPH_SYM_BIN"
 }
 
-function benchmarking() {
+function milneWittenBenchmarking() {
     sbt/bin/sbt "runMain it.unipi.di.acubelab.wikipediarelatedness.WikiRelBenchmarking $WIKI_GRAPH_IN_BIN"
+}
+
+function twoStageFrameworkBenchmarking() {
+    sbt/bin/sbt "runMain it.unipi.di.acubelab.wikipediarelatedness.TwoStageFrameworkBenchmarking
+    $WIKI_GRAPH_OUT_BIN\
+    $WIKI_GRAPH_IN_BIN\
+    30"
 }

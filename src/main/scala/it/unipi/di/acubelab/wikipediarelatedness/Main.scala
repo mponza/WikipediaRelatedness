@@ -28,7 +28,10 @@ object WikiGraphProcessing {
 }
 
 
-object WikiRelBenchmarking {
+/**
+  * Benchmark Milne&Witten on WiRe dataset.
+  */
+object MilneWittenBenchmarking {
 
   def main(args: Array[String]) : Unit = {
 
@@ -37,6 +40,28 @@ object WikiRelBenchmarking {
 
     val graphFilename = args(0)
     val rel = WikiRelatednessFactory.makeMilneWitten(graphFilename)
+
+    val benchmark = new WikiRelBenchmark(wire, rel)
+    benchmark.run()
+
+  }
+}
+
+
+/**
+  * Benchmark TwoStageFramework on WiRe dataset.
+  */
+object TwoStageFrameworkBenchmarking {
+
+  def main(args: Array[String]) : Unit = {
+
+
+    val wire = WikiRelDatasetFactory.apply("WiRe")
+
+    val outGraphFilename = args(0)
+    val inGraphFilename = args(1)
+    val k = args(2).toInt
+    val rel = WikiRelatednessFactory.makeTwoStageFrameworkRelatedness(outGraphFilename, inGraphFilename, 30)
 
     val benchmark = new WikiRelBenchmark(wire, rel)
     benchmark.run()

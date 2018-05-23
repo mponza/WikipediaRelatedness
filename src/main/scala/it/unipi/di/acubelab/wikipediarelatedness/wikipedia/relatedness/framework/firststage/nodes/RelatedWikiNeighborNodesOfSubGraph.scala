@@ -8,7 +8,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.WikiRelat
   * the one in the neighborhood of srcWikiID and dstWikiID in wikiGraph, weighted with a wikiRel function.
   *
   */
-class RelatedWikiOutNodesOfSubGraph(wikiGraph: WikiGraph, wikiRel: WikiRelatedness)
+class RelatedWikiNeighborNodesOfSubGraph(wikiGraph: WikiGraph, wikiRel: WikiRelatedness)
        extends NodesOfSubGraph {
 
   /**

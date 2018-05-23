@@ -22,7 +22,7 @@ class WikiRelBenchmark(val wikiRelDataset: WikiRelDataset, val wikiRelatedness: 
         wikiRelTask.machineRelatedness = wikiRelatedness.relatedness( wikiRelTask.src.wikiID,  wikiRelTask.dst.wikiID )
         wikiRelTask.end()
 
-        pl.lightUpdate()
+        pl.update()
     }
     pl.done()
 

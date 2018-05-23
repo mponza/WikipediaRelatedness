@@ -4,7 +4,7 @@ import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.framework
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.framework.subgraph.{WeightedWikiSubGraph, WikiSubGraph}
 
 
-class SecondStageComputingRelatedness(weightsOfSubGraph: WeightsOfSubGraph, k: Int) {
+class SecondStageComputingRelatedness(weightsOfSubGraph: WeightsOfSubGraph) {
 
   def relatedness(wikiSubGraph: WikiSubGraph) : Float = {
     if (wikiSubGraph.srcWikiID.equals(wikiSubGraph.dstWikiID)) return 1f
@@ -30,6 +30,7 @@ class SecondStageComputingRelatedness(weightsOfSubGraph: WeightsOfSubGraph, k: I
     val srcWikiID = wikiSubGraph.srcWikiID
     val dstWikiID = wikiSubGraph.dstWikiID
     val nodes = wikiSubGraph.nodeWikiIDs
+    val k = wikiSubGraph.k
 
     val srcWeightVec = Array.ofDim[Float](nodes.size())
     val dstWeightVec = Array.ofDim[Float](nodes.size())
@@ -70,7 +71,9 @@ class SecondStageComputingRelatedness(weightsOfSubGraph: WeightsOfSubGraph, k: I
     dstSum = dstSum / 0.9f
 
     new WeightedWikiSubGraph(srcWeightVec, srcSum, srcIndex,
-                              dstWeightVec, dstSum, dstIndex)
+                              dstWeightVec, dstSum, dstIndex,
+                              k
+                            )
   }
 
 
@@ -83,6 +86,7 @@ class SecondStageComputingRelatedness(weightsOfSubGraph: WeightsOfSubGraph, k: I
   private def cosineSimilarity(weightedWikiSubGraph: WeightedWikiSubGraph) : Float = {
     val srcIndex = weightedWikiSubGraph.srcWikiIDIndex
     val dstIndex = weightedWikiSubGraph.dstWikiIDIndex
+    val k = weightedWikiSubGraph.k
 
     val srcWeightVec = weightedWikiSubGraph.srcVec
     val dstWeightVec = weightedWikiSubGraph.dstVec
@@ -94,7 +98,7 @@ class SecondStageComputingRelatedness(weightsOfSubGraph: WeightsOfSubGraph, k: I
     var (srcMagnitude, dstMagnitude) = (0f, 0f)
     var (srcWeight, dstWeight) = (0f, 0f)
 
-    for(i <- 0 until k) {
+    for(i <- 0 until (k min srcWeightVec.size)) {
 
       if(i != srcIndex && i != dstIndex) {
         srcWeight = srcWeightVec(i) / srcNorm
