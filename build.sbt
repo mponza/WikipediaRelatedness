@@ -5,9 +5,6 @@ scalacOptions += "-target:jvm-1.8"
 scalacOptions ++= Seq("-feature", "-deprecation")
 fork in run := true
 
-//resourceDirectory in Compile := baseDirectory.value / "src" / "main" / "resources"
-//resourceDirectory in Test := baseDirectory.value / "src" / "main"  / "resources"
-
 javaOptions in run += "-Xmx35G"
 javaOptions in Test += "-Xmx35G"
 

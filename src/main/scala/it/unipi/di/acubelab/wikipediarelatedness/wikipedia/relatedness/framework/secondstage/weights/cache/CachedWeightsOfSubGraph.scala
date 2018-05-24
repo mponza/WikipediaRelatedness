@@ -57,22 +57,23 @@ object CachedWeightsOfSubGraph {
       ( (srcWikiID min dstWikiID).toLong << 32) | ((srcWikiID max dstWikiID) & 0XFFFFFFFFL)
     }
 
-    val distinctEdges = wikiGraph.allEdges().map( edge => ( edge._1 min edge._2, edge._1 max edge._2) ).distinct
-
-
     val pl = new ProgressLogger(logger)
     pl.start("Starting cache generation...")
-    // Warning this cache suppose that weight(src, dst) == weight(dst, src)
-    val edge2weight = distinctEdges
-                      .map( edge => {
-                        pl.update()
-                        (hashMapKey(edge._1, edge._2), weightsOfSubGraph.weighting(edge._1, edge._2) )
-                      } )
-    pl.done()
 
-    for ((key, weight) <- edge2weight.toList) {
-      wikiIDs2Weight.put(key, weight)
-    }
+    wikiGraph.allIterableEdges()
+      .foreach(edge => {
+
+        val key = hashMapKey(edge._1, edge._2)
+        if(!wikiIDs2Weight.containsKey(key)) {
+          val rel = weightsOfSubGraph.weighting(edge._1, edge._2)
+          // it's actually very sparse, maybe zeroes can be not saved
+          wikiIDs2Weight.put(key, rel)
+        }
+        pl.update()
+
+    })
+
+    pl.done()
 
 
     logger.info("Serializing computed cache...")

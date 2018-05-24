@@ -12,6 +12,7 @@ class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
 
   /**
     * Returns degree of wikiID in graph.
+    *
     * @param wikiID
     * @return
     */
@@ -20,6 +21,7 @@ class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
 
   /**
     * Returns the list of wikiIDs which are linked to wikiID. wikiIDs MUST be sorted in non-decreasing order.
+    *
     * @param wikiID
     * @return
     */
@@ -28,6 +30,7 @@ class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
 
   /**
     * Computes the number of distinct nodes in the graph
+    *
     * @return
     */
   def allDistinctWikiIDs : Seq[Int] = {
@@ -45,6 +48,7 @@ class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
 
   /**
     * Computes the number of edges in the graph.
+    *
     * @return
     */
   def countAllEdges() : Int = {
@@ -58,19 +62,17 @@ class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
   }
 
 
-  /**
-    * Computes all edges in terms of pairs of wikiIDs
-    * @return
-    */
-  def allEdges() : Seq[(Int, Int)] = {
-    graph.keySet().toIntArray.toStream
-      .flatMap(src => edges(src).toIntArray.map(dst => (src, dst))  )
-
+  def allIterableEdges() : Iterable[(Int, Int)]= {
+    for (
+      srcWikiID <- graph.keySet().toIntArray();
+      dstWikiID <- edges(srcWikiID).toIntArray()
+    ) yield (srcWikiID, dstWikiID)
   }
 
 
   /**
     * Returns the number of distinct nodes in the graph.
+    *
     * @return
     */
   def getNumNodes : Int = { numNodes }

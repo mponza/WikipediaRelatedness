@@ -3,6 +3,14 @@
 Branch for an immediate application of the TwoStageFramework over every kind of graph. Typing only two commands.
 
 
+# Setting Up
+
+Into your working dir, just type:
+    git clone https://github.com/mponza/WikipediaRelatedness.git
+    cd WikipediaRelatedness
+    wget https://piccolo.link/sbt-0.13.17.zip; unzip sbt-0.13.17.zip; rm sbt-0.13.17.zip
+
+
 # Indexing
 
 First, you need to index and pre-process several resources for running the TwoStageFramework. This can be automatically done with:
@@ -21,9 +29,10 @@ You can compute the Two-Stage Framework relatedness over a set of query nodes by
 where `k` is the size of the subgraph (the value used in the paper was fixed to 30), `two-stage-data` is the same directory provided in the Indexing step and `queries.tsv` are the list of query nodes in tsv format of which the relatedness needs to be computed and saved in `queries2rel.csv`.
 
 
-# Example
+# Examples
 
-For a running example on a very small graph please check `src/main/bash/example.sh`.
+For a toy-example on a very small graph please check `src/main/bash/example.sh`.
+For using the TwoStageFramework in your own code just check `Main` class.
 
 
 
