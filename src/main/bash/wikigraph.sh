@@ -26,11 +26,14 @@ function milneWittenBenchmarking() {
 
 function twoStageFrameworkBenchmarking() {
     sbt/bin/sbt "runMain it.unipi.di.acubelab.wikipediarelatedness.TwoStageFrameworkBenchmarking \
-    $WIKI_GRAPH_OUT_BIN\
-    $WIKI_GRAPH_IN_BIN\
-    30\
-    $TOP_CACHE
-    "
+            --outgraph $WIKI_GRAPH_OUT_BIN \
+            --ingraph $WIKI_GRAPH_IN_BIN \
+            --cachetopnodes $TOP_CACHE \
+            --cacheweights $WEIGHT_CACHE \
+            --k 30 \
+            --querypairs notusedinthisclass \
+            --output notusedinthisclass"
+
 }
 
 function topNodesCaching() {

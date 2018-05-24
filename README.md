@@ -1,22 +1,22 @@
 ![WikipediaRelatedness](http://pages.di.unipi.it/ponza/public/images/wikipediarelatedness/logo.png)
 
-Branch for an immediate application of the TwoStageFramework over every kind of graph. Typing only two commands.
+Branch for an immediate application of the Two-Stage Framework over every kind of graph. Typing only two commands.
 
 
 # Setting Up
 
-Into your working dir, just type:
+Into your working directory, just type:
 
     git clone https://github.com/mponza/WikipediaRelatedness.git
     cd WikipediaRelatedness
     wget https://piccolo.link/sbt-0.13.17.zip; unzip sbt-0.13.17.zip; rm sbt-0.13.17.zip
 
-for downloading the code and sbt.
+for downloading this repository and [sbt](https://www.scala-sbt.org/).
 
 
 # Indexing
 
-First, you need to index and pre-process several resources for running the TwoStageFramework. This can be automatically done with:
+First, you need to index and pre-process several resources for running the Two-Stage Framework. This can be automatically done with:
 
     src/main/bash/build.sh path/to/graph.tsv path/to/two-stage-data
     
@@ -35,7 +35,8 @@ where `k` is the size of the subgraph (the value used in the paper was fixed to 
 # Examples
 
 For a toy-example on a very small graph please check `src/main/bash/example.sh`.
-For using the TwoStageFramework in your own code just check `Main` class.
+
+For using the Two-Stage Framework in your own code just check `Main` class for examples.
 
 
 

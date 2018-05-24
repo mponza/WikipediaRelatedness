@@ -116,21 +116,23 @@ object MilneWittenBenchmarking {
 object TwoStageFrameworkBenchmarking {
 
   def main(args: Array[String]) : Unit = {
+    val conf = new TwoStageArgs(args)
     val wire = WikiRelDatasetFactory.apply("WiRe")
 
-    val outGraphFilename = args(0)
-    val inGraphFilename = args(1)
-    val k = args(2).toInt
-    val cacheFilename = args(3)
+    // Run Two-Stage Framework with no pre-processed resources.
+    // The computation is fully on-the-fly, it is slower than pre-processed version but memory light.
+    // val rel = WikiRelatednessFactory.makeTwoStageFrameworkRelatedness(outGraphFilename, inGraphFilename, 30)
 
-    // everything slowly on-the-fly
-//    val rel = WikiRelatednessFactory.makeTwoStageFrameworkRelatedness(outGraphFilename, inGraphFilename, 30)
 
-    // with cache
-//    val rel = WikiRelatednessFactory.makeCachedTwoStageFrameworkRelatedness(cacheFilename, outGraphFilename, inGraphFilename, 30)
+    // Run Two-Stage Framework with caches.
+    val twoStageFramework = WikiRelatednessFactory
+      .makeCachedTwoStageFrameworkRelatedness(
+        conf.cachetopnodes(), conf.cacheweights(), conf.outgraph(), conf.ingraph(), conf.k()
+      )
 
-//    val benchmark = new WikiRelBenchmark(wire, rel)
-//    benchmark.run()
+
+    val benchmark = new WikiRelBenchmark(wire, twoStageFramework)
+    benchmark.run()
 
   }
 }
