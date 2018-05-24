@@ -5,7 +5,7 @@ Branch for an immediate application of the Two-Stage Framework over every kind o
 
 # Setting Up
 
-Into your working directory, just type:
+In your working directory, just type:
 
     git clone https://github.com/mponza/WikipediaRelatedness.git
     cd WikipediaRelatedness
@@ -43,7 +43,7 @@ For using the Two-Stage Framework in your own code just check `Main` class for e
 Citation and Further Reading
 ============================
 
-If you find any resource (code or data) of this repository useful, please cite our paper:
+If you find any resource (code or data) of this repository useful, please cite our [paper](https://doi.org/10.1145/3132847.3132890):
 
 > [Marco Ponza](http://pages.di.unipi.it/ponza), [Paolo Ferragina](http://pages.di.unipi.it/ferragina/), [Soumen Chakrabarti](https://www.cse.iitb.ac.in/~soumen/):  
 > A Two-Stage Framework for Computing Entity Relatedness in Wikipedia.  
