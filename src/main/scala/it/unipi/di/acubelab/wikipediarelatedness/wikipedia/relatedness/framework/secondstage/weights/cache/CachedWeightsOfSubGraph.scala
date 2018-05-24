@@ -78,10 +78,16 @@ object CachedWeightsOfSubGraph {
 
     pl.done()
 
+    // unsync
+    val wikiIDs2Wieght = new Long2FloatOpenHashMap()
+    for(key <- wikiIDs2Wieght.keySet().toLongArray) {
+      wikiIDs2Wieght.put(key, wikiIDs2Wieght.get(key))
+    }
+
 
     logger.info("Serializing computed cache...")
     new File(cacheFilename).getParentFile.mkdirs()
-    BinIO.storeObject(synWikiIDs2Weight, cacheFilename)
+    BinIO.storeObject(wikiIDs2Wieght, cacheFilename)
     logger.info("Done.")
 
   }
