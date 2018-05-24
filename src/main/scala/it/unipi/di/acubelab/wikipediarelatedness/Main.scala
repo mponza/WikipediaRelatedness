@@ -91,7 +91,6 @@ object ApplyTwoStageFramework {
 }
 
 
-
 /**
   * Benchmark Milne&Witten on WiRe dataset.
   */
@@ -120,16 +119,13 @@ object TwoStageFrameworkBenchmarking {
     val wire = WikiRelDatasetFactory.apply("WiRe")
 
     // Run Two-Stage Framework with no pre-processed resources.
-    // The computation is fully on-the-fly, it is slower than pre-processed version but memory light.
-    // val rel = WikiRelatednessFactory.makeTwoStageFrameworkRelatedness(outGraphFilename, inGraphFilename, 30)
-
+    // val twoStageFramework = WikiRelatednessFactory.makeTwoStageFrameworkRelatedness(conf.outgraph(), conf.ingraph(), 30)
 
     // Run Two-Stage Framework with caches.
     val twoStageFramework = WikiRelatednessFactory
       .makeCachedTwoStageFrameworkRelatedness(
         conf.cachetopnodes(), conf.cacheweights(), conf.outgraph(), conf.ingraph(), conf.k()
       )
-
 
     val benchmark = new WikiRelBenchmark(wire, twoStageFramework)
     benchmark.run()

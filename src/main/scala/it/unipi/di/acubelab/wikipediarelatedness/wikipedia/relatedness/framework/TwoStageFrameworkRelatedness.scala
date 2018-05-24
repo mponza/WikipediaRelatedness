@@ -14,7 +14,6 @@ class TwoStageFrameworkRelatedness(val firstStage: FirstStageSubGraphCreation,
   override def relatedness(srcWikiID: Int, dstWikiID: Int): Float = {
     val wikiSubGraph = firstStage.growWikipediaSubGraph(srcWikiID, dstWikiID)
     val relatedness = secondStage.relatedness(wikiSubGraph)
-
     relatedness
   }
 

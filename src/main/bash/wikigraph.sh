@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Preliminar code step-by-step used for refactoring
+
+
 sbt/bin/sbt clean compile
 
 WIKI_GRAPH_TSV="/home/ponza/Developer/WikipediaRelatedness/data/wikipedia/graph/wiki-links-sorted.gz"
@@ -47,8 +50,14 @@ function weightCaching() {
     sbt/bin/sbt "runMain it.unipi.di.acubelab.wikipediarelatedness.WeightCaching \
     $WIKI_GRAPH_OUT_BIN \
     $WIKI_GRAPH_IN_BIN \
-    $WIKI_GRAPH_OUT_BIN \
+    $WIKI_GRAPH_SYM_BIN \
     $WEIGHT_CACHE"
 }
 
 
+function runAll() {
+    processing
+    topNodesCaching
+    weightCaching
+    twoStageFrameworkBenchmarking
+}

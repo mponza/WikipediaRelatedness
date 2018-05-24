@@ -60,7 +60,7 @@ object WikiRelatednessFactory {
     val mwRel = makeMilneWitten(inGraphFilename)
     val relOutNodesSubGraph = new RelatedWikiNeighbourNodesOfSubGraph(WikiGraph(outGraphFilename), mwRel)
     val cachedRelOutNodesSubGraph = new CachedNodesOfSubGraph(cacheTopNodesFilename, relOutNodesSubGraph)
-    val firstStage = new FirstStageSubGraphCreation(relOutNodesSubGraph, k)
+    val firstStage = new FirstStageSubGraphCreation(cachedRelOutNodesSubGraph, k)
 
     // Second Stage
     val mwRelWeights = new RelatednessWeightsOfSubGraph(mwRel)

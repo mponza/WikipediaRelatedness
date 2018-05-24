@@ -14,7 +14,7 @@ class CachedNodesOfSubGraph(cacheFilename: String, nodesOfSubGraph: NodesOfSubGr
   private val wikiID2rankedNodes = loadCache(cacheFilename)
 
   private def loadCache(cacheFilename: String) = {
-    logger.info("Loading cache...")
+    logger.info("Loading cache of nodes...")
     val cache = BinIO.loadObject(cacheFilename).asInstanceOf[ Int2ObjectOpenHashMap[Seq[Int]] ]
     logger.info("Done.")
 

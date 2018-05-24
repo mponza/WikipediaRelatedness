@@ -27,6 +27,6 @@ class WikiRelBenchmark(val wikiRelDataset: WikiRelDataset, val wikiRelatedness: 
     pl.done()
 
     logger.info(s"Correlation are: [Person ${Correlation.pearson(wikiRelDataset)}]" +
-                s"and [Sperman ${Correlation.spearman(wikiRelDataset)}]")
+                s"and [Sperman ${Correlation.spearman(wikiRelDataset)}]" )
   }
 }

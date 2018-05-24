@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 class WikiGraph(graph: Int2ObjectOpenHashMap[IntArrayList]) {
 
   private val logger = LoggerFactory.getLogger(classOf[WikiGraph])
-  private lazy val numNodes = allDistinctWikiIDs.size
+  private val numNodes = allDistinctWikiIDs.size
 
 
   /**

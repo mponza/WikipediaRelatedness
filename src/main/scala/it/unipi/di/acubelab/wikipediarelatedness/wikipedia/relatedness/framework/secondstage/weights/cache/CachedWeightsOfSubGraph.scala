@@ -2,8 +2,9 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.framewor
 
 import java.io.File
 
+import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
-import it.unimi.dsi.fastutil.longs.Long2FloatOpenHashMap
+import it.unimi.dsi.fastutil.longs.{Long2FloatFunctions, Long2FloatOpenHashMap}
 import it.unimi.dsi.logging.ProgressLogger
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.graph.WikiGraph
 import it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.framework.secondstage.weights.WeightsOfSubGraph
@@ -15,7 +16,7 @@ class CachedWeightsOfSubGraph(cacheFilename: String, weightsOfSubGraph: WeightsO
   private val wikiIDs2Weight = loadCache(cacheFilename)
 
   private def loadCache(cacheFilename: String) = {
-    logger.info("Loading cache...")
+    logger.info("Loading cache of weights...")
     val cache = BinIO.loadObject(cacheFilename).asInstanceOf[ Long2FloatOpenHashMap ]
     logger.info(s"Done. Cache loaded with ${cache.keySet().size()} precomputed weights.")
     cache
@@ -29,7 +30,10 @@ class CachedWeightsOfSubGraph(cacheFilename: String, weightsOfSubGraph: WeightsO
 
   override def weighting(srcWikiID: Int, dstWikiID: Int): Float = {
     val key = hashMapKey(srcWikiID, dstWikiID)
-    if(wikiIDs2Weight.containsKey(key)) return wikiIDs2Weight.get(key)
+    if(wikiIDs2Weight.containsKey(key)) {
+      return wikiIDs2Weight.get(key)
+    }
+
     weightsOfSubGraph.weighting(srcWikiID, dstWikiID)
   }
 
@@ -50,9 +54,6 @@ object CachedWeightsOfSubGraph {
     * @param cacheFilename
     */
   def generateWeightsCache(wikiGraph: WikiGraph, weightsOfSubGraph: WeightsOfSubGraph, cacheFilename: String) = {
-    val wikiIDs2Weight = new Long2FloatOpenHashMap()
-
-
     def hashMapKey(srcWikiID: Int, dstWikiID: Int) : Long = {
       ( (srcWikiID min dstWikiID).toLong << 32) | ((srcWikiID max dstWikiID) & 0XFFFFFFFFL)
     }
@@ -60,14 +61,16 @@ object CachedWeightsOfSubGraph {
     val pl = new ProgressLogger(logger)
     pl.start("Starting cache generation...")
 
+    val synWikiIDs2Weight = Long2FloatFunctions.synchronize(new Long2FloatOpenHashMap())
     wikiGraph.allIterableEdges()
+      .par
       .foreach(edge => {
 
         val key = hashMapKey(edge._1, edge._2)
-        if(!wikiIDs2Weight.containsKey(key)) {
+        if(!synWikiIDs2Weight.containsKey(key)) {
           val rel = weightsOfSubGraph.weighting(edge._1, edge._2)
-          // it's actually very sparse, maybe zeroes can be not saved
-          wikiIDs2Weight.put(key, rel)
+          // it's actually very sparse, maybe zeroes can be not saved if space-saving is needed
+          synWikiIDs2Weight.put(key, rel)
         }
         pl.update()
 
@@ -78,7 +81,7 @@ object CachedWeightsOfSubGraph {
 
     logger.info("Serializing computed cache...")
     new File(cacheFilename).getParentFile.mkdirs()
-    BinIO.storeObject(wikiIDs2Weight, cacheFilename)
+    BinIO.storeObject(synWikiIDs2Weight, cacheFilename)
     logger.info("Done.")
 
   }
