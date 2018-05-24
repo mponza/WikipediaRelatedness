@@ -6,9 +6,12 @@ Branch for an immediate application of the TwoStageFramework over every kind of 
 # Setting Up
 
 Into your working dir, just type:
+
     git clone https://github.com/mponza/WikipediaRelatedness.git
     cd WikipediaRelatedness
     wget https://piccolo.link/sbt-0.13.17.zip; unzip sbt-0.13.17.zip; rm sbt-0.13.17.zip
+
+for downloading the code and sbt.
 
 
 # Indexing
