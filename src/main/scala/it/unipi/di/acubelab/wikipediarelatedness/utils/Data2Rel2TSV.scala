@@ -35,6 +35,34 @@ class Data2Rel2TSV(wikiRelatedness: WikiRelatedness) {
   }
 
 
+  /**
+    * Parallel application of th relatedness method to a set of ids.
+    *
+    * @param reader
+    * @param writer
+    */
+  def parApply(reader: Traversable[(Int, Int)], writer: FileWriter) : Unit = {
+
+    // read all pairs
+    val wikiIDsPairs = reader.map(pair => pair).toList
+
+    // parallel computation
+    val pl = new ProgressLogger(logger)
+
+    val wikiIDsRel =  wikiIDsPairs.map(pair => {
+      pl.update()
+      (pair._1, pair._2, wikiRelatedness.relatedness(pair._1, pair._2))
+    } )
+
+    pl.done()
+
+    // writing
+    wikiIDsRel.foreach( triple => writer.write( s"${triple._1}\t${triple._2}\t%1.5f\n".format(triple._3) ))
+    writer.flush()
+
+  }
+
+
   def apply(dataFilename: String, outFilename: String)  : Unit = {
 
     val reader = new WikiGraphTSVReader(dataFilename)

@@ -2,7 +2,6 @@ package it.unipi.di.acubelab.wikipediarelatedness.wikipedia.relatedness.framewor
 
 import java.io.File
 
-import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap
 import it.unimi.dsi.fastutil.io.BinIO
 import it.unimi.dsi.fastutil.longs.{Long2FloatFunctions, Long2FloatOpenHashMap}
 import it.unimi.dsi.logging.ProgressLogger
