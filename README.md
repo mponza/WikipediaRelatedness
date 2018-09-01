@@ -1,4 +1,4 @@
-![WikipediaRelatedness](http://pages.di.unipi.it/ponza/public/images/wikipediarelatedness/logo.png)
+<img src="https://raw.githubusercontent.com/mponza/WikipediaRelatedness/clean/logo.png" width="300">
 
 Branch for an immediate application of the Two-Stage Framework over every kind of graph. Typing only two commands.
 
