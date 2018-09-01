@@ -41,7 +41,7 @@ For using the Two-Stage Framework in your own code just check `Main` class for e
 
 ## Datasets of Entity Relatedness Pairs
 
-You can find the datasets `WikiSim` and `WiRe` in `src/main/resources/datasets/WikiSim.csv` and `src/main/resources/datasets/WiRe.csv`, respectively. 
+You can find the datasets `WikiSim` and `WiRe` in `src/main/resources/datasets/WikiSim.csv` and `src/main/resources/datasets/WiRe.csv` files, respectively. 
 
 
 
